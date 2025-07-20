@@ -1,0 +1,249 @@
+{
+  "__guid": "ef8d5aef-d478-4f4e-b260-b1b1a1537ffd",
+  "GameObjects": [
+    {
+      "__guid": "23cd3f80-029b-4fab-934a-6fc33d0eafec",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Boot",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "3a45319e-ed77-41fc-ac22-c76a76890c2c",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Networking",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "82d10356-fd12-42e1-85b4-55efb7a1dd24",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Server",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "GameFish.Server",
+                  "__guid": "097637a4-25b2-4791-af6f-894b98828e85",
+                  "__enabled": true,
+                  "ActivePawns": [],
+                  "AllPawns": [],
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "PlayerClientPrefab": "prefabs/gamefish/net/clients/client_player.prefab",
+                  "PlayerPawnPrefab": "prefabs/gamefish/kit_fps/player/player_fps.prefab"
+                }
+              ],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "14416ea1-6237-47c3-89dd-a5bc25797ef4",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Screen",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "449d4779-0806-4544-9442-0baa5fcd5c25",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Main Camera",
+              "Position": "-160,0,160",
+              "Rotation": "0,0.3826834,0,0.9238796",
+              "Scale": "1,1,1",
+              "Tags": "maincamera",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.CameraComponent",
+                  "__guid": "47b03ef2-95bd-47e2-98bc-0ac73445a9e2",
+                  "__enabled": true,
+                  "BackgroundColor": "0.33333,0.46275,0.52157,1",
+                  "ClearFlags": "All",
+                  "FieldOfView": 100,
+                  "FovAxis": "Horizontal",
+                  "IsMainCamera": true,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "Orthographic": false,
+                  "OrthographicHeight": 1204,
+                  "Priority": 1,
+                  "RenderExcludeTags": "novis",
+                  "RenderTags": "",
+                  "TargetEye": "None",
+                  "Viewport": "0,0,1,1",
+                  "ZFar": 10000,
+                  "ZNear": 5
+                }
+              ],
+              "Children": []
+            },
+            {
+              "__guid": "25bdff90-3a5f-4f50-8abf-e7731f50c471",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "UI",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "Sandbox.ScreenPanel",
+                  "__guid": "f8bb6af8-49e5-4132-ba33-92529cbb6e41",
+                  "__enabled": true,
+                  "AutoScreenScale": true,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "Opacity": 1,
+                  "Scale": 1,
+                  "ScaleStrategy": "ConsistentHeight",
+                  "TargetCamera": {
+                    "_type": "component",
+                    "component_id": "47b03ef2-95bd-47e2-98bc-0ac73445a9e2",
+                    "go": "449d4779-0806-4544-9442-0baa5fcd5c25",
+                    "component_type": "CameraComponent"
+                  },
+                  "ZIndex": 100
+                }
+              ],
+              "Children": []
+            }
+          ]
+        },
+        {
+          "__guid": "9b76ef0a-245b-477b-9d4e-960949829741",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Data",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
+          "Components": [],
+          "Children": [
+            {
+              "__guid": "08204f75-b8a1-42bf-8989-30ae905067a8",
+              "__version": 1,
+              "Flags": 0,
+              "Name": "Settings",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkInterpolation": true,
+              "NetworkOrphaned": 0,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "GameFish.Settings",
+                  "__guid": "117c5623-05a8-41de-a55e-1635d792a971",
+                  "__enabled": true,
+                  "AutoLoading": true,
+                  "AutoSaveDelay": 30,
+                  "AutoSaving": true,
+                  "Debug": false,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null
+                }
+              ],
+              "Children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": false,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}

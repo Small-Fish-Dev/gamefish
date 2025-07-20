@@ -1,0 +1,22 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "Gamefish Example 1",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "gamefishexample1",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": [],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "maps/example/gamefish_example1.vmap",
+        "ParentPackage": "fish.game_fish"
+      }
+    }
+  }
+}

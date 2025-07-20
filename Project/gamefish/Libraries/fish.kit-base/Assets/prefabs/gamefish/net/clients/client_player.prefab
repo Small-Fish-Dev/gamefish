@@ -1,0 +1,70 @@
+{
+  "RootObject": {
+    "__guid": "962d4124-9d83-425e-ae8a-1883b6f45c52",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "client_player",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "GameFish.Client",
+        "__guid": "af98a2ba-66d5-4a1e-b3b9-1dab13ece240",
+        "__enabled": true,
+        "Identity": {
+          "IsValid": false,
+          "Type": "Invalid",
+          "Client": null,
+          "Name": null,
+          "Id": "00000000-0000-0000-0000-000000000000",
+          "Address": null,
+          "Connection": null,
+          "SteamId": {
+            "Value": 0,
+            "ValueUnsigned": 0
+          }
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
