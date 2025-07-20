@@ -27,7 +27,6 @@ public interface IModules<T> where T : Component, IModules<T>
 	/// </summary>
 	public List<Module<T>> ModuleList { get; set; }
 
-
 	protected bool IsModule( Type mType, Module<T> m )
 		=> m.IsValid() && mType == m.GetType();
 

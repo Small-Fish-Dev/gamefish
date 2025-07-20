@@ -5,6 +5,9 @@ namespace GameFish;
 /// </summary>
 public abstract partial class Module<T> : Component, Component.ExecuteInEditor where T : Component, IModules<T>
 {
+	public const string FEATURE_MODULES = "🧩 Modules";
+	public const string GROUP_MODULE = "🧩 Module";
+
 	/// <summary>
 	/// Is this component currently loaded in the scene editor? <br />
 	/// Otherwise it is assumed to be in play mode. <br />
@@ -17,7 +20,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 	/// </summary>
 	[Property]
 	[Feature( BaseEntity.DEBUG )]
-	[Group( "🧩 Module" )]
+	[Group( GROUP_MODULE )]
 	public T ParentComponent
 	{
 		get => _comp.IsValid() ? _comp : _comp = Components?.Get<T>( FindMode.EverythingInSelfAndAncestors );
@@ -27,7 +30,19 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 
 	protected override void OnEnabled()
 	{
+		base.OnEnabled();
+
 		RegisterModule();
+	}
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		RegisterModule();
+
+		if ( !ParentComponent.IsValid() )
+			this.Warn( $"Failed to find parent component of type:[{typeof( T )}]" );
 	}
 
 	protected override void OnDestroy()
@@ -35,14 +50,6 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 		base.OnDestroy();
 
 		RemoveModule();
-	}
-
-	protected override void OnStart()
-	{
-		base.OnStart();
-
-		if ( !ParentComponent.IsValid() )
-			this.Warn( $"Failed to find parent component of type:[{typeof( T )}]" );
 	}
 
 	public void RegisterModule()
