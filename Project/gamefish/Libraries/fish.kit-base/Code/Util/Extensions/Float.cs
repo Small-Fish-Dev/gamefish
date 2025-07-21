@@ -19,6 +19,6 @@ public static partial class GameFish
 	/// <summary>
 	/// <see cref="MathX.Clamp"/>
 	/// </summary>
-	public static float Clamp( this float n, FloatRange range )
+	public static float Clamp( this float n, in FloatRange range )
 		=> n.Clamp( range.Min, range.Max );
 }
