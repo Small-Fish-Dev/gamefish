@@ -89,7 +89,8 @@ public abstract partial class Agent : Component
 		if ( !Networking.IsHost || Pawns is null )
 			return;
 
-		foreach ( var pawn in Pawns )
+		// rndtrash: another place where the "Collection was modified" exception occurs
+		foreach ( var pawn in Pawns.ToList() )
 			if ( pawn.IsValid() && pawn.Agent == this )
 				pawn.Agent = null;
 
@@ -182,8 +183,11 @@ public abstract partial class Agent : Component
 		pComp.Agent = this;
 
 		if ( dropAll && Pawns is not null )
-			foreach ( var p in Pawns.Where( p => p.IsValid() && p != pComp ) )
+		{
+			// rndtrash: make a new list to avoid a weird "Collection was modified" exception
+			foreach ( var p in Pawns.Where( p => p.IsValid() && p != pComp ).ToList() )
 				p.Agent = null;
+		}
 
 		return pComp;
 	}
