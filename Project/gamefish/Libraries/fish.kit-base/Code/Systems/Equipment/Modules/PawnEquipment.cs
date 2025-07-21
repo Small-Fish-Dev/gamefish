@@ -79,6 +79,14 @@ public partial class PawnEquipment : Module<BasePawn>
 
 	protected BaseEquip _activeEquip;
 
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		if ( AutoGiveLoadout && this.InGame() )
+			GiveLoadout();
+	}
+
 	public virtual void GiveLoadout()
 	{
 		if ( Loadout is null )
