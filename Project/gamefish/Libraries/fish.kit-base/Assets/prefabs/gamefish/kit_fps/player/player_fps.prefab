@@ -18,7 +18,14 @@
         "__type": "GameFish.PlayerPawn",
         "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
+        "Actor": null,
         "Agent": null,
+        "Controller": {
+          "_type": "component",
+          "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "PlayerController"
+        },
         "Health": 100,
         "HealthComponent": {
           "_type": "component",
@@ -29,18 +36,21 @@
         "IsAlive": true,
         "IsDestructible": true,
         "MaxHealth": 100,
-        "Model": {
-          "_type": "component",
-          "component_id": "b6d83571-0158-4a0b-936c-8786d26d6314",
-          "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
-          "component_type": "ActorCitizenModel"
-        },
+        "ModuleList": [
+          {
+            "_type": "component",
+            "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
+            "go": "4392db66-be79-4a96-9f50-66fb797af589",
+            "component_type": "PawnEquipment"
+          }
+        ],
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "ViewModel": null
       },
       {
         "__type": "GameFish.HealthComponent",
@@ -661,6 +671,53 @@
             "Static": false,
             "Surface": null,
             "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Equipment",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.PawnEquipment",
+            "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
+            "__enabled": true,
+            "AutoGiveLoadout": true,
+            "Equipped": [],
+            "Loadout": [
+              {
+                "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
+                "Slot": null
+              }
+            ],
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ParentComponent": {
+              "_type": "component",
+              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
+              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+              "component_type": "PlayerPawn"
+            },
+            "SlotCapacity": 1,
+            "SlotCount": 10,
+            "StrictSlots": false,
+            "UniqueEquips": true
           }
         ],
         "Children": []
