@@ -48,4 +48,10 @@ public static partial class GameFish
 		// Log( "Vector3.Sideways", v.SubtractDirection( dir ) );
 		return v.SubtractDirection( dir );
 	}
+
+	/// <summary>
+	/// <see cref="Vector3.Clamp(Vector3,Vector3)"/>
+	/// </summary>
+	public static Vector3 Clamp( this Vector3 v, in BBox bounds )
+		=> v.Clamp( bounds.Mins, bounds.Maxs );
 }
