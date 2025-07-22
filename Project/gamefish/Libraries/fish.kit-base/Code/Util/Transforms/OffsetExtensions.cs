@@ -15,6 +15,18 @@ public static class OffsetExtensions
 		=> offset.Transform.WithScale( t.Scale );
 
 	/// <summary>
+	/// Directly sets the local transform to the specified offset.
+	/// </summary>
+	public static void SetOffset( this GameObject self, in Offset offset )
+	{
+		if ( !self.IsValid() )
+			return;
+
+		self.LocalPosition = offset.Position;
+		self.LocalRotation = offset.Rotation;
+	}
+
+	/// <summary>
 	/// Sets an object's offset from the specified transform.
 	/// </summary>
 	public static void SetOffset( this GameObject self, in Transform t, in Offset offset )
@@ -22,6 +34,12 @@ public static class OffsetExtensions
 		if ( self.IsValid() )
 			self.WorldTransform = t.ToWorld( offset.Transform ).WithScale( self.WorldScale );
 	}
+
+	/// <summary>
+	/// Directly sets the local transform to the specified offset.
+	/// </summary>
+	public static void SetOffset( this Component self, in Offset offset )
+		=> self?.GameObject?.SetOffset( offset );
 
 	/// <summary>
 	/// Sets an object's offset from the specified transform.
