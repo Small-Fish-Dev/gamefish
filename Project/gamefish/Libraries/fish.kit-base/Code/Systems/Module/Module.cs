@@ -5,6 +5,8 @@ namespace GameFish;
 /// </summary>
 public abstract partial class Module<T> : Component, Component.ExecuteInEditor where T : Component, IModules<T>
 {
+	public const string DEBUG = BaseEntity.DEBUG;
+
 	public const string FEATURE_MODULES = "🧩 Modules";
 	public const string GROUP_MODULE = "🧩 Module";
 
@@ -19,8 +21,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 	/// The <typeparamref name="T"/> this module should register with.
 	/// </summary>
 	[Property]
-	[Feature( BaseEntity.DEBUG )]
-	[Group( GROUP_MODULE )]
+	[Feature( DEBUG ), Group( GROUP_MODULE )]
 	public T ParentComponent
 	{
 		get => _comp.IsValid() ? _comp

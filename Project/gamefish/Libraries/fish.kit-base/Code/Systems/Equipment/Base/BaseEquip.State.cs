@@ -38,13 +38,13 @@ partial class BaseEquip
 
 	public void SetVisibility( bool viewModel, bool worldModel = false )
 	{
-		var vm = ViewModelComponent;
+		var vm = ViewComponent;
 
 		if ( vm.IsValid() )
 			vm.Enabled = viewModel;
 
-		if ( WorldModelComponent.IsValid() )
-			WorldModelComponent.Enabled = worldModel;
+		if ( WorldRenderer.IsValid() )
+			WorldRenderer.Enabled = worldModel;
 	}
 
 	protected virtual void OnEquipStateChanged( EquipState state )

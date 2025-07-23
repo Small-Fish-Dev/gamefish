@@ -7,7 +7,7 @@ namespace GameFish;
 [EditorHandle( Icon = "person" )]
 public abstract partial class BasePawn : PhysicsEntity
 {
-	public const string FEATURE_PAWN = "🙂 Pawn";
+	public const string FEATURE_PAWN = "🐴 Pawn";
 
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
@@ -46,18 +46,41 @@ public abstract partial class BasePawn : PhysicsEntity
 	public BaseActor Actor
 	{
 		get => _actor = _actor.IsValid() ? _actor
-			: Components?.Get<BaseActor>( FindMode.EverythingInSelf );
-		set { _actor = value; }
-	}
+			: _actor = Components?.Get<BaseActor>( FindMode.EverythingInSelf );
 
-	[Property]
-	[Feature( FEATURE_PAWN )]
-	public SkinnedModelRenderer ViewModel { get; set; }
+		set
+		{
+			if ( value.IsValid() && value.GameObject != GameObject )
+				return;
+
+			_actor = value;
+		}
+	}
 
 	protected BaseActor _actor;
 
-	public virtual Vector3 EyePosition => WorldPosition;
-	public virtual Rotation EyeRotation => WorldRotation;
+	/// <summary>
+	/// The central view manager for the pawn.
+	/// </summary>
+	[Property]
+	[Feature( FEATURE_PAWN ), Group( PawnView.VIEW )]
+	public PawnView View
+	{
+		get => _view = _view.IsValid() ? _view
+			: _view = Components?.Get<PawnView>( FindMode.EverythingInDescendants );
+
+		set { _view = value; }
+	}
+
+	protected PawnView _view;
+
+	[Property]
+	[Feature( FEATURE_PAWN ), Group( PawnView.VIEW )]
+	public ViewModel ViewModel => View?.ViewModel;
+
+	public virtual Vector3 EyePosition { get => WorldPosition; set => WorldPosition = value; }
+	public virtual Rotation EyeRotation { get => WorldRotation; set => WorldRotation = value; }
+	public Transform EyeTransform => new( EyePosition, EyeRotation, 1f );
 	public Vector3 EyeForward => EyeRotation.Forward;
 
 	protected override void OnEnabled()

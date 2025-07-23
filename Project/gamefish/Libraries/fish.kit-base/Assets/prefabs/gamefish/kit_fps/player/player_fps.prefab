@@ -36,21 +36,24 @@
         "IsAlive": true,
         "IsDestructible": true,
         "MaxHealth": 100,
-        "ModuleList": [
-          {
-            "_type": "component",
-            "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
-            "go": "4392db66-be79-4a96-9f50-66fb797af589",
-            "component_type": "PawnEquipment"
-          }
-        ],
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "ViewModel": null
+        "View": {
+          "_type": "component",
+          "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
+          "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
+          "component_type": "PawnView"
+        },
+        "ViewModel": {
+          "_type": "component",
+          "component_id": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+          "component_type": "ViewModel"
+        }
       },
       {
         "__type": "GameFish.HealthComponent",
@@ -133,7 +136,7 @@
         "ToggleCameraModeButton": "view",
         "UseAnimatorControls": true,
         "UseButton": "use",
-        "UseCameraControls": true,
+        "UseCameraControls": false,
         "UseFovFromPreferences": true,
         "UseInputControls": true,
         "UseLookControls": true,
@@ -676,6 +679,171 @@
         "Children": []
       },
       {
+        "__guid": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "View",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,0",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.PawnView",
+            "__guid": "c7391ef4-d529-4db4-9b20-71271e0abec5",
+            "__enabled": true,
+            "AllowCyclingMode": true,
+            "AllowSpectators": true,
+            "CustomUpdateAction": null,
+            "CycleModeBackwardAction": null,
+            "CycleModeForwardAction": "View",
+            "DefaultMode": "FirstPerson",
+            "FirstPersonRange": {
+              "Min": 5,
+              "Max": 20
+            },
+            "Mode": "FirstPerson",
+            "ModeList": {
+              "FirstPerson": true,
+              "ThirdPerson": true
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ParentComponent": {
+              "_type": "component",
+              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
+              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+              "component_type": "PlayerPawn"
+            },
+            "Relative": {
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,0",
+              "Transform": {
+                "Position": "0,0,0",
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,0"
+              }
+            },
+            "TransitionSmoothing": 0.5,
+            "TransitionSpeed": 2,
+            "ViewModel": {
+              "_type": "component",
+              "component_id": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+              "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+              "component_type": "ViewModel"
+            }
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "View Model",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,0",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "GameFish.ViewModel",
+                "__guid": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+                "__enabled": true,
+                "Offset": {
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,0",
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "1,1,1",
+                    "Rotation": "0,0,0,0"
+                  }
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "SkinRenderer": {
+                  "_type": "component",
+                  "component_id": "c0cb14a1-7686-432d-94de-c976c79fb5c4",
+                  "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "Speed": 15,
+                "TargetOffset": {
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,0",
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "1,1,1",
+                    "Rotation": "0,0,0,0"
+                  }
+                }
+              },
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "c0cb14a1-7686-432d-94de-c976c79fb5c4",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": null,
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/vidya/none.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": false,
+                  "OverlayLayer": true,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          }
+        ]
+      },
+      {
         "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
         "__version": 1,
         "Flags": 0,
@@ -748,6 +916,8 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [],
+  "__references": [
+    "vidya.model-none#64068"
+  ],
   "__version": 2
 }

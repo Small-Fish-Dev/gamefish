@@ -20,8 +20,24 @@ public abstract partial class ControllerPawn : BasePawn
 
 	protected PlayerController _pc;
 
-	public override Vector3 EyePosition => Controller?.EyePosition ?? WorldTransform.PointToWorld( Vector3.Up * 64f );
-	public override Rotation EyeRotation => Controller?.EyeAngles ?? base.EyeRotation;
+	public override Vector3 EyePosition
+	{
+		get => Controller?.EyePosition ?? WorldTransform.PointToWorld( Vector3.Up * 64f );
+		set
+		{
+			// if ( Controller.IsValid() )
+			// Controller.EyePosition = value;
+		}
+	}
+	public override Rotation EyeRotation
+	{
+		get => Controller?.EyeAngles ?? base.EyeRotation;
+		set
+		{
+			if ( Controller.IsValid() )
+				Controller.EyeAngles = value;
+		}
+	}
 
 	public virtual Vector3 WishVelocity
 	{
