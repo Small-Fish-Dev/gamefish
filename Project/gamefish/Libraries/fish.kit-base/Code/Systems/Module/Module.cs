@@ -20,9 +20,12 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 	[Group( "🧩 Module" )]
 	public T ParentComponent
 	{
-		get => _comp.IsValid() ? _comp : _comp = Components?.Get<T>( FindMode.EverythingInSelfAndAncestors );
+		get => _comp.IsValid() ? _comp
+			: _comp = Components?.Get<T>( FindMode.EverythingInSelfAndAncestors );
+
 		set => _comp = value;
 	}
+
 	protected T _comp;
 
 	protected override void OnEnabled()
