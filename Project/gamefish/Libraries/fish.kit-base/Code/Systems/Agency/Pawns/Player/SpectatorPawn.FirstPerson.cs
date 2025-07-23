@@ -21,7 +21,8 @@ public partial class SpectatorPawn
 		if ( Scene?.Camera is not { } camera ) return;
 
 		camera.WorldPosition = Target.EyePosition;
-		camera.WorldRotation = Target.EyeRotation;
+		// Save the current rotation for later use by the other modes
+		camera.WorldRotation = CurrentAngles = Target.EyeRotation;
 		DebugOverlay.Line( Target.EyePosition, Target.EyeForward * 100 );
 	}
 }

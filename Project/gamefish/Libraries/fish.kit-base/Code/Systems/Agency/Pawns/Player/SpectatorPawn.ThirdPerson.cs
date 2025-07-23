@@ -20,7 +20,8 @@ public partial class SpectatorPawn
 	[Feature( FEATURE_SPECTATOR )]
 	[ToggleGroup( nameof(HasThirdPersonMode) )]
 	[Range( 0, 180 )]
-	public float PitchClamp { get; set; } = 90f;
+	[Title("Pitch Clamp")]
+	public float ThirdPersonPitchClamp { get; set; } = 90f;
 
 	/// <summary>
 	/// Sensitivity of the mouse wheel when used to change the distance.
@@ -63,7 +64,6 @@ public partial class SpectatorPawn
 
 	public float CurrentDistance { get; set; }
 	public float DesiredDistance { get; set; }
-	public Angles CurrentRotation { get; set; }
 
 	protected void ThirdPersonUpdate( float deltaTime )
 	{
@@ -71,17 +71,17 @@ public partial class SpectatorPawn
 
 		if ( Scene?.Camera is not { } camera ) return;
 
-		var angles = (CurrentRotation + Input.AnalogLook) with { roll = 0.0f };
-		if ( PitchClamp > 0f )
-			angles.pitch = angles.pitch.Clamp( -PitchClamp, PitchClamp );
-		CurrentRotation = angles;
+		var angles = (CurrentAngles + Input.AnalogLook) with { roll = 0.0f };
+		if ( ThirdPersonPitchClamp > 0f )
+			angles.pitch = angles.pitch.Clamp( -ThirdPersonPitchClamp, ThirdPersonPitchClamp );
+		CurrentAngles = angles;
 
 		DesiredDistance -= Input.MouseWheel.y * MouseWheelSensitivity * deltaTime;
 		if ( CameraColliderRadius is { } radius )
 		{
 			var trace = Scene.Trace.Sphere( radius,
 					Target.EyePosition,
-					Target.EyePosition - CurrentRotation.Forward * DesiredDistance )
+					Target.EyePosition - CurrentAngles.Forward * DesiredDistance )
 				.IgnoreGameObject( Target.GameObject )
 				.WithAnyTags( CameraColliderTags )
 				.Run();
@@ -104,7 +104,7 @@ public partial class SpectatorPawn
 		// Also clamp the current distance, because it starts with 0
 		CurrentDistance = CurrentDistance.Clamp( CameraDistance );
 
-		camera.WorldPosition = Target.EyePosition - CurrentRotation.Forward * CurrentDistance;
-		camera.WorldRotation = CurrentRotation;
+		camera.WorldPosition = Target.EyePosition - CurrentAngles.Forward * CurrentDistance;
+		camera.WorldRotation = CurrentAngles;
 	}
 }

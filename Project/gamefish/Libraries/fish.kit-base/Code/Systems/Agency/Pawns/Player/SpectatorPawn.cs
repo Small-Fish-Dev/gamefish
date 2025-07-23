@@ -42,6 +42,11 @@ public partial class SpectatorPawn : ControllerPawn
 	[Property]
 	[Feature( FEATURE_SPECTATOR )]
 	public Func<BasePlayer, bool> Filter { get; set; }
+	
+	/// <summary>
+	/// Used by all the spectator modes. Provides a smooth transition between modes by pointing at the same direction. 
+	/// </summary>
+	public Angles CurrentAngles { get; set; }
 
 	private bool IsAnythingEnabled => HasFirstPersonMode || HasThirdPersonMode || HasFreeRoamMode;
 
