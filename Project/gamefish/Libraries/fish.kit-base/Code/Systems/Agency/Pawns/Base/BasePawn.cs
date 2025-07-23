@@ -67,7 +67,7 @@ public abstract partial class BasePawn : PhysicsEntity
 	public PawnView View
 	{
 		get => _view = _view.IsValid() ? _view
-			: _view = Components?.Get<PawnView>( FindMode.EverythingInDescendants );
+			: _view = Modules.GetModule<PawnView>();
 
 		set { _view = value; }
 	}
