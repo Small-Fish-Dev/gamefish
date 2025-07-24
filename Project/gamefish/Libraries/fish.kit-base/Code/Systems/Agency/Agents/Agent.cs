@@ -53,7 +53,8 @@ public abstract partial class Agent : Component
 	{
 		base.OnUpdate();
 
-		SimulatePawns( Time.Delta );
+		if ( this.IsOwner() )
+			SimulatePawns( Time.Delta );
 	}
 
 	protected override void OnEnabled()
@@ -86,7 +87,10 @@ public abstract partial class Agent : Component
 
 	public void DropAllPawns()
 	{
-		if ( !Networking.IsHost || Pawns is null )
+		if ( !Networking.IsHost )
+			return;
+
+		if ( Pawns is null )
 			return;
 
 		// rndtrash: another place where the "Collection was modified" exception occurs
@@ -108,7 +112,7 @@ public abstract partial class Agent : Component
 
 	[Property]
 	[Feature( FEATURE_AGENT ), Category( "Debug" )]
-	[HideIf( nameof(InEditor), true )]
+	[HideIf( nameof( InEditor ), true )]
 	public BasePawn SetDebugPawn
 	{
 		get => _debugPawn;
@@ -385,6 +389,12 @@ public abstract partial class Agent : Component
 
 	protected virtual void SimulatePawns( in float deltaTime )
 	{
+		if ( !this.IsOwner() )
+		{
+			this.Warn( "Tried to simulate pawns we don't own!" );
+			return;
+		}
+
 		if ( Pawns is null )
 			return;
 

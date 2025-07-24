@@ -53,16 +53,15 @@ public partial class PawnView : Module<BasePawn>, IOperate
 	/// </summary>
 	public float DistanceFromEye => WorldPosition.Distance( EyePosition );
 
-	protected override void OnPreRender()
-	{
-		base.OnPreRender();
-
-		if ( CanOperate() )
-			UpdateTransform();
-	}
-
 	public virtual bool CanOperate()
 		=> ModuleParent?.CanOperate() ?? false;
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		EnsureValidHierarchy();
+	}
 
 	public virtual void FrameOperate( in float deltaTime )
 	{
@@ -71,6 +70,23 @@ public partial class PawnView : Module<BasePawn>, IOperate
 		OnPerspectiveUpdate( Time.Delta );
 
 		UpdateTransition();
+	}
+
+	/// <summary>
+	/// Checks if something would fuck up and if so: warns about it then disables this view.
+	/// </summary>
+	protected void EnsureValidHierarchy()
+	{
+		var pawn = Pawn;
+
+		if ( !pawn.IsValid() )
+			return;
+
+		if ( pawn.GameObject == GameObject )
+		{
+			this.Warn( this + " was directly on the pawn! It needs to be a child!" );
+			Enabled = false;
+		}
 	}
 
 	/// <summary>

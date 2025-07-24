@@ -2274,6 +2274,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "View": null,
           "ViewModel": null
         }
       ],
@@ -2311,6 +2312,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "View": null,
           "ViewModel": null
         }
       ],
@@ -2354,6 +2356,7 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "View": null,
           "ViewModel": null
         },
         {
@@ -2502,7 +2505,6 @@
               "__type": "Sandbox.ModelPhysics",
               "__guid": "343d2e82-4de4-4a7c-b7f1-78e13c8a7167",
               "__enabled": false,
-              "IgnoreRoot": false,
               "Locking": {
                 "X": false,
                 "Y": false,
@@ -2525,8 +2527,7 @@
                 "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
                 "component_type": "SkinnedModelRenderer"
               },
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
+              "RigidbodyFlags": 0
             },
             {
               "__type": "Sandbox.SkinnedModelRenderer",
@@ -2790,19 +2791,6 @@
             },
             "Property": "Position",
             "Value": "-705.3578,48.82283,1.999939"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "38fcaa19-216d-4fde-844e-003465ac2acc"
-            },
-            "Property": "Target",
-            "Value": {
-              "_type": "component",
-              "component_id": "808a72d2-52bd-43cd-a300-8e9d7052aa13",
-              "go": "c9896e6c-bd4e-4cf2-965d-61983f34db2c",
-              "component_type": "PlayerPawn"
-            }
           }
         ],
         "MovedObjects": []

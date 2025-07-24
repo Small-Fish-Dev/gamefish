@@ -30,7 +30,7 @@ partial class PawnView
 		set
 		{
 			_relative = value;
-			UpdateTransform();
+			// UpdateTransform();
 		}
 	}
 

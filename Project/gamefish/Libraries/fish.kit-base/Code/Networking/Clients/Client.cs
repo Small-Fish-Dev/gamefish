@@ -19,6 +19,7 @@ public partial class Client : Agent
 	public override Identity Identity
 	{
 		get => _id;
+
 		protected set
 		{
 			if ( _id == value )
@@ -31,7 +32,8 @@ public partial class Client : Agent
 				OnSetIdentity( in old, ref _id );
 		}
 	}
-	private Identity _id;
+
+	protected Identity _id;
 
 	public override Connection Connection => _id.Connection;
 
@@ -41,7 +43,7 @@ public partial class Client : Agent
 	public override string Name => Connection?.DisplayName ?? base.Name;
 
 	public override string ToString()
-		=> $"{base.ToString()}|Name:{Name}";
+		=> base.ToString() + $"|Name:{Name}";
 
 	public override bool CompareConnection( Connection cn )
 		=> _id.CompareConnection( cn );
@@ -55,6 +57,36 @@ public partial class Client : Agent
 			this.Log( $"was destroyed. cleaning up object:[{GameObject}]" );
 			GameObject.Destroy();
 		}
+	}
+
+	protected override void OnPreRender()
+	{
+		base.OnPreRender();
+
+		if ( this.IsOwner() )
+			UpdateCamera();
+	}
+
+	/// <summary>
+	/// Sets camera transform according to the current view.
+	/// </summary>
+	protected virtual void UpdateCamera()
+	{
+		if ( Pawns is null || !Scene.IsValid() )
+			return;
+
+		var cam = Scene.Camera;
+
+		if ( !cam.IsValid() )
+			return;
+
+		var tView = cam.WorldTransform;
+
+		foreach ( var pawn in Pawns )
+			if ( pawn.CanOperate() )
+				pawn.ApplyView( cam, ref tView );
+
+		cam.WorldTransform = tView;
 	}
 
 	/// <summary>
@@ -78,14 +110,11 @@ public partial class Client : Agent
 	}
 
 	/// <summary>
-	/// Updates the name of this client's identity(if valid).
+	/// Updates the name of this client's identity.
 	/// </summary>
 	[Rpc.Host( NetFlags.Reliable | NetFlags.OwnerOnly )]
 	public virtual void SetName( string name )
 	{
-		if ( !Identity.IsValid() )
-			return;
-
 		Identity = Identity with { Name = name };
 	}
 }

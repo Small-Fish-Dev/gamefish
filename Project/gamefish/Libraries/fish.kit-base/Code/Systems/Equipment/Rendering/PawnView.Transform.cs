@@ -3,35 +3,26 @@ namespace GameFish;
 partial class PawnView
 {
 	/// <summary>
-	/// Update this view's transform and sets the main camera's transform too.
+	/// Updates and then returns the world transform of this view.
 	/// </summary>
+	/// <returns> Where the camera should be positioned. </returns>
+	public virtual Transform GetViewTransform()
+	{
+		UpdateTransform();
+		return WorldTransform;
+	}
+
 	protected virtual void UpdateTransform()
 	{
-		SetModeTransform();
-
-		var cam = Scene?.Camera;
-
-		if ( cam.IsValid() )
-			cam.WorldTransform = WorldTransform;
+		EnsureValidHierarchy();
+		UpdateModeTransform();
 	}
 
 	/// <summary>
 	/// Sets this view's transform according to the curent mode.
 	/// </summary>
-	protected virtual void SetModeTransform()
+	protected virtual void UpdateModeTransform()
 	{
-		var pawn = Pawn;
-
-		if ( !pawn.IsValid() )
-			return;
-
-		if ( pawn.GameObject == GameObject )
-		{
-			this.Warn( this + " was directly on the pawn! It needs to be a child!" );
-			Enabled = false;
-			return;
-		}
-
 		switch ( Mode )
 		{
 			case Perspective.FirstPerson:
@@ -63,7 +54,7 @@ partial class PawnView
 	/// <summary>
 	/// Sets the transform safely using <see cref="Relative"/> and with transition support.
 	/// </summary>
-	protected virtual void UpdateRelativeTransform()
+	protected virtual void SetRelativeTransform()
 	{
 		var pawn = Pawn;
 
@@ -91,12 +82,12 @@ partial class PawnView
 
 	protected virtual void SetFirstPersonModeTransform()
 	{
-		UpdateRelativeTransform();
+		SetRelativeTransform();
 	}
 
 	protected virtual void SetThirdPersonModeTransform()
 	{
-		UpdateRelativeTransform();
+		SetRelativeTransform();
 	}
 
 	protected virtual void SetFreeCamModeTransform()

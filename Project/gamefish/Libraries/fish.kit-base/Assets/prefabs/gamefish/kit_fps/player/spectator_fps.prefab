@@ -63,10 +63,189 @@
         "StickToGroundDistance": 30,
         "Target": null,
         "ThirdPersonPitchClamp": 90,
-        "ViewModel": null
+        "View": {
+          "_type": "component",
+          "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
+          "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
+          "component_type": "PawnView"
+        },
+        "ViewModel": {
+          "_type": "component",
+          "component_id": "d326bee5-a470-48fd-b034-93639ccc7264",
+          "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
+          "component_type": "ViewModel"
+        }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "View",
+        "Position": "0,0,64",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.PawnView",
+            "__guid": "c06f4824-6a01-4022-ac58-91126185aa0a",
+            "__enabled": true,
+            "AllowCyclingMode": true,
+            "AllowSpectators": true,
+            "CustomSetAction": null,
+            "CustomUpdateAction": null,
+            "CycleModeBackwardAction": null,
+            "CycleModeForwardAction": "View",
+            "DebugMode": false,
+            "DefaultMode": "FirstPerson",
+            "FirstPersonRange": {
+              "Min": 5,
+              "Max": 20
+            },
+            "Mode": "FirstPerson",
+            "ModeList": {
+              "FirstPerson": true,
+              "ThirdPerson": true
+            },
+            "ModuleParent": {
+              "_type": "component",
+              "component_id": "38fcaa19-216d-4fde-844e-003465ac2acc",
+              "go": "3f0faaed-c487-4bb8-abd0-c3e271085bd9",
+              "component_type": "SpectatorPawn"
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Relative": {
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,0",
+              "Transform": {
+                "Position": "0,0,0",
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,0"
+              }
+            },
+            "TransitionSmoothing": 0.5,
+            "TransitionSpeed": 2,
+            "ViewModel": {
+              "_type": "component",
+              "component_id": "d326bee5-a470-48fd-b034-93639ccc7264",
+              "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
+              "component_type": "ViewModel"
+            }
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "bde78980-4c59-4322-985e-82f1a5e0b812",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "View Model",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,0",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "GameFish.ViewModel",
+                "__guid": "d326bee5-a470-48fd-b034-93639ccc7264",
+                "__enabled": true,
+                "Offset": {
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,0",
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "1,1,1",
+                    "Rotation": "0,0,0,0"
+                  }
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "SkinRenderer": {
+                  "_type": "component",
+                  "component_id": "c141c37b-f3dc-49ea-9ee5-628f3d8bf989",
+                  "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "Speed": 15,
+                "TargetOffset": {
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,0",
+                  "Transform": {
+                    "Position": "0,0,0",
+                    "Scale": "1,1,1",
+                    "Rotation": "0,0,0,0"
+                  }
+                }
+              },
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "c141c37b-f3dc-49ea-9ee5-628f3d8bf989",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": null,
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/vidya/none.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": false,
+                  "OverlayLayer": true,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          }
+        ]
+      }
+    ],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,
@@ -92,6 +271,8 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [],
+  "__references": [
+    "vidya.model-none#64068"
+  ],
   "__version": 2
 }

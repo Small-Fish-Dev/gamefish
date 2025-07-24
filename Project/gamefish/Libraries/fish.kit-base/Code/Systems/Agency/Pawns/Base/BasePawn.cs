@@ -45,7 +45,7 @@ public abstract partial class BasePawn : PhysicsEntity
 	[Feature( FEATURE_PAWN ), Group( BaseActor.FEATURE_ACTOR )]
 	public BaseActor Actor
 	{
-		get => _actor = _actor.IsValid() ? _actor
+		get => _actor.IsValid() ? _actor
 			: _actor = Components?.Get<BaseActor>( FindMode.EverythingInSelf );
 
 		set
@@ -58,25 +58,6 @@ public abstract partial class BasePawn : PhysicsEntity
 	}
 
 	protected BaseActor _actor;
-
-	/// <summary>
-	/// The central view manager for the pawn.
-	/// </summary>
-	[Property]
-	[Feature( FEATURE_PAWN ), Group( PawnView.VIEW )]
-	public PawnView View
-	{
-		get => _view.IsValid() ? _view
-			: _view = Modules.GetModule<PawnView>();
-
-		set { _view = value; }
-	}
-
-	protected PawnView _view;
-
-	[Property]
-	[Feature( FEATURE_PAWN ), Group( PawnView.VIEW )]
-	public ViewModel ViewModel => View?.ViewModel;
 
 	public virtual Vector3 EyePosition { get => WorldPosition; set => WorldPosition = value; }
 	public virtual Rotation EyeRotation { get => WorldRotation; set => WorldRotation = value; }
