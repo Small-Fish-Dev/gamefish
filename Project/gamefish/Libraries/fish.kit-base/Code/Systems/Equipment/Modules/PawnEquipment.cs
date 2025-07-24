@@ -169,15 +169,15 @@ public partial class PawnEquipment : Module<BasePawn>
 
 	public virtual bool TryEquip( BaseEquip e, int? slot = null )
 	{
-		if ( !ParentComponent.IsValid() )
+		if ( !ModuleParent.IsValid() )
 		{
-			this.Warn( $"Tried to equip:[{e}] with an invalid parent:[{ParentComponent}]" );
+			this.Warn( $"Tried to equip:[{e}] with an invalid parent:[{ModuleParent}]" );
 			return false;
 		}
 
 		if ( !e.IsValid() )
 		{
-			this.Warn( $"Tried to equip an invalid on parent:[{ParentComponent}]" );
+			this.Warn( $"Tried to equip an invalid on parent:[{ModuleParent}]" );
 			return false;
 		}
 
@@ -205,12 +205,12 @@ public partial class PawnEquipment : Module<BasePawn>
 
 		if ( inSlot.Count() > SlotCapacity )
 		{
-			this.Log( $"Tried to equip:[{e}] in full slot:[{slot}] on parent:[{ParentComponent}]" );
+			this.Log( $"Tried to equip:[{e}] in full slot:[{slot}] on parent:[{ModuleParent}]" );
 			return false;
 		}
 
 		// Equip might have something to say about this.
-		if ( !e.AllowEquip( ParentComponent ) )
+		if ( !e.AllowEquip( ModuleParent ) )
 			return false;
 
 		e.EquipState = ActiveEquip == e
@@ -222,7 +222,7 @@ public partial class PawnEquipment : Module<BasePawn>
 
 		Equipped?.Add( e );
 
-		e.Owner = ParentComponent;
+		e.Owner = ModuleParent;
 		e.Inventory = this;
 
 		e.OnEquip( this );

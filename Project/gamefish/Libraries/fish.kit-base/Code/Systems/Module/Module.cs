@@ -22,7 +22,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 	/// </summary>
 	[Property]
 	[Feature( DEBUG ), Group( GROUP_MODULE )]
-	public T ParentComponent
+	public T ModuleParent
 	{
 		get => _comp.IsValid() ? _comp
 			: _comp = Components?.Get<T>( FindMode.EverythingInSelfAndAncestors );
@@ -45,7 +45,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 
 		RegisterModule();
 
-		if ( !ParentComponent.IsValid() )
+		if ( !ModuleParent.IsValid() )
 			this.Warn( $"Failed to find parent component of type:[{typeof( T )}]" );
 	}
 
@@ -58,7 +58,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 
 	public void RegisterModule()
 	{
-		var comp = ParentComponent;
+		var comp = ModuleParent;
 
 		if ( comp.IsValid() )
 			comp.RegisterModule( this );
@@ -66,7 +66,7 @@ public abstract partial class Module<T> : Component, Component.ExecuteInEditor w
 
 	public void RemoveModule()
 	{
-		var comp = ParentComponent;
+		var comp = ModuleParent;
 
 		if ( comp.IsValid() )
 			comp.RemoveModule( this );

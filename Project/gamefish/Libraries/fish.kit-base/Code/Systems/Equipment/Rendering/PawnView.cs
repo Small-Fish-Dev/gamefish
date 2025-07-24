@@ -42,7 +42,7 @@ public partial class PawnView : Module<BasePawn>
 	/// <summary>
 	/// The pawn we're looking at/through.
 	/// </summary>
-	public virtual BasePawn Pawn => ParentComponent;
+	public virtual BasePawn Pawn => ModuleParent;
 
 	public Vector3 EyePosition => Pawn?.EyePosition ?? WorldPosition;
 	public Rotation EyeRotation => Pawn?.EyeRotation ?? WorldRotation;

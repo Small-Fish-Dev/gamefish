@@ -26,7 +26,7 @@ partial class PawnEquipment
 			if ( !e.IsValid() || e.EquipState is EquipState.Dropped )
 				toRemove.Add( e );
 
-		var parent = ParentComponent;
+		var parent = ModuleParent;
 
 		toRemove.ForEach( e => { Equipped.Remove( e ); e.Destroy(); } );
 	}
