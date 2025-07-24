@@ -5,7 +5,7 @@ namespace GameFish;
 /// This should be on a child object of the pawn(otherwise expect problems).
 /// </summary>
 [Icon( "videocam" )]
-public partial class PawnView : Module<BasePawn>
+public partial class PawnView : Module<BasePawn>, IOperate
 {
 	public const string VIEW = "🎥 View";
 	public const string INPUT = "🕹 Input";
@@ -53,22 +53,24 @@ public partial class PawnView : Module<BasePawn>
 	/// </summary>
 	public float DistanceFromEye => WorldPosition.Distance( EyePosition );
 
-	protected override void OnUpdate()
+	protected override void OnPreRender()
 	{
-		base.OnUpdate();
+		base.OnPreRender();
 
+		if ( CanOperate() )
+			UpdateTransform();
+	}
+
+	public virtual bool CanOperate()
+		=> ModuleParent?.CanOperate() ?? false;
+
+	public virtual void FrameOperate( in float deltaTime )
+	{
 		HandleInput();
 
 		OnPerspectiveUpdate( Time.Delta );
 
 		UpdateTransition();
-	}
-
-	protected override void OnPreRender()
-	{
-		base.OnPreRender();
-
-		UpdateTransform();
 	}
 
 	/// <summary>

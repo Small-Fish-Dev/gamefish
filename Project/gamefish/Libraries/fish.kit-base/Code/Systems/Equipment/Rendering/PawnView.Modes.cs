@@ -101,13 +101,11 @@ partial class PawnView
 		[Perspective.ThirdPerson] = true,
 	};
 
-	private bool IsModeEnabled( Perspective mode )
+	public virtual bool IsModeEnabled( Perspective mode )
 		=> ModeList is not null && ModeList.TryGetValue( mode, out var bAllow ) && bAllow;
 
-	public List<Perspective> GetAllowedModes()
-		=> Enum.GetValues<Perspective>()
-			.Where( IsModeEnabled )
-			.ToList();
+	public virtual IEnumerable<Perspective> GetAllowedModes()
+		=> Enum.GetValues<Perspective>()?.Where( IsModeEnabled ) ?? [];
 
 	/// <summary>
 	/// Used to manage pawn model fade and view model visibility.
@@ -131,9 +129,9 @@ partial class PawnView
 	[Feature( VIEW ), Group( CUSTOM ), Order( CUSTOM_ORDER )]
 	public Action<BasePawn, PawnView> CustomUpdateAction { get; set; }
 
-	public void CycleMode( in int dir )
+	public virtual void CycleMode( in int dir )
 	{
-		var modes = GetAllowedModes();
+		var modes = GetAllowedModes().ToList();
 
 		if ( modes.Count <= 0 )
 			return;

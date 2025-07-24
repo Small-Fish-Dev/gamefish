@@ -17,6 +17,13 @@ partial class BasePawn : IOperate
 	public virtual bool CanOperate()
 		=> AllowInput();
 
-	public virtual void FrameOperate( in float deltaTime ) { }
-	public virtual void FixedOperate( in float deltaTime ) { }
+	public virtual void FrameOperate( in float deltaTime )
+	{
+		View?.FrameOperate( Time.Delta );
+	}
+
+	public virtual void FixedOperate( in float deltaTime )
+	{
+
+	}
 }

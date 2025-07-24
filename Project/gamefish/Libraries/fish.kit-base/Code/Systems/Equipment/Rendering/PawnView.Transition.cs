@@ -45,6 +45,9 @@ partial class PawnView
 	public float TransitionVelocity { get => _transVel; set => _transVel = value; }
 	protected float _transVel;
 
+	/// <summary>
+	/// Begins a transition given the current position of this view.
+	/// </summary>
 	protected virtual void StartTransition()
 	{
 		var pawn = Pawn;
@@ -56,6 +59,15 @@ partial class PawnView
 
 		TransitionFraction = 0f;
 		_transVel = 0f;
+	}
+
+	/// <summary>
+	/// Instantly ends the transition. Might cause visible snapping if done midway!
+	/// </summary>
+	protected virtual void StopTransition()
+	{
+		Previous = null;
+		TransitionFraction = 1f;
 	}
 
 	protected virtual void UpdateTransition()

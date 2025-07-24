@@ -66,7 +66,7 @@ public abstract partial class BasePawn : PhysicsEntity
 	[Feature( FEATURE_PAWN ), Group( PawnView.VIEW )]
 	public PawnView View
 	{
-		get => _view = _view.IsValid() ? _view
+		get => _view.IsValid() ? _view
 			: _view = Modules.GetModule<PawnView>();
 
 		set { _view = value; }
