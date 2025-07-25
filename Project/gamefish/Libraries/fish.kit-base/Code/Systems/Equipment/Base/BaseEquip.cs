@@ -156,11 +156,24 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 		GameObject.NetworkSetup( cn, NetworkOrphaned.ClearOwner, OwnerTransfer.Fixed, NetworkMode.Object, ignoreProxy: false );
 	}
 
+	public virtual bool AllowInput()
+	{
+		if ( EquipState is not EquipState.Deployed )
+			return false;
+
+		var owner = Owner;
+
+		if ( !owner.IsValid() || !owner.IsAlive )
+			return false;
+
+		return owner.AllowInput();
+	}
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
 
-		if ( !Owner.IsValid() || !Owner.IsAlive )
+		if ( !AllowInput() )
 			return;
 
 		if ( !IsDeployed )

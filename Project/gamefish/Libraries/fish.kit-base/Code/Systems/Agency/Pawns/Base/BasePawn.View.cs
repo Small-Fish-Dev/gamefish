@@ -25,7 +25,7 @@ partial class BasePawn
 
 	/// <summary>
 	/// If true: indicate that spectators can spectate this pawn. <br />
-	/// If false: spectators are blocked from this pawn.
+	/// If false: all spectators are blocked.
 	/// </summary>
 	[Property]
 	[Feature( SPECTATING )]
