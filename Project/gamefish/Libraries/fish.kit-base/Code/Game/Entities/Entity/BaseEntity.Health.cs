@@ -7,14 +7,21 @@ partial class BaseEntity
 	/// </summary>
 	public bool HasHealth => HealthComponent.IsValid();
 
+	/// <summary>
+	/// The <see cref="global::GameFish.HealthComponent"/> on this object or its children(if any).
+	/// Add one to allow taking damage, healing, dying etc.
+	/// </summary>
 	[Title( "Component" )]
 	[Property, Feature( IHealth.FEATURE )]
 	public HealthComponent HealthComponent
 	{
-		get => _hp.IsValid() ? _hp : Components?.Get<HealthComponent>( FindMode.EverythingInSelfAndAncestors );
+		get => _hp.IsValid() ? _hp
+			: _hp = Components?.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants );
+
 		set { _hp = value; }
 	}
-	private HealthComponent _hp;
+
+	protected HealthComponent _hp;
 
 	[ShowIf( nameof( HasHealth ), true )]
 	[Property, Feature( IHealth.FEATURE )]

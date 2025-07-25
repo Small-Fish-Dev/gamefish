@@ -46,6 +46,6 @@ public partial class HealthComponent : Component, IHealth
 	[Feature( IHealth.FEATURE ), Group( BaseEntity.DEBUG )]
 	protected void DebugTakeDamage()
 	{
-		Interface?.TryDamage( new() { Damage = 50 } );
+		Interface?.TryDamage( new() { Damage = DebugDamage } );
 	}
 }
