@@ -21,4 +21,16 @@ public static partial class GameFish
 	/// </summary>
 	public static float Clamp( this float n, in FloatRange range )
 		=> n.Clamp( range.Min, range.Max );
+
+	/// <summary>
+	/// <see cref="MathF.Min"/>
+	/// </summary>
+	public static float Min( this float a, in float b )
+		=> MathF.Min( a, b );
+
+	/// <summary>
+	/// <see cref="MathF.Max"/>
+	/// </summary>
+	public static float Max( this float a, in float b )
+		=> MathF.Max( a, b );
 }
