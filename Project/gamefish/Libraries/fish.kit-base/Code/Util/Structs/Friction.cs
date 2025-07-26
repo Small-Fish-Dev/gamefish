@@ -6,7 +6,7 @@ namespace GameFish;
 public struct Friction
 {
 	[KeyProperty]
-	public float Value { get; set; } = 2f;
+	public float Value { get; set; } = 5f;
 
 	[KeyProperty]
 	public float StopSpeed { get; set; } = 140f;
