@@ -27,8 +27,8 @@ public interface IModules<T> where T : Component, IModules<T>
 	/// </summary>
 	public List<Module<T>> ModuleList { get; set; }
 
-	protected bool IsModule( Type mType, Module<T> m )
-		=> m.IsValid() && mType == m.GetType();
+	protected bool IsModule<TMod>( Module<T> m )
+		=> m.IsValid() && m is TMod;
 
 	/// <summary>
 	/// Quickly checks the cache to see if we have this module.
@@ -38,7 +38,7 @@ public interface IModules<T> where T : Component, IModules<T>
 	public bool HasModule<TMod>() where TMod : Module<T>
 	{
 		var mType = typeof( TMod );
-		return GetModules().Any( m => IsModule( mType, m ) );
+		return GetModules().Any( IsModule<TMod> );
 	}
 
 	/// <summary>
@@ -57,7 +57,7 @@ public interface IModules<T> where T : Component, IModules<T>
 	public TMod GetModule<TMod>() where TMod : Module<T>
 	{
 		var mType = typeof( TMod );
-		return GetModules().FirstOrDefault( m => IsModule( mType, m ) ) as TMod;
+		return GetModules().FirstOrDefault( IsModule<TMod> ) as TMod;
 	}
 
 	/// <typeparam name="TMod"> The specific type module for <typeparamref name="T"/>. </typeparam>
