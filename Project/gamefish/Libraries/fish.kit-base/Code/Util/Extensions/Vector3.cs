@@ -57,4 +57,10 @@ public static partial class GameFish
 	/// </summary>
 	public static Vector3 Clamp( this Vector3 v, in BBox bounds )
 		=> v.Clamp( bounds.Mins, bounds.Maxs );
+
+	/// <summary>
+	/// Apply an amount of friction to the current velocity.
+	/// </summary>
+	public static Vector3 WithFriction( this Vector3 v, in Friction f, in float deltaTime )
+		=> v.WithFriction( f.Value * deltaTime, f.StopSpeed );
 }
