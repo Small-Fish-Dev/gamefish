@@ -24,35 +24,45 @@ public partial class SpectatorPawn : BasePawn
 
 	protected BasePawn _spectating;
 
-	[Property]
-	[InputAction]
-	[Title( "Run" )]
-	[Feature( SPECTATING ), Group( INPUT )]
-	public virtual string RunAction { get; set; } = "Run";
-	public virtual bool AllowRunning => !string.IsNullOrWhiteSpace( RunAction );
-
-	[Property]
-	[InputAction]
-	[Title( "Ascend" )]
-	[Feature( SPECTATING ), Group( INPUT )]
-	public virtual string AscendAction { get; set; } = "Jump";
-	public virtual bool AllowAscend => !string.IsNullOrWhiteSpace( AscendAction );
-
-	[Property]
-	[InputAction]
-	[Title( "Descend" )]
-	[Feature( SPECTATING ), Group( INPUT )]
-	public virtual string DescendAction { get; set; } = "Duck";
-	public virtual bool AllowDescend => !string.IsNullOrWhiteSpace( DescendAction );
-
 	/// <summary>
-	/// The button that spectates a target or stops if already spectating them.
+	/// The button that spectates a target.
 	/// </summary>
 	[Property]
 	[InputAction]
 	[Title( "Spectate Target" )]
 	[Feature( SPECTATING ), Group( INPUT )]
 	public virtual string SpectateTargetAction { get; set; } = "Use";
+	public virtual bool AllowSpectateTarget => !string.IsNullOrWhiteSpace( SpectateTargetAction );
+
+	/// <summary>
+	/// The button that spectates a target.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Stop Spectating" )]
+	[Feature( SPECTATING ), Group( INPUT )]
+	public virtual string StopSpectatingAction { get; set; } = "Reload";
+	public virtual bool AllowStopSpectating => !string.IsNullOrWhiteSpace( StopSpectatingAction );
+
+	/// <summary>
+	/// The button that cycles forward to the next possible target.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Spectate Previous" )]
+	[Feature( SPECTATING ), Group( INPUT )]
+	public virtual string SpectatePreviousAction { get; set; } = "Attack1";
+	public virtual bool AllowSpectatePrevious => !string.IsNullOrWhiteSpace( SpectatePreviousAction );
+
+	/// <summary>
+	/// The button that cycles forward to the next possible target.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Spectate Next" )]
+	[Feature( SPECTATING ), Group( INPUT )]
+	public virtual string SpectateNextAction { get; set; } = "Attack2";
+	public virtual bool AllowSpectateNext => !string.IsNullOrWhiteSpace( SpectateNextAction );
 
 	/// <summary>
 	/// The button that toggles first/third person(if any).
@@ -63,80 +73,11 @@ public partial class SpectatorPawn : BasePawn
 	[Feature( SPECTATING ), Group( INPUT )]
 	public virtual string TogglePerspectiveAction { get; set; } = "Jump";
 
-	/// <summary>
-	/// Allow flying around while not spectating someone.
-	/// </summary>
-	[Property]
-	[Title( "Enabled" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	public bool FlyingEnabled { get; set; } = true;
-
-	/// <summary>
-	/// The speed to move while not spectating someone.
-	/// </summary>
-	[Property]
-	[Title( "Speed" )]
-	[Range( 0f, 5000f, clamped: false )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	public virtual float FlyingSpeed { get; set; } = 1000f;
-
-	/// <summary>
-	/// The speed to move while not spectating someone.
-	/// </summary>
-	[Property]
-	[Title( "Run Speed" )]
-	[Range( 0f, 5000f, clamped: false )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	public virtual float FlyingRunSpeed { get; set; } = 2000f;
-
-	/// <summary>
-	/// The speed to move while not spectating someone.
-	/// </summary>
-	[Property]
-	[Title( "Friction" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	public virtual Friction FlyingFriction { get; set; }
-
-	/// <summary>
-	/// Should we collide while moving when not spectating someone?
-	/// </summary>
-	[Property]
-	[Title( "Collision" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	public bool FlyingCollision { get; set; } = false;
-
-	/// <summary>
-	/// Should we collide while moving when not spectating someone?
-	/// </summary>
-	[Property]
-	[Title( "Collision Radius" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	[ShowIf( nameof( FlyingCollision ), true )]
-	public float FlyingCollisionRadius { get; set; } = 16f;
-
-	/// <summary>
-	/// Collide with objects using these tags.
-	/// </summary>
-	[Property]
-	[Title( "Hit Tags" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	[ShowIf( nameof( FlyingCollision ), true )]
-	public TagSet FlyingHitTags { get; set; } = ["solid"];
-
-	/// <summary>
-	/// Go through objects with these tags.
-	/// </summary>
-	[Property]
-	[Title( "Ignore Tags" )]
-	[Feature( SPECTATING ), Group( FLYING )]
-	[ShowIf( nameof( FlyingCollision ), true )]
-	public TagSet FlyingIgnoreTags { get; set; } = ["pawn"];
-
 	/// <summary> Spectators can never be spectated. </summary>
 	public override bool AllowSpectators => false;
 
 	/// <summary> Spectators can never be spectated. </summary>
-	public override bool CanSpectate( BasePawn spec )
+	public override bool AllowSpectator( BasePawn spec )
 		=> false;
 
 	/// <summary> How fast the spectator is moving. </summary>
@@ -151,12 +92,34 @@ public partial class SpectatorPawn : BasePawn
 		Tags?.Add( TAG_SPECTATOR );
 	}
 
+	public override void FrameSimulate( in float deltaTime )
+	{
+		base.FrameSimulate( deltaTime );
+
+		HandleInput();
+
+		if ( !Spectating.IsValid() )
+			DoFlying( in deltaTime );
+	}
+
+	protected virtual void HandleInput()
+	{
+		if ( AllowSpectateTarget && Input.Down( SpectateTargetAction ) )
+			SpectateTarget();
+
+		if ( AllowSpectatePrevious && Input.Pressed( SpectatePreviousAction ) )
+			SpectatePrevious();
+
+		if ( AllowSpectateNext && Input.Pressed( SpectateNextAction ) )
+			SpectateNext();
+	}
+
 	/// <summary>
 	/// Called whenever <see cref="Spectating"/> has been set.
 	/// </summary>
 	protected virtual void OnSpectatingSet( BasePawn target )
 	{
-		if ( !View.IsValid() )
+		if ( !this.IsOwner() || !View.IsValid() )
 			return;
 
 		if ( !target.IsValid() )
@@ -173,14 +136,37 @@ public partial class SpectatorPawn : BasePawn
 			: PawnView.Perspective.ThirdPerson;
 	}
 
+	public override bool CanSpectate( BasePawn target )
+	{
+		if ( !this.IsValid() || !target.IsValid() )
+			return false;
+
+		if ( target == this )
+			return false;
+
+		return target.AllowSpectator( this );
+	}
+
 	public override bool TrySpectate( BasePawn target )
 	{
-		if ( !target.IsValid() || !target.CanSpectate( this ) )
+		if ( !this.IsOwner() )
+			return false;
+
+		if ( !CanSpectate( target ) )
 			return false;
 
 		Spectating = target;
 
 		return true;
+	}
+
+	/// <summary>
+	/// Called by the host to tell us to spectate a pawn. Ignores filters.
+	/// </summary>
+	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
+	public void ForceSpectate( BasePawn target )
+	{
+		Spectating = target;
 	}
 
 	public override void StopSpectating()
@@ -190,70 +176,38 @@ public partial class SpectatorPawn : BasePawn
 		Spectating = null;
 	}
 
-	public override void FrameSimulate( in float deltaTime )
+	/// <summary>
+	/// Try to spectate what we're looking at.
+	/// </summary>
+	public virtual void SpectateTarget()
 	{
-		base.FrameSimulate( deltaTime );
-
-		DoFlying( in deltaTime );
 	}
 
-	public virtual bool ShouldCollide()
+	public virtual IEnumerable<BasePawn> GetAllowedTargets()
+		=> GetAllActive<BasePawn>().Where( CanSpectate );
+
+	public virtual void CycleSpectating( int dir )
 	{
-		return FlyingCollision;
-	}
+		var targets = GetAllowedTargets().ToList();
 
-	public virtual void DoFlying( in float deltaTime )
-	{
-		if ( !FlyingEnabled || Spectating.IsValid() )
-			return;
-
-		var speed = AllowRunning && Input.Down( RunAction )
-			? FlyingRunSpeed
-			: FlyingSpeed;
-
-		WishVelocity = Input.AnalogMove * speed;
-
-		var view = View;
-
-		var rAim = view.IsValid() ? view.EyeRotation : WorldRotation;
-
-		if ( AllowAscend && Input.Down( AscendAction ) )
-			WishVelocity += Vector3.Up * speed;
-
-		if ( AllowDescend && Input.Down( DescendAction ) )
-			WishVelocity += Vector3.Down * speed;
-
-		Velocity += rAim * WishVelocity * deltaTime;
-
-		if ( !FlyingCollision )
+		if ( targets.Count <= 0 )
 		{
-			WorldPosition += Velocity * deltaTime;
-			goto Friction;
+			this.Log( $"no targets to cycle:[{dir}]" );
+			return;
 		}
 
-		var trace = Scene.Trace
-			.Radius( FlyingCollisionRadius )
-			.UsePhysicsWorld()
-			.WithAnyTags( FlyingHitTags )
-			.WithoutTags( FlyingIgnoreTags )
-			.IgnoreGameObjectHierarchy( GameObject );
+		var iTarget = targets.IndexOf( Spectating );
+		var iNext = iTarget == -1 ? 0 : (iTarget + dir).UnsignedMod( targets.Count );
 
-		var helper = new CharacterControllerHelper
-		{
-			Trace = trace,
-			Bounce = 0,
-			Position = WorldPosition,
-			MaxStandableAngle = 90,
-			Velocity = Velocity
-		};
+		var target = targets.ElementAtOrDefault( iNext );
 
-		helper.TryMove( deltaTime );
-
-		Velocity = helper.Velocity;
-		WorldPosition = helper.Position;
-
-		Friction:
-
-		Velocity = Velocity.WithFriction( FlyingFriction, deltaTime );
+		if ( !TrySpectate( target ) )
+			this.Warn( $"failed to spectate target:[{target}] index:[{iNext}]" );
 	}
+
+	public virtual void SpectateNext()
+		=> CycleSpectating( 1 );
+
+	public virtual void SpectatePrevious()
+		=> CycleSpectating( -1 );
 }

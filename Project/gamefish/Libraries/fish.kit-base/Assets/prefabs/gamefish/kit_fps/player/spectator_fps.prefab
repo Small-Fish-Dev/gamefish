@@ -26,12 +26,12 @@
         "FlyingCollisionRadius": 16,
         "FlyingEnabled": true,
         "FlyingFriction": {
-          "Value": 2,
+          "Value": 4,
           "StopSpeed": 140
         },
         "FlyingHitTags": "solid",
         "FlyingIgnoreTags": "pawn",
-        "FlyingRunSpeed": 2000,
+        "FlyingRunSpeed": 3000,
         "FlyingSpeed": 1000,
         "Health": 0,
         "HealthComponent": null,
@@ -43,7 +43,7 @@
             "_type": "component",
             "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
             "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-            "component_type": "PawnView"
+            "component_type": "SpectatorView"
           }
         ],
         "OnComponentDestroy": null,
@@ -53,15 +53,18 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "RunAction": "Run",
+        "SpectateNextAction": "Attack2",
+        "SpectatePreviousAction": "Attack1",
         "SpectateTargetAction": "Use",
         "Spectating": null,
+        "StopSpectatingAction": "Reload",
         "TogglePerspectiveAction": "Jump",
         "Velocity": "0,0,0",
         "View": {
           "_type": "component",
           "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
           "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-          "component_type": "PawnView"
+          "component_type": "SpectatorView"
         },
         "ViewModel": {
           "_type": "component",
@@ -88,7 +91,7 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "GameFish.PawnView",
+            "__type": "GameFish.SpectatorView",
             "__guid": "c06f4824-6a01-4022-ac58-91126185aa0a",
             "__enabled": true,
             "AllowCyclingMode": true,

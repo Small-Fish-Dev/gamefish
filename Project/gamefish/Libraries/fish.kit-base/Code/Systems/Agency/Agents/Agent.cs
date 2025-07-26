@@ -313,7 +313,7 @@ public abstract partial class Agent : Component
 		{
 			if ( !pawn.IsValid() || pawn.Agent != this )
 			{
-				this.Log( $"removed invalid pawn:[{pawn}]" );
+				// this.Log( $"removed invalid pawn:[{pawn}]" );
 				toRemove.Add( pawn );
 			}
 		}

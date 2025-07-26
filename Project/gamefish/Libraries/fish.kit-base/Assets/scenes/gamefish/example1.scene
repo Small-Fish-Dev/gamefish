@@ -2345,7 +2345,7 @@
           "__enabled": true,
           "Actor": null,
           "Agent": null,
-          "AllowSpectators": false,
+          "AllowSpectators": true,
           "Controller": null,
           "DuckButton": "duck",
           "DuckLowerSpeed": 10,
@@ -2809,14 +2809,6 @@
             },
             "Property": "Position",
             "Value": "-705.3578,48.82283,577.9999"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "38fcaa19-216d-4fde-844e-003465ac2acc"
-            },
-            "Property": "Velocity",
-            "Value": "0,0,0"
           }
         ],
         "MovedObjects": []

@@ -20,7 +20,7 @@
         "__enabled": true,
         "Actor": null,
         "Agent": null,
-        "AllowSpectators": false,
+        "AllowSpectators": true,
         "Controller": {
           "_type": "component",
           "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",

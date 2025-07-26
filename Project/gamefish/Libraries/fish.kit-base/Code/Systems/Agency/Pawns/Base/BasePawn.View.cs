@@ -47,21 +47,25 @@ partial class BasePawn
 		tView = View?.GetViewTransform() ?? tView;
 	}
 
+	/// <returns> If this can spectate a target. </returns>
+	public virtual bool CanSpectate( BasePawn target )
+		=> false;
+
 	/// <param name="spec"> A spectator. </param>
 	/// <returns> If the spectator can target this pawn. </returns>
-	public virtual bool CanSpectate( BasePawn spec )
+	public virtual bool AllowSpectator( BasePawn spec )
 	{
-		if ( !this.IsValid() )
+		if ( !this.IsValid() || !AllowSpectators )
 			return false;
 
-		if ( !AllowSpectators || !spec.IsValid() )
+		if ( !spec.IsValid() || spec == this )
 			return false;
 
 		return true;
 	}
 
 	/// <param name="target"> The pawn we're trying to spectate. </param>
-	/// <returns> If the spectating was successful. </returns>
+	/// <returns> If the spectate attempt was successful. </returns>
 	public virtual bool TrySpectate( BasePawn target )
 	{
 		// Only spectators can spectate.
