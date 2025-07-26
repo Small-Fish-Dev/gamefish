@@ -399,7 +399,7 @@ public abstract partial class Agent : Component
 			return;
 
 		foreach ( var pawn in Pawns )
-			if ( pawn.CanOperate() )
-				pawn.FrameOperate( in deltaTime );
+			if ( pawn.CanSimulate() )
+				pawn.FrameSimulate( in deltaTime );
 	}
 }

@@ -36,7 +36,7 @@ partial class BasePawn
 		if ( !View.IsValid() )
 			return;
 
-		View.FrameOperate( deltaTime );
+		View.FrameSimulate( deltaTime );
 	}
 
 	/// <summary>

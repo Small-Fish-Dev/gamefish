@@ -83,7 +83,7 @@ public partial class Client : Agent
 		var tView = cam.WorldTransform;
 
 		foreach ( var pawn in Pawns )
-			if ( pawn.CanOperate() )
+			if ( pawn.CanSimulate() )
 				pawn.ApplyView( cam, ref tView );
 
 		cam.WorldTransform = tView;

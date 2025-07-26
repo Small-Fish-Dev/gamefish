@@ -55,16 +55,16 @@ public abstract partial class ControllerPawn : BasePawn
 			WishVelocity = default;
 	}
 
-	public override void FrameOperate( in float deltaTime )
+	public override void FrameSimulate( in float deltaTime )
 	{
-		base.FrameOperate( deltaTime );
+		base.FrameSimulate( deltaTime );
 
 		if ( Controller.IsValid() && View.IsValid() )
 			Controller.EyeAngles = View.GetViewTransform().Rotation;
 	}
 
-	public override void FixedOperate( in float deltaTime )
+	public override void FixedSimulate( in float deltaTime )
 	{
-		base.FixedOperate( deltaTime );
+		base.FixedSimulate( deltaTime );
 	}
 }

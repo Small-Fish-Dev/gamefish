@@ -5,7 +5,7 @@ namespace GameFish;
 /// This should be on a child object of the pawn(otherwise expect problems).
 /// </summary>
 [Icon( "videocam" )]
-public partial class PawnView : Module<BasePawn>, IOperate
+public partial class PawnView : Module<BasePawn>, ISimulate
 {
 	public const string VIEW = "🎥 View";
 	public const string SPECTATING = BasePawn.SPECTATING;
@@ -24,8 +24,8 @@ public partial class PawnView : Module<BasePawn>, IOperate
 	/// </summary>
 	public float PawnOpacity { get; set; } = 1f;
 
-	public virtual bool CanOperate()
-		=> ModuleParent?.CanOperate() ?? false;
+	public virtual bool CanSimulate()
+		=> ModuleParent?.CanSimulate() ?? false;
 
 	protected override void OnStart()
 	{
@@ -34,7 +34,7 @@ public partial class PawnView : Module<BasePawn>, IOperate
 		EnsureValidHierarchy();
 	}
 
-	public virtual void FrameOperate( in float deltaTime )
+	public virtual void FrameSimulate( in float deltaTime )
 	{
 		HandleInput();
 

@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BasePawn : IOperate
+partial class BasePawn : ISimulate
 {
 	public const string INPUT = "🕹 Input";
 
@@ -16,15 +16,15 @@ partial class BasePawn : IOperate
 		return false;
 	}
 
-	public virtual bool CanOperate()
+	public virtual bool CanSimulate()
 		=> AllowInput();
 
-	public virtual void FrameOperate( in float deltaTime )
+	public virtual void FrameSimulate( in float deltaTime )
 	{
-		View?.FrameOperate( Time.Delta );
+		View?.FrameSimulate( Time.Delta );
 	}
 
-	public virtual void FixedOperate( in float deltaTime )
+	public virtual void FixedSimulate( in float deltaTime )
 	{
 
 	}
