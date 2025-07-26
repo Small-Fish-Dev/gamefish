@@ -43,6 +43,20 @@
         "JumpButton": "jump",
         "JumpSpeed": 250,
         "MaxHealth": 100,
+        "ModuleList": [
+          {
+            "_type": "component",
+            "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
+            "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
+            "component_type": "PawnView"
+          },
+          {
+            "_type": "component",
+            "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
+            "go": "4392db66-be79-4a96-9f50-66fb797af589",
+            "component_type": "PawnEquipment"
+          }
+        ],
         "MoveSpeed": 100,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
@@ -52,6 +66,7 @@
         "OnComponentUpdate": null,
         "SprintButton": "run",
         "SprintMultiplier": 1.5,
+        "Velocity": "0,0,0",
         "View": {
           "_type": "component",
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
@@ -710,8 +725,9 @@
             "AllowCyclingMode": true,
             "CollideOwned": false,
             "Collision": true,
-            "CollisionRadius": 5,
-            "CollisionTags": "solid",
+            "CollisionHitTags": "solid",
+            "CollisionIgnoreTags": "pawn",
+            "CollisionRadius": 16,
             "CustomSetAction": null,
             "CustomUpdateAction": null,
             "CycleModeBackwardAction": null,

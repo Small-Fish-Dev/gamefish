@@ -2269,12 +2269,14 @@
           "IsAlive": false,
           "IsDestructible": false,
           "MaxHealth": 0,
+          "ModuleList": [],
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "Velocity": "0,0,0",
           "View": null,
           "ViewModel": null
         }
@@ -2308,12 +2310,14 @@
           "IsAlive": false,
           "IsDestructible": false,
           "MaxHealth": 0,
+          "ModuleList": [],
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "Velocity": "0,0,0",
           "View": null,
           "ViewModel": null
         }
@@ -2359,6 +2363,7 @@
           "JumpButton": "jump",
           "JumpSpeed": 250,
           "MaxHealth": 100,
+          "ModuleList": [],
           "MoveSpeed": 100,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -2368,6 +2373,7 @@
           "OnComponentUpdate": null,
           "SprintButton": "run",
           "SprintMultiplier": 1.5,
+          "Velocity": "0,0,0",
           "View": null,
           "ViewModel": null
         },
@@ -2803,6 +2809,14 @@
             },
             "Property": "Position",
             "Value": "-705.3578,48.82283,577.9999"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "38fcaa19-216d-4fde-844e-003465ac2acc"
+            },
+            "Property": "Velocity",
+            "Value": "0,0,0"
           }
         ],
         "MovedObjects": []

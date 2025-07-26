@@ -54,15 +54,24 @@ partial class PawnView
 
 	protected Angles _eyeAngles;
 
-	public virtual Vector3 EyePosition => Pawn?.EyePosition ?? WorldPosition;
-
 	/// <summary>
 	/// An actual rotation. Allows non-Euler fanciness. <br />
 	/// A more sophisticated solution would use Rotations instead of Euler angles
 	/// but I'm not doing that right now. I'm in a rush and it's not necessary yet.
 	/// </summary>
-	public virtual Rotation EyeRotation => EyeAngles;
+	public virtual Rotation EyeRotation
+	{
+		get => _eyeAngles;
+		set => EyeAngles = value;
+	}
+
 	public Vector3 EyeForward => EyeRotation.Forward;
+
+	public virtual Vector3 EyePosition
+	{
+		get => Pawn?.EyePosition ?? WorldPosition;
+		set { if ( Pawn.IsValid() ) Pawn.EyePosition = value; }
+	}
 
 	public Transform EyeTransform => new( EyePosition, EyeRotation, WorldScale );
 

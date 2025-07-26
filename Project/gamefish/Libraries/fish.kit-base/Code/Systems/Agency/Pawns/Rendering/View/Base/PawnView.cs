@@ -50,7 +50,7 @@ public partial class PawnView : Module<BasePawn>, ISimulate
 	/// Tags of objects that will obstruct the camera view.
 	/// </summary>
 	[Property]
-	[Title( "Hit Tags" )]
+	[Title( "Ignore Tags" )]
 	[Feature( VIEW ), Group( COLLISION )]
 	public TagSet CollisionIgnoreTags { get; set; } = [BaseEntity.TAG_PAWN];
 

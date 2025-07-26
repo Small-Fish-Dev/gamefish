@@ -33,17 +33,20 @@ public abstract partial class ControllerPawn : BasePawn
 
 	public override Rotation EyeRotation
 	{
-		get => Controller?.EyeAngles ?? base.EyeRotation;
+		get => View?.EyeRotation ?? base.EyeRotation;
 		set
 		{
+			if ( View.IsValid() )
+				View.EyeRotation = value;
+
 			if ( Controller.IsValid() )
 				Controller.EyeAngles = value;
 		}
 	}
 
-	public virtual Vector3 WishVelocity
+	public override Vector3 WishVelocity
 	{
-		get => _pc.IsValid() ? _pc.WishVelocity : default;
+		get => Controller.IsValid() ? _pc.WishVelocity : default;
 		set { if ( _pc.IsValid() ) _pc.WishVelocity = value; }
 	}
 
@@ -51,6 +54,7 @@ public abstract partial class ControllerPawn : BasePawn
 	{
 		base.OnSetOwner( old, agent );
 
+		// TEMP?
 		if ( !agent.IsValid() )
 			WishVelocity = default;
 	}

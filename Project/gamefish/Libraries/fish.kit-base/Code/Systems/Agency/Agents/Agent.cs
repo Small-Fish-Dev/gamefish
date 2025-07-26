@@ -111,8 +111,9 @@ public abstract partial class Agent : Component
 	protected bool InEditor => Scene?.IsEditor ?? true;
 
 	[Property]
-	[Feature( FEATURE_AGENT ), Category( "Debug" )]
+	[Title( "Set Pawn" )]
 	[HideIf( nameof( InEditor ), true )]
+	[Feature( FEATURE_AGENT ), Category( "Debug" )]
 	public BasePawn SetDebugPawn
 	{
 		get => _debugPawn;

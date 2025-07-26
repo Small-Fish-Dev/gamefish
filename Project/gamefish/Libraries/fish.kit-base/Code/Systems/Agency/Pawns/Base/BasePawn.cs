@@ -59,11 +59,6 @@ public abstract partial class BasePawn : PhysicsEntity
 
 	protected BaseActor _actor;
 
-	public virtual Vector3 EyePosition { get => WorldPosition; set => WorldPosition = value; }
-	public virtual Rotation EyeRotation { get => WorldRotation; set => WorldRotation = value; }
-	public Transform EyeTransform => new( EyePosition, EyeRotation, 1f );
-	public Vector3 EyeForward => EyeRotation.Forward;
-
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
