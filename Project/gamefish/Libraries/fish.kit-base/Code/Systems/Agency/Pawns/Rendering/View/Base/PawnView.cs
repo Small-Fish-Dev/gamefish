@@ -59,12 +59,6 @@ public partial class PawnView : Module<BasePawn>, ISimulate
 	/// </summary>
 	public virtual BasePawn Pawn => ModuleParent;
 
-	/// <summary>
-	/// How to scale the opacity from distance.
-	/// This is for the pawn itself to consider using.
-	/// </summary>
-	public float PawnOpacity { get; set; } = 1f;
-
 	public virtual bool CanSimulate()
 		=> ModuleParent?.CanSimulate() ?? false;
 
@@ -83,7 +77,19 @@ public partial class PawnView : Module<BasePawn>, ISimulate
 
 		UpdateTransition();
 
-		PawnOpacity = DistanceFromEye.Remap( FirstPersonRange.Max, FirstPersonRange.Min );
+		UpdateOpacity();
+	}
+
+	public virtual void UpdateOpacity()
+	{
+		var model = Pawn?.Actor?.Model;
+
+		if ( !model.IsValid() )
+			return;
+
+		var a = DistanceFromEye.Remap( FirstPersonRange.Min, FirstPersonRange.Max );
+
+		model.SetOpacity( a );
 	}
 
 	/// <summary>

@@ -18,7 +18,12 @@
         "__type": "GameFish.PlayerPawn",
         "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
-        "Actor": null,
+        "Actor": {
+          "_type": "component",
+          "component_id": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "BaseActor"
+        },
         "Agent": null,
         "AllowSpectators": true,
         "Controller": {
@@ -79,6 +84,34 @@
           "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
           "component_type": "ViewModel"
         }
+      },
+      {
+        "__type": "GameFish.BaseActor",
+        "__guid": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
+        "__enabled": true,
+        "Health": 100,
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "HealthComponent"
+        },
+        "IsAlive": true,
+        "IsDestructible": true,
+        "MaxHealth": 100,
+        "Model": {
+          "_type": "component",
+          "component_id": "b6d83571-0158-4a0b-936c-8786d26d6314",
+          "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
+          "component_type": "ActorCitizenModel"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Velocity": "0,0,0"
       },
       {
         "__type": "GameFish.HealthComponent",
@@ -275,6 +308,8 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "Opacity": 1,
+            "OpacitySpeed": 2,
             "Ragdoll": {
               "_type": "component",
               "component_id": "2006bcc0-669e-479c-bdd5-c062a7541db0",
@@ -740,8 +775,8 @@
             },
             "EyeAngles": "0,0,0",
             "FirstPersonRange": {
-              "Min": 5,
-              "Max": 20
+              "Min": 15,
+              "Max": 30
             },
             "InitialDistance": 100,
             "Mode": "FirstPerson",

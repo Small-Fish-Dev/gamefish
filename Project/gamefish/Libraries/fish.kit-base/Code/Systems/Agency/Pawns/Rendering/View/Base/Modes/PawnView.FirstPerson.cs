@@ -16,7 +16,7 @@ partial class PawnView
 	[Feature( MODES )]
 	[Title( "Fade Range" )]
 	[Group( FIRST_PERSON ), Order( FIRST_PERSON_ORDER )]
-	public FloatRange FirstPersonRange { get; set; } = new( 5f, 20f );
+	public FloatRange FirstPersonRange { get; set; } = new( 15f, 30f );
 
 	protected virtual void OnFirstPersonModeSet()
 	{

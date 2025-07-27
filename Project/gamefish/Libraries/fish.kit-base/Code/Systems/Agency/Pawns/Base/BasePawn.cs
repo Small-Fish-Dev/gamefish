@@ -42,19 +42,13 @@ public abstract partial class BasePawn : PhysicsEntity
 	/// The thing with the model that does the stuff.
 	/// </summary>
 	[Property]
-	[Feature( FEATURE_PAWN ), Group( BaseActor.FEATURE_ACTOR )]
+	[Feature( FEATURE_PAWN ), Group( BaseActor.ACTOR )]
 	public BaseActor Actor
 	{
 		get => _actor.IsValid() ? _actor
-			: _actor = Components?.Get<BaseActor>( FindMode.EverythingInSelf );
+			: _actor = Components?.Get<BaseActor>( FindMode.EverythingInSelfAndDescendants );
 
-		set
-		{
-			if ( value.IsValid() && value.GameObject != GameObject )
-				return;
-
-			_actor = value;
-		}
+		set => _actor = value;
 	}
 
 	protected BaseActor _actor;

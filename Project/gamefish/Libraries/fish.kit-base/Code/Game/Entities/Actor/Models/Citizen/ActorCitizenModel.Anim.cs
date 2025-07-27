@@ -38,6 +38,8 @@ partial class ActorCitizenModel
 		if ( !SkinRenderer.IsValid() )
 			return;
 
+		UpdateOpacity();
+
 		if ( LookAt.IsValid() && LookAtEnabled )
 		{
 			var eyePos = EyeWorldTransform.Position;
