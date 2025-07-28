@@ -33,4 +33,8 @@ public static partial class GameFish
 	/// </summary>
 	public static float Max( this float a, in float b )
 		=> MathF.Max( a, b );
+
+	/// <returns> A number that's at least zero. </returns>
+	public static float Positive( this float n )
+		=> n > 0f ? n : 0f;
 }
