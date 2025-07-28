@@ -25,19 +25,30 @@ public static partial class Random
 	/// <returns> Double between <paramref name="a"/> and <paramref name="b"/>. </returns>
 	public static double Double( double a, double b ) => Game.Random.Double( a, b );
 
-	public static float From( RangedFloat range )
-	{
-		return Float( range.Min, range.Max );
-	}
+	public static float From( in RangedFloat range )
+		=> Float( range.Min, range.Max );
 
+	public static float From( in FloatRange range )
+		=> range.GetRandom();
+
+	public static float From( in IntRange range )
+		=> range.GetRandom();
+
+	/// <returns> A random value from any kind of list(or <paramref name="default"/>). </returns>
 	public static T From<T>( IEnumerable<T> list, T @default = default )
 	{
 		if ( list is null )
 			return @default;
 
-		return Game.Random.FromArray( list.ToArray(), @default );
+		var count = list.Count();
+
+		if ( count <= 0 )
+			return @default;
+
+		return list.ElementAtOrDefault( count.Random() );
 	}
 
+	/// <returns> A random value from a <see cref="List{T}"/>(or <paramref name="default"/>). </returns>
 	public static T From<T>( List<T> list, T @default = default )
 	{
 		if ( list is null )
@@ -46,6 +57,7 @@ public static partial class Random
 		return Game.Random.FromList( list, @default );
 	}
 
+	/// <returns> A random value from an <see cref="Array"/>(or <paramref name="default"/>). </returns>
 	public static T From<T>( T[] array, T @default = default )
 	{
 		if ( array is null )
@@ -55,8 +67,10 @@ public static partial class Random
 	}
 
 	/// <returns> A random value from an enumeration. </returns>
-	public static T From<T>() where T : notnull, Enum
-	{
-		return From( Enum.GetValues( typeof( T ) ) as T[] );
-	}
+	public static T From<T>() where T : Enum
+		=> From( Enum.GetValues( typeof( T ) ) as T[] );
+
+	/// <returns> A random value from an enumeration without repetitions. </returns>
+	public static T FromDistinct<T>() where T : Enum
+		=> From( (Enum.GetValues( typeof( T ) ) as T[]).Distinct() );
 }
