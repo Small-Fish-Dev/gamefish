@@ -14,7 +14,7 @@ partial class PawnView
 		return WorldTransform;
 	}
 
-	protected virtual void UpdateTransform()
+	public virtual void UpdateTransform()
 	{
 		UpdateModeTransform();
 	}
@@ -31,7 +31,16 @@ partial class PawnView
 
 		var tEye = EyeTransform;
 
-		if ( Previous is Offset prevOffset )
+		if ( PreviousTransform is Transform prevTrans )
+		{
+			// Smoothed transitioning.
+			var tRelative = Relative.ToWorld( tEye );
+			var tLerped = prevTrans.LerpTo( tRelative, TransitionFraction );
+
+			TrySetPosition( tLerped.Position );
+			TrySetRotation( tLerped.Rotation );
+		}
+		else if ( PreviousOffset is Offset prevOffset )
 		{
 			// Smoothed transitioning.
 			var offsLerped = prevOffset.LerpTo( Relative, TransitionFraction );

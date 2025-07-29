@@ -2325,476 +2325,6 @@
       "Children": []
     },
     {
-      "__guid": "c9896e6c-bd4e-4cf2-965d-61983f34db2c",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "Dummy Player",
-      "Position": "-730.3937,-163.3771,4.046465",
-      "Rotation": "0,0.000000003244669,0.9999999,0.000000009734006",
-      "Scale": "1,1,1",
-      "Tags": "player",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "GameFish.PlayerPawn",
-          "__guid": "808a72d2-52bd-43cd-a300-8e9d7052aa13",
-          "__enabled": true,
-          "Actor": null,
-          "Agent": null,
-          "AllowSpectators": true,
-          "Controller": null,
-          "DuckButton": "duck",
-          "DuckLowerSpeed": 10,
-          "DuckMoveSpeed": 50,
-          "DuckRaiseSpeed": 15,
-          "Health": 100,
-          "HealthComponent": {
-            "_type": "component",
-            "component_id": "92aebc7e-4738-4258-9c49-275b79fbf9f4",
-            "go": "c9896e6c-bd4e-4cf2-965d-61983f34db2c",
-            "component_type": "HealthComponent"
-          },
-          "IsAlive": true,
-          "IsDestructible": true,
-          "JumpButton": "jump",
-          "JumpSpeed": 250,
-          "MaxHealth": 100,
-          "ModuleList": [],
-          "MoveSpeed": 100,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "SprintButton": "run",
-          "SprintMultiplier": 1.5,
-          "Velocity": "0,0,0",
-          "View": null,
-          "ViewModel": null
-        },
-        {
-          "__type": "GameFish.HealthComponent",
-          "__guid": "92aebc7e-4738-4258-9c49-275b79fbf9f4",
-          "__enabled": true,
-          "DebugDamage": 25,
-          "Health": 100,
-          "IsAlive": true,
-          "IsDestructible": true,
-          "MaxHealth": 100,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "d4dcdcef-8b28-4be5-821c-704cd43cb1d4",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Model",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "GameFish.ActorCitizenModel",
-              "__guid": "e179864b-c1f6-4808-a41d-d7e1657e9713",
-              "__enabled": true,
-              "BodyWeight": 1,
-              "EyeSource": null,
-              "EyesWeight": 1,
-              "HeadWeight": 1,
-              "Height": null,
-              "IkLeftFoot": null,
-              "IkLeftHand": null,
-              "IkRightFoot": null,
-              "IkRightHand": null,
-              "LookAt": null,
-              "LookAtEnabled": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Ragdoll": {
-                "_type": "component",
-                "component_id": "343d2e82-4de4-4a7c-b7f1-78e13c8a7167",
-                "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                "component_type": "ModelPhysics"
-              },
-              "SkinRenderer": {
-                "_type": "component",
-                "component_id": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-                "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                "component_type": "SkinnedModelRenderer"
-              }
-            },
-            {
-              "__type": "GameFish.CitizenOutfitter",
-              "__guid": "d22ee7cb-04f9-40f4-a085-8fd54d8f2b58",
-              "__enabled": true,
-              "Default": {
-                "Clothing": [
-                  {
-                    "IsValid": true,
-                    "Clothing": "models/citizen_clothes/hair/hair_bobcut/hair_bobcut.clothing",
-                    "Tint": 0,
-                    "HasOffset": false,
-                    "Transform": {
-                      "Position": "0,0,0",
-                      "Scale": "0,0,0",
-                      "Rotation": "0,0,0,0"
-                    },
-                    "Bone": null
-                  },
-                  {
-                    "IsValid": true,
-                    "Clothing": "models/citizen_clothes/full_outfit/medieval_armour/medieval_armour.clothing",
-                    "Tint": null,
-                    "HasOffset": false,
-                    "Transform": {
-                      "Position": "0,0,0",
-                      "Scale": "0,0,0",
-                      "Rotation": "0,0,0,0"
-                    },
-                    "Bone": null
-                  },
-                  {
-                    "IsValid": true,
-                    "Clothing": "models/citizen_clothes/hair/eyebrows_bushy/eyebrows_bushy.clothing",
-                    "Tint": 0.3,
-                    "HasOffset": false,
-                    "Transform": {
-                      "Position": "0,0,0",
-                      "Scale": "0,0,0",
-                      "Rotation": "0,0,0,0"
-                    },
-                    "Bone": null
-                  }
-                ],
-                "Human": null,
-                "Height": null
-              },
-              "EditorAvatar": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "PreventAvatarSlots": 0,
-              "UseAvatar": true,
-              "UseDefault": true
-            }
-          ],
-          "Children": []
-        },
-        {
-          "__guid": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "Body",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelPhysics",
-              "__guid": "343d2e82-4de4-4a7c-b7f1-78e13c8a7167",
-              "__enabled": false,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "Model": "models/citizen/citizen.vmdl",
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Renderer": {
-                "_type": "component",
-                "component_id": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-                "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                "component_type": "SkinnedModelRenderer"
-              },
-              "RigidbodyFlags": 0
-            },
-            {
-              "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-              "__enabled": true,
-              "AnimationGraph": null,
-              "BodyGroups": 1,
-              "BoneMergeTarget": null,
-              "CreateAttachments": false,
-              "CreateBoneObjects": false,
-              "MaterialGroup": "default",
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/citizen/citizen.vmdl",
-              "Morphs": {},
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Parameters": {
-                "bools": {},
-                "ints": {},
-                "floats": {},
-                "vectors": {},
-                "rotations": {}
-              },
-              "PlaybackRate": 1,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Sequence": {
-                "Name": null,
-                "Looping": true,
-                "Blending": false
-              },
-              "Tint": "1,1,1,1",
-              "UseAnimGraph": true
-            }
-          ],
-          "Children": [
-            {
-              "__guid": "541e473e-a025-4e70-8ea4-b4c78f1b2fff",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Clothing - hair_bobcut",
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "clothing",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "e2cdf021-d6f2-48ef-bdf3-7fa27c8ac9cd",
-                  "__enabled": true,
-                  "AnimationGraph": null,
-                  "BodyGroups": 18446744073709551615,
-                  "BoneMergeTarget": {
-                    "_type": "component",
-                    "component_id": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-                    "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                    "component_type": "SkinnedModelRenderer"
-                  },
-                  "CreateAttachments": false,
-                  "CreateBoneObjects": false,
-                  "MaterialGroup": null,
-                  "MaterialOverride": null,
-                  "Materials": null,
-                  "Model": "models/citizen_clothes/hair/hair_bobcut/models/hair_bobcut.vmdl",
-                  "Morphs": {},
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "Parameters": {
-                    "bools": {},
-                    "ints": {},
-                    "floats": {},
-                    "vectors": {},
-                    "rotations": {}
-                  },
-                  "PlaybackRate": 1,
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "On",
-                  "Sequence": {
-                    "Name": null,
-                    "Looping": true,
-                    "Blending": false
-                  },
-                  "Tint": "1,1,1,1",
-                  "UseAnimGraph": true
-                }
-              ],
-              "Children": []
-            },
-            {
-              "__guid": "2b49dc97-d0b5-4303-92e3-210f2548bd3a",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Clothing - medieval_armour",
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "clothing",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "7b273efb-ff5b-462a-90fa-cd36d9dba3e4",
-                  "__enabled": true,
-                  "AnimationGraph": null,
-                  "BodyGroups": 18446744073709551615,
-                  "BoneMergeTarget": {
-                    "_type": "component",
-                    "component_id": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-                    "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                    "component_type": "SkinnedModelRenderer"
-                  },
-                  "CreateAttachments": false,
-                  "CreateBoneObjects": false,
-                  "MaterialGroup": null,
-                  "MaterialOverride": null,
-                  "Materials": null,
-                  "Model": "models/citizen_clothes/full_outfit/medieval_armour/models/medieval_armour.vmdl",
-                  "Morphs": {},
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "Parameters": {
-                    "bools": {},
-                    "ints": {},
-                    "floats": {},
-                    "vectors": {},
-                    "rotations": {}
-                  },
-                  "PlaybackRate": 1,
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "On",
-                  "Sequence": {
-                    "Name": null,
-                    "Looping": true,
-                    "Blending": false
-                  },
-                  "Tint": "1,1,1,1",
-                  "UseAnimGraph": true
-                }
-              ],
-              "Children": []
-            },
-            {
-              "__guid": "b11e2e40-bd83-46fc-9b75-89ea9805ad5f",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Clothing - eyebrows_bushy",
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "clothing",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SkinnedModelRenderer",
-                  "__guid": "a762289f-8a8c-46d0-bc9e-916afeeaed8d",
-                  "__enabled": true,
-                  "AnimationGraph": null,
-                  "BodyGroups": 18446744073709551615,
-                  "BoneMergeTarget": {
-                    "_type": "component",
-                    "component_id": "cd45d003-3efd-4963-8b10-0346d4a9353f",
-                    "go": "27d18f94-1c9f-4f61-b3aa-4955984eeeb0",
-                    "component_type": "SkinnedModelRenderer"
-                  },
-                  "CreateAttachments": false,
-                  "CreateBoneObjects": false,
-                  "MaterialGroup": null,
-                  "MaterialOverride": null,
-                  "Materials": null,
-                  "Model": "models/citizen_clothes/hair/eyebrows_bushy/models/eyebrows_bushy.vmdl",
-                  "Morphs": {},
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "Parameters": {
-                    "bools": {},
-                    "ints": {},
-                    "floats": {},
-                    "vectors": {},
-                    "rotations": {}
-                  },
-                  "PlaybackRate": 1,
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "On",
-                  "Sequence": {
-                    "Name": null,
-                    "Looping": true,
-                    "Blending": false
-                  },
-                  "Tint": "0.73272,0.56573,0.44916,1",
-                  "UseAnimGraph": true
-                }
-              ],
-              "Children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
       "__guid": "d8b49e5e-ef13-4e84-93e3-15df0e7f2252",
       "__version": 1,
       "__Prefab": "prefabs/gamefish/kit_fps/player/spectator_fps.prefab",
@@ -2821,6 +2351,205 @@
         "c06f4824-6a01-4022-ac58-91126185aa0a": "98608c4a-6e08-4045-b08b-6af6d66780b4",
         "d326bee5-a470-48fd-b034-93639ccc7264": "e02e752f-f9e6-46b0-a73e-52a437c7e6a8",
         "c141c37b-f3dc-49ea-9ee5-628f3d8bf989": "4d0eba21-42cd-43eb-803f-73c973a94d54"
+      }
+    },
+    {
+      "__guid": "49561309-cc89-4052-ba1e-8563cca7da51",
+      "__version": 1,
+      "__Prefab": "prefabs/gamefish/kit_fps/player/player_fps.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Position",
+            "Value": "-764.4633,-194.819,4.046465"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0.9191279,0.3939591"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "26d08fde-1687-46ac-ae0e-02eed92368eb": "49561309-cc89-4052-ba1e-8563cca7da51",
+        "00a167f2-9393-469a-879d-63a09e408188": "905e8bf6-e108-477b-8672-7cfe99937bb0",
+        "07520265-2ad8-4f1f-8ade-e5d5a804a803": "41a2ac94-10a2-4d77-a0aa-60e228070d66",
+        "21646fe7-b1c4-40a1-aafb-bc53b8edc077": "903f2c93-fea5-4df4-ae7d-616e697ff335",
+        "edc765a1-6ab4-4b78-a07d-58125b29947f": "f9b8ab6d-655f-4128-ba9c-09e5721b4af7",
+        "a0b2aa34-5b07-492c-9275-4dc2e9ff9329": "a9c14c7e-edce-4f2e-87a3-fa20a2bd6772",
+        "7b4174e2-7366-459d-90ab-ad4ba7fb1f07": "15e5a879-0a25-403e-b18d-6e576575ff99",
+        "423f50c7-f31c-476e-af51-c6378bfba339": "e9c70802-26db-4348-bddc-4a48738d9d8e",
+        "b2db92f3-8a05-4396-9a94-f0fb59931069": "ba4e1e73-0222-4c20-ae38-42af8fa8f9d5",
+        "77ffd783-71f9-45f3-9f18-c9bd791a0356": "289e26ed-305a-43e9-b973-1420dbb84687",
+        "b6d83571-0158-4a0b-936c-8786d26d6314": "a2d96eba-7190-4e97-81d7-44e1f247cc41",
+        "469feee4-1f79-4aa8-9106-c4f007bedffb": "e56b4204-5a0f-4d03-8c44-687d4e2d4cac",
+        "6e7f4c8a-47de-44e8-adba-7be294cb523c": "5a560dc7-b757-4088-ab41-b9e0e32d6b81",
+        "2006bcc0-669e-479c-bdd5-c062a7541db0": "78ed90a5-9547-4342-8b6c-550f3100db15",
+        "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "c81b6f4b-5236-4a19-a55a-7b14f00c6e6a",
+        "f0b6ffe8-0099-4155-af48-4128babec7b8": "4189a6ff-5674-4e66-ba68-d7f401ccb894",
+        "6d1ed7a1-04a8-459d-8db0-3cdf6c1f2d64": "c1b5e99c-67d8-4ae4-ad3d-5cb987eb586a",
+        "d3b975ea-e46c-47e7-991a-d04347a0ca4c": "28748d19-be83-4239-9b82-af198474227e",
+        "2d0bbeff-6a3e-4ab9-a27b-2a504875b366": "ac308184-4038-43d0-91ee-d4d9fd1d34a7",
+        "8b4c94f5-eba2-4dc6-9d66-d0b4398584c8": "4a88c50a-0879-4a65-ae09-2af9cae8b8f7",
+        "2dc71e1e-113b-41d0-80cd-0d3b63d041d1": "8f990281-cd2e-46e1-aea3-fba550379239",
+        "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "6da01b79-adb2-4edd-9c7b-5c45a546e4bd",
+        "cdf9082a-6a58-4902-ad04-5706a69ec252": "1e143ef9-c78a-47e6-8888-979d0065fac7",
+        "ecaf68d2-3205-4636-ac23-a3076c510e85": "2904e5e8-8da0-490f-8bfb-32c5fdb5b63e",
+        "503c78b4-703c-4d05-8fba-8f937bb7ffc0": "c4cc35d1-01d3-41d6-886a-cecc952f7d69",
+        "c7391ef4-d529-4db4-9b20-71271e0abec5": "d50563d1-5680-42c3-a127-c8529589b090",
+        "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6": "9b1ecdbb-d886-4159-b076-30412a4ee753",
+        "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1": "4e0e1924-f0df-4ba3-a517-689ca9a3f0f1",
+        "c0cb14a1-7686-432d-94de-c976c79fb5c4": "39ef3544-2145-4a6e-b50d-2ae5efc3ce32",
+        "4392db66-be79-4a96-9f50-66fb797af589": "46d07ee1-40ed-44b1-be9b-1566a1fa5ff2",
+        "41565e7f-493f-4aa8-802e-130a36e10531": "b7bbdee9-3dcd-4c9b-8738-894b72207bf9"
+      }
+    },
+    {
+      "__guid": "7cbd630f-df7a-4d77-a605-1a4b2cb4b09a",
+      "__version": 1,
+      "__Prefab": "prefabs/gamefish/kit_fps/player/player_fps.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Name",
+            "Value": "player_fps (1)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Position",
+            "Value": "-749.5756,114.8429,4.046225"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0.8636268,-0.5041316"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "26d08fde-1687-46ac-ae0e-02eed92368eb": "7cbd630f-df7a-4d77-a605-1a4b2cb4b09a",
+        "00a167f2-9393-469a-879d-63a09e408188": "3481a8f4-9a5b-4917-bc58-90ca02c56ea6",
+        "07520265-2ad8-4f1f-8ade-e5d5a804a803": "3ed22b1d-a8da-48e0-8774-70a6d5331560",
+        "21646fe7-b1c4-40a1-aafb-bc53b8edc077": "72f7652b-b61e-4484-bc91-ca369fc5b322",
+        "edc765a1-6ab4-4b78-a07d-58125b29947f": "55473f63-4fc1-466b-86ab-f1f40c28292d",
+        "a0b2aa34-5b07-492c-9275-4dc2e9ff9329": "2245cfc9-48be-4d1c-bc43-e36c82aae4a3",
+        "7b4174e2-7366-459d-90ab-ad4ba7fb1f07": "66be88d8-d68e-46b8-894d-d57eda17b64d",
+        "423f50c7-f31c-476e-af51-c6378bfba339": "c0dd4311-232b-404e-9e74-68e2449e18c1",
+        "b2db92f3-8a05-4396-9a94-f0fb59931069": "778a8a3e-436e-43e2-9864-4c9884b7acc4",
+        "77ffd783-71f9-45f3-9f18-c9bd791a0356": "83658ad1-a5b5-431f-aa23-b510e6e39e96",
+        "b6d83571-0158-4a0b-936c-8786d26d6314": "6cb28a29-748f-4e98-b70d-a8c34023599c",
+        "469feee4-1f79-4aa8-9106-c4f007bedffb": "fc8ab547-f033-4040-9104-55f810457c49",
+        "6e7f4c8a-47de-44e8-adba-7be294cb523c": "aa2a825e-d03e-4c57-9a23-26120e6a1033",
+        "2006bcc0-669e-479c-bdd5-c062a7541db0": "98baaec3-246d-4004-b062-66896e76a5c7",
+        "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "05ee0297-9835-428f-a9ff-ddc4ef726d84",
+        "f0b6ffe8-0099-4155-af48-4128babec7b8": "656a3863-a4f1-48bd-9a09-b52ea487b02a",
+        "6d1ed7a1-04a8-459d-8db0-3cdf6c1f2d64": "06c9cab2-72a9-4a7d-ae2f-458ae572ffc6",
+        "d3b975ea-e46c-47e7-991a-d04347a0ca4c": "0c23bc5f-ebeb-404e-8557-bde5106eb6f0",
+        "2d0bbeff-6a3e-4ab9-a27b-2a504875b366": "ae4f6834-f19e-44cb-8c83-311521f536fb",
+        "8b4c94f5-eba2-4dc6-9d66-d0b4398584c8": "6c06995d-5c9b-447a-8c62-a12c5024c3ef",
+        "2dc71e1e-113b-41d0-80cd-0d3b63d041d1": "1f04dd5f-b2d1-4481-a1cc-161b811a395e",
+        "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "0f4043dc-7db2-4e3b-add8-a87541c58b92",
+        "cdf9082a-6a58-4902-ad04-5706a69ec252": "b5358c24-c651-45ed-9303-53966a2d36ce",
+        "ecaf68d2-3205-4636-ac23-a3076c510e85": "9c6a4068-fde8-4ed0-832f-e096ce238290",
+        "503c78b4-703c-4d05-8fba-8f937bb7ffc0": "0563eb2e-32f3-45d6-975b-7848104242dc",
+        "c7391ef4-d529-4db4-9b20-71271e0abec5": "131808b4-68f8-4f4f-853b-f60829db88e1",
+        "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6": "a28bee42-099f-4a80-a011-ba7ebf318be6",
+        "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1": "5e9e6216-d414-44b9-becd-c23f3e173aa8",
+        "c0cb14a1-7686-432d-94de-c976c79fb5c4": "0d2b6299-fb36-4bce-981c-b6b2355d2a71",
+        "4392db66-be79-4a96-9f50-66fb797af589": "c05662aa-297d-48d2-b5e3-8ae6581dc15c",
+        "41565e7f-493f-4aa8-802e-130a36e10531": "15882ee8-cdad-4ec6-8ea4-3c492c7bba04"
+      }
+    },
+    {
+      "__guid": "6575e5ee-b9fe-4e3b-9707-a2394ba7fbfb",
+      "__version": 1,
+      "__Prefab": "prefabs/gamefish/kit_fps/player/player_fps.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Name",
+            "Value": "player_fps (2)"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Position",
+            "Value": "-863.2692,-30.31744,4.045984"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0.1257883,-0.992057"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "26d08fde-1687-46ac-ae0e-02eed92368eb": "6575e5ee-b9fe-4e3b-9707-a2394ba7fbfb",
+        "00a167f2-9393-469a-879d-63a09e408188": "41ea1977-d556-445e-baad-855081abe30c",
+        "07520265-2ad8-4f1f-8ade-e5d5a804a803": "fd718574-2c95-4070-a15f-c4a35551b34e",
+        "21646fe7-b1c4-40a1-aafb-bc53b8edc077": "0577737e-1ddf-40aa-b45d-6d136c573dda",
+        "edc765a1-6ab4-4b78-a07d-58125b29947f": "db2baffd-40f9-43d4-a5a4-ef8416778972",
+        "a0b2aa34-5b07-492c-9275-4dc2e9ff9329": "75aa8654-1b3f-4b59-b28a-f9311bbbbf4c",
+        "7b4174e2-7366-459d-90ab-ad4ba7fb1f07": "41b38b8c-9bd9-42b4-9d4f-ffc4575a97f7",
+        "423f50c7-f31c-476e-af51-c6378bfba339": "ab73ecb2-de6a-4796-918e-9873bd397ffc",
+        "b2db92f3-8a05-4396-9a94-f0fb59931069": "2a39957a-ff6d-4509-8cbe-f546a31ff2ed",
+        "77ffd783-71f9-45f3-9f18-c9bd791a0356": "0558b6aa-c292-49cb-9190-7989311c0f8b",
+        "b6d83571-0158-4a0b-936c-8786d26d6314": "9dc65ed8-5469-4698-ac76-f73eeea2e0f8",
+        "469feee4-1f79-4aa8-9106-c4f007bedffb": "1dd64bb5-f04f-41d5-a93f-441b15951320",
+        "6e7f4c8a-47de-44e8-adba-7be294cb523c": "090e6d7d-28ef-4683-9f19-8f8eb17df186",
+        "2006bcc0-669e-479c-bdd5-c062a7541db0": "53abec2a-35ed-4260-b938-64a85b094ceb",
+        "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "61f4302e-faa0-4289-b910-1d3a3034bde3",
+        "f0b6ffe8-0099-4155-af48-4128babec7b8": "fa2cac04-8505-4835-b0c6-7cd6a720fa29",
+        "6d1ed7a1-04a8-459d-8db0-3cdf6c1f2d64": "8c29ef1d-96b8-4a8c-9285-b2bab2ad644e",
+        "d3b975ea-e46c-47e7-991a-d04347a0ca4c": "49743b72-7730-4468-8ac6-9f137156169d",
+        "2d0bbeff-6a3e-4ab9-a27b-2a504875b366": "ff786139-e66f-4acc-a1cb-898772302a15",
+        "8b4c94f5-eba2-4dc6-9d66-d0b4398584c8": "e4454edb-c70d-4539-8841-4f10f814475f",
+        "2dc71e1e-113b-41d0-80cd-0d3b63d041d1": "0659fb14-47f6-4f3d-bee8-4bc62437b267",
+        "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "ea5e90a7-0aa8-4d6b-a82e-195cb62f46e3",
+        "cdf9082a-6a58-4902-ad04-5706a69ec252": "d947957d-02ff-45ff-a896-2e2c661a1f42",
+        "ecaf68d2-3205-4636-ac23-a3076c510e85": "357a768e-052b-4b37-92b1-0e5042cbf3c0",
+        "503c78b4-703c-4d05-8fba-8f937bb7ffc0": "bb7c59bb-e480-4386-bf47-8dda95790a6e",
+        "c7391ef4-d529-4db4-9b20-71271e0abec5": "10e2fa45-c5ba-4d5c-b8b1-27044ea514b1",
+        "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6": "a2fe907c-b2d5-4b0a-ac29-d930319e7568",
+        "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1": "bb78fba9-9dba-4075-894d-3171a27604ab",
+        "c0cb14a1-7686-432d-94de-c976c79fb5c4": "705d9c23-9d01-4cfa-8ef7-84167a2d8d0a",
+        "4392db66-be79-4a96-9f50-66fb797af589": "938a93fe-7870-4a49-b7d5-9d56e9a91f9d",
+        "41565e7f-493f-4aa8-802e-130a36e10531": "c4d6d952-fd19-4fb3-8db1-65b7210eb4c6"
       }
     }
   ],

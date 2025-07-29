@@ -39,23 +39,43 @@ partial class PawnView
 	/// <summary>
 	/// The previous world position and rotation to transition from.
 	/// </summary>
-	public Offset? Previous { get; set; }
+	public Transform? PreviousTransform { get; set; }
 
-	public float TransitionFraction { get; set; }
-	public float TransitionVelocity { get => _transVel; set => _transVel = value; }
+	/// <summary>
+	/// The previous relative position and rotation to transition from.
+	/// </summary>
+	public Offset? PreviousOffset { get; set; }
+
+	public virtual float TransitionFraction
+	{
+		get => _transFrac;
+		set => _transFrac = value.Clamp( 0f, 1f );
+	}
+	protected float _transFrac;
+
+	public virtual float TransitionVelocity { get => _transVel; set => _transVel = value; }
 	protected float _transVel;
 
 	/// <summary>
 	/// Begins a transition given the current position of this view.
 	/// </summary>
-	protected virtual void StartTransition()
+	public virtual void StartTransition( bool isRelative = true )
 	{
 		var pawn = Pawn;
 
 		if ( !pawn.IsValid() )
 			return;
 
-		Previous = new( EyeTransform.ToLocal( WorldTransform ) );
+		if ( isRelative )
+		{
+			PreviousTransform = null;
+			PreviousOffset = new( pawn.EyeTransform.ToLocal( WorldTransform ) );
+		}
+		else
+		{
+			PreviousOffset = null;
+			PreviousTransform = WorldTransform;
+		}
 
 		TransitionFraction = 0f;
 		_transVel = 0f;
@@ -66,19 +86,24 @@ partial class PawnView
 	/// </summary>
 	public virtual void StopTransition()
 	{
-		Previous = null;
+		PreviousTransform = null;
+		PreviousOffset = null;
+
 		TransitionFraction = 1f;
 	}
 
 	protected virtual void UpdateTransition()
 	{
-		if ( !Previous.HasValue )
+		if ( !PreviousTransform.HasValue && !PreviousOffset.HasValue )
 			return;
 
 		TransitionFraction = MathX.SmoothDamp( TransitionFraction, 1f, ref _transVel, TransitionSmoothing, Time.Delta )
 			.Clamp( 0f, 1f );
 
 		if ( TransitionFraction.AlmostEqual( 1f ) )
-			Previous = null;
+		{
+			PreviousTransform = null;
+			PreviousOffset = null;
+		}
 	}
 }

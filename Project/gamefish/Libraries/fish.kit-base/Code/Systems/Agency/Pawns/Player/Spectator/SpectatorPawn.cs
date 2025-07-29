@@ -15,10 +15,12 @@ public partial class SpectatorPawn : BasePawn
 
 		protected set
 		{
+			var prevSpec = _spectating;
+
 			_spectating = value;
 
-			if ( this.IsValid() && !IsProxy )
-				OnSpectatingSet( value );
+			if ( this.IsOwner() )
+				OnSpectatingSet( prevSpec, value );
 		}
 	}
 
@@ -92,12 +94,7 @@ public partial class SpectatorPawn : BasePawn
 		var view = View;
 
 		if ( Spectating.IsValid() && view.IsValid() )
-		{
-			var tView = View.GetViewTransform();
-
-			WorldPosition = tView.Position;
-			WorldRotation = tView.Rotation;
-		}
+			view.EyeRotation = Spectating.EyeRotation;
 
 		if ( !Spectating.IsValid() )
 			DoFlying( in deltaTime );
@@ -126,16 +123,13 @@ public partial class SpectatorPawn : BasePawn
 	/// <summary>
 	/// Called whenever <see cref="Spectating"/> has been set.
 	/// </summary>
-	protected virtual void OnSpectatingSet( BasePawn target )
+	protected virtual void OnSpectatingSet( BasePawn prev, BasePawn next )
 	{
 		if ( !this.IsOwner() || !View.IsValid() )
 			return;
 
-		if ( !target.IsValid() )
-		{
-			View.Mode = PawnView.Perspective.FirstPerson;
-			// View.StopTransition();
-		}
+		View.StartTransition();
+		View.UpdateTransform();
 	}
 
 	public override bool CanSpectate( BasePawn target )
