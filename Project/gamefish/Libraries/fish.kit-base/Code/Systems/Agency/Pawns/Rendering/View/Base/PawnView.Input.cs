@@ -44,6 +44,7 @@ partial class PawnView
 	[Feature( INPUT ), Group( AIMING )]
 	public FloatRange PitchRange { get; set; } = new( -89.9f, 89.9f );
 
+	[Sync]
 	[Property]
 	[Feature( INPUT ), Group( AIMING )]
 	public virtual Angles EyeAngles
