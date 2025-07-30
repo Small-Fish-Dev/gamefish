@@ -16,7 +16,7 @@ partial class BaseEntity
 	public HealthComponent HealthComponent
 	{
 		get => _hp.IsValid() ? _hp
-			: _hp = Components?.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants );
+			: _hp = Components?.Get<HealthComponent>( FindMode.EverythingInSelf | FindMode.InDescendants | FindMode.InAncestors );
 
 		set { _hp = value; }
 	}
