@@ -80,11 +80,22 @@ partial class BaseEntity
 	protected virtual NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.Destroy;
 
 	/// <summary>
+	/// The connection owning this entity.
+	/// </summary>
+	[Property, InlineEditor]
+	[Header( DEBUG )]
+	[Title( "Owner" )]
+	[ShowIf( nameof( PlayingScene ), true )]
+	[Feature( ENTITY ), Order( NETWORK_ORDER )]
+	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	public Connection NetworkOwner => Network?.Owner;
+
+	/// <summary>
 	/// The default owning connection to assign upon network setup.
 	/// Will be called <see cref="OnStart"/> if <see cref="NetworkAutomatically"/> is enabled.
 	/// </summary>
 	/// <returns> The connection to assign in the <see cref="SetupNetworking"/> method. </returns>
-	public virtual Connection DefaultNetworkOwner => Connection.Host;
+	public virtual Connection DefaultNetworkOwner => Network?.Owner ?? Connection.Host;
 
 	/// <returns> If <see cref="SetupNetworking"/> is allowed to execute. </returns>
 	protected virtual bool AllowNetworkSetup
@@ -119,6 +130,8 @@ partial class BaseEntity
 	{
 		if ( !this.IsValid() )
 			return;
+
+		// this.Log( $"assigning ownership to Connection:[{cn}]" );
 
 		GameObject?.NetworkSetup(
 			cn: cn,
