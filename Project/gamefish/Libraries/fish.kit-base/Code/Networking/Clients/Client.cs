@@ -8,7 +8,7 @@ namespace GameFish;
 public partial class Client : Agent
 {
 	public static Client Local => _local.GetSingleton( isOwned: true );
-	private static readonly Client _local;
+	protected static readonly Client _local;
 
 	[Property, Feature( FEATURE_AGENT )]
 	public override bool IsPlayer { get; } = true;
