@@ -94,7 +94,7 @@ public partial class PawnEquipment : Module<BasePawn>
 
 		foreach ( var entry in Loadout )
 		{
-			this.Log( entry );
+			// this.Log( entry );
 			TryEquip( entry.Prefab, entry.Slot?.AsInt() );
 		}
 	}
