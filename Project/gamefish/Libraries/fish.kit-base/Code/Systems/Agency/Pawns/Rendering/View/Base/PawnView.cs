@@ -65,7 +65,7 @@ public partial class PawnView : Module, ISimulate
 	/// </summary>
 	public virtual BasePawn TargetPawn => ParentPawn;
 
-	protected override bool IsParent( ModuleEntity comp )
+	public override bool IsParent( ModuleEntity comp )
 		=> comp.IsValid() && comp is BasePawn;
 
 	public virtual bool CanSimulate()

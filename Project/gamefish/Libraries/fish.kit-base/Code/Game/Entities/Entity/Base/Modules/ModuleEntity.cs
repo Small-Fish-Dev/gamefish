@@ -7,7 +7,7 @@ public partial class ModuleEntity : BaseEntity
 {
 	[Property, ReadOnly]
 	[Feature( ENTITY ), Group( MODULES )]
-	public List<Module> ModuleList { get; set; }
+	public List<Module> Modules { get; set; }
 
 	protected static bool IsModule<TMod>( Module m ) where TMod : Module
 		=> m.IsValid() && m is TMod;
@@ -29,10 +29,10 @@ public partial class ModuleEntity : BaseEntity
 	/// <returns> The cached list of modules. </returns>
 	public IEnumerable<Module> GetModules()
 	{
-		if ( ModuleList is null )
+		if ( Modules is null )
 			RegisterModules();
 
-		return ModuleList ??= [];
+		return Modules ??= [];
 	}
 
 	/// <typeparam name="TMod"> The specific module. </typeparam>
@@ -58,9 +58,12 @@ public partial class ModuleEntity : BaseEntity
 		return m.IsValid();
 	}
 
+	/// <summary>
+	/// Searches self and descendants for modules.
+	/// </summary>
 	public void RegisterModules()
 	{
-		ModuleList ??= [];
+		Modules ??= [];
 
 		foreach ( var m in Components.GetAll<Module>( FindMode.EverythingInSelfAndDescendants ) )
 			RegisterModule( m );
@@ -68,19 +71,19 @@ public partial class ModuleEntity : BaseEntity
 
 	public bool RegisterModule( Module m )
 	{
-		if ( !m.IsValid() )
+		if ( !m.IsValid() || !m.IsParent( this ) )
 			return false;
 
-		if ( ModuleList is null )
+		if ( Modules is null )
 		{
-			ModuleList = [m];
+			Modules = [m];
 		}
 		else
 		{
-			if ( ModuleList.Contains( m ) )
+			if ( Modules.Contains( m ) )
 				return false;
 
-			ModuleList.Add( m );
+			Modules.Add( m );
 		}
 
 		m.OnRegistered( this );
@@ -93,10 +96,10 @@ public partial class ModuleEntity : BaseEntity
 	public void RemoveModule( Module m )
 	{
 		// Not using IsValid because it might be destroyed.
-		if ( m is null || ModuleList is null )
+		if ( m is null || Modules is null )
 			return;
 
-		ModuleList.RemoveAll( mod => !mod.IsValid() || mod == m );
+		Modules.RemoveAll( mod => !mod.IsValid() || mod == m );
 
 		if ( m.IsValid() )
 			m.OnRemoved( this );
@@ -106,11 +109,11 @@ public partial class ModuleEntity : BaseEntity
 		return;
 	}
 
-	public void OnRegisterModule( Module m )
+	public virtual void OnRegisterModule( Module m )
 	{
 	}
 
-	public void OnRemoveModule( Module m )
+	public virtual void OnRemoveModule( Module m )
 	{
 	}
 }

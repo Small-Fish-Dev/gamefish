@@ -11,7 +11,6 @@ public partial class BaseEntity : Component, ITransform
 	public const int DEBUG_ORDER = NETWORK_ORDER + 1;
 
 	public const string MODULES = "🧩 Modules";
-	public const string MODULE = "🧩 Module";
 
 	public const string NPC = "🤖 NPC";
 	public const string MODEL = "🕺 Model";

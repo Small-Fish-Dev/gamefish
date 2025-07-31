@@ -6,6 +6,7 @@ namespace GameFish;
 public partial class PhysicsEntity : ModuleEntity, IPhysics
 {
 	public const string PHYSICS = "🍎 Physics";
+	public const int PHYSICS_ORDER = -9001;
 
 	protected Rigidbody _rb;
 	public Rigidbody Rigidbody => _rb.IsValid() ? _rb
@@ -15,7 +16,7 @@ public partial class PhysicsEntity : ModuleEntity, IPhysics
 	public Vector3 MassCenter => PhysicsBody?.MassCenter ?? GetPosition();
 
 	[Property]
-	[Feature( DEBUG ), Order( DEBUG_ORDER ), Group( PHYSICS )]
+	[Feature( ENTITY ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public virtual Vector3 Velocity
 	{
 		get => Rigidbody?.Velocity ?? default;

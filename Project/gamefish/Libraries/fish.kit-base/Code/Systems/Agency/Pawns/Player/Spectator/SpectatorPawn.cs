@@ -75,7 +75,7 @@ public partial class SpectatorPawn : BasePawn
 
 	/// <summary> How fast the spectator is moving. </summary>
 	[Property]
-	[Feature( DEBUG ), Order( DEBUG_ORDER ), Group( PHYSICS )]
+	[Feature( ENTITY ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public override Vector3 Velocity { get; set; }
 
 	protected override void OnEnabled()

@@ -7,6 +7,9 @@ namespace GameFish;
 /// </summary>
 public abstract partial class Module : BaseEntity, Component.ExecuteInEditor
 {
+	public const string MODULE = "🧩 Module";
+	public const int MODULE_ORDER = NETWORK_ORDER - 1;
+
 	/// <summary>
 	/// If true: the entire object is destroyed with this component. <br />
 	/// You should probably always enable this if it's on its own object
@@ -14,14 +17,14 @@ public abstract partial class Module : BaseEntity, Component.ExecuteInEditor
 	/// </summary>
 	[Sync]
 	[Property]
-	[Feature( ENTITY ), Group( MODULE )]
+	[Feature( ENTITY ), Group( MODULE ), Order( MODULE_ORDER )]
 	public bool DestroyObject { get; set; } = true;
 
 	/// <summary>
 	/// The entity this is registered to.
 	/// </summary>
 	[Property]
-	[Feature( ENTITY ), Group( MODULE )]
+	[Feature( ENTITY ), Group( MODULE ), Order( MODULE_ORDER )]
 	public ModuleEntity Parent
 	{
 		get => _parent.IsValid() ? _parent
@@ -31,8 +34,8 @@ public abstract partial class Module : BaseEntity, Component.ExecuteInEditor
 
 	protected ModuleEntity _parent;
 
-	/// <returns> If this module is meant to target this entity. </returns>
-	protected abstract bool IsParent( ModuleEntity comp );
+	/// <returns> If this module is meant to target a module-supporting entity. </returns>
+	public abstract bool IsParent( ModuleEntity comp );
 
 	protected override void OnEnabled()
 	{
