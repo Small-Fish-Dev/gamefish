@@ -66,10 +66,10 @@ public partial class ModuleEntity : BaseEntity
 		Modules ??= [];
 
 		foreach ( var m in Components.GetAll<Module>( FindMode.EverythingInSelfAndDescendants ) )
-			RegisterModule( m );
+			TryRegisterModule( m );
 	}
 
-	public bool RegisterModule( Module m )
+	public bool TryRegisterModule( Module m )
 	{
 		if ( !m.IsValid() || !m.IsParent( this ) )
 			return false;
@@ -115,5 +115,60 @@ public partial class ModuleEntity : BaseEntity
 
 	public virtual void OnRemoveModule( Module m )
 	{
+	}
+
+	public override void UpdateNetworking( Connection cn )
+	{
+		base.UpdateNetworking( cn );
+
+		UpdateModuleOwnership( cn );
+	}
+
+	/// <summary>
+	/// Update the network ownership of currently registered modules. <br />
+	/// Does not try to register modules if they aren't cached yet.
+	/// </summary>
+	protected void UpdateModuleOwnership( Connection cn = null )
+	{
+		if ( !this.IsValid() || Modules is null )
+			return;
+
+		cn ??= Network?.Owner;
+
+		foreach ( var mod in Modules )
+			mod?.UpdateNetworking( cn );
+	}
+
+	/// <summary>
+	/// Creates and attaches a module from a prefab.
+	/// </summary>
+	/// <param name="prefab"></param>
+	public virtual IEnumerable<Module> AddModule( PrefabFile prefab )
+	{
+		if ( !this.IsValid() )
+			return [];
+
+		if ( !prefab.IsValid() || !prefab.TrySpawn( WorldTransform, out var go ) )
+		{
+			this.Warn( $"Tried to spawn invalid module prefab:[{prefab}]!" );
+			return [];
+		}
+
+		var modules = go.Components.GetAll<Module>( FindMode.EverythingInSelfAndDescendants ) ?? [];
+
+		if ( !modules.Any() )
+		{
+			this.Warn( $"No modules found on prefab:[{prefab}]! Destroying." );
+			go.Destroy();
+			return [];
+		}
+
+		// Updated as its own object before parenting.
+		foreach ( var mod in modules )
+			mod.UpdateNetworking( Network?.Owner );
+
+		go.SetParent( GameObject, keepWorldPosition: false );
+
+		return modules;
 	}
 }

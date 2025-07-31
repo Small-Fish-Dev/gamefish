@@ -2294,14 +2294,6 @@
             },
             "Property": "Rotation",
             "Value": "0,0,0.9191279,0.3939591"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6"
-            },
-            "Property": "Rotation",
-            "Value": "0,0,0,1"
           }
         ],
         "MovedObjects": []

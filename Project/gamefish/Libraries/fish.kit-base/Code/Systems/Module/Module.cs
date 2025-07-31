@@ -69,7 +69,7 @@ public abstract partial class Module : BaseEntity, Component.ExecuteInEditor
 		var comp = Parent;
 
 		if ( comp.IsValid() )
-			comp.RegisterModule( this );
+			comp.TryRegisterModule( this );
 	}
 
 	public void RemoveModule()
