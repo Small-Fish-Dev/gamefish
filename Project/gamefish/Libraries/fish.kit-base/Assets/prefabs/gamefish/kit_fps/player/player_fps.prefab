@@ -97,16 +97,6 @@
         "__guid": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
         "__enabled": true,
         "HasForcedNetworking": false,
-        "Health": 100,
-        "HealthComponent": {
-          "_type": "component",
-          "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "HealthComponent"
-        },
-        "IsAlive": true,
-        "IsDestructible": true,
-        "MaxHealth": 100,
         "Model": {
           "_type": "component",
           "component_id": "b6d83571-0158-4a0b-936c-8786d26d6314",
@@ -310,23 +300,13 @@
             "EyesWeight": 1,
             "HasForcedNetworking": false,
             "HeadWeight": 1,
-            "Health": 100,
-            "HealthComponent": {
-              "_type": "component",
-              "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "HealthComponent"
-            },
             "Height": null,
             "IkLeftFoot": null,
             "IkLeftHand": null,
             "IkRightFoot": null,
             "IkRightHand": null,
-            "IsAlive": true,
-            "IsDestructible": true,
             "LookAt": null,
             "LookAtEnabled": false,
-            "MaxHealth": 100,
             "NetworkAutomatically": false,
             "NetworkId": "b6d83571-0158-4a0b-936c-8786d26d6314",
             "NetworkingMode": "Object",
@@ -806,17 +786,7 @@
             },
             "EyeAngles": "-0,0,0",
             "HasForcedNetworking": true,
-            "Health": 100,
-            "HealthComponent": {
-              "_type": "component",
-              "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "HealthComponent"
-            },
             "InitialDistance": 100,
-            "IsAlive": true,
-            "IsDestructible": true,
-            "MaxHealth": 100,
             "Mode": "FirstPerson",
             "ModeList": {
               "FirstPerson": true,
@@ -989,22 +959,12 @@
             "AutoGiveLoadout": true,
             "Equipped": [],
             "HasForcedNetworking": true,
-            "Health": 100,
-            "HealthComponent": {
-              "_type": "component",
-              "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "HealthComponent"
-            },
-            "IsAlive": true,
-            "IsDestructible": true,
             "Loadout": [
               {
                 "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
                 "Slot": null
               }
             ],
-            "MaxHealth": 100,
             "ModuleParent": {
               "_type": "component",
               "component_id": "00a167f2-9393-469a-879d-63a09e408188",

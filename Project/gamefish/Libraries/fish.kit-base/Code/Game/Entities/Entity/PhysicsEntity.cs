@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// A <see cref="BaseEntity"/> that can have a Rigidbody on/in it.
+/// An entity that can have a Rigidbody on/in it.
 /// </summary>
 public partial class PhysicsEntity : BaseEntity, IPhysics
 {

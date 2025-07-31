@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "person" )]
-public abstract partial class BasePawn : PhysicsEntity
+public abstract partial class BasePawn : DestructibleEntity
 {
 	public const string PAWN = "🐴 Pawn";
 

@@ -118,12 +118,7 @@
             },
             "EyeAngles": "-0,0,0",
             "HasForcedNetworking": true,
-            "Health": 0,
-            "HealthComponent": null,
             "InitialDistance": 100,
-            "IsAlive": false,
-            "IsDestructible": false,
-            "MaxHealth": 0,
             "Mode": "FirstPerson",
             "ModeList": {
               "FirstPerson": true,

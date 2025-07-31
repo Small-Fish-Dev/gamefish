@@ -1,6 +1,9 @@
 namespace GameFish;
 
-partial class BaseEntity
+/// <summary>
+/// An entity that supports health and physics.
+/// </summary>
+public partial class DestructibleEntity : PhysicsEntity
 {
 	/// <summary>
 	/// Does this entity have a valid <see cref="global::GameFish.HealthComponent"/>?
