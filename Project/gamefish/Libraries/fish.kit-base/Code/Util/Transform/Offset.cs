@@ -6,11 +6,17 @@ namespace GameFish;
 /// </summary>
 public partial struct Offset
 {
+	[InlineEditor]
 	public Vector3 Position { readonly get => _pos; set { _pos = value; } }
-	[Hide] private Vector3 _pos;
 
+	[Hide]
+	private Vector3 _pos = Vector3.Zero;
+
+	[InlineEditor]
 	public Rotation Rotation { readonly get => _r; set { _r = value; } }
-	[Hide] private Rotation _r = Rotation.Identity;
+
+	[Hide]
+	private Rotation _r = Rotation.Identity;
 
 	public static Vector3 Scale => Vector3.One;
 
@@ -31,14 +37,17 @@ public partial struct Offset
 
 	public Offset( in Transform t )
 	{
-		Position = t.Position;
-		Rotation = t.Rotation;
+		var pos = t.Position;
+		var r = t.Rotation;
+
+		Position = ITransform.IsValid( in pos ) ? pos : Vector3.Zero;
+		Rotation = ITransform.IsValid( in r ) ? r : Rotation.Identity;
 	}
 
 	public Offset( in Vector3 pos, in Rotation r )
 	{
-		Position = pos;
-		Rotation = r;
+		Position = ITransform.IsValid( in pos ) ? pos : Vector3.Zero;
+		Rotation = ITransform.IsValid( in r ) ? r : Rotation.Identity;
 	}
 
 	public readonly Offset LerpTo( in Offset offset, in float frac )

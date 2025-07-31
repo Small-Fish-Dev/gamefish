@@ -10,7 +10,7 @@ partial class BaseEntity : ITransform
 
 	public virtual bool TrySetPosition( in Vector3 newPos )
 	{
-		if ( !ITransform.ValidVector( newPos ) )
+		if ( !ITransform.IsValid( newPos ) )
 			return false;
 
 		WorldPosition = newPos;
@@ -19,7 +19,7 @@ partial class BaseEntity : ITransform
 
 	public virtual bool TrySetRotation( in Rotation rNew )
 	{
-		if ( !ITransform.ValidRotation( rNew ) )
+		if ( !ITransform.IsValid( rNew ) )
 			return false;
 
 		WorldRotation = rNew;
@@ -28,7 +28,7 @@ partial class BaseEntity : ITransform
 
 	public virtual bool TrySetScale( in Vector3 newScale )
 	{
-		if ( !ITransform.ValidVector( newScale ) )
+		if ( !ITransform.IsValid( newScale ) )
 			return false;
 
 		WorldScale = newScale;

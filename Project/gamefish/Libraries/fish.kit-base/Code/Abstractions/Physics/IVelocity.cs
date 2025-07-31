@@ -24,7 +24,7 @@ public interface IVelocity
     /// <returns> If this object allows adding of the velocity. </returns>
     public bool TryModifyVelocity( in Vector3 vel, out Vector3 result )
     {
-        if ( !ITransform.ValidVector( vel ) )
+        if ( !ITransform.IsValid( vel ) )
         {
             result = GetVelocity();
             return false;
