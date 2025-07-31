@@ -6,6 +6,6 @@ partial class BasePawn : IModules<BasePawn>
 	public IModules<BasePawn> Modules => this;
 
 	[Property, ReadOnly]
-	[Feature( DEBUG ), Order( DEBUG_ORDER ), Group( MODULES )]
+	[Feature( ENTITY ), Group( MODULES )]
 	public List<Module<BasePawn>> ModuleList { get; set; }
 }

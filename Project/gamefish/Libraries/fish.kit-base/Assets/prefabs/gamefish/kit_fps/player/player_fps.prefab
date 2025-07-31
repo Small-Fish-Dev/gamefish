@@ -780,6 +780,7 @@
             "CycleModeForwardAction": "View",
             "DebugMode": false,
             "DefaultMode": "FirstPerson",
+            "DestroyObject": true,
             "DistanceRange": {
               "Min": 50,
               "Max": 250
@@ -857,6 +858,13 @@
                 "__type": "GameFish.ViewModel",
                 "__guid": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
                 "__enabled": true,
+                "HasForcedNetworking": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
                 "Offset": {
                   "Position": "0,0,0",
                   "Rotation": "0,0,0,0",
@@ -887,6 +895,12 @@
                     "Scale": "1,1,1",
                     "Rotation": "0,0,0,0"
                   }
+                },
+                "View": {
+                  "_type": "component",
+                  "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
+                  "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
+                  "component_type": "PawnView"
                 }
               },
               {
@@ -957,6 +971,7 @@
             "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
             "__enabled": true,
             "AutoGiveLoadout": true,
+            "DestroyObject": true,
             "Equipped": [],
             "HasForcedNetworking": true,
             "Loadout": [

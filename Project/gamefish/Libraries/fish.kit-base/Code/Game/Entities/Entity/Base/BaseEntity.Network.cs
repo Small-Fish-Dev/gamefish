@@ -83,7 +83,7 @@ partial class BaseEntity
 	/// The connection owning this entity.
 	/// </summary>
 	[Property, InlineEditor]
-	[Header( DEBUG )]
+	[Header( "Debug" )]
 	[Title( "Owner" )]
 	[ShowIf( nameof( PlayingScene ), true )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
@@ -133,7 +133,7 @@ partial class BaseEntity
 
 		// this.Log( $"assigning ownership to Connection:[{cn}]" );
 
-		GameObject?.NetworkSetup(
+		GameObject.NetworkSetup(
 			cn: cn,
 			orphanMode: NetworkOrphanedMode,
 			ownerTransfer: NetworkTransferMode,

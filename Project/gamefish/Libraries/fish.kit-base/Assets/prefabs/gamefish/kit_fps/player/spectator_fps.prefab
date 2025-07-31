@@ -112,6 +112,7 @@
             "CycleModeForwardAction": "Jump",
             "DebugMode": false,
             "DefaultMode": "FirstPerson",
+            "DestroyObject": true,
             "DistanceRange": {
               "Min": 50,
               "Max": 400
@@ -176,7 +177,7 @@
             "Flags": 0,
             "Name": "View Model",
             "Position": "0,0,0",
-            "Rotation": "0,0,0,0",
+            "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "",
             "Enabled": false,
@@ -189,6 +190,13 @@
                 "__type": "GameFish.ViewModel",
                 "__guid": "d326bee5-a470-48fd-b034-93639ccc7264",
                 "__enabled": true,
+                "HasForcedNetworking": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "d326bee5-a470-48fd-b034-93639ccc7264",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
                 "Offset": {
                   "Position": "0,0,0",
                   "Rotation": "0,0,0,0",
@@ -219,6 +227,12 @@
                     "Scale": "1,1,1",
                     "Rotation": "0,0,0,0"
                   }
+                },
+                "View": {
+                  "_type": "component",
+                  "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
+                  "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
+                  "component_type": "SpectatorView"
                 }
               },
               {

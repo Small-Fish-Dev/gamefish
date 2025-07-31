@@ -7,20 +7,25 @@ namespace GameFish;
 /// </summary>
 public abstract partial class Module<T> : BaseEntity, Component.ExecuteInEditor where T : Component, IModules<T>
 {
-	public const string FEATURE_MODULES = "🧩 Modules";
-	public const string GROUP_MODULE = "🧩 Module";
+	/// <summary>
+	/// If true: the entire object is destroyed with this component. <br />
+	/// You should probably always enable this if it's on its own object
+	/// and in a networked environment to synchronize its removal.
+	/// </summary>
+	[Sync]
+	[Property]
+	[Feature( ENTITY ), Group( MODULE )]
+	public bool DestroyObject { get; set; } = true;
 
 	/// <summary>
 	/// The <typeparamref name="T"/> this module should register with.
 	/// </summary>
 	[Property]
-	[Feature( DEBUG ), Order( DEBUG_ORDER ), Group( GROUP_MODULE )]
+	[Feature( ENTITY ), Group( MODULE )]
 	public T ModuleParent
 	{
 		get => _comp.IsValid() ? _comp
 			: _comp = Components?.Get<T>( FindMode.EverythingInSelfAndAncestors );
-
-		set => _comp = value;
 	}
 
 	protected T _comp;
@@ -47,6 +52,9 @@ public abstract partial class Module<T> : BaseEntity, Component.ExecuteInEditor 
 		base.OnDestroy();
 
 		RemoveModule();
+
+		if ( DestroyObject )
+			GameObject?.Destroy();
 	}
 
 	public void RegisterModule()
