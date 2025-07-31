@@ -39,14 +39,7 @@
         "IsAlive": false,
         "IsDestructible": false,
         "MaxHealth": 0,
-        "ModuleList": [
-          {
-            "_type": "component",
-            "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
-            "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-            "component_type": "SpectatorView"
-          }
-        ],
+        "Modules": [],
         "NetworkAutomatically": true,
         "NetworkId": "38fcaa19-216d-4fde-844e-003465ac2acc",
         "NetworkingMode": "Object",
@@ -125,12 +118,6 @@
               "FirstPerson": true,
               "ThirdPerson": true
             },
-            "ModuleParent": {
-              "_type": "component",
-              "component_id": "38fcaa19-216d-4fde-844e-003465ac2acc",
-              "go": "3f0faaed-c487-4bb8-abd0-c3e271085bd9",
-              "component_type": "SpectatorPawn"
-            },
             "NetworkAutomatically": true,
             "NetworkId": "c06f4824-6a01-4022-ac58-91126185aa0a",
             "NetworkingMode": "Object",
@@ -143,6 +130,12 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "Parent": {
+              "_type": "component",
+              "component_id": "38fcaa19-216d-4fde-844e-003465ac2acc",
+              "go": "3f0faaed-c487-4bb8-abd0-c3e271085bd9",
+              "component_type": "SpectatorPawn"
+            },
             "PitchClamping": true,
             "PitchRange": {
               "Min": -89.9,

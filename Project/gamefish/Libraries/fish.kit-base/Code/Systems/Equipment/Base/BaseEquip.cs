@@ -11,7 +11,6 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 
 	public const string FEATURE_INPUT = "🕹 Input";
 	public const string FEATURE_WEAPON = "🔫 Weapon";
-	public const string FEATURE_VISUALS = "🎨 Visuals";
 
 	public const string GROUP_SLOT = "Slot";
 	public const string GROUP_METHOD = "Input Method";
@@ -19,10 +18,13 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	public const string GROUP_MODELS = "Models";
 	public const string GROUP_RANGE = "Range";
 
-	/// <summary> Identifies this class of equipment. </summary>
+	/// <summary>
+	/// Identifies this class of equipment. <br />
+	/// Used for spawning purposes(such as with commands).
+	/// </summary>
 	[Property]
 	[Feature( EQUIP )]
-	public string ID
+	public string ClassId
 	{
 		get => string.IsNullOrWhiteSpace( _id ) ? _id = GameObject.Name : _id;
 		set => _id = value;
@@ -33,22 +35,19 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	/// <summary> The name of the equipment to display. </summary>
 	[Property]
 	[Feature( EQUIP )]
-	public virtual string Name { get; }
+	public virtual string Name { get; set; }
 
 	[Property]
-	[Feature( FEATURE_VISUALS ), Group( GROUP_MODELS )]
+	[Feature( EQUIP ), Group( GROUP_MODELS )]
 	public Model ViewModel { get; set; }
-
-	[Property, ReadOnly]
-	[Feature( FEATURE_VISUALS ), Group( GROUP_MODELS )]
 	public ViewModel ViewComponent => Owner?.ViewModel;
 
 	[Property]
-	[Feature( FEATURE_VISUALS ), Group( GROUP_MODELS )]
+	[Feature( EQUIP ), Group( GROUP_MODELS )]
 	public Model WorldModel { get => WorldRenderer?.Model; set { if ( WorldRenderer.IsValid() ) WorldRenderer.Model = value; } }
 
 	[Property]
-	[Feature( FEATURE_VISUALS ), Group( GROUP_MODELS )]
+	[Feature( EQUIP ), Group( GROUP_MODELS )]
 	public SkinnedModelRenderer WorldRenderer
 	{
 		// Auto-cache the component.
@@ -59,7 +58,8 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	}
 
 	protected SkinnedModelRenderer _wr;
-	public SkinnedModelRenderer SkinRenderer { get => WorldRenderer; set => WorldRenderer = value; }
+
+	public SkinnedModelRenderer SkinRenderer { get => WorldRenderer; set => _wr = value; }
 
 	[Property]
 	[Feature( EQUIP ), Group( DEBUG )]
@@ -138,13 +138,13 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	public Transform AimTransform => new( AimPosition, Rotation.LookAt( AimDirection ) );
 
 	public override string ToString()
-		=> Name ?? base.ToString();
+		=> $"{ClassId}|{Name}";
 
 	protected override void OnStart()
 	{
-		base.OnStart();
-
 		Tags?.Add( TAG );
+
+		base.OnStart();
 	}
 
 	public virtual bool AllowInput()

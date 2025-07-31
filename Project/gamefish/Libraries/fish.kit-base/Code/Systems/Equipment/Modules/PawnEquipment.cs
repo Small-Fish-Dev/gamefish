@@ -73,6 +73,7 @@ public partial class PawnEquipment : Module
 			Holster( _activeEquip );
 
 			_activeEquip = value;
+
 			Deploy( value );
 		}
 	}
@@ -81,7 +82,7 @@ public partial class PawnEquipment : Module
 
 	public BasePawn Pawn => Parent as BasePawn;
 
-	protected override bool IsParent( ModuleEntity comp )
+	public override bool IsParent( ModuleEntity comp )
 		=> comp.IsValid() && comp is BasePawn;
 
 	protected override void OnStart()
@@ -189,7 +190,7 @@ public partial class PawnEquipment : Module
 		}
 
 		// Allow restricting one weapon at a time.
-		if ( UniqueEquips && Any( e.ID ) )
+		if ( UniqueEquips && Any( e.ClassId ) )
 			return false;
 
 		// Allow restricting to a specific slot.

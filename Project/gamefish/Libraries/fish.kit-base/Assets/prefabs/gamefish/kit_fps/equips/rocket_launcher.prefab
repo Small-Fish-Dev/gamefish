@@ -18,15 +18,47 @@
         "__type": "GameFish.ProjectileWeapon",
         "__guid": "aaecec5b-4265-4869-a9c2-4fcab81437f5",
         "__enabled": true,
+        "ClassId": "rocket_launcher",
         "DefaultMaxAmmo": 1,
         "DefaultSlot": 0,
+        "DeployedOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,0,1",
+          "Transform": {
+            "Position": "0,0,-70",
+            "Scale": "1,1,1",
+            "Rotation": "0,0,0,1"
+          }
+        },
         "HasAmmo": true,
-        "Health": 0,
-        "HealthComponent": null,
-        "ID": "rocket_launcher",
-        "IsAlive": false,
-        "IsDestructible": false,
-        "MaxHealth": 0,
+        "HasForcedNetworking": true,
+        "HolsteringOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,-0.3826835,0.9238795",
+          "Transform": {
+            "Position": "0,0,-70",
+            "Scale": "1,1,1",
+            "Rotation": "0,0,-0.3826835,0.9238795"
+          }
+        },
+        "InitialOffset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,0",
+          "Transform": {
+            "Position": "0,0,0",
+            "Scale": "1,1,1",
+            "Rotation": "0,0,0,0"
+          }
+        },
+        "Inventory": null,
+        "Modules": [],
+        "Name": "Rocket Launcher",
+        "NetworkAutomatically": true,
+        "NetworkId": "aaecec5b-4265-4869-a9c2-4fcab81437f5",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -34,19 +66,23 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideScale": false,
-        "PrimaryCooldown": 1,
-        "PrimaryHeld": false,
+        "Owner": null,
+        "PrimaryAction": "Attack1",
+        "PrimaryCooldown": 0.25,
+        "PrimaryHeld": true,
         "ProjectilePrefab": "prefabs/gamefish/kit_fps/projectiles/missile1.prefab",
         "ProjectileStartDistance": 16,
         "ReloadDuration": 1,
         "Scale": "1,1,1",
+        "SecondaryAction": "Attack2",
         "SecondaryCooldown": 1,
         "SecondaryHeld": false,
         "Slot": 0,
         "Speed": 3000,
+        "Velocity": "0,0,0",
         "ViewModel": null,
         "WorldModel": null,
-        "WorldModelComponent": null
+        "WorldRenderer": null
       }
     ],
     "Children": [],

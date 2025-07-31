@@ -49,20 +49,7 @@
         "JumpButton": "jump",
         "JumpSpeed": 250,
         "MaxHealth": 100,
-        "ModuleList": [
-          {
-            "_type": "component",
-            "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
-            "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
-            "component_type": "PawnView"
-          },
-          {
-            "_type": "component",
-            "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
-            "go": "4392db66-be79-4a96-9f50-66fb797af589",
-            "component_type": "PawnEquipment"
-          }
-        ],
+        "Modules": [],
         "MoveSpeed": 100,
         "NetworkAutomatically": true,
         "NetworkId": "00a167f2-9393-469a-879d-63a09e408188",
@@ -103,6 +90,7 @@
           "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
           "component_type": "ActorCitizenModel"
         },
+        "Modules": [],
         "NetworkAutomatically": false,
         "NetworkId": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
         "NetworkingMode": "Object",
@@ -793,12 +781,6 @@
               "FirstPerson": true,
               "ThirdPerson": true
             },
-            "ModuleParent": {
-              "_type": "component",
-              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "PlayerPawn"
-            },
             "NetworkAutomatically": true,
             "NetworkId": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "NetworkingMode": "Object",
@@ -811,6 +793,12 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "Parent": {
+              "_type": "component",
+              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
+              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+              "component_type": "PlayerPawn"
+            },
             "PitchClamping": true,
             "PitchRange": {
               "Min": -89.9,
@@ -980,12 +968,6 @@
                 "Slot": null
               }
             ],
-            "ModuleParent": {
-              "_type": "component",
-              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "PlayerPawn"
-            },
             "NetworkAutomatically": true,
             "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
             "NetworkingMode": "Object",
@@ -998,6 +980,12 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "Parent": {
+              "_type": "component",
+              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
+              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+              "component_type": "PlayerPawn"
+            },
             "SlotCapacity": 1,
             "SlotCount": 10,
             "StrictSlots": false,

@@ -63,7 +63,7 @@ partial class PawnEquipment
 		if ( Equipped is null || id is null )
 			return null;
 
-		return Equipped.FirstOrDefault( e => e.IsValid() && e.ID == id );
+		return Equipped.FirstOrDefault( e => e.IsValid() && e.ClassId == id );
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ partial class PawnEquipment
 		if ( Equipped is null || id is null )
 			return [];
 
-		return Equipped.Where( e => e.IsValid() && e.ID == id );
+		return Equipped.Where( e => e.IsValid() && e.ClassId == id );
 	}
 
 	public bool Any<T>( T e ) where T : BaseEquip
