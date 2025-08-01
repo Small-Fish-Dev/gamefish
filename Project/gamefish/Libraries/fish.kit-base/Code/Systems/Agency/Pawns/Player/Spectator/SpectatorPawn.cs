@@ -100,7 +100,9 @@ public partial class SpectatorPawn : BasePawn
 		if ( !view.IsValid() )
 			return;
 
-		view.TrySetTransform( tView );
+		view.ViewPosition = tView.Position;
+		view.ViewRotation = tView.Rotation;
+
 		view.StartTransition( useWorldPosition: true );
 	}
 
