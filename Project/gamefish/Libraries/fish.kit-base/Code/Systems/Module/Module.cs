@@ -60,8 +60,8 @@ public abstract partial class Module : BaseEntity, Component.ExecuteInEditor
 
 		RemoveModule();
 
-		if ( DestroyObject )
-			GameObject?.Destroy();
+		if ( DestroyObject && GameObject.IsValid() && this.InGame() )
+			GameObject.Destroy();
 	}
 
 	public void RegisterModule()

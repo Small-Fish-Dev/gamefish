@@ -54,7 +54,7 @@ public partial class Client : Agent
 	{
 		base.OnDestroy();
 
-		if ( GameObject.IsValid() )
+		if ( GameObject.IsValid() && this.InGame() )
 		{
 			this.Log( $"was destroyed. cleaning up object:[{GameObject}]" );
 			GameObject.Destroy();
