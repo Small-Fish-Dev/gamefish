@@ -7,7 +7,7 @@ partial class BaseEquip
 	/// </summary>
 	[Property, InlineEditor]
 	[Feature( PawnView.VIEW )]
-	public Offset InitialOffset { get; set; }
+	public Offset DefaultOffset { get; set; } = new( global::Transform.Zero );
 
 	/// <summary>
 	/// The postion/rotation when first deploying this.
@@ -22,4 +22,6 @@ partial class BaseEquip
 	[Property, InlineEditor]
 	[Feature( PawnView.VIEW )]
 	public Offset HolsteringOffset { get; set; } = new( Vector3.Down * 70f, Rotation.FromYaw( -45f ) );
+
+	public ViewRenderer ViewRenderer => Owner?.ViewRenderer;
 }

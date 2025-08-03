@@ -40,7 +40,6 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	[Property]
 	[Feature( EQUIP ), Group( GROUP_MODELS )]
 	public Model ViewModel { get; set; }
-	public ViewModel ViewComponent => Owner?.ViewModel;
 
 	[Property]
 	[Feature( EQUIP ), Group( GROUP_MODELS )]

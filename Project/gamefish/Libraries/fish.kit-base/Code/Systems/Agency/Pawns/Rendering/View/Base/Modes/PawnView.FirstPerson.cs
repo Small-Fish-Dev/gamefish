@@ -7,7 +7,7 @@ partial class PawnView
 	[Property]
 	[Feature( MODES )]
 	[Group( FIRST_PERSON ), Order( FIRST_PERSON_ORDER )]
-	public bool ShowViewModel { get; set; } = true;
+	public bool ShowViewRenderer { get; set; } = true;
 
 	protected virtual void OnFirstPersonModeSet()
 	{
@@ -27,30 +27,30 @@ partial class PawnView
 
 		Relative = new();
 
-		UpdateViewModel( in deltaTime );
+		UpdateViewRenderer( in deltaTime );
 	}
 
-	protected virtual void ToggleViewModel( bool isEnabled )
+	protected virtual void ToggleViewRenderer( bool isEnabled )
 	{
-		var vm = ViewModel;
+		var vm = ViewRenderer;
 
 		if ( vm.IsValid() )
 			vm.GameObject.Enabled = isEnabled;
 	}
 
-	protected virtual void UpdateViewModel( in float deltaTime )
+	protected virtual void UpdateViewRenderer( in float deltaTime )
 	{
 		if ( Mode != Perspective.FirstPerson )
 			return;
 
-		var vm = ViewModel;
+		var vm = ViewRenderer;
 
 		if ( !vm.IsValid() )
 			return;
 
 		var isFirstPerson = IsFirstPerson();
 
-		ToggleViewModel( isFirstPerson );
+		ToggleViewRenderer( isFirstPerson );
 
 		if ( isFirstPerson )
 			vm.UpdateOffset( deltaTime );

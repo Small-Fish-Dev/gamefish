@@ -85,11 +85,11 @@
           "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
           "component_type": "PawnView"
         },
-        "ViewModel": {
+        "ViewRenderer": {
           "_type": "component",
-          "component_id": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+          "component_id": "6b80b465-dead-4b04-88e5-94fb1468ca62",
           "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ViewModel"
+          "component_type": "ViewRenderer"
         }
       },
       {
@@ -830,14 +830,14 @@
             },
             "ScrollSensitivity": 15,
             "ScrollSpeed": 5,
-            "ShowViewModel": true,
+            "ShowViewRenderer": true,
             "TransitionSmoothing": 0.35,
             "TransitionSpeed": 3,
-            "ViewModel": {
+            "ViewRenderer": {
               "_type": "component",
-              "component_id": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+              "component_id": "6b80b465-dead-4b04-88e5-94fb1468ca62",
               "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-              "component_type": "ViewModel"
+              "component_type": "ViewRenderer"
             }
           }
         ],
@@ -858,12 +858,13 @@
             "OwnerTransfer": 1,
             "Components": [
               {
-                "__type": "GameFish.ViewModel",
-                "__guid": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+                "__type": "GameFish.ViewRenderer",
+                "__guid": "6b80b465-dead-4b04-88e5-94fb1468ca62",
                 "__enabled": true,
                 "HasForcedNetworking": true,
+                "ModelRenderer": null,
                 "NetworkAutomatically": true,
-                "NetworkId": "bcc0ec7b-1fe9-4f35-9db6-3fe24c24f7b1",
+                "NetworkId": "6b80b465-dead-4b04-88e5-94fb1468ca62",
                 "NetworkingMode": "Object",
                 "NetworkOrphanedMode": "ClearOwner",
                 "NetworkOwner": null,
@@ -883,12 +884,6 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "SkinRenderer": {
-                  "_type": "component",
-                  "component_id": "c0cb14a1-7686-432d-94de-c976c79fb5c4",
-                  "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-                  "component_type": "SkinnedModelRenderer"
-                },
                 "Speed": 15,
                 "TargetOffset": {
                   "Position": "0,0,0",

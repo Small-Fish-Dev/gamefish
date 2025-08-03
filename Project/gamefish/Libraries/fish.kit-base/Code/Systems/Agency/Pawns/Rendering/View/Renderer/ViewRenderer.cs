@@ -4,7 +4,7 @@ namespace GameFish;
 /// This should be on a child object of the pawn's viewing object.
 /// </summary>
 [Icon( "sports_mma" )]
-public partial class ViewModel : BaseEntity, ISkinned
+public partial class ViewRenderer : BaseEntity, ISkinned
 {
 	public const string VIEW = PawnView.VIEW;
 
@@ -21,18 +21,20 @@ public partial class ViewModel : BaseEntity, ISkinned
 	protected PawnView _view;
 
 	[Property]
-	[Title( "Renderer" )]
 	[Feature( VIEW )]
-	public SkinnedModelRenderer SkinRenderer
+	[Title( "Renderer" )]
+	public SkinnedModelRenderer ModelRenderer
 	{
 		// Auto-cache the component.
-		get => _r.IsValid() ? _r
-			: _r = Components?.Get<SkinnedModelRenderer>( FindMode.EverythingInSelfAndDescendants );
+		get => _wr.IsValid() ? _wr
+			: _wr = Components?.Get<SkinnedModelRenderer>( FindMode.EverythingInDescendants );
 
-		set { _r = value; }
+		set { _wr = value; }
 	}
 
-	protected SkinnedModelRenderer _r;
+	protected SkinnedModelRenderer _wr;
+
+	public SkinnedModelRenderer SkinRenderer { get => ModelRenderer; set => _wr = value; }
 
 	/// <summary>
 	/// How quickly to affect the view model's orientation towards its destination.

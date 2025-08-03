@@ -19,7 +19,7 @@ partial class BasePawn
 
 	[Property]
 	[Feature( PAWN ), Group( PawnView.VIEW )]
-	public ViewModel ViewModel => View?.ViewModel;
+	public ViewRenderer ViewRenderer => View?.ViewRenderer;
 
 	/// <summary>
 	/// Where traces and the view should originate from.

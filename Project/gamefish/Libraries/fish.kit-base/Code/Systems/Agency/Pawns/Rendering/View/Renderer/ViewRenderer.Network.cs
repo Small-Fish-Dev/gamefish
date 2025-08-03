@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class ViewModel
+partial class ViewRenderer
 {
 	protected override bool IsNetworkingForced => true;
 

@@ -3,19 +3,19 @@ namespace GameFish;
 partial class PawnView
 {
 	/// <summary>
-	/// The <see cref="global::GameFish.ViewModel"/> component. <br />
+	/// The <see cref="global::GameFish.ViewRenderer"/> component. <br />
 	/// Needs to be on a child of this object!
 	/// </summary>
 	[Property]
 	[Feature( VIEW )]
-	public ViewModel ViewModel
+	public ViewRenderer ViewRenderer
 	{
 		// Auto-cache the component.
-		get => _vm.IsValid() ? _vm
-			: _vm = Components?.Get<ViewModel>( FindMode.EverythingInDescendants );
+		get => _vr.IsValid() ? _vr
+			: _vr = Components?.Get<ViewRenderer>( FindMode.EverythingInDescendants );
 
-		set { _vm = value; }
+		set { _vr = value; }
 	}
 
-	protected ViewModel _vm;
+	protected ViewRenderer _vr;
 }

@@ -4,19 +4,20 @@ partial class BaseEquip
 {
 	public EquipState EquipState
 	{
-		get => _state;
+		get => _equipState;
 		set
 		{
-			if ( _state == value )
+			if ( _equipState == value )
 				return;
 
-			_state = value;
+			_equipState = value;
 
 			if ( Scene.IsValid() && !Scene.IsEditor )
-				OnEquipStateChanged( _state );
+				OnEquipStateChanged( _equipState );
 		}
 	}
-	private EquipState _state;
+
+	protected EquipState _equipState;
 
 	protected override void OnPreRender()
 	{
@@ -38,10 +39,10 @@ partial class BaseEquip
 
 	public void SetVisibility( bool viewModel, bool worldModel = false )
 	{
-		var vm = ViewComponent;
+		var r = ViewRenderer?.ModelRenderer;
 
-		if ( vm.IsValid() )
-			vm.Enabled = viewModel;
+		if ( r.IsValid() )
+			r.Enabled = viewModel;
 
 		if ( WorldRenderer.IsValid() )
 			WorldRenderer.Enabled = worldModel;

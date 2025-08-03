@@ -148,7 +148,7 @@ partial class PawnView
 			this.Log( "Set Perspective: " + newMode );
 
 		if ( newMode != Perspective.FirstPerson )
-			ToggleViewModel( false );
+			ToggleViewRenderer( false );
 
 		switch ( _mode )
 		{
