@@ -20,6 +20,15 @@
         "__enabled": true,
         "ClassId": "rocket_launcher",
         "DefaultMaxAmmo": 1,
+        "DefaultOffset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Transform": {
+            "Position": "0,0,0",
+            "Scale": "1,1,1",
+            "Rotation": "0,0,0,1"
+          }
+        },
         "DefaultSlot": 0,
         "DeployedOffset": {
           "Position": "0,0,-70",
@@ -39,15 +48,6 @@
             "Position": "0,0,-70",
             "Scale": "1,1,1",
             "Rotation": "0,0,-0.3826835,0.9238795"
-          }
-        },
-        "InitialOffset": {
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,0",
-          "Transform": {
-            "Position": "0,0,0",
-            "Scale": "1,1,1",
-            "Rotation": "0,0,0,0"
           }
         },
         "Inventory": null,
@@ -80,12 +80,79 @@
         "Slot": 0,
         "Speed": 3000,
         "Velocity": "0,0,0",
-        "ViewModel": null,
-        "WorldModel": null,
-        "WorldRenderer": null
+        "ViewModel": "models/weapons/sbox_shotgun_spaghellim4/v_spaghellim4.vmdl",
+        "WorldModel": "models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl",
+        "WorldRenderer": {
+          "_type": "component",
+          "component_id": "50af5ef5-0ae0-47be-bcb5-183fbc8486a6",
+          "go": "a4868b7e-8bcf-4c75-8273-77ebd84fe43d",
+          "component_type": "SkinnedModelRenderer"
+        }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "a4868b7e-8bcf-4c75-8273-77ebd84fe43d",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "World Model",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "50af5ef5-0ae0-47be-bcb5-183fbc8486a6",
+            "__enabled": true,
+            "AnimationGraph": null,
+            "BodyGroups": 3,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      }
+    ],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,
@@ -111,6 +178,9 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [],
+  "__references": [
+    "facepunch.v_spaghellim4#110414",
+    "facepunch.w_spaghellim4#58057"
+  ],
   "__version": 2
 }
