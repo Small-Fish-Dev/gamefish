@@ -104,6 +104,7 @@ public partial class SpectatorPawn : BasePawn
 		view.ViewRotation = tView.Rotation;
 
 		view.StartTransition( useWorldPosition: true );
+		view.UpdateViewTransform();
 	}
 
 	public override void FrameSimulate( in float deltaTime )

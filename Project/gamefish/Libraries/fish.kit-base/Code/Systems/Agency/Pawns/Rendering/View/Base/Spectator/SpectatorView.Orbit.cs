@@ -25,23 +25,42 @@ partial class SpectatorView
 
 	public override Rotation PawnEyeRotation => IsOrbiting ? ViewRotation : base.PawnEyeRotation;
 
+	public void StopOrbiting()
+	{
+		OrbitingReset = null;
+		StartTransition();
+	}
+
 	public override void FrameSimulate( in float deltaTime )
 	{
 		base.FrameSimulate( deltaTime );
 
 		if ( !IsOrbiting && OrbitingReset.HasValue )
+			StopOrbiting();
+	}
+
+	public override void UpdateViewTransform( bool updateView = true, bool updateObject = true )
+	{
+		if ( !IsOrbiting )
 		{
-			OrbitingReset = null;
-			StartTransition();
+			base.UpdateViewTransform( updateView, updateObject );
+			return;
 		}
+
+		var rView = ViewRotation;
+
+		base.UpdateViewTransform( updateView, updateObject: false );
+
+		if ( updateObject )
+			TrySetTransform( ViewTransform.WithRotation( rView ) );
 	}
 
 	protected override void DoAiming()
 	{
-		if ( IsFirstPerson() )
+		if ( IsSpectating && IsFirstPerson() )
 		{
-			if ( IsSpectating && OrbitingReset.HasValue )
-				OrbitingReset = null;
+			if ( OrbitingReset.HasValue )
+				StopOrbiting();
 
 			return;
 		}

@@ -38,8 +38,16 @@
         "HealthComponent": null,
         "IsAlive": false,
         "IsDestructible": false,
+        "IsPlayer": false,
         "MaxHealth": 0,
-        "Modules": [],
+        "Modules": [
+          {
+            "_type": "component",
+            "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
+            "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
+            "component_type": "SpectatorView"
+          }
+        ],
         "NetworkAutomatically": true,
         "NetworkId": "38fcaa19-216d-4fde-844e-003465ac2acc",
         "NetworkingMode": "Object",
@@ -65,12 +73,7 @@
           "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
           "component_type": "SpectatorView"
         },
-        "ViewModel": {
-          "_type": "component",
-          "component_id": "d326bee5-a470-48fd-b034-93639ccc7264",
-          "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
-          "component_type": "ViewModel"
-        }
+        "ViewRenderer": null
       }
     ],
     "Children": [
@@ -94,6 +97,7 @@
             "__guid": "c06f4824-6a01-4022-ac58-91126185aa0a",
             "__enabled": true,
             "AllowCyclingMode": true,
+            "AllowOrbiting": true,
             "CollideOwned": false,
             "Collision": true,
             "CollisionHitTags": "solid",
@@ -130,6 +134,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "OrbitingResetDelay": 3,
             "Parent": {
               "_type": "component",
               "component_id": "38fcaa19-216d-4fde-844e-003465ac2acc",
@@ -152,15 +157,10 @@
             },
             "ScrollSensitivity": 20,
             "ScrollSpeed": 5,
-            "ShowViewModel": true,
+            "ShowViewRenderer": true,
             "TransitionSmoothing": 0.7,
             "TransitionSpeed": 3,
-            "ViewModel": {
-              "_type": "component",
-              "component_id": "d326bee5-a470-48fd-b034-93639ccc7264",
-              "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
-              "component_type": "ViewModel"
-            }
+            "ViewRenderer": null
           }
         ],
         "Children": [
@@ -179,55 +179,6 @@
             "NetworkOrphaned": 0,
             "OwnerTransfer": 1,
             "Components": [
-              {
-                "__type": "GameFish.ViewModel",
-                "__guid": "d326bee5-a470-48fd-b034-93639ccc7264",
-                "__enabled": true,
-                "HasForcedNetworking": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "d326bee5-a470-48fd-b034-93639ccc7264",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "Offset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0",
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "1,1,1",
-                    "Rotation": "0,0,0,0"
-                  }
-                },
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "SkinRenderer": {
-                  "_type": "component",
-                  "component_id": "c141c37b-f3dc-49ea-9ee5-628f3d8bf989",
-                  "go": "bde78980-4c59-4322-985e-82f1a5e0b812",
-                  "component_type": "SkinnedModelRenderer"
-                },
-                "Speed": 15,
-                "TargetOffset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0",
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "1,1,1",
-                    "Rotation": "0,0,0,0"
-                  }
-                },
-                "View": {
-                  "_type": "component",
-                  "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
-                  "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-                  "component_type": "SpectatorView"
-                }
-              },
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
                 "__guid": "c141c37b-f3dc-49ea-9ee5-628f3d8bf989",
