@@ -54,8 +54,13 @@ partial class SpectatorView
 
 	protected override void DoAiming()
 	{
-		if ( IsSpectating && IsFirstPerson() )
+		if ( IsFirstPerson() )
+		{
+			if ( IsSpectating && OrbitingReset.HasValue )
+				OrbitingReset = 0f;
+
 			return;
+		}
 
 		if ( AllowOrbiting && !Input.AnalogLook.AsVector3().AlmostEqual( Vector3.Zero ) )
 			OrbitingReset = OrbitingResetDelay;
