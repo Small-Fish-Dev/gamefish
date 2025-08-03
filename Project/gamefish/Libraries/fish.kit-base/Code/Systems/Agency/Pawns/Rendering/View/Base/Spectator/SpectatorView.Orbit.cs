@@ -49,6 +49,11 @@ partial class SpectatorView
 			return;
 		}
 
+		// Shit gets wonky if you try to aim during a transition.
+		// TODO: Fix that or scale input depending on "velocity".
+		if ( PreviousOffset.HasValue && TransitionFraction < 0.9f )
+			return;
+
 		if ( AllowOrbiting && !Input.AnalogLook.AsVector3().AlmostEqual( Vector3.Zero ) )
 			OrbitingReset = OrbitingResetDelay;
 
