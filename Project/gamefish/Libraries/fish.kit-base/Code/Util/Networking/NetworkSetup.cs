@@ -41,8 +41,8 @@ public static partial class GameFish
 		}
 	}
 
-	/// <returns> If this object is explicitly owned by the local client. </returns>
+	/// <returns> If this object is valid and explicitly owned by the local client. </returns>
 	public static bool IsOwner( this GameObject go ) => go.IsValid() && (go.Network?.IsOwner ?? false);
-	/// <returns> If this component's object is explicitly owned by the local client. </returns>
+	/// <returns> If this component's object is valid and explicitly owned by the local client. </returns>
 	public static bool IsOwner( this Component comp ) => comp.IsValid() && (comp.Network?.IsOwner ?? false);
 }
