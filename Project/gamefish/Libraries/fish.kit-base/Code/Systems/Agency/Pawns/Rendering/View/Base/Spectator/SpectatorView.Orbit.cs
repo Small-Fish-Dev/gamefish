@@ -39,25 +39,9 @@ partial class SpectatorView
 			StopOrbiting();
 	}
 
-	/*public override void UpdateViewTransform( bool updateView = true, bool updateObject = true )
-	{
-		if ( !IsOrbiting )
-		{
-			base.UpdateViewTransform( updateView, updateObject );
-			return;
-		}
-
-		var rView = ViewRotation;
-
-		base.UpdateViewTransform( updateView, updateObject: false );
-
-		if ( updateObject )
-			TrySetTransform( ViewTransform.WithRotation( rView ) );
-	}*/
-
 	protected override void DoAiming()
 	{
-		if ( IsSpectating && IsFirstPerson() )
+		if ( IsSpectating && Mode is Perspective.FirstPerson )
 		{
 			if ( OrbitingReset.HasValue )
 				StopOrbiting();

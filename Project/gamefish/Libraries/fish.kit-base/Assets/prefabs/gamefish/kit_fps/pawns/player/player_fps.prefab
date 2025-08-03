@@ -46,6 +46,7 @@
         },
         "IsAlive": true,
         "IsDestructible": true,
+        "IsPlayer": false,
         "JumpButton": "jump",
         "JumpSpeed": 250,
         "MaxHealth": 100,

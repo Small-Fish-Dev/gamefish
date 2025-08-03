@@ -37,6 +37,8 @@ public partial class SpectatorView : PawnView
 		if ( !IsSpectating )
 			return;
 
+		OrbitingReset = null;
+
 		base.StartTransition( useWorldPosition );
 
 		ParentPawn?.SetVelocity( default );
