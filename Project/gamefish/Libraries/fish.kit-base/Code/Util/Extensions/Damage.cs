@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public static class DamageExtensions
+public static partial class GameFish
 {
     public const FindMode DefaultFindMode = FindMode.EnabledInSelf | FindMode.InAncestors;
 
