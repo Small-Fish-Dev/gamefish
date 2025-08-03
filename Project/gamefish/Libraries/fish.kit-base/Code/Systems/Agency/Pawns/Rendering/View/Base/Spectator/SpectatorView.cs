@@ -38,6 +38,15 @@ public partial class SpectatorView : PawnView
 			return;
 
 		base.StartTransition( useWorldPosition );
+
+		ParentPawn?.SetVelocity( default );
+	}
+
+	public override void StopTransition()
+	{
+		base.StopTransition();
+
+		ParentPawn?.SetVelocity( default );
 	}
 
 	protected override void UpdateTransition( in float deltaTime )
