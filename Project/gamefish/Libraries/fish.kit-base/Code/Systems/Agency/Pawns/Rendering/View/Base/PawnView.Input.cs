@@ -69,13 +69,29 @@ partial class PawnView
 	{
 		var angLook = Input.AnalogLook;
 
-		Angles angAim = EyeAngles;
+		if ( PitchClamping )
+		{
+			Angles angAim = EyeAngles;
 
-		angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( PitchRange );
-		angAim.yaw = (angAim.yaw + angLook.yaw).NormalizeDegrees();
-		angAim.roll = angAim.roll.LerpDegreesTo( 0f, Time.Delta * 10f );
+			angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( PitchRange );
+			angAim.yaw += angLook.yaw;
 
-		EyeAngles = angAim;
+			angAim.roll = angAim.roll.LerpDegreesTo( 0f, Time.Delta * 10f );
+
+			EyeAngles = angAim;
+		}
+		else
+		{
+			var rAim = ViewRotation;
+			var rInverse = rAim.Inverse;
+
+			rAim *= Rotation.FromAxis( rInverse.Up, angLook.yaw );
+			rAim *= Rotation.FromPitch( angLook.pitch );
+
+			rAim *= Rotation.FromRoll( -rAim.Roll() * Time.Delta * 10f );
+
+			EyeAngles = rAim;
+		}
 	}
 
 	protected virtual void DoModeCycling()
