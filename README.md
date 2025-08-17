@@ -4,11 +4,11 @@ It ain't done yet, but it's got some gems already. Take a peek.
 
 If you like what you see then remember: it's all MIT, just pinky promise to let us know you used it.
 
-# Base Kit
+# Game Fish
 
 ### What?
 
-The fundamental systems/abstractions used in our kits.
+A series of kits(including the "base" kit).
 
 A "kit" lets you drop something in your project and get started with a type of game right away.
 
