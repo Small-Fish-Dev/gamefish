@@ -60,9 +60,9 @@ public abstract partial class ControllerPawn : BasePawn
 		base.FixedSimulate( deltaTime );
 	}
 
-	public override void SetLookRotation( in Rotation rLook )
+	public override void OnSetLookRotation( in Rotation rLook )
 	{
-		base.SetLookRotation( rLook );
+		base.OnSetLookRotation( rLook );
 
 		if ( Controller.IsValid() )
 			Controller.EyeAngles = rLook;

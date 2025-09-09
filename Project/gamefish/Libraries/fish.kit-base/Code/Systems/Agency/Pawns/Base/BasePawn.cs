@@ -18,7 +18,7 @@ public abstract partial class BasePawn : DestructibleEntity
 	public virtual bool IsPlayer => Agent?.IsPlayer ?? false;
 
 	/// <summary>
-	/// The agent controlling this pawn. Could be a player or NPC.
+	/// The agent controlling this pawn. Could be a player or an NPC.
 	/// </summary>
 	[Property, Feature( PAWN )]
 	[Sync( SyncFlags.FromHost )]

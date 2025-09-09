@@ -6,7 +6,7 @@ namespace GameFish;
 public struct Fraction
 {
 	[KeyProperty]
-	[Range( 0f, 1f, step: 0.001f )]
+	[Range( 0f, 1f ), Step( 0.001f )]
 	public float Value { readonly get => _value; set => _value = value.Clamp( 0f, 1f ); }
 
 	[Hide]

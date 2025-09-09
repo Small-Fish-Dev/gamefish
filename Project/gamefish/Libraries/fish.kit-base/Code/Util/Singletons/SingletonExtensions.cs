@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public static class SingletonExtensions
+public static partial class GameFish
 {
 	/// <summary>
 	/// Retrieves the first valid instance of a component in the scene and caches it. <br />
@@ -15,13 +15,16 @@ public static class SingletonExtensions
 		if ( instance.IsValid() )
 			return instance;
 
-		if ( !Game.ActiveScene.IsValid() || (Game.ActiveScene.IsEditor && !allowEditor) )
+		var activeScene = Game.ActiveScene;
+
+		if ( !activeScene.IsValid() || (activeScene.InEditor() && !allowEditor) )
 			return null;
 
 		instance = isOwned
-			? Game.ActiveScene.GetAllComponents<T>().FirstOrDefault( c => c.IsOwner() )
-			: Game.ActiveScene.GetAllComponents<T>().FirstOrDefault();
+			? activeScene.GetAllComponents<T>().FirstOrDefault( c => c.IsOwner() )
+			: activeScene.GetAllComponents<T>().FirstOrDefault();
 
-		return instance;
+		// Should always be valid or null, never destroyed.
+		return instance.IsValid() ? instance : null;
 	}
 }

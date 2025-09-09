@@ -6,8 +6,6 @@ namespace GameFish;
 [Icon( "sports_mma" )]
 public partial class ViewRenderer : BaseEntity, ISkinned
 {
-	public const string VIEW = PawnView.VIEW;
-
 	public const string GROUP_OFFSETS = "Offsets";
 
 	[Property]

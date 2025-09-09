@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// The most basic form of an object that can separately exist.
 /// </summary>
-public partial class BaseEntity : Component, ITransform
+public abstract partial class BaseEntity : Component, ITransform
 {
 	public const string ENTITY = "📦 Entity";
 
@@ -12,9 +12,12 @@ public partial class BaseEntity : Component, ITransform
 
 	public const string MODULES = "🧩 Modules";
 
+	public const string FACTION = "🚩 Faction";
 	public const string INPUT = "🕹 Input";
-
 	public const string MODEL = "🕺 Model";
+	public const string VIEW = PawnView.VIEW;
+
+	public const string PLAYER = "😎 Player";
 	public const string PAWN = "🐴 Pawn";
 	public const string NPC = "🤖 NPC";
 
@@ -25,6 +28,8 @@ public partial class BaseEntity : Component, ITransform
 	public const string TAG_ACTOR = "actor";
 	public const string TAG_PLAYER = "player";
 	public const string TAG_NPC = "npc";
+	public const string TAG_HULL = "hull";
+	public const string TAG_EQUIP = "equip";
 
 	/// <summary>
 	/// Is this currently loaded in a valid editor scene? <br />

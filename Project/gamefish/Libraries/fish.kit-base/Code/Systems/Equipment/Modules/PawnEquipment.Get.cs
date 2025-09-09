@@ -26,8 +26,6 @@ partial class PawnEquipment
 			if ( !e.IsValid() || e.EquipState is EquipState.Dropped )
 				toRemove.Add( e );
 
-		var parent = Parent;
-
 		toRemove.ForEach( e => { Equipped.Remove( e ); e.Destroy(); } );
 	}
 
@@ -69,7 +67,7 @@ partial class PawnEquipment
 	/// <summary>
 	/// Gets all held equipment with an ID(if any).
 	/// </summary>
-	/// <returns> All equipment(or empty, never null). </returns>
+	/// <returns> All equipment(or empty, never null) with that ID. </returns>
 	public IEnumerable<BaseEquip> GetAll( string id )
 	{
 		if ( Equipped is null || id is null )
@@ -79,18 +77,18 @@ partial class PawnEquipment
 	}
 
 	public bool Any<T>( T e ) where T : BaseEquip
-		=> e is not null && Any( e.GetType() );
+		=> e is not null && Any<T>();
 
-	public bool Any( Type eType )
+	public bool Any<T>()
 	{
 		if ( Equipped is null )
 			return false;
 
-		return Equipped.Any( e => e.IsValid() && e.GetType() == eType );
+		return Equipped.Any( e => e.IsValid() && e is T );
 	}
 
 	/// <summary>
-	/// Gets an equip of a specific type(if it's there).
+	/// Gets the first instance(if any) of an equip of a specific type.
 	/// </summary>
 	/// <returns> The first found <typeparamref name="T"/>(or null). </returns>
 	public T Get<T>() where T : BaseEquip
@@ -98,8 +96,27 @@ partial class PawnEquipment
 		if ( Equipped is null )
 			return null;
 
-		return Equipped.FirstOrDefault( e => e.IsValid() && e.GetType() == typeof( T ) ) as T;
+		return Equipped.FirstOrDefault( e => e.IsValid() && e is T ) as T;
 	}
+
+	/// <summary>
+	/// Gets all held equipment of the provided type.
+	/// </summary>
+	/// <returns> All equipment(or empty, never null) with that type. </returns>
+	public IEnumerable<BaseEquip> GetAll<T>() where T : BaseEquip
+	{
+		if ( Equipped is null )
+			return [];
+
+		return Equipped.Where( e => e.IsValid() && e is T );
+	}
+
+	/// <summary>
+	/// Tries to get the first instance of an equip of a specific type.
+	/// </summary>
+	/// <returns> If a <typeparamref name="T"/> was found. </returns>
+	public bool TryGet<T>( out T equip ) where T : BaseEquip
+		=> (equip = Get<T>()).IsValid();
 
 	/// <summary>
 	/// Gets all equipment stuck in a slot.

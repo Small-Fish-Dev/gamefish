@@ -24,13 +24,13 @@ public partial class PawnEquipment : Module
 
 	/// <summary> How many weapons can fit in each individual slot? </summary>
 	[Group( GROUP_SLOTTING ), Title( "Size" )]
-	[Range( 1, 4, step: 1, clamped: false )]
+	[Range( 1, 4, clamped: false ), Step( 1f )]
 	[Property, Feature( FEATURE_EQUIPS )]
 	public virtual int SlotCapacity { get; set; } = 1;
 
 	/// <summary> How many equipment slots are available overall? </summary>
 	[Group( GROUP_SLOTTING ), Title( "Available" )]
-	[Range( 0, 10, step: 1, clamped: false )]
+	[Range( 0, 10, clamped: false ), Step( 1f )]
 	[Property, Feature( FEATURE_EQUIPS )]
 	public virtual int SlotCount { get; set; } = 10;
 
@@ -179,7 +179,7 @@ public partial class PawnEquipment : Module
 
 		if ( !pawn.IsValid() )
 		{
-			this.Warn( $"Tried to equip:[{e}] with an invalid parent:[{pawn}]" );
+			this.Warn( $"Tried to equip:[{e}] onto an invalid parent:[{pawn}]" );
 			return false;
 		}
 
@@ -228,10 +228,10 @@ public partial class PawnEquipment : Module
 		e.GameObject.SetParent( GameObject, keepWorldPosition: false );
 		e.LocalPosition = Vector3.Zero;
 
-		Equipped?.Add( e );
-
 		e.Owner = pawn;
 		e.Inventory = this;
+
+		RefreshList();
 
 		e.OnEquip( this );
 

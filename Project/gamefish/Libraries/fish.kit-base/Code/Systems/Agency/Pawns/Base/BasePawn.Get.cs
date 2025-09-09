@@ -24,4 +24,34 @@ partial class BasePawn
 			? GetAllActive<TPawn>().Where( p => p.Agent == owner )
 			: GetAll<TPawn>().Where( p => p.Agent == owner );
 	}
+
+	/// <summary>
+	/// A consistent way of getting a pawn from a <see cref="GameObject"/>.
+	/// </summary>
+	/// <returns> If the actor was found. </returns>
+	public static bool TryGet( GameObject obj, out BasePawn pawn )
+	{
+		if ( !obj.IsValid() )
+		{
+			pawn = null;
+			return false;
+		}
+
+		return obj.Components.TryGet( out pawn, FindMode.EverythingInSelfAndAncestors );
+	}
+
+	/// <summary>
+	/// A consistent way of getting a pawn-derived class from a <see cref="GameObject"/>.
+	/// </summary>
+	/// <returns> If the actor was found. </returns>
+	public static bool TryGet<T>( GameObject obj, out T pawn ) where T : BasePawn
+	{
+		if ( !obj.IsValid() )
+		{
+			pawn = null;
+			return false;
+		}
+
+		return obj.Components.TryGet( out pawn, FindMode.EverythingInSelfAndAncestors );
+	}
 }

@@ -7,11 +7,16 @@ namespace GameFish;
 [EditorHandle( Icon = "account_box" )]
 public partial class Client : Agent
 {
-	public static Client Local => _local.GetSingleton( isOwned: true );
-	protected static readonly Client _local;
+	public static Client Local
+	{
+		get => _local;
+		protected set => _local = value;
+	}
+
+	private static Client _local;
 
 	[Property, Feature( FEATURE_AGENT )]
-	public override bool IsPlayer { get; } = true;
+	public override bool IsPlayer => Identity.Type is ClientType.User;
 
 	[ReadOnly]
 	[Sync( SyncFlags.FromHost )]
@@ -49,6 +54,14 @@ public partial class Client : Agent
 
 	public override bool CompareConnection( Connection cn )
 		=> _id.CompareConnection( cn );
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		if ( this.IsOwner() && IsPlayer )
+			Local = this;
+	}
 
 	protected override void OnDestroy()
 	{

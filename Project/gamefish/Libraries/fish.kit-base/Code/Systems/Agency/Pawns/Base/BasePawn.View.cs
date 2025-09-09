@@ -21,6 +21,11 @@ partial class BasePawn
 	[Feature( PAWN ), Group( PawnView.VIEW )]
 	public ViewRenderer ViewRenderer => View?.ViewRenderer;
 
+	/// <summary> The base vision trace will ignore objects with these tags. </summary>
+	[Property]
+	[Feature( PAWN ), Group( PawnView.VIEW )]
+	public virtual TagSet EyeTraceIgnore { get; set; } = ["water"];
+
 	/// <summary>
 	/// Where traces and the view should originate from.
 	/// </summary>
@@ -64,7 +69,7 @@ partial class BasePawn
 	/// Now's a good time to update related components. <br />
 	/// Typically called by the view manager.
 	/// </summary>
-	public virtual void SetLookRotation( in Rotation rLook )
+	public virtual void OnSetLookRotation( in Rotation rLook )
 	{
 	}
 
@@ -82,5 +87,30 @@ partial class BasePawn
 
 		if ( model.IsValid() )
 			model.OnViewUpdate( view );
+	}
+
+	/// <returns> A default trace with vision filters. </returns>
+	public virtual SceneTrace GetVisionTrace()
+		=> Scene.Trace
+			.IgnoreGameObjectHierarchy( GameObject )
+			.WithoutTags( EyeTraceIgnore );
+
+	public SceneTrace GetEyeTrace( Vector3 from, Vector3 to )
+		=> GetVisionTrace()
+			.FromTo( from, to );
+
+	public SceneTrace GetEyeTrace( Vector3 to )
+		=> GetVisionTrace()
+			.FromTo( EyePosition, to );
+
+	public SceneTrace GetEyeTrace( float distance, Vector3? dir = null )
+	{
+		var startPos = EyePosition;
+		var endPos = startPos + ((dir ?? EyeForward) * distance);
+
+		var tr = GetVisionTrace()
+			.FromTo( startPos, endPos );
+
+		return tr;
 	}
 }
