@@ -16,7 +16,7 @@ public partial class Client : Agent
 	private static Client _local;
 
 	[Property, Feature( FEATURE_AGENT )]
-	public override bool IsPlayer => Identity.Type is ClientType.User;
+	public override bool IsPlayer { get; protected set; }
 
 	[ReadOnly]
 	[Sync( SyncFlags.FromHost )]

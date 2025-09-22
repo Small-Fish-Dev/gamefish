@@ -28,7 +28,7 @@ partial class BasePawn
 	/// <summary>
 	/// A consistent way of getting a pawn from a <see cref="GameObject"/>.
 	/// </summary>
-	/// <returns> If the actor was found. </returns>
+	/// <returns> If the pawn was found. </returns>
 	public static bool TryGet( GameObject obj, out BasePawn pawn )
 	{
 		if ( !obj.IsValid() )
@@ -43,7 +43,7 @@ partial class BasePawn
 	/// <summary>
 	/// A consistent way of getting a pawn-derived class from a <see cref="GameObject"/>.
 	/// </summary>
-	/// <returns> If the actor was found. </returns>
+	/// <returns> If the pawn was found. </returns>
 	public static bool TryGet<T>( GameObject obj, out T pawn ) where T : BasePawn
 	{
 		if ( !obj.IsValid() )

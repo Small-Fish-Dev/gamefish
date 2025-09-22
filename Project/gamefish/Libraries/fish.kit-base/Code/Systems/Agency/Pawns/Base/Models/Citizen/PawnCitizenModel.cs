@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public partial class ActorCitizenModel : ActorSkinnedModel
+public partial class PawnCitizenModel : PawnSkinnedModel
 {
 	protected override void SetModelOpacity( in float a )
 	{

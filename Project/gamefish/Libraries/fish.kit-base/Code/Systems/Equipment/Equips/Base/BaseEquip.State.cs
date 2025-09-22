@@ -63,20 +63,20 @@ partial class BaseEquip
 		}
 	}
 
-	public virtual void OnEquip( PawnEquipment inv )
+	public virtual void OnEquip( BasePawn owner, PawnEquipment inv )
 	{
 		UpdateNetworking( inv?.Pawn?.Agent?.Connection );
 	}
 
-	public virtual void OnDrop( PawnEquipment inv )
+	public virtual void OnDrop( BasePawn owner, PawnEquipment inv )
 	{
 	}
 
-	public virtual void OnDeploy( PawnEquipment inv )
+	public virtual void OnDeploy( BasePawn owner, PawnEquipment inv )
 	{
 	}
 
-	public virtual void OnHolster( PawnEquipment inv )
+	public virtual void OnHolster( BasePawn owner, PawnEquipment inv )
 	{
 	}
 }

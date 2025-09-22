@@ -9,12 +9,12 @@ namespace GameFish;
 public partial class ProjectileWeapon : AmmoEquip
 {
 	[Property]
-	[Feature( FEATURE_WEAPON ), Group( GROUP_PROJECTILE )]
+	[Feature( WEAPON ), Group( GROUP_PROJECTILE )]
 	public virtual float Speed { get; set; } = 1500f;
 
 	[Property]
 	[Title( "Prefab" )]
-	[Feature( FEATURE_WEAPON ), Group( GROUP_PROJECTILE )]
+	[Feature( WEAPON ), Group( GROUP_PROJECTILE )]
 	public virtual PrefabFile ProjectilePrefab { get; set; }
 
 	/// <summary>
@@ -22,7 +22,7 @@ public partial class ProjectileWeapon : AmmoEquip
 	/// </summary>
 	[Property]
 	[Title( "Initial Distance" )]
-	[Feature( FEATURE_WEAPON ), Group( GROUP_PROJECTILE )]
+	[Feature( WEAPON ), Group( GROUP_PROJECTILE )]
 	public float ProjectileStartDistance { get; set; } = 16f;
 
 	/// <summary>
@@ -30,7 +30,7 @@ public partial class ProjectileWeapon : AmmoEquip
 	/// </summary>
 	[Header( "Overrides" )]
 	[Property, Title( "Scaling" )]
-	[Feature( FEATURE_WEAPON ), Group( GROUP_PROJECTILE )]
+	[Feature( WEAPON ), Group( GROUP_PROJECTILE )]
 	public virtual bool OverrideScale { get; set; }
 
 	/// <summary>
@@ -38,7 +38,7 @@ public partial class ProjectileWeapon : AmmoEquip
 	/// </summary>
 	[Property]
 	[ShowIf( nameof( OverrideScale ), true )]
-	[Feature( FEATURE_WEAPON ), Group( GROUP_PROJECTILE )]
+	[Feature( WEAPON ), Group( GROUP_PROJECTILE )]
 	public virtual Vector3 Scale { get; set; } = Vector3.One;
 
 	public override void OnPrimary()

@@ -27,6 +27,7 @@ partial class BasePawn : ISimulate
 
 	public virtual void FrameSimulate( in float deltaTime )
 	{
+		UpdateController( in deltaTime );
 		UpdateView( in deltaTime );
 	}
 

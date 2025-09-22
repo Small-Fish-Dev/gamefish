@@ -5,12 +5,8 @@ namespace GameFish;
 /// </summary>
 public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 {
-	public const string TAG = "equip";
-
-	public const string EQUIP = "🏹 Equip";
-
-	public const string FEATURE_INPUT = "🕹 Input";
-	public const string FEATURE_WEAPON = "🔫 Weapon";
+	public const string MELEE = "🗡 Melee";
+	public const string WEAPON = "🔫 Weapon";
 
 	public const string GROUP_SLOT = "Slot";
 	public const string GROUP_METHOD = "Input Method";
@@ -66,13 +62,11 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	{
 		get
 		{
-			if ( EquipState is EquipState.Dropped )
+			if ( !this.IsValid() || EquipState is EquipState.Dropped )
 				return null;
 
-			if ( !_owner.IsValid() && this.IsValid() )
-				_owner = Components.Get<BasePawn>( FindMode.EnabledInSelf | FindMode.InAncestors );
-
-			return _owner;
+			return _owner.IsValid() ? _owner
+				: _owner = Components.Get<BasePawn>( FindMode.EnabledInSelf | FindMode.InAncestors );
 		}
 
 		set => _owner = value;
@@ -83,17 +77,10 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	[Property]
 	[Feature( EQUIP ), Group( DEBUG )]
 	public PawnEquipment Inventory
-	{
-		get => _inv.IsValid() ? _inv
-			: _inv = Owner?.GetModule<PawnEquipment>();
-
-		set => _inv = value;
-	}
-
-	protected PawnEquipment _inv;
+		=> Owner?.GetModule<PawnEquipment>();
 
 	/// <summary>
-	/// The slot this is goes in(if enforced).
+	/// The slot this is meant to go in.
 	/// </summary>
 	[Property]
 	[Title( "Default" )]
@@ -101,34 +88,35 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 	public int DefaultSlot { get; set; }
 
 	[Sync]
-	[Property, ReadOnly]
+	[Property]
 	[Title( "Current" )]
 	[Feature( EQUIP ), Group( GROUP_SLOT )]
+	[ShowIf( nameof( PlayingScene ), true )]
 	public int Slot { get; set; }
 
 	public bool IsDeployed => this.IsValid() && EquipState == EquipState.Deployed && Inventory?.ActiveEquip == this;
 
-	[Property, Feature( FEATURE_INPUT ), Group( GROUP_METHOD )]
+	[Property, Feature( INPUT ), Group( GROUP_METHOD )]
 	public virtual bool PrimaryHeld { get; set; }
 	public virtual bool PrimaryInput => PrimaryHeld ? Input.Down( PrimaryAction ) : Input.Pressed( PrimaryAction );
 
 	[Property, InputAction]
-	[Feature( FEATURE_INPUT ), Group( GROUP_METHOD )]
+	[Feature( INPUT ), Group( GROUP_METHOD )]
 	public string PrimaryAction { get; set; } = "Attack1";
 
-	[Property, Feature( FEATURE_INPUT ), Group( GROUP_METHOD )]
+	[Property, Feature( INPUT ), Group( GROUP_METHOD )]
 	public virtual bool SecondaryHeld { get; set; }
 	public virtual bool SecondaryInput => SecondaryHeld ? Input.Down( SecondaryAction ) : Input.Pressed( SecondaryAction );
 
 	[Property, InputAction]
-	[Feature( FEATURE_INPUT ), Group( GROUP_METHOD )]
+	[Feature( INPUT ), Group( GROUP_METHOD )]
 	public string SecondaryAction { get; set; } = "Attack2";
 
-	[Property, Feature( FEATURE_INPUT ), Group( GROUP_TIMING )]
+	[Property, Feature( INPUT ), Group( GROUP_TIMING )]
 	public virtual float PrimaryCooldown { get; set; } = 0.5f;
 	public virtual TimeSince? LastPrimary { get; set; }
 
-	[Property, Feature( FEATURE_INPUT ), Group( GROUP_TIMING )]
+	[Property, Feature( INPUT ), Group( GROUP_TIMING )]
 	public virtual float SecondaryCooldown { get; set; } = 1.0f;
 	public virtual TimeSince? LastSecondary { get; set; }
 
@@ -141,14 +129,14 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 
 	protected override void OnStart()
 	{
-		Tags?.Add( TAG );
+		Tags?.Add( TAG_EQUIP );
 
 		base.OnStart();
 	}
 
 	public virtual bool AllowInput()
 	{
-		if ( EquipState is not EquipState.Deployed )
+		if ( !IsDeployed )
 			return false;
 
 		var owner = Owner;
@@ -166,13 +154,10 @@ public abstract partial class BaseEquip : PhysicsEntity, ISkinned
 		if ( !AllowInput() )
 			return;
 
-		if ( !IsDeployed )
-			return;
-
-		if ( PrimaryInput && CanPrimary() )
+		if ( PrimaryInput )
 			TryPrimary();
 
-		if ( SecondaryInput && CanSecondary() )
+		if ( SecondaryInput )
 			TrySecondary();
 	}
 

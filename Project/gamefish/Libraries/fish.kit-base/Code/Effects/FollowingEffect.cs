@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace GameFish;
 
 /// <summary>
@@ -5,42 +7,59 @@ namespace GameFish;
 /// It is not destroyed along with the target, allowing the effect to finish playing. <br />
 /// Destroys the object it is on if the effect is done or wasn't configured properly.
 /// </summary>
-public abstract class FollowingEffect : Component
+public class FollowingEffect : Component
 {
 	/// <summary>
 	/// The object meant to be followed.
 	/// </summary>
 	[Sync]
+	[Property]
 	public GameObject Following { get; set; }
 
 	/// <summary>
 	/// The local transform to keep as an offset from <see cref="Following"/>.
 	/// </summary>
 	[Sync]
+	[Property]
 	public Transform Offset { get; set; } = global::Transform.Zero;
 
 	/// <summary>
 	/// The object of the effect we're making follow the target.
 	/// </summary>
 	[Sync]
+	[Property]
 	public GameObject EffectObject { get; set; }
 
-	public TimeUntil SelfDestruct { get; set; } = 30f;
+	/// <summary>
+	/// The minimum time this object can exist.
+	/// </summary>
+	public TimeUntil SelfDestruct { get; set; } = 10f;
 
 	/// <summary>
-	/// Tries to make an effect follow something maturely.
+	/// Makes an object follow something and destroy itself when all effects have completed.
 	/// </summary>
-	/// <returns> If the effect </returns>
-	public static TFollow Create<TFollow>( GameObject fxObj, GameObject toFollow, Transform offset, float? selfDestruct = null ) where TFollow : FollowingEffect, new()
+	/// <returns> The following component(or null). </returns>
+	public static FollowingEffect Create( GameObject toFollow, GameObject fxObj, Transform offset, float? selfDestruct = null )
+		=> Create<FollowingEffect>( toFollow: toFollow, fxObj: fxObj, offset: offset, selfDestruct: selfDestruct );
+
+	/// <summary>
+	/// Makes an object follow something and destroy itself when all effects have completed.
+	/// </summary>
+	/// <returns> The following component(or null). </returns>
+	public static TFollow Create<TFollow>( GameObject toFollow, GameObject fxObj, Transform offset, float? selfDestruct = null )
+		where TFollow : FollowingEffect, new()
 	{
-		if ( !toFollow.IsValid() || !fxObj.IsValid() )
+		if ( !toFollow.IsValid() )
 			return null;
 
-		// var fObj = toFollow.Scene.CreateObject( enabled: true );
-		var fComp = fxObj.Components.GetOrCreate<TFollow>( FindMode.EverythingInSelf );
+		if ( !fxObj.IsValid() )
+			return null;
 
-		if ( !fComp.TryStartFollowing( fxObj, toFollow, offset, selfDestruct ) )
-			fComp?.Destroy();
+		var fComp = fxObj.Components.GetOrCreate<TFollow>( FindMode.EverythingInSelf );
+		fComp.Enabled = true;
+
+		if ( !fComp.TryStartFollowing( fxObj: fxObj, toFollow: toFollow, offset: offset, selfDestruct: selfDestruct ) )
+			return null;
 
 		return fComp;
 	}
@@ -77,7 +96,14 @@ public abstract class FollowingEffect : Component
 	}
 
 	/// <returns> If the effect has finished playing. </returns>
-	public abstract bool IsFinished();
+	public virtual bool IsFinished()
+	{
+		foreach ( var iTemp in Components.GetAll<ITemporaryEffect>( FindMode.EnabledInSelfAndDescendants ) )
+			if ( iTemp.IsActive )
+				return false;
+
+		return SelfDestruct;
+	}
 
 	public virtual bool TryStartFollowing( GameObject fxObj, GameObject toFollow, Transform offset, float? selfDestruct = null )
 	{
@@ -86,7 +112,7 @@ public abstract class FollowingEffect : Component
 
 		if ( !toFollow.IsValid() || !fxObj.IsValid() )
 		{
-			Destroy();
+			DestroyGameObject();
 			return false;
 		}
 
@@ -94,8 +120,8 @@ public abstract class FollowingEffect : Component
 		Following = toFollow;
 		Offset = offset;
 
-		if ( selfDestruct.HasValue )
-			SelfDestruct = selfDestruct.Value;
+		if ( selfDestruct is float timer )
+			SelfDestruct = timer;
 
 		return true;
 	}
@@ -105,7 +131,7 @@ public abstract class FollowingEffect : Component
 		if ( !this.IsValid() )
 			return;
 
-		if ( IsFinished() )
+		if ( !IsProxy && IsFinished() )
 		{
 			GameObject?.Destroy();
 			return;

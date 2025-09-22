@@ -1,9 +1,3 @@
-using System;
-using System.Linq.Expressions;
-using System.Runtime;
-using System.Threading;
-using Microsoft.CSharp.RuntimeBinder;
-
 namespace GameFish;
 
 /// <summary>
@@ -13,6 +7,7 @@ namespace GameFish;
 /// <code> trigger_push </code> <code> trigger_catapult </code>
 /// </summary>
 [Icon( "air" )]
+[EditorHandle( Icon = "🌬" )]
 public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 {
 	public const string TITLE_METHOD = "Method";
@@ -118,14 +113,14 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 	/// </summary>
 	[Title( TITLE_NEGATION )]
 	[Property, Feature( FEATURE_FORCES ), Group( GROUP_LINEAR )]
-	public virtual VelocityNegation LinearImpulseNegation { get; set; } = VelocityNegation.Opposing;
+	public virtual VelocityNegation LinearNegation { get; set; } = VelocityNegation.Opposing;
 
 	/// <summary>
 	/// How much linear velocity(momentum) to add.
 	/// </summary>
 	[Title( TITLE_VELOCITY )]
 	[Property, Feature( FEATURE_FORCES ), Group( GROUP_LINEAR )]
-	public virtual Vector3 LinearVelocity { get; set; } = Vector3.Forward * 1000f;
+	public virtual Vector3 LinearVelocity { get; set; } = Vector3.Up * 1000f;
 
 	/// <summary>
 	/// When/how angular velocity(torque/rotation) should be added.
@@ -206,11 +201,9 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 			return;
 
 		// Continuous forces/drag.
-		var fixedDelta = Scene.FixedDelta;
-
 		foreach ( var obj in Touching )
 			if ( TryGetRigidbody( obj, out var rb ) )
-				SetVelocity( obj, GetLinearVelocity( rb, onEnter: false ), GetAngularVelocity( rb, instant: false ) );
+				SetVelocity( rb, GetLinearVelocity( rb, onEnter: false ), GetAngularVelocity( rb, instant: false ) );
 	}
 
 	protected override void OnTouchStart( GameObject obj )
@@ -218,7 +211,7 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 		base.OnTouchStart( obj );
 
 		if ( TryGetRigidbody( obj, out var rb ) )
-			SetVelocity( obj, GetLinearVelocity( rb, onEnter: true ), GetAngularVelocity( rb, instant: true ) );
+			SetVelocity( rb, GetLinearVelocity( rb, onEnter: true ), GetAngularVelocity( rb, instant: true ) );
 	}
 
 	protected virtual Rotation GetForceRotation( Rigidbody rb, in VelocityRelation relEnum )
@@ -236,52 +229,58 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 			return default;
 
 		Vector3 vel = rb.Velocity;
-		Vector3 velAdd;
 
 		if ( LinearMethod is VelocityMethod.None )
+			goto Dragging;
+
+		if ( onEnter && LinearMethod is not VelocityMethod.Instantaneous )
+			goto Dragging;
+
+		if ( !onEnter && LinearMethod is not VelocityMethod.Continuous )
+			goto Dragging;
+
+		var r = GetForceRotation( rb, LinearRelation );
+		var force = r * LinearVelocity;
+
+		Vector3 NegatedVelocity( in Vector3 dir )
 		{
-			velAdd = default;
+			if ( vel.Dot( in dir ) >= 0f )
+				return vel;
+
+			return vel.SubtractDirection( -dir );
 		}
-		else if ( onEnter && LinearMethod is not VelocityMethod.Instantaneous )
+
+		if ( onEnter )
 		{
-			velAdd = default;
+			// Instantaneous force.
+			vel = LinearNegation switch
+			{
+				VelocityNegation.Opposing => NegatedVelocity( force.Normal ) + force,
+				VelocityNegation.Total => force,
+				VelocityNegation.None => vel + force,
+				_ => vel
+			};
 		}
 		else
 		{
-			var r = GetForceRotation( rb, LinearRelation );
-			var force = r * LinearVelocity;
+			// Continuous force.
+			var dt = Scene.FixedDelta;
 
-			if ( onEnter )
+			vel = LinearNegation switch
 			{
-				velAdd = default;
+				VelocityNegation.Opposing => NegatedVelocity( force.Normal ),
+				VelocityNegation.Total => Vector3.Zero,
+				_ => vel
+			};
 
-				Vector3 OpposingForce()
-				{
-					var opposing = rb.Velocity.Forward( -force.Normal );
-					var result = vel - opposing + force;
-
-					return result;
-				}
-
-				vel = LinearImpulseNegation switch
-				{
-					VelocityNegation.Opposing => OpposingForce(), // best hl expansion
-					VelocityNegation.Total => force,
-					_ => vel + force
-				};
-			}
-			else
-			{
-				velAdd = force * Scene.FixedDelta;
-			}
+			vel += force * dt;
 		}
 
 		// Apply drag.
-		if ( !onEnter && Drag && LinearDrag != 0f )
-			vel -= rb.Velocity.ClampLength( LinearDrag * Scene.FixedDelta );
+		Dragging:
 
-		// Add velocity(helpful comment).
-		vel += velAdd;
+		if ( !onEnter && Drag && LinearDrag != 0f )
+			vel -= vel.ClampLength( LinearDrag * Scene.FixedDelta );
 
 		return vel;
 	}
@@ -329,7 +328,7 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 			return false;
 		}
 
-		return obj.Components.TryGet( out rb, FindMode.EnabledInSelf );
+		return obj.Components.TryGet( out rb, FindMode.EnabledInSelf | FindMode.InAncestors );
 	}
 
 	/// <summary>
@@ -342,6 +341,9 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 
 		rb.Velocity = linear;
 		rb.AngularVelocity = angular;
+
+		if ( rb.Components.TryGet<BaseController>( out var c ) )
+			c.Velocity = linear;
 	}
 
 	/// <summary>

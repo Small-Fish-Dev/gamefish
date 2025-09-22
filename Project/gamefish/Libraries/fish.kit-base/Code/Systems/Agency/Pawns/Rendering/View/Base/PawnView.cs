@@ -7,8 +7,7 @@ namespace GameFish;
 [Icon( "videocam" )]
 public partial class PawnView : Module, ISimulate
 {
-	public const string VIEW = "🎥 View";
-	public const string SPECTATING = BasePawn.SPECTATING;
+	public const string SPECTATING = BasePawn.SPECTATOR;
 
 	public const string CYCLING = "Cycling";
 	public const string TRANSITIONING = "Transitioning";
@@ -53,7 +52,7 @@ public partial class PawnView : Module, ISimulate
 	[Property]
 	[Title( "Ignore Tags" )]
 	[Feature( VIEW ), Group( COLLISION )]
-	public TagSet CollisionIgnoreTags { get; set; } = [BaseEntity.TAG_PAWN];
+	public TagSet CollisionIgnoreTags { get; set; } = [TAG_PAWN];
 
 	/// <summary>
 	/// The pawn this view actually belongs to.

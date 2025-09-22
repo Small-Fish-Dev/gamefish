@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// Puts <see cref="Clothing"/> on an <see cref="ActorSkinnedModel"/>.
+/// Puts <see cref="Clothing"/> on an <see cref="PawnSkinnedModel"/>.
 /// </summary>
 public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 {
@@ -57,10 +57,10 @@ public partial class CitizenOutfitter : Component, Component.ExecuteInEditor
 
 	protected ClothingContainer ClothingContainer { get; set; }
 
-	private ActorSkinnedModel _skin;
-	protected ActorSkinnedModel Skin
+	private PawnSkinnedModel _skin;
+	protected PawnSkinnedModel Skin
 	{
-		get => _skin.IsValid() ? _skin : _skin = Components?.Get<ActorSkinnedModel>( FindMode.EnabledInSelfAndDescendants );
+		get => _skin.IsValid() ? _skin : _skin = Components?.Get<PawnSkinnedModel>( FindMode.EnabledInSelfAndDescendants );
 		set => _skin = value;
 	}
 

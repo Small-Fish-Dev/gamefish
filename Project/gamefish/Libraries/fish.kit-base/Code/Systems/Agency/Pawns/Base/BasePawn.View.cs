@@ -6,7 +6,7 @@ partial class BasePawn
 	/// The central view manager for the pawn.
 	/// </summary>
 	[Property]
-	[Feature( PAWN ), Group( PawnView.VIEW )]
+	[Feature( PAWN ), Group( VIEW )]
 	public PawnView View
 	{
 		get => _view.IsValid() ? _view
@@ -29,18 +29,61 @@ partial class BasePawn
 	/// <summary>
 	/// Where traces and the view should originate from.
 	/// </summary>
-	[Sync]
-	public virtual Vector3 EyePosition { get => WorldPosition; set => WorldPosition = value; }
+	public virtual Vector3 LocalEyePosition
+	{
+		get
+		{
+			if ( Controller is var c && c.IsValid() )
+				return c.LocalEyePosition;
+			else if ( View is var view && view.IsValid() )
+				return WorldTransform.PointToLocal( view.ViewPosition );
+
+			return Center;
+		}
+		set
+		{
+			if ( Controller is var c && c.IsValid() )
+				c.LocalEyePosition = value;
+			else if ( View is var view && view.IsValid() )
+				view.ViewPosition = WorldTransform.PointToWorld( value );
+		}
+	}
 
 	/// <summary>
 	/// Where bullets and first person views should be pointed.
 	/// </summary>
-	[Sync( SyncFlags.Interpolate )]
-	public virtual Rotation EyeRotation { get => WorldRotation; set => WorldRotation = value; }
+	public virtual Rotation LocalEyeRotation
+	{
+		get
+		{
+			if ( Controller is var c && c.IsValid() )
+				return c.LocalEyeRotation;
 
+			return WorldTransform.RotationToLocal( View?.ViewRotation ?? WorldRotation );
+		}
+		set
+		{
+			if ( Controller is var c && c.IsValid() )
+				c.LocalEyeRotation = value;
+			else if ( View is var view && view.IsValid() )
+				view.ViewRotation = WorldTransform.RotationToWorld( value );
+		}
+	}
+
+	public virtual Vector3 EyePosition
+	{
+		get => WorldTransform.PointToWorld( LocalEyePosition );
+		set => LocalEyePosition = WorldTransform.PointToLocal( value );
+	}
+
+	public virtual Rotation EyeRotation
+	{
+		get => WorldTransform.RotationToWorld( LocalEyeRotation );
+		set => LocalEyeRotation = WorldTransform.RotationToLocal( value );
+	}
+
+	public Transform EyeTransform => new( EyePosition, EyeRotation, WorldScale );
 	public Vector3 EyeForward => EyeRotation.Forward;
-
-	public Transform EyeTransform => new( EyePosition, EyeRotation, 1f );
 
 	/// <summary>
 	/// Tells the view manager to process its transitions and offsets.
@@ -75,7 +118,7 @@ partial class BasePawn
 
 	/// <summary>
 	/// Called when the view targeting this pawn has finished updating. <br />
-	/// It may be a view spectating this pawn, not the child view. <br />
+	/// It may be a view spectating this pawn, thus not the child view. <br />
 	/// You should process clientside effects like model fading here.
 	/// </summary>
 	public virtual void OnViewUpdate( PawnView view )
@@ -83,9 +126,7 @@ partial class BasePawn
 		if ( !view.IsValid() )
 			return;
 
-		var model = Actor?.Model;
-
-		if ( model.IsValid() )
+		if ( ModelComponent is PawnModel model && model.IsValid() )
 			model.OnViewUpdate( view );
 	}
 

@@ -4,9 +4,6 @@ namespace GameFish;
 
 partial class BaseEntity
 {
-	protected const string NETWORKING = "📶 Networking";
-	protected const int NETWORK_ORDER = -999999;
-
 	protected const string NETWORK_INFO =
 		"These are this component's intended networking settings.\n\n" +
 		"If networking is enabled then you should keep this component on an object(such as a child) separate from other networked components or their settings may conflict!";
@@ -18,6 +15,7 @@ partial class BaseEntity
 	[Title( "Automatic" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ), Label = NETWORKING )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public bool NetworkAutomatically
 	{
 		get => _netAuto || IsNetworkingForced;
@@ -32,8 +30,9 @@ partial class BaseEntity
 	[Property]
 	[Title( $"Forced (by Component)" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
-	[ShowIf( nameof( HasForcedNetworking ), true )]
 	[ToggleGroup( nameof( NetworkAutomatically ), Label = NETWORKING )]
+	[ShowIf( nameof( HasForcedNetworking ), true )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	protected bool HasForcedNetworking => IsNetworkingForced;
 
 	/// <returns> If <see cref="NetworkAutomatically"/> should always be true. </returns>
@@ -44,6 +43,7 @@ partial class BaseEntity
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[InfoBox( NETWORK_INFO, Tint = EditorTint.Blue, Icon = "wifi" )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public Guid NetworkId => Id;
 
 	/// <summary>
@@ -54,6 +54,7 @@ partial class BaseEntity
 	[Title( "Network Mode" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public NetworkMode NetworkingMode => NetworkingModeDefault;
 	protected virtual NetworkMode NetworkingModeDefault => NetworkMode.Object;
 
@@ -65,6 +66,7 @@ partial class BaseEntity
 	[Title( "Transfer Mode" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public OwnerTransfer NetworkTransferMode => NetworkTransferModeDefault;
 	protected virtual OwnerTransfer NetworkTransferModeDefault => OwnerTransfer.Fixed;
 
@@ -76,6 +78,7 @@ partial class BaseEntity
 	[Title( "Orphaned Mode" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public NetworkOrphaned NetworkOrphanedMode => NetworkOrphanedModeDefault;
 	protected virtual NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.Destroy;
 
@@ -85,9 +88,10 @@ partial class BaseEntity
 	[Property, InlineEditor]
 	[Header( "Debug" )]
 	[Title( "Owner" )]
-	[ShowIf( nameof( PlayingScene ), true )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
+	[ShowIf( nameof( PlayingScene ), true )]
+	[HideIf( nameof( AllowNetworkSetup ), false )]
 	public Connection NetworkOwner => Network?.Owner;
 
 	/// <summary>
@@ -99,7 +103,7 @@ partial class BaseEntity
 
 	/// <returns> If <see cref="SetupNetworking"/> is allowed to execute. </returns>
 	protected virtual bool AllowNetworkSetup
-		=> Network is not null && (Network.IsCreator || Network.IsOwner);
+		=> this.InEditor() || (Network is not null && (Network.IsCreator || Network.IsOwner));
 
 	protected override void OnStart()
 	{

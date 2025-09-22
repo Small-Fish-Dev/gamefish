@@ -2,7 +2,7 @@ using System;
 
 namespace GameFish;
 
-partial class ActorCitizenModel
+partial class PawnCitizenModel
 {
 	/// <summary> Where are the eyes of our character? </summary>
 	[Property] public GameObject EyeSource { get; set; }

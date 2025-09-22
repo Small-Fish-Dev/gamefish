@@ -100,12 +100,12 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 	[Property, Group( GROUP_CALLBACK )]
 	public Action<BaseTrigger, GameObject> OnExit { get; set; }
 
-	/// <summary> A passing object just entered this it was previously empty. </summary>
+	/// <summary> A passing object just entered this as it was previously empty. </summary>
 	[Order( ORDER_CALLBACK )]
 	[Property, Group( GROUP_CALLBACK )]
 	public Action<BaseTrigger, GameObject> OnFirstEnter { get; set; }
 
-	/// <summary> The last/only object occupying this trigger just exited. </summary>
+	/// <summary> The only object occupying this trigger just exited. </summary>
 	[Order( ORDER_CALLBACK )]
 	[Property, Group( GROUP_CALLBACK )]
 	public Action<BaseTrigger, GameObject> OnEmptied { get; set; }
@@ -146,10 +146,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 		// Update tags immediately.
 		Tags?.Add( DefaultTags ?? [] );
 
-		// Give us a box collider if we have none.
-		if ( !Components.Get<Collider>( FindMode.EverythingInSelf ).IsValid() )
-			Collider = ColliderType.Box;
-
+		// Give us a collider if we have none.
 		UpdateColliders();
 
 		return base.OnLoad();
@@ -219,7 +216,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 
 	protected virtual void UpdateColliders()
 	{
-		if ( !Scene.IsValid() )
+		if ( !this.IsValid() || !Scene.IsValid() )
 			return;
 
 		// Box
@@ -228,7 +225,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 			if ( !Box.IsValid() )
 				Box = Components.GetOrCreate<BoxCollider>( FindMode.EverythingInSelf );
 
-			Box.Enabled = !(Scene?.IsEditor ?? true);
+			Box.Enabled = !this.InEditor();
 			Box.IsTrigger = true;
 
 			Box.Scale = BoxSize.Size;
@@ -245,7 +242,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 			if ( !Sphere.IsValid() )
 				Sphere = Components.GetOrCreate<SphereCollider>( FindMode.EverythingInSelf );
 
-			Sphere.Enabled = !(Scene?.IsEditor ?? true);
+			Sphere.Enabled = !this.InEditor();
 			Sphere.IsTrigger = true;
 
 			Sphere.Radius = SphereRadius;
@@ -359,7 +356,7 @@ public partial class BaseTrigger : Component, Component.ITriggerListener, Compon
 
 		_ = Collider switch
 		{
-			ColliderType.Box => this.DrawBox( BoxSize, GizmoColor ),
+			ColliderType.Box => this.DrawBox( BoxSize, GizmoColor, Color.Transparent ),
 			ColliderType.Sphere => this.DrawSphere( SphereRadius, Sphere?.Center ?? default, GizmoColor ),
 			_ => false
 		};

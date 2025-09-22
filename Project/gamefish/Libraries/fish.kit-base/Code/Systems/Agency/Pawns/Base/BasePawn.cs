@@ -4,7 +4,7 @@ namespace GameFish;
 /// Something an <see cref="global::GameFish.Agent"/> can control.
 /// </summary>
 [Icon( "person" )]
-[EditorHandle( Icon = "person" )]
+[EditorHandle( Icon = "🐴" )]
 public abstract partial class BasePawn : DestructibleEntity
 {
 	// public override string ToString()
@@ -46,21 +46,6 @@ public abstract partial class BasePawn : DestructibleEntity
 
 	protected Agent _owner;
 
-	/// <summary>
-	/// The thing with the model that does the stuff.
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Group( BaseActor.ACTOR )]
-	public BaseActor Actor
-	{
-		get => _actor.IsValid() ? _actor
-			: _actor = Components?.Get<BaseActor>( FindMode.EverythingInSelfAndDescendants );
-
-		set => _actor = value;
-	}
-
-	protected BaseActor _actor;
-
 	public virtual bool TrySetOwner( Agent newAgent )
 	{
 		if ( !Networking.IsHost || !this.IsValid() )
@@ -71,9 +56,6 @@ public abstract partial class BasePawn : DestructibleEntity
 
 		if ( Agent == newAgent )
 			return true;
-
-		if ( !AllowOwnership( newAgent ) )
-			return false;
 
 		Agent = newAgent;
 

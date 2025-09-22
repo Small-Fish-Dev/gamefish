@@ -5,21 +5,21 @@ partial class SpectatorPawn
 	[Property]
 	[InputAction]
 	[Title( "Run" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string RunAction { get; set; } = "Run";
 	public virtual bool AllowRunning => !string.IsNullOrWhiteSpace( RunAction );
 
 	[Property]
 	[InputAction]
 	[Title( "Ascend" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string AscendAction { get; set; } = "Jump";
 	public virtual bool AllowAscend => !string.IsNullOrWhiteSpace( AscendAction );
 
 	[Property]
 	[InputAction]
 	[Title( "Descend" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string DescendAction { get; set; } = "Duck";
 	public virtual bool AllowDescend => !string.IsNullOrWhiteSpace( DescendAction );
 
@@ -28,7 +28,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Enabled" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	public virtual bool FlyingEnabled { get; set; } = true;
 
 	/// <summary>
@@ -37,7 +37,7 @@ partial class SpectatorPawn
 	[Property]
 	[Title( "Speed" )]
 	[Range( 0f, 5000f, clamped: false )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	public virtual float FlyingSpeed { get; set; } = 1000f;
 
 	/// <summary>
@@ -46,7 +46,7 @@ partial class SpectatorPawn
 	[Property]
 	[Title( "Run Speed" )]
 	[Range( 0f, 5000f, clamped: false )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	public virtual float FlyingRunSpeed { get; set; } = 2000f;
 
 	/// <summary>
@@ -54,7 +54,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Friction" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	public virtual Friction FlyingFriction { get; set; }
 
 	/// <summary>
@@ -62,7 +62,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Collision" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	public bool FlyingCollision { get; set; } = false;
 
 	/// <summary>
@@ -70,7 +70,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Collision Radius" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	[ShowIf( nameof( FlyingCollision ), true )]
 	public float FlyingCollisionRadius { get; set; } = 16f;
 
@@ -79,7 +79,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Hit Tags" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	[ShowIf( nameof( FlyingCollision ), true )]
 	public TagSet FlyingHitTags { get; set; } = ["solid"];
 
@@ -88,7 +88,7 @@ partial class SpectatorPawn
 	/// </summary>
 	[Property]
 	[Title( "Ignore Tags" )]
-	[Feature( SPECTATING ), Group( FLYING )]
+	[Feature( SPECTATOR ), Group( FLYING )]
 	[ShowIf( nameof( FlyingCollision ), true )]
 	public TagSet FlyingIgnoreTags { get; set; } = ["pawn"];
 

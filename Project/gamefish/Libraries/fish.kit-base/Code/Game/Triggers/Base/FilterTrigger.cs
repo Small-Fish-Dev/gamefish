@@ -44,7 +44,7 @@ public partial class FilterTrigger : BaseTrigger
 	[ShowIf( nameof( FilterType ), true )]
 	[TargetType( typeof( Component ) )]
 	[Property, Group( GROUP_FILTER_TYPE )]
-	public FindMode FindMode { get; set; } = FindMode.EnabledInSelf | FindMode.InAncestors | FindMode.InDescendants;
+	public FindMode FindMode { get; set; } = FindMode.EnabledInSelf | FindMode.InAncestors;
 
 	/// <summary>
 	/// If true: include/exclude by tags.

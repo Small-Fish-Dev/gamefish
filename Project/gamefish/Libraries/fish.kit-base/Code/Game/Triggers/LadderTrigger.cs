@@ -2,7 +2,7 @@ namespace GameFish;
 
 /// <summary>
 /// A trigger with the "ladder" tag and appropriate default collider. <br />
-/// You need a player/actor controller of some kind to utilize this. <br />
+/// You need a pawn controller of some kind to utilize this. <br />
 /// Capable of creating, updating and previewing its collision.
 /// <code> func_ladder </code>
 /// </summary>

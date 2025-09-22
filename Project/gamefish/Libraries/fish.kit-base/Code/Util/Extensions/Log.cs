@@ -4,17 +4,17 @@ namespace GameFish;
 
 public static partial class GameFish
 {
-	public static void Log( object source, params object[] log )
+	public static void Log( object source, object log )
 	{
-		GlobalGameNamespace.Log.Info( $"[{source}] {string.Concat( log ?? [] )}" );
+		GlobalGameNamespace.Log.Info( "[" + source + "] " + log );
 	}
 
-	public static void Warn( object source, params object[] log )
+	public static void Warn( object source, object log )
 	{
-		GlobalGameNamespace.Log.Warning( $"[{source}] {string.Concat( log ?? [] )}" );
+		GlobalGameNamespace.Log.Warning( "[" + source + "] " + log );
 	}
 
-	public static void Log( this Component c, params object[] log )
+	public static void Log( this Component c, object log )
 	{
 		if ( c is null )
 			Log( c?.GetType(), log );
@@ -22,11 +22,17 @@ public static partial class GameFish
 			Log( c.ToString(), log );
 	}
 
-	public static void Warn( this Component c, params object[] log )
+	public static void Log( this Component c, params object[] log )
+		=> Log( c, string.Concat( log ?? [] ) );
+
+	public static void Warn( this Component c, object log )
 	{
 		if ( c is null )
 			Warn( c?.GetType(), log );
 		else
 			Warn( c.ToString(), log );
 	}
+
+	public static void Warn( this Component c, params object[] log )
+		=> Warn( c, string.Concat( log ?? [] ) );
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace GameFish;
 
-public interface IHealth
+public interface IHealth : Component.IDamageable
 {
 	abstract bool IsAlive { get; set; }
 
@@ -18,86 +18,22 @@ public interface IHealth
 	/// </summary>
 	public IEnumerable<IHealthEvent> HealthEvents { get; }
 
-	public virtual void SetHealth( in float hp )
-	{
-		Health = hp.Clamp( 0f, MaxHealth );
+	/// <summary>
+	/// The engine's method for dealing damage that does not return success.
+	/// </summary>
+	void Component.IDamageable.OnDamage( in DamageInfo dmgInfo )
+		=> TryDamage( dmgInfo );
 
-		foreach ( var e in HealthEvents )
-			e.OnSetHealth( hp );
+	public void SetHealth( in float hp );
+	public void ModifyHealth( in float hp );
 
-		if ( Health > 0 )
-			Revive();
-		else if ( Health <= 0 )
-			Die();
-	}
+	public void Die();
+	public void Revive( bool restoreHealth = false );
 
-	public virtual void ModifyHealth( in float hp )
-		=> SetHealth( Health + hp );
+	public void OnDeath();
+	public void OnRevival();
 
-	public virtual void Die()
-	{
-		if ( !IsAlive )
-			return;
-
-		if ( Health > 0f )
-			Health = MathF.Min( 0f, Health );
-
-		IsAlive = false;
-		OnDeath();
-	}
-
-	public virtual void Revive( bool restoreHealth = false )
-	{
-		if ( IsAlive )
-			return;
-
-		IsAlive = true;
-
-		if ( restoreHealth )
-			Health = MathF.Max( Health, MaxHealth );
-
-		OnRevival();
-	}
-
-	public virtual void OnDeath()
-	{
-		foreach ( var e in HealthEvents )
-			e.OnDeath();
-	}
-
-	public virtual void OnRevival()
-	{
-		foreach ( var e in HealthEvents )
-			e.OnRevival();
-	}
-
-	public virtual bool CanDamage( in DamageInfo dmgInfo )
-	{
-		foreach ( var e in HealthEvents )
-			if ( !e.CanDamage( in dmgInfo ) )
-				return false;
-
-		return IsDestructible && dmgInfo.Damage > 0;
-	}
-
-	public virtual bool TryDamage( DamageInfo dmgInfo )
-	{
-		if ( !CanDamage( in dmgInfo ) )
-			return false;
-
-		foreach ( var e in HealthEvents )
-			if ( !e.TryDamage( ref dmgInfo ) )
-				return false;
-
-		ApplyDamage( dmgInfo );
-		return true;
-	}
-
-	public virtual void ApplyDamage( DamageInfo dmgInfo )
-	{
-		foreach ( var e in HealthEvents )
-			e.OnApplyDamage( ref dmgInfo );
-
-		ModifyHealth( -dmgInfo.Damage );
-	}
+	public bool CanDamage( in DamageInfo dmgInfo );
+	public bool TryDamage( DamageInfo dmgInfo );
+	public void ApplyDamage( DamageInfo dmgInfo );
 }

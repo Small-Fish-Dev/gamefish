@@ -2,13 +2,9 @@ namespace GameFish;
 
 public partial class SpectatorPawn : BasePawn
 {
-	public const string TAG_SPECTATOR = "spectator";
-
-	public const string FLYING = "🦅 Flying";
-
 	[Sync]
 	[Property]
-	[Feature( SPECTATING ), Group( DEBUG )]
+	[Feature( SPECTATOR ), Group( DEBUG )]
 	public BasePawn Spectating
 	{
 		get => _spectating;
@@ -32,7 +28,7 @@ public partial class SpectatorPawn : BasePawn
 	[Property]
 	[InputAction]
 	[Title( "Spectate Target" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string SpectateTargetAction { get; set; } = "Use";
 	public virtual bool AllowSpectateTarget => !string.IsNullOrWhiteSpace( SpectateTargetAction );
 
@@ -42,7 +38,7 @@ public partial class SpectatorPawn : BasePawn
 	[Property]
 	[InputAction]
 	[Title( "Stop Spectating" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string StopSpectatingAction { get; set; } = "Reload";
 	public virtual bool AllowStopSpectating => !string.IsNullOrWhiteSpace( StopSpectatingAction );
 
@@ -52,7 +48,7 @@ public partial class SpectatorPawn : BasePawn
 	[Property]
 	[InputAction]
 	[Title( "Spectate Previous" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string SpectatePreviousAction { get; set; } = "Attack1";
 	public virtual bool AllowSpectatePrevious => !string.IsNullOrWhiteSpace( SpectatePreviousAction );
 
@@ -62,7 +58,7 @@ public partial class SpectatorPawn : BasePawn
 	[Property]
 	[InputAction]
 	[Title( "Spectate Next" )]
-	[Feature( SPECTATING ), Group( INPUT )]
+	[Feature( SPECTATOR ), Group( INPUT )]
 	public virtual string SpectateNextAction { get; set; } = "Attack2";
 	public virtual bool AllowSpectateNext => !string.IsNullOrWhiteSpace( SpectateNextAction );
 

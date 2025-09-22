@@ -2,14 +2,12 @@ namespace GameFish;
 
 partial class BasePawn
 {
-	public const string SPECTATING = "👻 Spectating";
-
 	/// <summary>
 	/// If true: indicate that spectators can spectate this pawn. <br />
 	/// If false: all non-forced spectating is blocked.
 	/// </summary>
 	[Property]
-	[Feature( SPECTATING )]
+	[Feature( PAWN ), Group( SPECTATOR ), Order( SPECTATOR_ORDER )]
 	public virtual bool AllowSpectators { get; set; } = false;
 
 	/// <returns> If this can spectate a target. </returns>
@@ -41,8 +39,8 @@ partial class BasePawn
 	/// Kicks the spectator out of the fuggen thing, man.
 	/// </summary>
 	[Button]
-	[Feature( SPECTATING ), Group( DEBUG )]
 	[ShowIf( nameof( AllowSpectators ), true )]
+	[Feature( PAWN ), Group( SPECTATOR ), Order( SPECTATOR_ORDER )]
 	public virtual void StopSpectating()
 	{
 	}

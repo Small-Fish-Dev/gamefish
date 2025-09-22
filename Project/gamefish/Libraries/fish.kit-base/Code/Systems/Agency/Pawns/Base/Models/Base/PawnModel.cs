@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public abstract partial class ActorModel : BaseEntity
+public abstract partial class PawnModel : BaseEntity
 {
 	public const string GROUP_OPACITY = "Opacity";
 
@@ -12,7 +12,7 @@ public abstract partial class ActorModel : BaseEntity
 	public float OpacitySpeed { get; set; } = 2f;
 
 	[Property]
-	[Range( 0f, 1f, step: 0.001f )]
+	[Range( 0f, 1f ), Step( 0.001f )]
 	[Feature( DEBUG ), Order( DEBUG_ORDER ), Group( GROUP_OPACITY )]
 	public virtual float Opacity
 	{

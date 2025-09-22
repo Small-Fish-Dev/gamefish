@@ -7,48 +7,46 @@ namespace GameFish;
 /// </summary>
 public partial class PawnEquipment : Module
 {
-	public const string FEATURE_EQUIPS = "🏹 Equipment";
-
 	public const string GROUP_SLOTTING = "Slotting";
 	public const string GROUP_INVENTORY = "Inventory";
 
 	/// <summary> If true: only try to pick up weapons in their intended slot. </summary>
 	[Group( GROUP_SLOTTING ), Title( "Strict" )]
-	[Property, Feature( FEATURE_EQUIPS )]
+	[Property, Feature( EQUIP )]
 	public virtual bool StrictSlots { get; set; }
 
 	/// <summary> If true: prevent picking up multiple instances of a weapon. </summary>
 	[Group( GROUP_SLOTTING ), Title( "Unique" )]
-	[Property, Feature( FEATURE_EQUIPS )]
+	[Property, Feature( EQUIP )]
 	public virtual bool UniqueEquips { get; set; } = true;
 
 	/// <summary> How many weapons can fit in each individual slot? </summary>
 	[Group( GROUP_SLOTTING ), Title( "Size" )]
 	[Range( 1, 4, clamped: false ), Step( 1f )]
-	[Property, Feature( FEATURE_EQUIPS )]
+	[Property, Feature( EQUIP )]
 	public virtual int SlotCapacity { get; set; } = 1;
 
 	/// <summary> How many equipment slots are available overall? </summary>
 	[Group( GROUP_SLOTTING ), Title( "Available" )]
 	[Range( 0, 10, clamped: false ), Step( 1f )]
-	[Property, Feature( FEATURE_EQUIPS )]
+	[Property, Feature( EQUIP )]
 	public virtual int SlotCount { get; set; } = 10;
 
 	/// <summary>
 	/// Automatically give the loadout when this module first starts? <br />
 	/// If not then you'll need to call <see cref="GiveLoadout"/> yourself.
 	/// </summary>
-	[Property, Feature( FEATURE_EQUIPS ), Group( GROUP_INVENTORY )]
+	[Property, Feature( EQUIP ), Group( GROUP_INVENTORY )]
 	public virtual bool AutoGiveLoadout { get; set; } = true;
 
 	/// <summary> The weapons to spawn. </summary>
-	[Property, Feature( FEATURE_EQUIPS ), Group( GROUP_INVENTORY )]
+	[Property, Feature( EQUIP ), Group( GROUP_INVENTORY )]
 	public virtual List<EquipLoadoutEntry> Loadout { get; set; } = [];
 
 	[InlineEditor, ReadOnly]
 	[Sync( SyncFlags.FromHost )]
 	[ShowIf( nameof( PlayingScene ), true )]
-	[Property, Feature( FEATURE_EQUIPS ), Group( GROUP_INVENTORY )]
+	[Property, Feature( EQUIP ), Group( GROUP_INVENTORY )]
 	public NetList<BaseEquip> Equipped { get; } = [];
 
 	/// <summary>
@@ -89,8 +87,14 @@ public partial class PawnEquipment : Module
 	{
 		base.OnStart();
 
+		if ( !Networking.IsHost )
+			return;
+
 		if ( AutoGiveLoadout && this.InGame() )
+		{
+			// this.Log( $"Auto-giving loadout for pawn:{Pawn}" );
 			GiveLoadout();
+		}
 	}
 
 	public virtual void GiveLoadout()
@@ -120,7 +124,7 @@ public partial class PawnEquipment : Module
 			return;
 
 		e.EquipState = EquipState.Holstered;
-		e.OnHolster( this );
+		e.OnHolster( Pawn, this );
 	}
 
 	protected virtual void Deploy( BaseEquip e )
@@ -128,10 +132,10 @@ public partial class PawnEquipment : Module
 		if ( !e.IsValid() )
 			return;
 
-		this.Log( $"Deployed equip:[{e}]" );
+		// this.Log( $"Deployed equip:[{e}]" );
 
 		e.EquipState = EquipState.Deployed;
-		e.OnDeploy( this );
+		e.OnDeploy( Pawn, this );
 	}
 
 	public virtual bool TryRemove( BaseEquip e )
@@ -185,7 +189,7 @@ public partial class PawnEquipment : Module
 
 		if ( !e.IsValid() )
 		{
-			this.Warn( $"Tried to equip an invalid on parent:[{pawn}]" );
+			this.Warn( $"Tried to equip an invalid equip on parent:[{pawn}]" );
 			return false;
 		}
 
@@ -229,11 +233,10 @@ public partial class PawnEquipment : Module
 		e.LocalPosition = Vector3.Zero;
 
 		e.Owner = pawn;
-		e.Inventory = this;
 
 		RefreshList();
 
-		e.OnEquip( this );
+		e.OnEquip( pawn, this );
 
 		if ( !ActiveEquip.IsValid() )
 			ActiveEquip = e;

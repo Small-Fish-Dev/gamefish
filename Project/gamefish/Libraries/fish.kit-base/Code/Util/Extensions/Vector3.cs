@@ -32,20 +32,18 @@ public static partial class GameFish
 	public static void Separate( this Vector3 v, out Vector3 fwd, out Vector3 side )
 		=> v.Separate( v.Normal, out fwd, out side );
 
-	/// <summary>
-	/// Gets the forward component of a vector using the specified direction. <br />
+	/// <remarks>
 	/// Useful for velocity.
-	/// </summary>
+	/// </remarks>
 	/// <param name="v"></param>
 	/// <param name="dir"> The forward-facing direction. </param>
 	/// <returns> The forward component of the vector using the specified direction. </returns>
 	public static Vector3 Forward( this Vector3 v, in Vector3 dir )
 		=> v - v.SubtractDirection( dir );
 
-	/// <summary>
-	/// Gets the sideways component of a vector using the specified direction. <br />
+	/// <remarks>
 	/// Useful for velocity.
-	/// </summary>
+	/// </remarks>
 	/// <param name="v"></param>
 	/// <param name="dir"> The sideways-facing direction. </param>
 	/// <returns> The sideways component of the vector using the specified direction. </returns>

@@ -15,7 +15,7 @@ public abstract partial class Agent : ModuleEntity
 	/// Is this meant to be owned by a player?
 	/// </summary>
 	[Property, Feature( FEATURE_AGENT )]
-	public virtual bool IsPlayer { get; } = false;
+	public virtual bool IsPlayer { get; protected set; } = false;
 
 	/// <summary>
 	/// What specific pawn(if any) is under this agent's control?

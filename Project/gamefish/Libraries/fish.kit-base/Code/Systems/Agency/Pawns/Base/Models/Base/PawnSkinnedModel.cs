@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public abstract partial class ActorSkinnedModel : ActorModel, ISkinned, IRagdoll
+public abstract partial class PawnSkinnedModel : PawnModel, ISkinned, IRagdoll
 {
 	[Property, Feature( MODEL )]
 	public SkinnedModelRenderer SkinRenderer { get; set; }
