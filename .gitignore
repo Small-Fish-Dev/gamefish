@@ -1,7 +1,11 @@
-﻿*.vscode
-*.vs
-*.csproj
+﻿*.vs
+*.vscode
+*.code-workspace
 
 *.los
 *.sln
-*.code-workspace
+*.slnx
+*.csproj
+
+# Local Storage
+Archive
