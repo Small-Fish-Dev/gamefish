@@ -2,18 +2,38 @@ namespace GameFish;
 
 partial class PawnView
 {
-	public virtual Vector3 ViewPosition
+	/// <summary>
+	/// The world position of where the view intends to be.
+	/// </summary>
+	[Sync( SyncFlags.Interpolate )]
+	public Vector3 ViewPosition
 	{
 		get => _viewPos;
-		set { _viewPos = value; }
+		set
+		{
+			if ( !IsProxy )
+				OnSetViewPosition( ref value );
+
+			_viewPos = value;
+		}
 	}
 
 	protected Vector3 _viewPos;
 
-	public virtual Rotation ViewRotation
+	/// <summary>
+	/// The world rotation of where the view intends to look.
+	/// </summary>
+	[Sync( SyncFlags.Interpolate )]
+	public Rotation ViewRotation
 	{
 		get => _viewRotation;
-		set { _viewRotation = value; }
+		set
+		{
+			if ( !IsProxy )
+				OnSetViewRotation( ref value );
+
+			_viewRotation = value;
+		}
 	}
 
 	protected Rotation _viewRotation = Rotation.Identity;
@@ -25,12 +45,22 @@ partial class PawnView
 	public virtual Rotation PawnEyeRotation => TargetPawn?.EyeRotation ?? ViewRotation;
 	public virtual Vector3 PawnScale => TargetPawn?.WorldScale ?? Vector3.One;
 
-	public virtual Transform PawnEyeTransform => new( PawnEyePosition, PawnEyeRotation, PawnScale );
+	public Transform PawnEyeTransform => new( PawnEyePosition, PawnEyeRotation, PawnScale );
 
 	/// <summary>
 	/// Distance from this view to the pawn's first-person origin.
 	/// </summary>
 	public float DistanceFromEye => ViewPosition.Distance( PawnEyePosition );
+
+	/// <summary>
+	/// Allows you to override what position is being set(such as clamping distance).
+	/// </summary>
+	protected virtual void OnSetViewPosition( ref Vector3 pos ) { }
+
+	/// <summary>
+	/// Allows you to override what rotation is being set(such as clamping angle).
+	/// </summary>
+	protected virtual void OnSetViewRotation( ref Rotation r ) { }
 
 	/// <summary>
 	/// Allows this view to specify the origin from which it may offset from. <br />
@@ -65,7 +95,7 @@ partial class PawnView
 			UpdateModeTransform();
 
 		if ( updateObject )
-			TrySetTransform( ViewTransform );
+			WorldTransform = ViewTransform;
 	}
 
 	/// <summary>
@@ -73,43 +103,6 @@ partial class PawnView
 	/// </summary>
 	protected virtual void UpdateModeTransform()
 	{
-		switch ( Mode )
-		{
-			case Perspective.FirstPerson:
-				SetFirstPersonModeTransform();
-				break;
-
-			case Perspective.ThirdPerson:
-				SetThirdPersonModeTransform();
-				break;
-
-			case Perspective.FreeCam:
-				SetFreeCamModeTransform();
-				break;
-
-			case Perspective.Fixed:
-				SetFixedModeTransform();
-				break;
-
-			case Perspective.Manual:
-				SetManualModeTransform();
-				break;
-
-			case Perspective.Custom:
-				SetCustomModeTransform();
-				break;
-		}
-	}
-
-	protected virtual void SetFixedModeTransform()
-	{
-	}
-
-	protected virtual void SetManualModeTransform()
-	{
-	}
-
-	protected virtual void SetCustomModeTransform()
-	{
+		Mode?.SetViewTransform();
 	}
 }

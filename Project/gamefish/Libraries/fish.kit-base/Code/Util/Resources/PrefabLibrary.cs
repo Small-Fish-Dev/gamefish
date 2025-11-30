@@ -30,9 +30,10 @@ public static class PrefabLibrary
 	}
 
 	/// <summary>
-	/// Find all components of a type in all prefabs.
+	/// Finds all components of a type in all prefabs.
 	/// </summary>
-	public static IEnumerable<T> FindComponents<T>() where T : Component
+	public static IEnumerable<T> FindComponents<T>()
+		where T : Component
 	{
 		if ( All is null )
 			yield break;
@@ -49,20 +50,47 @@ public static class PrefabLibrary
 	}
 
 	/// <summary>
-	/// Find all prefabs that contain a component.
+	/// Finds all prefabs that contain a component.
 	/// This is probably slow so avoid using it too much.
 	/// </summary>
-	public static IEnumerable<(GameObject PrefabScene, PrefabFile Prefab)> FindByComponent<T>() where T : Component
+	public static IEnumerable<(GameObject PrefabScene, PrefabFile Prefab)> FindByComponent<T>()
+		where T : Component
 	{
 		if ( All == null )
 			yield break;
 
 		foreach ( var (prefab, obj) in All )
 		{
+			if ( !prefab.IsValid() )
+				continue;
+
 			var components = obj?.Components?.GetAll();
 
 			if ( components?.Any( c => c is T ) is true )
 				yield return (obj, prefab);
+		}
+	}
+
+	/// <summary>
+	/// Finds all prefabs with <typeparamref name="T"/>.
+	/// This is probably slow so avoid using it too much.
+	/// </summary>
+	public static IEnumerable<(PrefabFile Prefab, T Component)> FindPrefabComponents<T>()
+		where T : Component
+	{
+		if ( All == null )
+			yield break;
+
+		foreach ( var (prefab, obj) in All )
+		{
+			if ( !prefab.IsValid() )
+				continue;
+
+			var components = obj?.Components?.GetAll();
+			var found = components?.FirstOrDefault( c => c is T ) as T;
+
+			if ( found is not null )
+				yield return (prefab, found);
 		}
 	}
 

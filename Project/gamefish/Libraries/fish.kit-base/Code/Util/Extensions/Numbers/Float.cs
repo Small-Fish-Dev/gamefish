@@ -73,4 +73,12 @@ partial class Library
 	/// <returns> A number that's at least this far away from zero. </returns>
 	public static float NonZero( this in float n, in float epsilon = float.Epsilon )
 		=> n.Abs() < epsilon ? epsilon * n.Direction() : n;
+
+	/// <returns> This number to the specified power. </returns>
+	public static float Pow( this in float n, in float power )
+		=> MathF.Pow( n, power );
+
+	/// <returns> The square root of this number. </returns>
+	public static float Sqrt( this in float n )
+		=> MathF.Sqrt( n );
 }

@@ -20,7 +20,13 @@
       "Nullables": false,
       "ReleaseMode": "Debug",
       "AssemblyReferences": [],
-      "IgnoreFolders": [],
+      "ReplacementDirectives": {
+        ".Server.cs": "SERVER"
+      },
+      "IgnoreFolders": [
+        "editor",
+        "unittest"
+      ],
       "DistinctAssemblyReferences": []
     },
     "CsProjName": "kit-base"

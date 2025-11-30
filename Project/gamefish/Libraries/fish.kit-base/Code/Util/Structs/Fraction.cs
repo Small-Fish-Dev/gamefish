@@ -28,5 +28,5 @@ public struct Fraction
 
 	public readonly override bool Equals( object obj ) => obj is Fraction frac && this == frac;
 
-	public readonly override int GetHashCode() => System.HashCode.Combine( Value );
+	public readonly override int GetHashCode() => System.HashCode.Combine( _value );
 }

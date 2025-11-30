@@ -1,5 +1,3 @@
-using System;
-
 namespace GameFish;
 
 public interface IHealth : Component.IDamageable
@@ -14,14 +12,15 @@ public interface IHealth : Component.IDamageable
 	public IEnumerable<IHealthEvent> HealthEvents { get; }
 
 	/// <summary>
-	/// The engine's method for dealing damage that does not return success.
+	/// Lets clients and owners know if this damage is allowed.
 	/// </summary>
+	public bool CanDamage( in DamageInfo dmgInfo );
+
 	void Component.IDamageable.OnDamage( in DamageInfo dmgInfo )
 		=> TryDamage( dmgInfo );
 
+	public bool TryDamage( in DamageInfo dmgInfo );
+
 	public void SetHealth( in float hp );
 	public void ModifyHealth( in float hp );
-
-	public bool CanDamage( in DamageInfo dmgInfo );
-	public bool TryDamage( DamageInfo dmgInfo );
 }

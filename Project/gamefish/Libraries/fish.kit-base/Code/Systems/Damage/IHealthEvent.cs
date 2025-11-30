@@ -7,6 +7,6 @@ public interface IHealthEvent
 	public void OnRevival();
 	public void OnDeath();
 
-	public bool TryDamage( ref DamageInfo dmgInfo ) => true;
+	public bool TryDamage( in DamageInfo dmgInfo ) => true;
 	public void OnApplyDamage( ref DamageInfo dmgInfo );
 }

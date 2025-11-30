@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Sandbox.Diagnostics;
+using Sandbox.UI;
 
 namespace GameFish;
 
@@ -269,4 +270,29 @@ public static class Print
 
 	public static void Error( this GameResource res, params object[] message )
 		=> res.Error( Format( message ) );
+
+
+	/*
+			Panel Extensions
+	*/
+
+
+	public static void Log( this Panel p, FormattableString message = null )
+		=> InfoFrom( $"{p}", message );
+
+	public static void Warn( this Panel p, FormattableString message = null )
+		=> WarnFrom( $"{p}", message );
+
+	public static void Error( this Panel p, FormattableString message = null )
+		=> ErrorFrom( $"{p}", message );
+
+
+	public static void Log( this Panel p, params object[] message )
+		=> p.Log( Format( message ) );
+
+	public static void Warn( this Panel p, params object[] message )
+		=> p.Warn( Format( message ) );
+
+	public static void Error( this Panel p, params object[] message )
+		=> p.Error( Format( message ) );
 }

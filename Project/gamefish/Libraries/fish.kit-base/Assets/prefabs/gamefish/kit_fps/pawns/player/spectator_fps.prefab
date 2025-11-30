@@ -12,42 +12,36 @@
     "NetworkMode": 1,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "GameFish.SpectatorPawn",
         "__guid": "38fcaa19-216d-4fde-844e-003465ac2acc",
         "__enabled": true,
-        "Actor": null,
-        "Agent": null,
+        "AllowAiming": true,
         "AscendAction": "Jump",
+        "BodyComponent": null,
+        "ClassId": "spectator_fps",
+        "ClassName": null,
+        "Controller": null,
+        "DebugDamage": 25,
         "DescendAction": "Duck",
-        "FlyingCollision": false,
-        "FlyingCollisionRadius": 16,
+        "Equipment": null,
+        "EyeTraceIgnore": "water",
         "FlyingEnabled": true,
         "FlyingFriction": {
           "Value": 4,
           "StopSpeed": 140
         },
-        "FlyingHitTags": "solid",
-        "FlyingIgnoreTags": "pawn",
         "FlyingRunSpeed": 3000,
         "FlyingSpeed": 1000,
-        "HasForcedNetworking": true,
         "Health": 0,
-        "HealthComponent": null,
         "IsAlive": false,
+        "IsClass": false,
         "IsDestructible": false,
-        "IsPlayer": false,
+        "IsNetworkingForced": true,
         "MaxHealth": 0,
-        "Modules": [
-          {
-            "_type": "component",
-            "component_id": "c06f4824-6a01-4022-ac58-91126185aa0a",
-            "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-            "component_type": "SpectatorView"
-          }
-        ],
         "NetworkAutomatically": true,
         "NetworkId": "38fcaa19-216d-4fde-844e-003465ac2acc",
         "NetworkingMode": "Object",
@@ -60,12 +54,18 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "PitchClamping": true,
+        "PitchRange": {
+          "Min": -89.9,
+          "Max": 89.9
+        },
         "RunAction": "Run",
         "SpectateNextAction": "Attack2",
         "SpectatePreviousAction": "Attack1",
         "SpectateTargetAction": "Use",
         "Spectating": null,
         "StopSpectatingAction": "Use",
+        "Team": null,
         "Velocity": "0,0,0",
         "View": {
           "_type": "component",
@@ -90,6 +90,7 @@
         "NetworkMode": 1,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -98,30 +99,20 @@
             "__enabled": true,
             "AllowCyclingMode": true,
             "AllowOrbiting": true,
+            "ClassId": null,
+            "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
             "CollisionHitTags": "solid",
             "CollisionIgnoreTags": "pawn",
             "CollisionRadius": 8,
-            "CustomSetAction": null,
-            "CustomUpdateAction": null,
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "Jump",
             "DebugMode": false,
-            "DefaultMode": "FirstPerson",
-            "DestroyObject": true,
-            "DistanceRange": {
-              "Min": 50,
-              "Max": 400
-            },
-            "EyeAngles": "-0,0,0",
-            "HasForcedNetworking": true,
-            "InitialDistance": 100,
-            "Mode": "FirstPerson",
-            "ModeList": {
-              "FirstPerson": true,
-              "ThirdPerson": true
-            },
+            "FirstPersonMode": null,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "Mode": null,
             "NetworkAutomatically": true,
             "NetworkId": "c06f4824-6a01-4022-ac58-91126185aa0a",
             "NetworkingMode": "Object",
@@ -135,29 +126,10 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "OrbitingResetDelay": 3,
-            "Parent": {
-              "_type": "component",
-              "component_id": "38fcaa19-216d-4fde-844e-003465ac2acc",
-              "go": "3f0faaed-c487-4bb8-abd0-c3e271085bd9",
-              "component_type": "SpectatorPawn"
-            },
-            "PitchClamping": true,
-            "PitchRange": {
-              "Min": -89.9,
-              "Max": 89.9
-            },
             "Relative": {
               "Position": "0,0,0",
-              "Rotation": "0,0,0,0",
-              "Transform": {
-                "Position": "0,0,0",
-                "Scale": "1,1,1",
-                "Rotation": "0,0,0,0"
-              }
+              "Rotation": "0,0,0,0"
             },
-            "ScrollSensitivity": 20,
-            "ScrollSpeed": 5,
-            "ShowViewRenderer": true,
             "TransitionSmoothing": 0.7,
             "TransitionSpeed": 3,
             "ViewRenderer": null
@@ -177,6 +149,7 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
@@ -188,6 +161,7 @@
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,

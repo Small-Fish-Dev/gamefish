@@ -2,13 +2,20 @@ namespace GameFish;
 
 partial class Library
 {
+	/// <summary>
+	/// <see cref="Vector3.Direction(in Vector3, in Vector3)"/>
+	/// </summary>
+	/// <returns> The direction from one position to another. </returns>
 	public static Vector3 Direction( this Vector3 from, in Vector3 to ) => Vector3.Direction( from, to );
 
 	/// <summary>
-	/// B - A = Δ <br />
-	/// Add this to <paramref name="from"/> to get <paramref name="to"/>.
+	/// Zeroes out the <c>Z</c> axis.
 	/// </summary>
-	public static Vector3 Offset( this Vector3 from, in Vector3 to ) => to - from;
+	/// <param name="v"></param>
+	/// <param name="isNormal"> Should this be normalized afterwards? </param>
+	/// <returns> A vector flattened as if 2D. </returns>
+	public static Vector3 Flatten( this Vector3 v, bool isNormal = false )
+		=> isNormal ? v.WithZ( 0f ).Normal : v.WithZ( 0f );
 
 	/// <summary>
 	/// Separate a vector into its forward/sideways components using the direction specified.
@@ -51,7 +58,7 @@ partial class Library
 		=> v.SubtractDirection( vertical );
 
 	/// <summary>
-	/// <see cref="Vector3.Clamp(Vector3,Vector3)"/>
+	/// <see cref="Vector3.Clamp(Vector3, Vector3)"/>
 	/// </summary>
 	public static Vector3 Clamp( this Vector3 v, in BBox bounds )
 		=> v.Clamp( bounds.Mins, bounds.Maxs );

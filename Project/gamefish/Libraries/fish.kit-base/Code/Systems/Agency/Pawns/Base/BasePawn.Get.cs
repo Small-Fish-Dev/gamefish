@@ -20,6 +20,10 @@ partial class BasePawn
 	public static IEnumerable<BasePawn> GetAllActive()
 		=> GetAllActive<BasePawn>();
 
+	/// <returns> Every valid and active player-owned pawn. </returns>
+	public static IEnumerable<BasePawn> GetAllPlayers()
+		=> GetAllActive().Where( pawn => pawn.IsPlayer );
+
 	/// <typeparam name="TPawn"></typeparam>
 	/// <param name="owner"></param>
 	/// <param name="isActive"> If true: gets every pawn even if disabled. </param>
@@ -30,8 +34,8 @@ partial class BasePawn
 			return [];
 
 		return (isActive
-			? GetAllActive<TPawn>().Where( p => p.Agent == owner )
-			: GetAll<TPawn>().Where( p => p.Agent == owner )) ?? [];
+			? GetAllActive<TPawn>().Where( p => p.Owner == owner )
+			: GetAll<TPawn>().Where( p => p.Owner == owner )) ?? [];
 	}
 
 	/// <returns> Every pawn owned by the <paramref name="owner"/>(or empty if null). </returns>

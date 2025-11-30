@@ -48,6 +48,18 @@ public partial struct Offset
 		Rotation = ITransform.IsValid( in r ) ? r : Rotation.Identity;
 	}
 
+	public Offset( in Vector3 pos )
+	{
+		Position = ITransform.IsValid( in pos ) ? pos : Vector3.Zero;
+		Rotation = Rotation.Identity;
+	}
+
+	public Offset( in Rotation r )
+	{
+		Position = Vector3.Zero;
+		Rotation = ITransform.IsValid( in r ) ? r : Rotation.Identity;
+	}
+
 	public Offset( in Vector3 pos, in Rotation r )
 	{
 		Position = ITransform.IsValid( in pos ) ? pos : Vector3.Zero;
@@ -63,5 +75,5 @@ public partial struct Offset
 	/// <remarks> This is ideal for affecting world transforms. </remarks>
 	/// <returns> A transform offset by this position and rotation. </returns>
 	public readonly Transform AddTo( in Transform t )
-		=> t.AddOffset( this );
+		=> t.WithOffset( this );
 }

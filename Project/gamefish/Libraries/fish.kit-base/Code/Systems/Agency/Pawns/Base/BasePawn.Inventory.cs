@@ -1,21 +1,28 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 partial class BasePawn
 {
 	[Property]
-	[Feature( EQUIP )]
-	public PawnEquipment Inventory
-		=> GetModule<PawnEquipment>();
+	[Feature( PAWN ), Group( EQUIPMENT )]
+	public virtual PawnEquipment Equipment
+		=> !_equipment.IsValid() || _equipment.Parent != this
+			? _equipment = GetModule<PawnEquipment>()
+			: _equipment;
 
-	[Property]
-	[Feature( EQUIP )]
-	public BaseEquip ActiveEquip
+	protected PawnEquipment _equipment;
+
+	[Property, JsonIgnore]
+	[Feature( PAWN ), Group( EQUIPMENT )]
+	[ShowIf( nameof( InGame ), true )]
+	public virtual Equipment ActiveEquip
 	{
-		get => Inventory?.ActiveEquip;
+		get => Equipment?.ActiveEquip;
 		set
 		{
-			if ( Inventory is var inv && inv.IsValid() )
-				inv.ActiveEquip = value;
+			if ( Equipment is var inv && inv.IsValid() )
+				inv.TryDeploy( ActiveEquip );
 		}
 	}
 }

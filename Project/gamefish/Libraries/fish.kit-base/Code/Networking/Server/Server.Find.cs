@@ -2,16 +2,8 @@ namespace GameFish;
 
 partial class Server
 {
-	[Property, ReadOnly]
-	[Feature( Library.AGENT ), Group( DEBUG )]
-	public List<BasePawn> AllPawns => BasePawn.GetAll<BasePawn>().ToList();
-
-	[Property, ReadOnly]
-	[Feature( Library.AGENT ), Group( DEBUG )]
-	public List<BasePawn> ActivePawns => BasePawn.GetAllActive<BasePawn>().ToList();
-
 	/// <summary>
-	/// Tries to get a <see cref="Client"/> from its connection.
+	/// Finds a <see cref="Client"/> from its connection.
 	/// </summary>
 	/// <returns> The <see cref="Client"/>(or null). </returns>
 	public static Client FindClient( Connection cn )
@@ -23,13 +15,20 @@ partial class Server
 	}
 
 	/// <summary>
-	/// Tries to find the <see cref="Client"/> from its connection and get its pawn.
+	/// Tries to get a <see cref="Client"/> from its connection.
+	/// </summary>
+	/// <returns> If the <see cref="Client"/> could be found. </returns>
+	public static bool TryFindClient( Connection cn, out Client cl )
+		=> (cl = FindClient( cn )).IsValid();
+
+	/// <summary>
+	/// Finds the <see cref="Client"/> from its connection and get its pawn.
 	/// </summary>
 	public static BasePawn FindPawn( Connection cn )
 		=> (FindClient( cn )?.Pawn is BasePawn pawn && pawn.IsValid()) ? pawn : null;
 
 	/// <summary>
-	/// Tries to find the <see cref="Client"/> from its connection and find its <typeparamref name="T"/>.
+	/// Finds the <see cref="Client"/>'s <typeparamref name="T"/>(or null).
 	/// </summary>
 	/// <typeparam name="T"> ♟ </typeparam>
 	/// <returns> The <typeparamref name="T"/>(or null). </returns>
@@ -37,14 +36,14 @@ partial class Server
 		=> FindClient( cn )?.Pawn as T;
 
 	/// <summary>
-	/// Tries to find the <see cref="Client"/> from its connection and get its pawn.
+	/// Tries to find the <see cref="Client"/>'s pawn.
 	/// </summary>
 	/// <returns> The pawn(or null). </returns>
 	public static bool TryFindPawn( Connection cn, out BasePawn pawn )
 		=> (pawn = FindPawn( cn )).IsValid();
 
 	/// <summary>
-	/// Tries to find the <see cref="Client"/> from its connection and find its <typeparamref name="T"/>.
+	/// Tries to find the <see cref="Client"/>'s <typeparamref name="T"/>(or null).
 	/// </summary>
 	/// <typeparam name="T"> ♟ </typeparam>
 	/// <returns> The <typeparamref name="T"/>(or null). </returns>

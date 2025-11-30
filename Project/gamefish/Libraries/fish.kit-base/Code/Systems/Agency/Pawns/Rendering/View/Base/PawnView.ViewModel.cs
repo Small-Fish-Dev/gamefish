@@ -3,11 +3,14 @@ namespace GameFish;
 partial class PawnView
 {
 	/// <summary>
-	/// The <see cref="global::GameFish.ViewRenderer"/> component. <br />
-	/// Needs to be on a child of this object!
+	/// The <see cref="GameFish.ViewRenderer"/> component.
+	/// It's like a more abstract view model, basically.
+	/// <br />
+	/// Should be on a child of this object.
 	/// </summary>
 	[Property]
 	[Feature( VIEW )]
+	[Title( "Renderer" )]
 	public ViewRenderer ViewRenderer
 	{
 		// Auto-cache the component.

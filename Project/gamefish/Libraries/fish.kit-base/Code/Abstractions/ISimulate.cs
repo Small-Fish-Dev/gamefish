@@ -12,9 +12,13 @@ public interface ISimulate
 	/// </summary>
 	public bool CanSimulate();
 
-	/// <summary> Called during OnUpdate(if allowed). </summary>
+	/// <summary>
+	/// Called every frame(such as in OnUpdate) by a valid owner.
+	/// </summary>
 	public void FrameSimulate( in float deltaTime ) { }
 
-	/// <summary> Called during OnFixedUpdate(if allowed). </summary>
+	/// <summary>
+	/// Called every physics tick(such as in OnFixedUpdate) by a valid owner.
+	/// </summary>
 	public void FixedSimulate( in float deltaTime ) { }
 }

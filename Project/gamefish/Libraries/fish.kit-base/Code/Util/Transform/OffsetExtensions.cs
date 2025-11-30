@@ -6,7 +6,7 @@ public static class OffsetExtensions
 	/// Adds an offset's position/rotation relatively to a transform.
 	/// </summary>
 	/// <remarks> This can be useful on either world or local transforms. </remarks>
-	public static Transform AddOffset( this in Transform t, in Offset offset )
+	public static Transform WithOffset( this in Transform t, in Offset offset )
 		=> t.ToWorld( offset );
 
 	/// <summary>

@@ -2,7 +2,7 @@ namespace GameFish;
 
 public partial class PhysicsController : BaseController
 {
-	public override void Move( in float deltaTime )
+	protected override void Move( in float deltaTime )
 	{
 		PreMove( in deltaTime );
 		PostMove( in deltaTime );
@@ -12,6 +12,5 @@ public partial class PhysicsController : BaseController
 
 	protected override void PostMove( in float deltaTime )
 	{
-
 	}
 }

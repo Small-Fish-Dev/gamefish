@@ -7,7 +7,7 @@ public interface IPhysics : IVelocity, ITransform
 {
 	public Rigidbody Rigidbody { get; }
 	public PhysicsBody PhysicsBody => Rigidbody?.PhysicsBody;
-	public Vector3 MassCenter => PhysicsBody?.MassCenter ?? GetPosition();
+	public Vector3 MassCenter => PhysicsBody?.MassCenter ?? Center;
 
 	Vector3 IVelocity.Velocity
 	{

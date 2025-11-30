@@ -1,28 +1,26 @@
 namespace GameFish;
 
 /// <summary>
-/// Something an <see cref="global::GameFish.Agent"/> can control.
+/// Something an <see cref="Agent"/> can control.
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "🐴" )]
 public abstract partial class BasePawn : DestructibleEntity
 {
+	protected const int PAWN_ORDER = DEFAULT_ORDER - 444;
+
 	// public override string ToString()
 	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
 
 	/// <summary>
-	/// Is this controlled by a player agent?
+	/// A position between our aim and feet.
 	/// </summary>
-	[Property]
-	[Feature( PAWN ), Group( DEBUG )]
-	public virtual bool IsPlayer => Agent?.IsPlayer ?? false;
+	public override Vector3 Center => WorldPosition.LerpTo( EyePosition, 0.5f );
 
-	/// <summary>
-	/// The agent controlling this pawn. Could be a player or an NPC.
-	/// </summary>
-	[Property, Feature( PAWN )]
+	public virtual bool IsPlayer => Owner?.IsPlayer is true;
+
 	[Sync( SyncFlags.FromHost )]
-	public Agent Agent
+	public Agent Owner
 	{
 		get => _owner;
 		protected set
@@ -46,7 +44,7 @@ public abstract partial class BasePawn : DestructibleEntity
 
 	protected Agent _owner;
 
-	public virtual bool TrySetOwner( Agent newAgent )
+	public virtual bool TryAssignOwner( Agent newAgent )
 	{
 		if ( !Networking.IsHost || !this.IsValid() )
 			return false;
@@ -54,12 +52,12 @@ public abstract partial class BasePawn : DestructibleEntity
 		if ( !newAgent.IsValid() )
 			return TryDropOwner();
 
-		if ( Agent == newAgent )
+		if ( Owner == newAgent )
 			return true;
 
-		Agent = newAgent;
+		Owner = newAgent;
 
-		if ( Agent != newAgent )
+		if ( Owner != newAgent )
 			return false;
 
 		newAgent.OnGainPawn( this );
@@ -72,14 +70,14 @@ public abstract partial class BasePawn : DestructibleEntity
 		if ( !Networking.IsHost )
 			return false;
 
-		var owner = Agent;
+		var owner = Owner;
 
 		if ( !this.IsValid() || !owner.IsValid() )
 			return true;
 
-		Agent = null;
+		Owner = null;
 
-		if ( Agent.IsValid() )
+		if ( Owner.IsValid() )
 			return false;
 
 		owner.OnLosePawn( this );
@@ -88,7 +86,7 @@ public abstract partial class BasePawn : DestructibleEntity
 	}
 
 	/// <summary>
-	/// Called when the <see cref="Agent"/> property has been set to a new value.
+	/// Called when the <see cref="Owner"/> property has been set to a new value.
 	/// </summary>
 	protected virtual void OnSetOwner( Agent oldAgent, Agent newAgent )
 	{
@@ -126,37 +124,38 @@ public abstract partial class BasePawn : DestructibleEntity
 		if ( newAgent.IsValid() )
 		{
 			// Tell the new agent to register this pawn.
-			if ( newAgent.TrySetPawn( this ) )
+			if ( newAgent.TryAssignPawn( this ) )
 			{
 				OnTaken( oldAgent, newAgent );
 			}
 			else
 			{
 				this.Warn( $"failed to add Pawn:[{this}] to Agent:[{newAgent}]" );
-				Agent = null;
+				Owner = null;
 			}
 		}
 		else
 		{
-			WishVelocity = default;
+			SetWishVelocity( Vector3.Zero );
 
 			// Always drop ownership if we don't belong to an agent.
-			UpdateNetworking( null );
+			TrySetNetworkOwner( null );
 		}
 	}
 
 	/// <summary>
-	/// Called when our new <see cref="Agent"/> has been fully confirmed.
+	/// Called when our new <see cref="Owner"/> has been fully confirmed.
 	/// </summary>
 	protected virtual void OnTaken( Agent old, Agent agent )
 	{
 	}
 
 	/// <summary>
-	/// Called whenever an <see cref="Agent"/> stops owning this.
+	/// Called whenever an <see cref="Owner"/> stops owning this.
 	/// </summary>
 	protected virtual void OnDropped( Agent old )
 	{
+		GameObject?.Destroy();
 	}
 
 	/// <summary>

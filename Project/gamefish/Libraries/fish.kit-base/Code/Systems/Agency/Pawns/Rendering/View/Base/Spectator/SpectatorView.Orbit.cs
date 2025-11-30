@@ -39,6 +39,27 @@ partial class SpectatorView
 			StopOrbiting();
 	}
 
+	public override bool TryAiming( in float deltaTime )
+	{
+		if ( IsSpectating && Mode?.InFirstPerson() is true )
+		{
+			if ( IsOrbiting )
+				StopOrbiting();
+
+			return false;
+		}
+
+		// Shit gets wonky if you try to aim during a transition.
+		// TODO: Fix that or scale input depending on "velocity".
+		if ( PreviousOffset.HasValue && TransitionFraction < 0.9f )
+			return false;
+
+		if ( AllowOrbiting && !Input.AnalogLook.AsVector3().AlmostEqual( Vector3.Zero ) )
+			OrbitingReset = OrbitingResetDelay;
+
+		return true;
+	}
+
 	/*
 	protected override void DoAiming()
 	{

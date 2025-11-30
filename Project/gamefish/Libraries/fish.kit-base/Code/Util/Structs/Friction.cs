@@ -9,7 +9,7 @@ public struct Friction
 	public float Value { get; set; } = 5f;
 
 	[KeyProperty]
-	public float StopSpeed { get; set; } = 140f;
+	public float StopSpeed { get; set; } = 80f;
 
 	public Friction() { }
 

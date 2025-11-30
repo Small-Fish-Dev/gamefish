@@ -2,6 +2,9 @@ namespace GameFish;
 
 public partial class SpectatorPawn : BasePawn
 {
+	/// <summary>
+	/// The target that this is actively spectating.
+	/// </summary>
 	[Sync]
 	[Property]
 	[Feature( SPECTATOR ), Group( DEBUG )]
@@ -103,21 +106,28 @@ public partial class SpectatorPawn : BasePawn
 
 	public override void FrameSimulate( in float deltaTime )
 	{
+		DoAiming( in deltaTime );
+
 		base.FrameSimulate( deltaTime );
 	}
 
-	protected override void UpdateController( in float deltaTime, in bool isFixedUpdate )
+	protected override void DoMovement( in float deltaTime, in bool isFixedUpdate )
 	{
-		base.UpdateController( deltaTime, isFixedUpdate );
-
-		HandleInput();
+		if ( Controller.IsValid() )
+		{
+			base.DoMovement( deltaTime, isFixedUpdate );
+			return;
+		}
 
 		if ( !Spectating.IsValid() )
 			DoFlying( in deltaTime );
 	}
 
-	protected virtual void HandleInput()
+	protected override void DoInput( in float deltaTime )
 	{
+		if ( !IsPlayer )
+			return;
+
 		if ( Spectating.IsValid() )
 		{
 			if ( AllowStopSpectating && Input.Pressed( StopSpectatingAction ) )
@@ -152,7 +162,7 @@ public partial class SpectatorPawn : BasePawn
 		if ( next.IsValid() )
 			view.StartTransition( useWorldPosition: true );
 		else
-			view.Mode = PawnView.Perspective.FirstPerson;
+			view.TryEnterFirstPerson();
 	}
 
 	public override bool CanSpectate( BasePawn target )
@@ -184,16 +194,15 @@ public partial class SpectatorPawn : BasePawn
 	/// </summary>
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
 	public void ForceSpectate( BasePawn target )
-	{
-		Spectating = target;
-	}
+		=> Spectating = target;
 
-	public override void StopSpectating()
-	{
-		base.StopSpectating();
-
-		Spectating = null;
-	}
+	/// <summary>
+	/// Kicks the spectator out of the fuggen thing, man.
+	/// </summary>
+	[Button]
+	[Feature( SPECTATOR ), Group( DEBUG )]
+	public void StopSpectating()
+		=> Spectating = null;
 
 	/// <summary>
 	/// Try to spectate what we're looking at.
@@ -211,7 +220,7 @@ public partial class SpectatorPawn : BasePawn
 
 		if ( targets.Count <= 0 )
 		{
-			this.Log( $"no targets to cycle:[{dir}]" );
+			// this.Log( $"no targets to cycle:[{dir}]" );
 			return;
 		}
 

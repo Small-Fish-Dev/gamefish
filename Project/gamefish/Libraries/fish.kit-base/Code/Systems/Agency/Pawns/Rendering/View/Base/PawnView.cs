@@ -7,15 +7,19 @@ namespace GameFish;
 [Icon( "videocam" )]
 public partial class PawnView : Module, ISimulate
 {
-	public const string CYCLING = "Cycling";
-	public const string TRANSITIONING = "Transitioning";
+	public const string TRANSITIONING = "↔ Transitioning";
+
+	protected override bool? IsNetworkedOverride => true;
+
+	public override bool IsParent( ModuleEntity comp )
+		=> comp is BasePawn;
 
 	/// <summary>
 	/// If true: the view will be traced from aiming origin to the destination and collide according to its settings.
 	/// </summary>
 	[Property]
 	[Title( "Enabled" )]
-	[Feature( VIEW ), Group( COLLISION )]
+	[Feature( VIEW ), ToggleGroup( nameof( Collision ), Label = COLLISION )]
 	public virtual bool Collision { get; set; } = true;
 
 	/// <summary>
@@ -24,7 +28,7 @@ public partial class PawnView : Module, ISimulate
 	[Property]
 	[Title( "Radius" )]
 	[Range( 1f, 64f, clamped: false )]
-	[Feature( VIEW ), Group( COLLISION )]
+	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	public virtual float CollisionRadius { get; set; } = 8f;
 	public virtual float GetCollisionRadius() => CollisionRadius * WorldScale.x.NonZero();
 
@@ -33,7 +37,7 @@ public partial class PawnView : Module, ISimulate
 	/// </summary>
 	[Property]
 	[Title( "Hit Owned" )]
-	[Feature( VIEW ), Group( COLLISION )]
+	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	public virtual bool CollideOwned { get; set; } = false;
 
 	/// <summary>
@@ -41,7 +45,7 @@ public partial class PawnView : Module, ISimulate
 	/// </summary>
 	[Property]
 	[Title( "Hit Tags" )]
-	[Feature( VIEW ), Group( COLLISION )]
+	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	public TagSet CollisionHitTags { get; set; } = ["solid"];
 
 	/// <summary>
@@ -49,21 +53,18 @@ public partial class PawnView : Module, ISimulate
 	/// </summary>
 	[Property]
 	[Title( "Ignore Tags" )]
-	[Feature( VIEW ), Group( COLLISION )]
+	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	public TagSet CollisionIgnoreTags { get; set; } = [TAG_PAWN];
 
 	/// <summary>
 	/// The pawn this view actually belongs to.
 	/// </summary>
-	public BasePawn ParentPawn => Parent as BasePawn;
+	public virtual BasePawn ParentPawn => Parent as BasePawn;
 
 	/// <summary>
 	/// The pawn we're currently looking at/through.
 	/// </summary>
 	public virtual BasePawn TargetPawn => ParentPawn;
-
-	public override bool IsParent( ModuleEntity comp )
-		=> comp.IsValid() && comp is BasePawn;
 
 	public virtual bool CanSimulate()
 		=> ParentPawn?.CanSimulate() ?? false;
@@ -81,7 +82,7 @@ public partial class PawnView : Module, ISimulate
 
 		UpdateTransition( deltaTime );
 
-		OnPerspectiveUpdate( deltaTime );
+		UpdateViewMode( deltaTime );
 
 		UpdatePawn();
 	}
@@ -96,7 +97,7 @@ public partial class PawnView : Module, ISimulate
 	}
 
 	/// <summary>
-	/// Checks if something would fuck up and if so: warns about it then disables this view.
+	/// Checks if something would fuck up and if so: warns about it.
 	/// </summary>
 	protected void EnsureValidHierarchy()
 	{
@@ -110,5 +111,18 @@ public partial class PawnView : Module, ISimulate
 			this.Warn( this + " was directly on the pawn! It needs to be a child!" );
 			GameObject.SetParent( pawn.GameObject );
 		}
+	}
+
+	public virtual void ToggleViewRenderer( bool isEnabled )
+	{
+		var vm = ViewRenderer;
+
+		if ( vm.IsValid() )
+			vm.GameObject.Enabled = isEnabled;
+	}
+
+	protected virtual void UpdateViewMode( in float deltaTime )
+	{
+		Mode?.OnModeUpdate( in deltaTime );
 	}
 }

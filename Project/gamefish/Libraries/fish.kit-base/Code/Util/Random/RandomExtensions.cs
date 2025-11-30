@@ -1,14 +1,14 @@
 namespace GameFish;
 
-public static partial class RandomExtensions
+partial class Library
 {
 	/// <returns> Integer between 0 and <paramref name="n"/>. </returns>
 	public static int Random( this int n )
 		=> n switch
 		{
 			0 => 0,
-			< 0 => global::GameFish.Random.Int( n, 0 ),
-			_ => global::GameFish.Random.Int( 0, n )
+			< 0 => GameFish.Random.Int( n, 0 ),
+			_ => GameFish.Random.Int( 0, n )
 		};
 
 	/// <returns> Float between 0 and <paramref name="n"/>. </returns>
@@ -16,28 +16,28 @@ public static partial class RandomExtensions
 		=> n switch
 		{
 			0f => 0f,
-			< 0f => global::GameFish.Random.Float( n, 0f ),
-			_ => global::GameFish.Random.Float( 0f, n )
+			< 0f => GameFish.Random.Float( n, 0f ),
+			_ => GameFish.Random.Float( 0f, n )
 		};
 
 	/// <summary>
-	/// Gets a random value from this list.
+	/// Gets a random value from this set.
 	/// </summary>
-	/// <returns> An existing <typeparamref name="T"/>(or <paramref name="default"/>). </returns>
-	public static T PickRandom<T>( this IEnumerable<T> list, T @default = default )
-		=> global::GameFish.Random.From( list, @default );
+	/// <returns> An random <typeparamref name="T"/> within(or <paramref name="default"/>). </returns>
+	public static T PickRandom<T>( this IEnumerable<T> set, T @default = default )
+		=> GameFish.Random.From( set, @default );
 
 	/// <summary>
 	/// Gets and then removes a random <typeparamref name="T"/> from this list.
 	/// </summary>
-	/// <returns> An existing <typeparamref name="T"/>(or <paramref name="default"/>). </returns>
+	/// <returns> An random <typeparamref name="T"/> within(or <paramref name="default"/>). </returns>
 	public static T TakeRandom<T>( this IList<T> list, T @default = default )
-		=> global::GameFish.Random.TryTake( list, out T value ) ? value : @default;
+		=> GameFish.Random.TryTake( list, out T value ) ? value : @default;
 
 	/// <summary>
 	/// Tries to pick and then remove a random <typeparamref name="T"/> from an <see cref="IList{T}"/>.
 	/// </summary>
-	/// <returns> If a <typeparamref name="T"/> was found and thus removed. </returns>
+	/// <returns> If a random <typeparamref name="T"/> was found and thus removed. </returns>
 	public static bool TryTakeRandom<T>( this IList<T> list, out T value )
-		=> global::GameFish.Random.TryTake( list, out value );
+		=> GameFish.Random.TryTake( list, out value );
 }

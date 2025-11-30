@@ -11,9 +11,9 @@ namespace GameFish;
 [Group( Library.NAME )]
 [Icon( "highlight_alt" )]
 [EditorHandle( "materials/tools/mesh_icons/quad.png" )]
-public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Component.ExecuteInEditor
+public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Component.ExecuteInEditor
 {
-	protected const int TRIGGER_ORDER = ENTITY_ORDER - 50;
+	protected const int TRIGGER_ORDER = DEFAULT_ORDER - 50;
 	protected const int CALLBACKS_ORDER = 42069;
 
 	public enum ColliderType
@@ -42,14 +42,15 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 	/// <summary>
 	/// Allows automatically creating, updating and previewing a collider.
 	/// </summary>
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Property, Order( TRIGGER_ORDER )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public virtual ColliderType Collider
 	{
 		get => _colType;
 		set { _colType = value; UpdateColliders(); }
 	}
 
-	protected ColliderType _colType = ColliderType.Box;
+	protected ColliderType _colType = ColliderType.Manual;
 
 	public virtual bool UsingBox => Collider is ColliderType.Box;
 	public virtual bool UsingSphere => Collider is ColliderType.Sphere;
@@ -295,6 +296,9 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 		if ( !this.IsValid() || !Scene.IsValid() )
 			return;
 
+		if ( Collider is ColliderType.Manual )
+			return;
+
 		// Box
 		if ( Collider is ColliderType.Box )
 		{
@@ -369,7 +373,18 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 	/// </summary>
 	protected virtual bool TestFilters( GameObject obj )
 	{
-		return PassesFilters( obj );
+		if ( !PassesFilters( obj ) )
+		{
+			if ( DebugTrigger )
+				DebugLog( obj + " FAILED the filter " );
+
+			return false;
+		}
+
+		if ( DebugTrigger )
+			DebugLog( obj + " PASSED the filter" );
+
+		return true;
 	}
 
 	/// <returns> If the object passes this trigger's filters(if any). </returns>
@@ -378,6 +393,9 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 		return obj.IsValid();
 	}
 
+	/// <summary>
+	/// Called when an object passing our filters has entered this trigger.
+	/// </summary>
 	protected virtual void OnTouchStart( GameObject obj )
 	{
 		Touching ??= [];
@@ -403,6 +421,9 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 		HasTriggered = true;
 	}
 
+	/// <summary>
+	/// Called when an object that previously passed our filter leaves.
+	/// </summary>
 	protected virtual void OnTouchStop( GameObject obj )
 	{
 		Touching?.Remove( obj );
@@ -423,6 +444,9 @@ public partial class BaseTrigger : BaseEntity, Component.ITriggerListener, Compo
 		}
 	}
 
+	/// <summary>
+	/// Called when this is empty(of filter-passing objects) and an object(that is filter-passing) touches it.
+	/// </summary>
 	protected virtual void OnFirstEntered( GameObject obj )
 	{
 		try

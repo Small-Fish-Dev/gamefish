@@ -112,33 +112,32 @@ partial class PawnView
 	/// <summary>
 	/// Sets the transform safely using <see cref="Relative"/> with transition support.
 	/// </summary>
-	protected virtual void SetTransformFromRelative()
+	public virtual void SetTransformFromRelative()
 	{
 		var tOrigin = GetViewOrigin();
 
+		// Smoothed transitioning.
 		if ( PreviousOffset is Offset prevOffset )
 		{
-			// Smoothed transitioning.
 			var offsLerped = prevOffset.LerpTo( Relative, TransitionFraction );
-
 			var tLerped = offsLerped.AddTo( tOrigin );
 
 			if ( PreviousPosition is Vector3 prevPos )
 			{
-				var tRelative = Relative.AddTo( tOrigin );
-				tLerped.Position = prevPos.LerpTo( tRelative.Position, TransitionFraction );
+				var tAdd = tOrigin.WithOffset( Relative );
+				tLerped.Position = prevPos.LerpTo( tAdd.Position, TransitionFraction );
 			}
 
 			ViewPosition = tLerped.Position;
 			ViewRotation = tLerped.Rotation;
-		}
-		else
-		{
-			// No transitioning.
-			var tRelative = Relative.AddTo( tOrigin );
 
-			ViewPosition = tRelative.Position;
-			ViewRotation = tRelative.Rotation;
+			return;
 		}
+
+		// No transitioning.
+		var tRelative = tOrigin.WithOffset( Relative );
+
+		ViewPosition = tRelative.Position;
+		ViewRotation = tRelative.Rotation;
 	}
 }

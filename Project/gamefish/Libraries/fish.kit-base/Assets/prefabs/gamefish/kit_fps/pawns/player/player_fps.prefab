@@ -4,7 +4,7 @@
     "__version": 1,
     "Flags": 0,
     "Name": "player_fps",
-    "Position": "0,0,0",
+    "Position": "-16.0309,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "player",
@@ -12,59 +12,37 @@
     "NetworkMode": 1,
     "NetworkInterpolation": true,
     "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "GameFish.PlayerPawn",
         "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
-        "Actor": {
-          "_type": "component",
-          "component_id": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
-          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "BaseActor"
-        },
-        "Agent": null,
         "AllowSpectators": true,
+        "BodyComponent": null,
+        "ClassId": "player_fps",
+        "ClassName": null,
         "Controller": {
           "_type": "component",
-          "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",
+          "component_id": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "PlayerController"
+          "component_type": "FacepunchController"
         },
-        "DuckButton": "duck",
-        "DuckLowerSpeed": 10,
-        "DuckMoveSpeed": 50,
-        "DuckRaiseSpeed": 15,
-        "HasForcedNetworking": true,
-        "Health": 100,
-        "HealthComponent": {
+        "DebugDamage": 25,
+        "Equipment": {
           "_type": "component",
-          "component_id": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "HealthComponent"
+          "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
+          "go": "4392db66-be79-4a96-9f50-66fb797af589",
+          "component_type": "PawnEquipment"
         },
+        "EyeTraceIgnore": "water",
+        "Health": 100,
         "IsAlive": true,
+        "IsClass": false,
         "IsDestructible": true,
-        "IsPlayer": false,
-        "JumpButton": "jump",
-        "JumpSpeed": 250,
+        "IsNetworkingForced": true,
         "MaxHealth": 100,
-        "Modules": [
-          {
-            "_type": "component",
-            "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
-            "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
-            "component_type": "PawnView"
-          },
-          {
-            "_type": "component",
-            "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
-            "go": "4392db66-be79-4a96-9f50-66fb797af589",
-            "component_type": "PawnEquipment"
-          }
-        ],
-        "MoveSpeed": 100,
         "NetworkAutomatically": true,
         "NetworkId": "00a167f2-9393-469a-879d-63a09e408188",
         "NetworkingMode": "Object",
@@ -77,9 +55,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "SprintButton": "run",
-        "SprintMultiplier": 1.5,
-        "Velocity": "0,0,0",
+        "Team": null,
         "View": {
           "_type": "component",
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
@@ -88,25 +64,31 @@
         },
         "ViewRenderer": {
           "_type": "component",
-          "component_id": "6b80b465-dead-4b04-88e5-94fb1468ca62",
+          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
           "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
           "component_type": "ViewRenderer"
         }
       },
       {
-        "__type": "GameFish.BaseActor",
-        "__guid": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
+        "__type": "GameFish.FacepunchController",
+        "__guid": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
         "__enabled": true,
-        "HasForcedNetworking": false,
-        "Model": {
-          "_type": "component",
-          "component_id": "b6d83571-0158-4a0b-936c-8786d26d6314",
-          "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
-          "component_type": "ActorCitizenModel"
+        "Acceleration": 10,
+        "AllowAiming": true,
+        "AllowMovement": true,
+        "ClassId": "player_fps",
+        "ClassName": null,
+        "EyeMoveSmoothing": 0.15,
+        "EyeMoveSpeed": 1,
+        "Friction": {
+          "Value": 0,
+          "StopSpeed": 0
         },
-        "Modules": [],
+        "IsClass": false,
+        "IsNetworkingForced": false,
+        "MoveSpeed": 250,
         "NetworkAutomatically": false,
-        "NetworkId": "07520265-2ad8-4f1f-8ade-e5d5a804a803",
+        "NetworkId": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "Destroy",
         "NetworkOwner": null,
@@ -117,23 +99,24 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "Velocity": "0,0,0"
-      },
-      {
-        "__type": "GameFish.HealthComponent",
-        "__guid": "21646fe7-b1c4-40a1-aafb-bc53b8edc077",
-        "__enabled": true,
-        "DebugDamage": 25,
-        "Health": 100,
-        "IsAlive": true,
-        "IsDestructible": true,
-        "MaxHealth": 100,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "Pawn": {
+          "_type": "component",
+          "component_id": "00a167f2-9393-469a-879d-63a09e408188",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "PlayerPawn"
+        },
+        "PitchClamping": true,
+        "PitchRange": {
+          "Min": -89.9,
+          "Max": 89.9
+        },
+        "PlayerController": {
+          "_type": "component",
+          "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "PlayerController"
+        },
+        "SkinWidth": 0.2
       },
       {
         "__type": "Sandbox.PlayerController",
@@ -212,6 +195,7 @@
         "__enabled": true,
         "AngularDamping": 1,
         "Gravity": true,
+        "GravityScale": 1,
         "LinearDamping": 0.1,
         "Locking": {
           "X": false,
@@ -291,26 +275,30 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "GameFish.ActorCitizenModel",
-            "__guid": "b6d83571-0158-4a0b-936c-8786d26d6314",
+            "__type": "GameFish.PawnCitizenModel",
+            "__guid": "637bd44a-28de-4255-98f5-9aaec849914e",
             "__enabled": true,
             "BodyWeight": 1,
+            "ClassId": null,
+            "ClassName": null,
             "EyeSource": null,
             "EyesWeight": 1,
-            "HasForcedNetworking": false,
             "HeadWeight": 1,
             "Height": null,
             "IkLeftFoot": null,
             "IkLeftHand": null,
             "IkRightFoot": null,
             "IkRightHand": null,
+            "IsClass": false,
+            "IsNetworkingForced": null,
             "LookAt": null,
             "LookAtEnabled": false,
             "NetworkAutomatically": false,
-            "NetworkId": "b6d83571-0158-4a0b-936c-8786d26d6314",
+            "NetworkId": "637bd44a-28de-4255-98f5-9aaec849914e",
             "NetworkingMode": "Object",
             "NetworkOrphanedMode": "Destroy",
             "NetworkOwner": null,
@@ -321,14 +309,9 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Opacity": 1,
+            "Opacity": 0,
             "OpacitySpeed": 2,
-            "Ragdoll": {
-              "_type": "component",
-              "component_id": "2006bcc0-669e-479c-bdd5-c062a7541db0",
-              "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
-              "component_type": "ModelPhysics"
-            },
+            "Ragdoll": null,
             "SkinRenderer": {
               "_type": "component",
               "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
@@ -409,13 +392,16 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.ModelPhysics",
             "__guid": "2006bcc0-669e-479c-bdd5-c062a7541db0",
             "__enabled": false,
+            "Bodies": [],
             "IgnoreRoot": false,
+            "Joints": [],
             "Locking": {
               "X": false,
               "Y": false,
@@ -432,6 +418,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "PhysicsWereCreated": false,
             "Renderer": {
               "_type": "component",
               "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
@@ -450,6 +437,7 @@
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
+            "LodOverride": null,
             "MaterialGroup": "default",
             "MaterialOverride": null,
             "Materials": null,
@@ -499,6 +487,7 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
@@ -515,6 +504,7 @@
                 },
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -565,6 +555,7 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
@@ -581,6 +572,7 @@
                 },
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -631,6 +623,7 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
@@ -647,6 +640,7 @@
                 },
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -699,14 +693,16 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.CapsuleCollider",
             "__guid": "cdf9082a-6a58-4902-ad04-5706a69ec252",
             "__enabled": true,
+            "ColliderFlags": 0,
             "Elasticity": null,
-            "End": "0,0,45.05097",
+            "End": "0,0,36",
             "Friction": 0,
             "IsTrigger": false,
             "OnComponentDestroy": null,
@@ -731,6 +727,7 @@
             "__guid": "ecaf68d2-3205-4636-ac23-a3076c510e85",
             "__enabled": true,
             "Center": "0,0,18",
+            "ColliderFlags": 0,
             "Elasticity": null,
             "Friction": 0,
             "IsTrigger": false,
@@ -766,6 +763,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -773,30 +771,20 @@
             "__guid": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "__enabled": true,
             "AllowCyclingMode": true,
+            "ClassId": null,
+            "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
             "CollisionHitTags": "solid",
             "CollisionIgnoreTags": "pawn",
             "CollisionRadius": 8,
-            "CustomSetAction": null,
-            "CustomUpdateAction": null,
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
             "DebugMode": false,
-            "DefaultMode": "FirstPerson",
-            "DestroyObject": true,
-            "DistanceRange": {
-              "Min": 50,
-              "Max": 250
-            },
-            "EyeAngles": "-0,0,0",
-            "HasForcedNetworking": true,
-            "InitialDistance": 100,
-            "Mode": "FirstPerson",
-            "ModeList": {
-              "FirstPerson": true,
-              "ThirdPerson": true
-            },
+            "FirstPersonMode": null,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "Mode": null,
             "NetworkAutomatically": true,
             "NetworkId": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "NetworkingMode": "Object",
@@ -809,34 +797,15 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Parent": {
-              "_type": "component",
-              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "PlayerPawn"
-            },
-            "PitchClamping": true,
-            "PitchRange": {
-              "Min": -89.9,
-              "Max": 89.9
-            },
             "Relative": {
               "Position": "0,0,0",
-              "Rotation": "0,0,0,0",
-              "Transform": {
-                "Position": "0,0,0",
-                "Scale": "1,1,1",
-                "Rotation": "0,0,0,0"
-              }
+              "Rotation": "0,0,0,0"
             },
-            "ScrollSensitivity": 15,
-            "ScrollSpeed": 5,
-            "ShowViewRenderer": true,
             "TransitionSmoothing": 0.35,
             "TransitionSpeed": 3,
             "ViewRenderer": {
               "_type": "component",
-              "component_id": "6b80b465-dead-4b04-88e5-94fb1468ca62",
+              "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
               "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
               "component_type": "ViewRenderer"
             }
@@ -856,28 +825,27 @@
             "NetworkMode": 2,
             "NetworkInterpolation": true,
             "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
               {
                 "__type": "GameFish.ViewRenderer",
-                "__guid": "6b80b465-dead-4b04-88e5-94fb1468ca62",
+                "__guid": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
                 "__enabled": true,
-                "HasForcedNetworking": true,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
                 "ModelRenderer": null,
                 "NetworkAutomatically": true,
-                "NetworkId": "6b80b465-dead-4b04-88e5-94fb1468ca62",
+                "NetworkId": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
                 "NetworkingMode": "Object",
                 "NetworkOrphanedMode": "ClearOwner",
                 "NetworkOwner": null,
                 "NetworkTransferMode": "Fixed",
                 "Offset": {
                   "Position": "0,0,0",
-                  "Rotation": "0,0,0,0",
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "1,1,1",
-                    "Rotation": "0,0,0,0"
-                  }
+                  "Rotation": "0,0,0,0"
                 },
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -888,18 +856,7 @@
                 "Speed": 15,
                 "TargetOffset": {
                   "Position": "0,0,0",
-                  "Rotation": "0,0,0,0",
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "1,1,1",
-                    "Rotation": "0,0,0,0"
-                  }
-                },
-                "View": {
-                  "_type": "component",
-                  "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
-                  "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
-                  "component_type": "PawnView"
+                  "Rotation": "0,0,0,0"
                 }
               },
               {
@@ -911,6 +868,7 @@
                 "BoneMergeTarget": null,
                 "CreateAttachments": false,
                 "CreateBoneObjects": false,
+                "LodOverride": null,
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
@@ -963,6 +921,7 @@
         "NetworkMode": 2,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
@@ -970,9 +929,12 @@
             "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
             "__enabled": true,
             "AutoGiveLoadout": true,
-            "DestroyObject": true,
-            "Equipped": [],
-            "HasForcedNetworking": true,
+            "ClassId": null,
+            "ClassName": null,
+            "DebugLogging": false,
+            "InputPrefix": "Slot",
+            "IsClass": false,
+            "IsNetworkingForced": true,
             "Loadout": [
               {
                 "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
@@ -991,12 +953,6 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Parent": {
-              "_type": "component",
-              "component_id": "00a167f2-9393-469a-879d-63a09e408188",
-              "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-              "component_type": "PlayerPawn"
-            },
             "SlotCapacity": 1,
             "SlotCount": 10,
             "StrictSlots": false,

@@ -2,6 +2,9 @@ namespace GameFish;
 
 partial class BaseEntity
 {
+	public static PrefabFile GetPrefab( string classId )
+		=> TryGetPrefab( classId, out var prefabFile ) ? prefabFile : null;
+
 	public static bool TryGetPrefab( string classId, out PrefabFile prefabFile )
 	{
 		prefabFile = null;
@@ -29,9 +32,13 @@ partial class BaseEntity
 	/// <summary>
 	/// Lets you spawn entities where you're looking by their class ID(if they have one).
 	/// </summary>
-	[ConCmd( "spawn", ConVarFlags.Cheat )]
-	public static void DebugSpawn( string classId, float distance = 1000f )
+	[Rpc.Host]
+	[ConCmd( "ent_spawn" )]
+	public static void SpawnEntityCommand( string classId, float distance = 1000f )
 	{
+		if ( !Server.CheatsEnabled && !Server.CanCheat( Rpc.Caller ) )
+			return;
+
 		if ( !TryGetPrefab( classId, out var prefabFile ) )
 		{
 			Print.WarnFrom( typeof( BaseEntity ), $"Couldn't find Entity with ID:\"{classId}\"." );
@@ -41,10 +48,12 @@ partial class BaseEntity
 		GameObject go;
 
 		// Try to spawn it under our current pawn's aim.
-		if ( Client.Local?.Pawn is var pawn && pawn.IsValid() )
+		if ( Server.FindPawn( Rpc.Caller ) is var pawn && pawn.IsValid() )
 		{
-			var endPos = pawn.GetEyeTrace( distance ).Run().EndPosition;
-			prefabFile.TrySpawn( pawn.EyeTransform.WithPosition( endPos ), out go );
+			var tr = pawn.GetEyeTrace( distance ).Run();
+			var pos = tr.Hit ? tr.HitPosition : tr.StartPosition + (tr.Direction * tr.Distance);
+
+			prefabFile.TrySpawn( pos, pawn.EyeRotation, out go );
 		}
 		else
 		{
@@ -52,6 +61,6 @@ partial class BaseEntity
 		}
 
 		if ( go.IsValid() && go.Components.TryGet<BaseEntity>( out var ent ) )
-			ent.SetupNetworking( force: true );
+			ent.TrySetNetworkOwner( Connection.Host );
 	}
 }

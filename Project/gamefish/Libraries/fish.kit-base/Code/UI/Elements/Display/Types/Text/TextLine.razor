@@ -1,0 +1,66 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+
+@inherits Panel
+
+@namespace GameFish.Razor
+
+<root style="@LineStyle">
+
+	@{
+		if (!Line.IsValid)
+			return;
+
+		var e = Line.Element;
+
+		switch (e)
+		{
+			default:
+			case DisplayElement.Default:
+				<p> @Line.Text </p>
+				break;
+
+			case DisplayElement.Title:
+				<title> @Line.Text </title>
+				break;
+
+			case DisplayElement.Heading1:
+				<h1> @Line.Text </h1>
+				break;
+
+			case DisplayElement.Heading2:
+				<h1> @Line.Text </h1>
+				break;
+
+			case DisplayElement.Heading3:
+				<h2> @Line.Text </h2>
+				break;
+
+			case DisplayElement.Heading4:
+				<h3> @Line.Text </h3>
+				break;
+
+			case DisplayElement.Heading5:
+				<h4> @Line.Text </h4>
+				break;
+
+			case DisplayElement.Heading6:
+				<h5> @Line.Text </h5>
+				break;
+
+			case DisplayElement.SuperScript:
+				<sup> @Line.Text </sup>
+				break;
+
+			case DisplayElement.SubScript:
+				<sub> @Line.Text </sub>
+				break;
+
+			case DisplayElement.Footer:
+				<footer> @Line.Text </footer>
+				break;
+		}
+	}
+
+</root>

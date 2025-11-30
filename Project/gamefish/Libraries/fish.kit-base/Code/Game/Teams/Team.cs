@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
 /// Used to identify and store information about a team.
 /// </summary>
-[AssetType( Name = "Team Definition", Extension = "team", Category = "Game Fish" )]
+[AssetType( Name = "Team Definition", Extension = "team", Category = Library.NAME )]
 public partial class Team : GameResource, ITeam
 {
 	protected override Bitmap CreateAssetTypeIcon( int width, int height )
@@ -11,17 +13,15 @@ public partial class Team : GameResource, ITeam
 
 	Team ITeam.Team => this;
 
-	/// <summary>
-	/// The prefix to use for finding and assigning tags to objects.
-	/// </summary>
-	public const string PREFIX = "team_";
-
-	public const string TEAM = "🚩 Team";
-
 	public const string RELATIONSHIPS = "Relationships";
 
-	public string Name { get; set; } = "???";
+	/// <summary> The prefix to use for finding and assigning tags to objects. </summary>
+	public const string PREFIX = "team_";
+
+	[JsonIgnore, ReadOnly]
 	public string Tag => PREFIX + ResourceName;
+
+	public string Name { get; set; } = "???";
 
 	/// <summary>
 	/// If true: you can pick this team if the mode allows it.

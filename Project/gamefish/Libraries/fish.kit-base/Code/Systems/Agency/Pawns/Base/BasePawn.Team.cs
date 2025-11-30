@@ -4,7 +4,7 @@ partial class BasePawn : ITeam
 {
 	[Property]
 	[Sync( SyncFlags.FromHost )]
-	[Feature( PAWN ), Group( Team.TEAM ), Order( -69 )]
+	[Feature( PAWN ), Group( TEAM ), Order( -69 )]
 	public Team Team
 	{
 		get => _team;

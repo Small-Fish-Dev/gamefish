@@ -24,14 +24,36 @@ public struct SoundSettings
 
 	public SoundSettings( Vector3 worldPos )
 	{
+		Following = null;
 		Transform = new( worldPos );
 	}
 
-	public SoundSettings( Vector3 localPos, GameObject obj )
+	/// <summary>
+	/// Creates a sound configuration that's relative to an object.
+	/// </summary>
+	/// <param name="obj"> The object the sound is relative to. </param>
+	/// <param name="pos"> The local or world position. </param>
+	/// <param name="isWorldPos"> Is <paramref name="pos"/> a world-space coordinate? </param>
+	public SoundSettings( GameObject obj, in Vector3 pos, in bool isWorldPos )
 	{
 		Following = obj;
 
-		if ( obj.IsValid() )
-			Transform = new( obj.WorldTransform.PointToLocal( localPos ) );
+		var soundPos = isWorldPos && obj.IsValid()
+			? obj.WorldTransform.PointToLocal( pos )
+			: pos;
+
+		Transform = new( pos: soundPos );
 	}
+
+	/// <returns> A sound configuration using a world-space point. </returns>
+	public static SoundSettings InWorld( in Vector3 worldPos )
+		=> new( worldPos );
+
+	/// <returns> A sound configuration relative to an object given a world-space point. </returns>
+	public static SoundSettings InWorld( GameObject obj, in Vector3 worldPos )
+		=> new( obj, worldPos, isWorldPos: true );
+
+	/// <returns> A sound configuration relative to an object given a local-space point. </returns>
+	public static SoundSettings InLocal( GameObject obj, in Vector3 localPos )
+		=> new( obj, localPos, isWorldPos: false );
 }

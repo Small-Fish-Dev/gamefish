@@ -22,13 +22,22 @@ partial class BaseEntity
 	/// If enabled: network this object <c>OnStart</c> using these settings.
 	/// </summary>
 	[Property]
-	[Title( "Automatic" )]
-	[Feature( ENTITY ), Order( NETWORK_ORDER )]
+	[Order( NETWORK_ORDER )]
+	[Feature( ENTITY, Description = "We heard you missed these." )]
 	[ToggleGroup( nameof( NetworkAutomatically ), Label = NETWORKING )]
 	[ShowIf( nameof( ShowNetworkProperties ), true )]
-	public virtual bool NetworkAutomatically
+	public bool NetworkAutomatically
 	{
-		get => IsNetworkedOverride.HasValue ? IsNetworkingForced : _netAuto;
+		get => IsNetworkedAutomatically;
+		set => IsNetworkedAutomatically = value;
+	}
+
+	/// <summary>
+	/// If enabled: network this object <c>OnStart</c> using these settings.
+	/// </summary>
+	protected virtual bool IsNetworkedAutomatically
+	{
+		get => IsNetworkedOverride ?? _netAuto;
 		set => _netAuto = value;
 	}
 
@@ -40,9 +49,9 @@ partial class BaseEntity
 	[Property]
 	[Title( "Forced (by Component)" )]
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
-	[ToggleGroup( nameof( NetworkAutomatically ), Label = NETWORKING )]
+	[ToggleGroup( nameof( NetworkAutomatically ) )]
 	[ShowIf( nameof( ShowNetworkProperties ), true )]
-	public bool IsNetworkingForced => IsNetworkedOverride is true;
+	public bool? IsNetworkingForced => IsNetworkedOverride;
 
 	[Property]
 	[Title( "Id" )]
@@ -54,7 +63,7 @@ partial class BaseEntity
 
 	/// <summary>
 	/// When to network this object(if ever). <br />
-	/// Used by the <see cref="UpdateNetworking"/> method.
+	/// Used by the <see cref="TrySetNetworkOwner"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Network Mode" )]
@@ -66,7 +75,7 @@ partial class BaseEntity
 
 	/// <summary>
 	/// Who the object can/does belong to. <br />
-	/// Used by the <see cref="UpdateNetworking"/> method.
+	/// Used by the <see cref="TrySetNetworkOwner"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Transfer Mode" )]
@@ -78,7 +87,7 @@ partial class BaseEntity
 
 	/// <summary>
 	/// What to do upon losing a network owner. <br />
-	/// Used by the <see cref="UpdateNetworking"/> method.
+	/// Used by the <see cref="TrySetNetworkOwner"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Orphaned Mode" )]
@@ -97,7 +106,7 @@ partial class BaseEntity
 	[Feature( ENTITY ), Order( NETWORK_ORDER )]
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
 	[ShowIf( nameof( ShowNetworkProperties ), true )]
-	public string NetworkOwner => Network?.Owner?.ToString();
+	protected string NetworkOwner => Network?.Owner?.ToString();
 	// public Connection NetworkOwner => Network?.Owner;
 
 	/// <summary>
@@ -124,9 +133,12 @@ partial class BaseEntity
 	{
 		base.OnStart();
 
-		if ( NetworkAutomatically && !IsProxy )
-			if ( !Network.Active && Network.Owner is null )
-				SetupNetworking();
+		if ( IsProxy || !NetworkAutomatically )
+			return;
+
+		// Never clear existing owners set before spawn.
+		if ( !Network.Active && Network.Owner is null )
+			SetupNetworking();
 	}
 
 	/// <summary>
@@ -135,12 +147,11 @@ partial class BaseEntity
 	/// </summary>
 	protected virtual void SetupNetworking( bool force = false )
 	{
-		if ( !IsNetworkSetupAllowed() && !force )
+		if ( !force && !IsNetworkSetupAllowed() )
 			return;
 
-		// Never clear existing owners set before spawn.
-		if ( DefaultNetworkOwner is Connection cn && cn is not null )
-			UpdateNetworking( cn );
+		if ( DefaultNetworkOwner is not null )
+			TrySetNetworkOwner( DefaultNetworkOwner );
 	}
 
 	/// <summary>
@@ -148,10 +159,14 @@ partial class BaseEntity
 	/// You may use <see cref="DefaultNetworkOwner"/> to respect this component's preference.
 	/// </summary>
 	/// <param name="cn"> The connection to assign this object to(if any). </param>
-	public virtual void UpdateNetworking( Connection cn )
+	/// <param name="allowProxy"> Should we care if it belongs to us or not? </param>
+	public virtual bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
 	{
 		if ( !GameObject.IsValid() )
-			return;
+			return false;
+
+		if ( !allowProxy && IsProxy )
+			return false;
 
 		// this.Log( $"assigning ownership to Connection:[{cn}]" );
 
@@ -160,7 +175,9 @@ partial class BaseEntity
 			orphanMode: NetworkOrphanedMode,
 			ownerTransfer: NetworkTransferMode,
 			netMode: NetworkingMode,
-			ignoreProxy: false
+			ignoreProxy: true
 		);
+
+		return true;
 	}
 }

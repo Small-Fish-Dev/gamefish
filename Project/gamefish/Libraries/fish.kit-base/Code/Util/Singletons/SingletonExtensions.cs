@@ -21,8 +21,8 @@ partial class Library
 			return null;
 
 		instance = isOwned
-			? activeScene.GetAllComponents<T>().FirstOrDefault( c => c.IsOwner() )
-			: activeScene.GetAllComponents<T>().FirstOrDefault();
+			? activeScene.Components.GetAll<T>().FirstOrDefault( c => c.IsOwner() )
+			: activeScene.Components.GetAll<T>().FirstOrDefault( c => c.IsValid() );
 
 		// Should always be valid or null, never destroyed.
 		return instance.IsValid() ? instance : null;

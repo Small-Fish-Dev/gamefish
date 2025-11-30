@@ -7,10 +7,10 @@ partial class BasePawn
 	/// </summary>
 	[Property]
 	[Feature( PAWN ), Group( VIEW )]
-	public PawnView View
+	public virtual PawnView View
 	{
 		get => _view.IsValid() ? _view
-			: _view = GetModule<PawnView>();
+			: _view = Components?.Get<PawnView>( FindMode.EverythingInSelfAndDescendants );
 
 		set { _view = value; }
 	}
@@ -19,7 +19,7 @@ partial class BasePawn
 
 	[Property]
 	[Feature( PAWN ), Group( VIEW )]
-	public ViewRenderer ViewRenderer => View?.ViewRenderer;
+	public virtual ViewRenderer ViewRenderer => View?.ViewRenderer;
 
 	/// <summary> The base vision trace will ignore objects with these tags. </summary>
 	[Property]
@@ -27,28 +27,40 @@ partial class BasePawn
 	public virtual TagSet EyeTraceIgnore { get; set; } = ["water"];
 
 	/// <summary>
-	/// The local eye position of the controller in world space.
+	/// The world-space eye position.
 	/// </summary>
 	public virtual Vector3 EyePosition
 	{
-		get => WorldTransform.PointToWorld( Controller?.LocalEyePosition ?? LocalPosition );
+		get
+		{
+			if ( Controller.IsValid() )
+				return WorldTransform.PointToWorld( Controller.GetLocalEyePosition() );
+
+			return WorldPosition;
+		}
 		set
 		{
-			if ( Controller is var c && c.IsValid() )
-				c.LocalEyePosition = WorldTransform.PointToLocal( value );
+			if ( Controller.IsValid() )
+				Controller.SetLocalEyePosition( WorldTransform.PointToLocal( value ) );
 		}
 	}
 
 	/// <summary>
-	/// The local eye rotation of the controller in world space.
+	/// The world-space eye rotation.
 	/// </summary>
 	public virtual Rotation EyeRotation
 	{
-		get => WorldTransform.RotationToWorld( Controller?.LocalEyeRotation ?? LocalRotation );
+		get
+		{
+			if ( Controller.IsValid() )
+				return WorldTransform.RotationToWorld( Controller.GetLocalEyeRotation() );
+
+			return WorldRotation;
+		}
 		set
 		{
-			if ( Controller is var c && c.IsValid() )
-				c.LocalEyeRotation = WorldTransform.RotationToLocal( value );
+			if ( Controller.IsValid() )
+				Controller.SetLocalEyeRotation( WorldTransform.RotationToLocal( value ) );
 		}
 	}
 
@@ -56,18 +68,10 @@ partial class BasePawn
 	public Vector3 EyeForward => EyeRotation.Forward;
 
 	/// <summary>
-	/// A position between the eye and feet.
-	/// </summary>
-	public override Vector3 Center => WorldPosition.LerpTo( EyePosition, 0.5f );
-
-	/// <summary>
 	/// Tells the view manager to process its transitions and offsets.
 	/// </summary>
-	public virtual void SimulateView( in float deltaTime )
-	{
-		if ( View is var view && view.IsValid() )
-			view.FrameSimulate( deltaTime );
-	}
+	public virtual void UpdateView( in float deltaTime )
+		=> View?.FrameSimulate( deltaTime );
 
 	/// <summary>
 	/// Lets this pawn affect/override a view transform(probably from the main camera).
@@ -83,7 +87,6 @@ partial class BasePawn
 
 		// Default to the pawn's viewing origin.
 		tView = EyeTransform;
-
 		return true;
 	}
 

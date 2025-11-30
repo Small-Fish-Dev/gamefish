@@ -36,14 +36,4 @@ partial class BasePawn
 		// Only spectators can spectate.
 		return false;
 	}
-
-	/// <summary>
-	/// Kicks the spectator out of the fuggen thing, man.
-	/// </summary>
-	[Button]
-	[ShowIf( nameof( AllowSpectators ), true )]
-	[Feature( PAWN ), Group( SPECTATOR ), Order( SPECTATOR_ORDER )]
-	public virtual void StopSpectating()
-	{
-	}
 }

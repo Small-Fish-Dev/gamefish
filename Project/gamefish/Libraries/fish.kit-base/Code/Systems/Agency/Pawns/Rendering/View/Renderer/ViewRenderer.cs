@@ -1,22 +1,21 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
 /// This should be on a child object of the pawn's viewing object.
 /// </summary>
 [Icon( "sports_mma" )]
-public partial class ViewRenderer : BaseEntity, ISkinned
+public partial class ViewRenderer : Module, ISkinned
 {
 	public const string GROUP_OFFSETS = "Offsets";
 
-	[Property]
-	[Feature( VIEW )]
-	public PawnView View
-	{
-		get => _view.IsValid() ? _view
-			: _view = Components?.Get<PawnView>( FindMode.EverythingInAncestors );
-	}
+	public override bool IsParent( ModuleEntity comp )
+		=> comp is PawnView;
 
-	protected PawnView _view;
+	[Feature( VIEW )]
+	[Property, ReadOnly, JsonIgnore]
+	public PawnView View => Parent as PawnView;
 
 	[Property]
 	[Feature( VIEW )]

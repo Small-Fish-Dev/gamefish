@@ -1,7 +1,8 @@
 namespace GameFish;
 
 /// <summary>
-/// A <see cref="PawnView"/> that can look through a <see cref="global::GameFish.SpectatorPawn"/> target's eyes.
+/// A pawn viewing module that can look through a target's eyes. <br />
+/// This should be on a child object of the pawn(otherwise expect problems).
 /// </summary>
 public partial class SpectatorView : PawnView
 {
@@ -17,13 +18,7 @@ public partial class SpectatorView : PawnView
 		? spec.Spectating.IsValid() ? spec.Spectating : spec
 		: null;
 
-	public override bool TrySetPosition( in Vector3 newPos )
-		=> SpectatorPawn?.TrySetPosition( newPos ) ?? false;
-
-	public override bool TrySetRotation( in Rotation rNew )
-		=> SpectatorPawn?.TrySetRotation( rNew ) ?? false;
-
-	protected override void SetTransformFromRelative()
+	public override void SetTransformFromRelative()
 	{
 		if ( !IsSpectating )
 			return;
@@ -80,10 +75,10 @@ public partial class SpectatorView : PawnView
 		// Ensure first person while not spectating someone.
 		if ( !IsSpectating )
 		{
-			if ( Mode != Perspective.FirstPerson )
+			if ( Mode?.AllowFirstPerson is not true )
 			{
-				Mode = Perspective.FirstPerson;
-				StopTransition();
+				if ( TryEnterFirstPerson() )
+					StopTransition();
 			}
 
 			return true;

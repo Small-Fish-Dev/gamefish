@@ -60,7 +60,7 @@ public partial struct Identity : IValid
 		if ( cn is null )
 			return false;
 
-		return Connection == cn || Id == cn.Id || Address == cn.Address;
+		return Connection == cn;
 	}
 
 	public override readonly string ToString() => $"Identity|{Type}|\"{Name}\"";

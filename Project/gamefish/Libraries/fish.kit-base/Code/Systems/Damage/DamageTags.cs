@@ -67,7 +67,7 @@ public static partial class DamageTags
 	public const string FALLING = FALL;
 
 	/// <summary>
-	/// Crated some fool with your phat ass.
+	/// Cratered some fool with your phat ass.
 	/// </summary>
 	public const string GOOMBA = "goomba";
 

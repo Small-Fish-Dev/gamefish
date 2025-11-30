@@ -10,9 +10,10 @@ public partial struct Area : IValid
 	public enum ShapeType
 	{
 		None,
-		Box,
-		Sphere,
-		Cylinder,
+		[Icon( "◽" )] Point,
+		[Icon( "📦" )] Box,
+		[Icon( "🌐" )] Sphere,
+		[Icon( "🍼" )] Cylinder,
 	}
 
 	/// <summary>
@@ -105,6 +106,7 @@ public partial struct Area : IValid
 	{
 		var localPos = Shape switch
 		{
+			ShapeType.Point => Vector3.Zero,
 			ShapeType.Box => Bounds.Center.WithZ( Bounds.Mins.z ),
 			ShapeType.Sphere => Vector3.Down * Radius,
 			ShapeType.Cylinder => Vector3.Down * Height,
@@ -116,6 +118,8 @@ public partial struct Area : IValid
 			: localPos;
 	}
 
+	/// <param name="worldSpace"> Transform the point into world-space? </param>
+	/// <param name="tWorld"> The world-space transform to override with. </param>
 	/// <returns> A random point inside of the defined shape. </returns>
 	public readonly Vector3 GetRandomPoint( bool worldSpace = true, Transform? tWorld = null )
 	{
@@ -123,6 +127,10 @@ public partial struct Area : IValid
 
 		switch ( Shape )
 		{
+			case ShapeType.Point:
+				localPos = Vector3.Zero;
+				break;
+
 			case ShapeType.Box:
 				localPos = Bounds.RandomPointInside;
 				break;

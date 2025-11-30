@@ -34,18 +34,18 @@ public static partial class Random
 	public static float From( in IntRange range )
 		=> range.GetRandom();
 
-	/// <returns> A random value from any kind of list(or <paramref name="default"/>). </returns>
-	public static T From<T>( IEnumerable<T> list, in T @default = default )
+	/// <returns> A random value from any kind of set(or <paramref name="default"/>). </returns>
+	public static T From<T>( IEnumerable<T> set, in T @default = default )
 	{
-		if ( list is null )
+		if ( set is null )
 			return @default;
 
-		var count = list.Count();
+		var count = set.Count();
 
 		if ( count <= 0 )
 			return @default;
 
-		return list.ElementAt( (count - 1).Random() );
+		return set.ElementAt( (count - 1).Random() );
 	}
 
 	/// <summary>

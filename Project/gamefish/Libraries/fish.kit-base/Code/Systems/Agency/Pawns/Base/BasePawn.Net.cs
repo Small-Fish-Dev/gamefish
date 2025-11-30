@@ -8,7 +8,7 @@ partial class BasePawn
 	protected override OwnerTransfer NetworkTransferModeDefault => OwnerTransfer.Fixed;
 	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
 
-	public override Connection DefaultNetworkOwner => Network?.Owner ?? Agent?.Connection;
+	public override Connection DefaultNetworkOwner => Network?.Owner ?? Owner?.Connection;
 
 	protected override void OnEnabled()
 	{

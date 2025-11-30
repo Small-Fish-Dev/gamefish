@@ -1,0 +1,18 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+
+@inherits Panel
+
+@namespace GameFish.Razor
+
+<root>
+
+	<Image class="glyph" Texture="@Texture" />
+
+	@if (!Text.IsBlank())
+	{
+		<p class="keybind-text"> @Text </p>
+	}
+
+</root>

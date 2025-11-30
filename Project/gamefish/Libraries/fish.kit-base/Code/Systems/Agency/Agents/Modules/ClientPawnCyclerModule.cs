@@ -61,7 +61,7 @@ public partial class ClientPawnCyclerModule : Module
 		}
 
 		var oldPawn = cl.Pawn;
-		var pawn = cl.SetPawn( prefab );
+		var pawn = cl.CreatePawn( prefab );
 
 		if ( !pawn.IsValid() )
 		{
@@ -73,11 +73,11 @@ public partial class ClientPawnCyclerModule : Module
 		var rPrev = oldPawn?.WorldRotation;
 		var viewPrev = oldPawn?.View?.WorldTransform;
 
-		if ( vPrev.HasValue )
-			pawn.TrySetPosition( vPrev.Value );
+		if ( vPrev.HasValue && ITransform.IsValid( vPrev.Value ) )
+			pawn.WorldPosition = vPrev.Value;
 
-		if ( rPrev.HasValue )
-			pawn.TrySetRotation( Rotation.FromYaw( rPrev.Value.Yaw() ) );
+		if ( rPrev.HasValue && ITransform.IsValid( rPrev.Value ) )
+			pawn.WorldRotation = Rotation.FromYaw( rPrev.Value.Yaw() );
 
 		if ( viewPrev is Transform tView && pawn.View is PawnView pv )
 		{

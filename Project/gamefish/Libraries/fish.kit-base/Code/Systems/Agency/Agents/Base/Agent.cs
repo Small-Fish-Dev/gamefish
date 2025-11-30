@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
@@ -6,40 +8,57 @@ namespace GameFish;
 /// </summary>
 [Icon( "psychology" )]
 [EditorHandle( Icon = "psychology" )]
-public abstract partial class Agent : ModuleEntity
+public abstract partial class Agent : ModuleEntity, ISimulate
 {
+	// mister anderson
+	protected const int AGENT_ORDER = DEFAULT_ORDER - 1999;
+
+	/// <summary>
+	/// Is this owned by a player?
+	/// </summary>
+	[Title( "Is Player" )]
+	[Property, ReadOnly, JsonIgnore]
+	[Feature( AGENT ), Order( AGENT_ORDER )]
+	protected virtual bool InspectorIsPlayer => IsPlayer;
+
 	/// <summary>
 	/// Is this meant to be owned by a player?
 	/// </summary>
-	[Property, Feature( AGENT )]
-	public virtual bool IsPlayer { get; protected set; } = false;
+	public virtual bool IsPlayer { get; }
 
 	/// <summary>
 	/// What specific pawn(if any) is under this agent's control?
 	/// </summary>
 	[Sync( SyncFlags.FromHost )]
-	[Property, ReadOnly, Feature( AGENT )]
 	public BasePawn Pawn { get; set; }
 
-	[Property]
-	[Title( "Set Pawn" )]
-	[HideIf( nameof( InEditor ), true )]
-	[Feature( AGENT ), Category( "Debug" )]
-	public BasePawn SetDebugPawn
+	[Title( "Pawn" )]
+	[Property, JsonIgnore]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( AGENT ), Group( DEBUG )]
+	protected BasePawn InspectorPawn
 	{
-		get => _debugPawn;
-		set
-		{
-			_debugPawn = value;
-			if ( !_debugPawn.IsValid() ) return;
-			SetPawn<BasePawn>( _debugPawn.GameObject );
-		}
+		get => Pawn;
+		set => TryAssignPawn( value );
 	}
 
-	private BasePawn _debugPawn;
+	[Title( "Identity" )]
+	[Feature( AGENT ), Group( ID )]
+	[Property, ReadOnly, JsonIgnore]
+	protected Identity InspectorIdentity => Identity;
 
-	public virtual Identity Identity { get; protected set; }
+	public abstract Identity Identity { get; protected set; }
+
 	public virtual Connection Connection => Connection.Host;
+
+	/// <summary>
+	/// If NPC/Bot: always true. ('cause they in the matrix or some shit) <br />
+	/// If <see cref="Client"/>: if the connection exists and is active.
+	/// </summary>
+	[Title( "Connected" )]
+	[ReadOnly, JsonIgnore]
+	[Property, Feature( AGENT )]
+	protected bool InspectorConnected => Connected;
 
 	/// <summary>
 	/// If NPC/Bot: always true. ('cause they in the matrix or some shit) <br />
@@ -49,33 +68,45 @@ public abstract partial class Agent : ModuleEntity
 
 	/// <summary>
 	/// If NPC/Bot: always false. <br />
-	/// If Client: if our <see cref="Identity"/> has the specified connection.
+	/// If <see cref="Client"/>: if our <see cref="Identity"/> has the specified connection.
 	/// </summary>
 	public virtual bool CompareConnection( Connection cn )
 		=> false;
 
-	// public override string ToString()
-	// => $"{GetType().ToSimpleString( includeNamespace: false )}";
+	public override string ToString()
+	{
+		if ( DisplayName.IsBlank() )
+			return $"{base.ToString()}";
+
+		return $"{base.ToString()}|Name:{DisplayName}";
+	}
 
 	/// <summary>
-	/// The display name of this guy/gal/whatever.
+	/// A nice display name.
 	/// </summary>
-	public virtual string Name
-		=> GetType().ToSimpleString();
+	public virtual string DisplayName => null;
 
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
 
-		if ( this.IsOwner() )
-			SimulatePawns( Time.Delta );
+		if ( CanSimulate() )
+			FrameSimulate( Time.Delta );
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		if ( CanSimulate() )
+			FixedSimulate( Time.Delta );
 	}
 
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
 
-		UpdateNetworking( Connection );
+		TrySetNetworkOwner( Connection );
 	}
 
 	protected override void OnDestroy()
@@ -85,25 +116,47 @@ public abstract partial class Agent : ModuleEntity
 		TryDropPawn();
 	}
 
-	/// <returns> A random default spawn point's transform(if any). </returns>
-	public virtual Transform? GetSpawnPoint()
+	public virtual bool CanSimulate()
+		=> InGame && this.IsOwner();
+
+	public virtual void FrameSimulate( in float deltaTime )
 	{
-		return Game.Random.FromArray( Scene?.GetAll<SpawnPoint>()?.ToArray() )
-			?.WorldTransform.WithScale( 1f );
+		if ( Pawn.IsValid() )
+			Pawn.FrameSimulate( in deltaTime );
+	}
+
+	public virtual void FixedSimulate( in float deltaTime )
+	{
+		if ( Pawn.IsValid() )
+			Pawn.FixedSimulate( in deltaTime );
+	}
+
+	/// <returns> A random default spawn point's transform(if any). </returns>
+	public virtual Transform? FindSpawnPoint()
+	{
+		if ( GameManager.TryGetInstance( out var gm ) )
+			return gm.FindSpawnPoint( this );
+
+		var allSpawnPoints = Scene?.GetAll<SpawnPoint>();
+
+		if ( allSpawnPoints is null || !allSpawnPoints.Any() )
+			return null;
+
+		return allSpawnPoints.PickRandom()?.WorldTransform;
 	}
 
 	/// <summary>
 	/// Spawns a <see cref="BasePawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public BasePawn SetPawn( PrefabFile prefab )
-		=> SetPawn<BasePawn>( prefab );
+	public BasePawn CreatePawn( PrefabFile prefab )
+		=> CreatePawn<BasePawn>( prefab );
 
 	/// <summary>
 	/// Spawns a <typeparamref name="TPawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public TPawn SetPawn<TPawn>( PrefabFile prefab ) where TPawn : BasePawn
+	public TPawn CreatePawn<TPawn>( PrefabFile prefab ) where TPawn : BasePawn
 	{
 		if ( !Networking.IsHost )
 		{
@@ -117,7 +170,7 @@ public abstract partial class Agent : ModuleEntity
 			return null;
 		}
 
-		var spawnPoint = GetSpawnPoint();
+		var spawnPoint = FindSpawnPoint();
 
 		if ( !spawnPoint.HasValue )
 		{
@@ -159,7 +212,7 @@ public abstract partial class Agent : ModuleEntity
 			this.Warn( $"failed to find type:[{typeof( TPawn )}] on object:[{go}]" );
 		}
 
-		if ( !TrySetPawn( newPawn ) )
+		if ( !TryAssignPawn( newPawn ) )
 		{
 			failed = true;
 			this.Warn( $"failed to set pawn:[{newPawn}]" );
@@ -167,7 +220,7 @@ public abstract partial class Agent : ModuleEntity
 
 		if ( failed && failDestroy )
 		{
-			this.Warn( $"failure detected. destroying object:[{go}]" );
+			this.Warn( $"failure detected. destroying pawn object:[{go}]" );
 			go.Destroy();
 
 			return null;
@@ -179,7 +232,7 @@ public abstract partial class Agent : ModuleEntity
 	/// <summary>
 	/// Called by the host to register a pawn assigned to this agent.
 	/// </summary>
-	public virtual bool TrySetPawn( BasePawn pawn )
+	public virtual bool TryAssignPawn( BasePawn pawn )
 	{
 		if ( !Networking.IsHost )
 			return false;
@@ -204,7 +257,7 @@ public abstract partial class Agent : ModuleEntity
 				return false;
 			}
 
-			pawn.UpdateNetworking( Connection );
+			pawn.TrySetNetworkOwner( Connection );
 
 			if ( pawn.Network.Owner != Connection )
 			{
@@ -213,8 +266,15 @@ public abstract partial class Agent : ModuleEntity
 			}
 		}
 
-		if ( pawn.TrySetOwner( this ) )
+		var oldPawn = Pawn;
+
+		if ( pawn.TryAssignOwner( this ) )
+		{
 			Pawn = pawn;
+
+			if ( oldPawn.IsValid() )
+				oldPawn.TryDropOwner();
+		}
 
 		this.Log( $"added pawn:[{pawn}]" );
 
@@ -283,7 +343,7 @@ public abstract partial class Agent : ModuleEntity
 		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
 			return Result( AttemptStatus.Failure );
 
-		if ( !pawn.TrySetOwner( this ) )
+		if ( !pawn.TryAssignOwner( this ) )
 			return Result( AttemptStatus.Failure );
 
 		return Result( AttemptStatus.Success );
@@ -301,29 +361,5 @@ public abstract partial class Agent : ModuleEntity
 
 	protected virtual void OnTryTakePawnResponse( BasePawn pawn, in AttemptStatus result )
 	{
-	}
-
-	/// <returns> If this computer can tell these pawns what to do. </returns>
-	public virtual bool CanOperate()
-	{
-		if ( !this.IsValid() || !Scene.IsValid() || Scene.IsEditor )
-			return false;
-
-		return !IsProxy;
-	}
-
-	protected virtual void SimulatePawns( in float deltaTime )
-	{
-		if ( !this.IsOwner() )
-		{
-			this.Warn( "Tried to simulate pawns we don't own!" );
-			return;
-		}
-
-		if ( Pawn is not BasePawn pawn || !pawn.IsValid() )
-			return;
-
-		if ( pawn.CanSimulate() )
-			pawn.FrameSimulate( in deltaTime );
 	}
 }
