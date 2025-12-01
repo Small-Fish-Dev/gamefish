@@ -27,6 +27,20 @@ partial class Pawn
 	public virtual TagSet EyeTraceIgnore { get; set; } = ["water"];
 
 	/// <summary>
+	/// Could be an animated model or a sprite.
+	/// Used to fade model(s) in/out from distance.
+	/// </summary>
+	[Property]
+	[Feature( PAWN ), Group( BODY )]
+	public virtual PawnBody Body
+	{
+		get => _body.GetCached( this );
+		set => _body = value;
+	}
+
+	protected PawnBody _body;
+
+	/// <summary>
 	/// The world-space eye position.
 	/// </summary>
 	public virtual Vector3 EyePosition
@@ -100,8 +114,8 @@ partial class Pawn
 		if ( !view.IsValid() )
 			return;
 
-		if ( BodyComponent is PawnBody body && body.IsValid() )
-			body.OnViewUpdate( view );
+		if ( Body.IsValid() )
+			Body.OnViewUpdate( view );
 	}
 
 	/// <returns> Prepares a default trace with vision filters. </returns>

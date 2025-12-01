@@ -17,14 +17,6 @@ partial class Pawn
 	protected BaseController _controller;
 
 	/// <summary>
-	/// Could be an animated model or a sprite.
-	/// Used to fade model(s) in/out from distance.
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Group( BODY )]
-	public virtual PawnBody BodyComponent { get; set; }
-
-	/// <summary>
 	/// The pawn's input direction(as if on an analogue stick).
 	/// </summary>
 	protected virtual Vector3 InputMoveDirection => Input.AnalogMove.ClampLength( 1f );

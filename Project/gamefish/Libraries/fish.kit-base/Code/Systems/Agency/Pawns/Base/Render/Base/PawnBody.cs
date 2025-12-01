@@ -1,7 +1,10 @@
 namespace GameFish;
 
-public abstract partial class PawnBody : BaseEntity
+public abstract partial class PawnBody : Module
 {
+	public override bool IsParent( ModuleEntity comp )
+		=> comp is Pawn;
+
 	/// <summary>
 	/// The speed that this fades back in on its own.
 	/// </summary>
