@@ -6,25 +6,26 @@ partial class PawnView
 	/// If true: you can press buttons to cycle through perspectives.
 	/// </summary>
 	[Property]
-	[Feature( MODES ), ToggleGroup( nameof( AllowCyclingMode ), Label = CYCLING )]
+	[Feature( MODES ), Order( MODES_ORDER )]
+	[ToggleGroup( nameof( AllowCyclingMode ), Label = CYCLING )]
 	public virtual bool AllowCyclingMode { get; set; } = false;
 
 	/// <summary>
 	/// The button that selects the next mode.
 	/// </summary>
-	[Property]
 	[InputAction]
-	[Title( "Forward" )]
-	[Feature( MODES ), ToggleGroup( nameof( AllowCyclingMode ) )]
+	[Property, Title( "Forward" )]
+	[Feature( MODES ), Order( MODES_ORDER )]
+	[ToggleGroup( nameof( AllowCyclingMode ) )]
 	public virtual string CycleModeForwardAction { get; set; } = "View";
 
 	/// <summary>
 	/// The button that selects the previous mode.
 	/// </summary>
-	[Property]
 	[InputAction]
-	[Title( "Backward" )]
-	[Feature( MODES ), ToggleGroup( nameof( AllowCyclingMode ) )]
+	[Property, Title( "Backward" )]
+	[Feature( MODES ), Order( MODES_ORDER )]
+	[ToggleGroup( nameof( AllowCyclingMode ) )]
 	public virtual string CycleModeBackwardAction { get; set; }
 
 	public virtual bool TryAiming( in float deltaTime )

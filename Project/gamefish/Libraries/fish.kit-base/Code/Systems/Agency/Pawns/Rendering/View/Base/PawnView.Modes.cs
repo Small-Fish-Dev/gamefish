@@ -9,24 +9,30 @@ partial class PawnView
 	/// If true: log perspective changes in console.
 	/// </summary>
 	[Property]
-	[Title( "Debug" )]
-	[Feature( MODES )]
-	public bool DebugMode { get; set; }
+	[Title( "Debug Logging" )]
+	[Feature( MODES ), Group( DEBUG ), Order( MODES_DEBUG_ORDER )]
+	public bool ModeDebugLogging { get; set; }
 
 	/// <summary>
 	/// The current view mode.
 	/// </summary>
 	[Property]
 	[Title( "Current" )]
-	[Feature( MODES )]
+	[Feature( MODES ), Order( MODES_ORDER )]
 	public virtual ViewMode Mode
 	{
 		get => _mode.IsValid() ? _mode
 			: _mode = Modes.FirstOrDefault();
 
-		set
+		protected set
 		{
-			var oldMode = _mode != value ? value : null;
+			if ( _mode == value )
+			{
+				OnSetMode( value );
+				return;
+			}
+
+			var oldMode = _mode;
 			_mode = value;
 
 			OnSetMode( value, oldMode );
@@ -41,30 +47,50 @@ partial class PawnView
 	/// </summary>
 	[Property]
 	[Title( "First Person" )]
-	[Feature( MODES )]
-	public virtual FirstPersonViewMode FirstPersonMode
+	[Feature( MODES ), Order( MODES_ORDER )]
+	public virtual ViewMode FirstPersonMode
 	{
 		get => _firstPersonMode.IsValid() ? _firstPersonMode
-			: Modes?.FirstOrDefault( mode => mode?.AllowFirstPerson is true ) as FirstPersonViewMode;
+			: Modes?.FirstOrDefault( mode => mode is FirstPersonViewMode )
+			?? Modes?.FirstOrDefault( mode => mode?.AllowFirstPerson is true );
 
 		set => _firstPersonMode = value;
 	}
 
-	protected FirstPersonViewMode _firstPersonMode;
+	protected ViewMode _firstPersonMode;
 
-	public IEnumerable<ViewMode> Modes => GetModules<ViewMode>();
+	[SkipHotload]
+	public IEnumerable<ViewMode> Modes => GetModules<ViewMode>()
+		.Where( mode => mode.IsValid() && mode.Active );
 
 	public virtual void CycleMode( in int dir )
 	{
-		var modes = GetModules<ViewMode>().ToList();
+		var modes = GetModules<ViewMode>()?
+			.ToList();
 
-		if ( modes.Count <= 0 )
+		if ( modes is null || modes.Count <= 0 )
 			return;
 
 		var iMode = modes.IndexOf( Mode );
-		var iNext = (iMode + dir) % modes.Count;
+		var iNext = ((iMode + dir) % modes.Count).Abs();
 
-		Mode = modes.ElementAtOrDefault( iNext );
+		var nextMode = modes.ElementAtOrDefault( iNext )
+			?? modes.FirstOrDefault( mode => mode != Mode );
+
+		TrySetMode( nextMode );
+	}
+
+	public virtual bool TrySetMode( ViewMode mode )
+	{
+		if ( !mode.IsValid() || !mode.Active )
+			return false;
+
+		// Don't bother switching to the same mode.
+		if ( Mode == mode )
+			return false;
+
+		Mode = mode;
+		return true;
 	}
 
 	/// <summary>
@@ -73,7 +99,7 @@ partial class PawnView
 	/// </summary>
 	protected virtual void OnSetMode( ViewMode newMode, ViewMode oldMode = null )
 	{
-		if ( DebugMode )
+		if ( ModeDebugLogging )
 			this.Log( $"Set Mode: {newMode}" );
 
 		if ( newMode.IsValid() )

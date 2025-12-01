@@ -24,6 +24,13 @@ public static partial class Strings
 	public const string MODE = "🎛️ Mode";
 	public const string MODES = MODE + "s";
 
+	public const string VIEW = "🎥 View";
+	public const string VIEWING = VIEW + "ing";
+	public const string CYCLE = "♻ Cycle";
+	public const string CYCLING = "♻ Cycling";
+	public const string TRANSITION = "↔ Transition";
+	public const string TRANSITIONING = TRANSITION + "ing";
+
 	public const string UI = "📺 UI";
 	public const string DISPLAY = "📛 Display";
 
@@ -200,11 +207,6 @@ public static partial class Strings
 	public const string MODELS = MODEL + "s";
 	public const string BODY = "🕺 Body";
 	public const string BODIES = "🕺 Bodies";
-
-	public const string VIEW = "🎥 View";
-	public const string VIEWING = VIEW + "ing";
-	public const string CYCLE = "♻ Cycle";
-	public const string CYCLING = "♻ Cycling";
 
 	public const string AMMO = "🍟 Ammo";
 	public const string EQUIP = "🛠 Equip";

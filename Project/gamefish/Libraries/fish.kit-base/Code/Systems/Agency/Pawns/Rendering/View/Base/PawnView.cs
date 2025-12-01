@@ -7,7 +7,11 @@ namespace GameFish;
 [Icon( "videocam" )]
 public partial class PawnView : Module, ISimulate
 {
-	public const string TRANSITIONING = "↔ Transitioning";
+	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
+	protected const int VIEW_DEBUG_ORDER = VIEW_ORDER - 10;
+
+	protected const int MODES_ORDER = DEFAULT_ORDER - 800;
+	protected const int MODES_DEBUG_ORDER = MODES_ORDER - 10;
 
 	protected override bool? IsNetworkedOverride => true;
 
@@ -29,8 +33,8 @@ public partial class PawnView : Module, ISimulate
 	[Title( "Radius" )]
 	[Range( 1f, 64f, clamped: false )]
 	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
-	public virtual float CollisionRadius { get; set; } = 8f;
-	public virtual float GetCollisionRadius() => CollisionRadius * WorldScale.x.NonZero();
+	public virtual float DefaultCollisionRadius { get; set; } = 8f;
+	public virtual float GetCollisionRadius() => DefaultCollisionRadius * WorldScale.x.NonZero();
 
 	/// <summary>
 	/// If true: collide with objects we have explicit ownership over.
