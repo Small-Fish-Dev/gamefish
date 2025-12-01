@@ -516,10 +516,10 @@
                     "ClassId": null,
                     "ClassName": null,
                     "DistanceRange": {
-                      "Min": 50,
+                      "Min": 0,
                       "Max": 300
                     },
-                    "InitialDistance": 100,
+                    "InitialDistance": 150,
                     "IsClass": false,
                     "IsNetworkingForced": true,
                     "NetworkAutomatically": true,
