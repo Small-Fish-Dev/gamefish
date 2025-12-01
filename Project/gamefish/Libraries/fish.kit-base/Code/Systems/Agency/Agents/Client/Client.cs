@@ -128,7 +128,7 @@ public partial class Client : Agent
 		if ( Scene?.Camera is not CameraComponent cam || !cam.IsValid() )
 			return;
 
-		if ( Pawn is not BasePawn pawn || !pawn.IsValid() )
+		if ( Pawn is not Pawn pawn || !pawn.IsValid() )
 			return;
 
 		if ( !pawn.CanSimulate() )

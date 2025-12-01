@@ -111,7 +111,7 @@ partial class Equipment
 		return true;
 	}
 
-	protected virtual void OnEquip( BasePawn owner )
+	protected virtual void OnEquip( Pawn owner )
 	{
 		if ( IsProxy )
 			return;

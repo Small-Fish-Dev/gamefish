@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public partial class SpectatorPawn : BasePawn
+public partial class SpectatorPawn : Pawn
 {
 	/// <summary>
 	/// The target that this is actively spectating.
@@ -8,7 +8,7 @@ public partial class SpectatorPawn : BasePawn
 	[Sync]
 	[Property]
 	[Feature( SPECTATOR ), Group( DEBUG )]
-	public BasePawn Spectating
+	public Pawn Spectating
 	{
 		get => _spectating;
 
@@ -23,7 +23,7 @@ public partial class SpectatorPawn : BasePawn
 		}
 	}
 
-	protected BasePawn _spectating;
+	protected Pawn _spectating;
 
 	/// <summary>
 	/// The button that spectates a target.
@@ -74,7 +74,7 @@ public partial class SpectatorPawn : BasePawn
 	public override bool AllowSpectators => false;
 
 	/// <summary> Spectators can never be spectated. </summary>
-	public override bool AllowSpectator( BasePawn spec )
+	public override bool AllowSpectator( Pawn spec )
 		=> false;
 
 	protected override void OnEnabled()
@@ -149,7 +149,7 @@ public partial class SpectatorPawn : BasePawn
 	/// <summary>
 	/// Called whenever <see cref="Spectating"/> has been set.
 	/// </summary>
-	protected virtual void OnSpectatingSet( BasePawn prev, BasePawn next )
+	protected virtual void OnSpectatingSet( Pawn prev, Pawn next )
 	{
 		if ( !this.IsOwner() )
 			return;
@@ -165,7 +165,7 @@ public partial class SpectatorPawn : BasePawn
 			view.TryEnterFirstPerson();
 	}
 
-	public override bool CanSpectate( BasePawn target )
+	public override bool CanSpectate( Pawn target )
 	{
 		if ( !this.IsValid() || !target.IsValid() )
 			return false;
@@ -176,7 +176,7 @@ public partial class SpectatorPawn : BasePawn
 		return target.AllowSpectator( this );
 	}
 
-	public override bool TrySpectate( BasePawn target )
+	public override bool TrySpectate( Pawn target )
 	{
 		if ( !this.IsOwner() )
 			return false;
@@ -193,7 +193,7 @@ public partial class SpectatorPawn : BasePawn
 	/// Called by the host to tell us to spectate a pawn. Ignores filters.
 	/// </summary>
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void ForceSpectate( BasePawn target )
+	public void ForceSpectate( Pawn target )
 		=> Spectating = target;
 
 	/// <summary>
@@ -211,8 +211,8 @@ public partial class SpectatorPawn : BasePawn
 	{
 	}
 
-	public virtual IEnumerable<BasePawn> GetAllowedTargets()
-		=> GetAllActive<BasePawn>().Where( CanSpectate );
+	public virtual IEnumerable<Pawn> GetAllowedTargets()
+		=> GetAllActive<Pawn>().Where( CanSpectate );
 
 	public virtual void CycleSpectating( int dir )
 	{

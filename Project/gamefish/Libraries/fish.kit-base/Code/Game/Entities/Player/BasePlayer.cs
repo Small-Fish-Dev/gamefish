@@ -1,5 +1,5 @@
 namespace GameFish;
 
-public abstract partial class BasePlayer : BasePawn
+public abstract partial class BasePlayer : Pawn
 {
 }

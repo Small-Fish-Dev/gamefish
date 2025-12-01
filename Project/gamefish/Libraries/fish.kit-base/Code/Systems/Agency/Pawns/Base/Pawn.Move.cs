@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BasePawn
+partial class Pawn
 {
 	/// <summary>
 	/// The component responsible for using input to aim and move.

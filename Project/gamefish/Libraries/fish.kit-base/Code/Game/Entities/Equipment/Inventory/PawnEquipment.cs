@@ -12,10 +12,10 @@ public partial class PawnEquipment : Module
 	public const string SLOTTING = "Slotting";
 	public const string INVENTORY = "Inventory";
 
-	public BasePawn Pawn => Parent as BasePawn;
+	public Pawn Pawn => Parent as Pawn;
 
 	public override bool IsParent( ModuleEntity comp )
-		=> comp.IsValid() && comp is BasePawn;
+		=> comp.IsValid() && comp is Pawn;
 
 	/// <summary> If true: only try to pick up weapons in their intended slot. </summary>
 	[Title( "Strict" )]

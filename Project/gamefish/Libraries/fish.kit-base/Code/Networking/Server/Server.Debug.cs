@@ -7,12 +7,12 @@ partial class Server
 	[Property, ReadOnly, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( SERVER ), Group( DEBUG ), Order( DEBUG_ORDER )]
-	public List<BasePawn> AllPawns => [.. BasePawn.GetAll<BasePawn>()];
+	public List<Pawn> AllPawns => [.. Pawn.GetAll<Pawn>()];
 
 	[Property, ReadOnly, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( SERVER ), Group( DEBUG ), Order( DEBUG_ORDER )]
-	public List<BasePawn> ActivePawns => [.. BasePawn.GetAllActive<BasePawn>()];
+	public List<Pawn> ActivePawns => [.. Pawn.GetAllActive<Pawn>()];
 
 	/// <summary>
 	/// Looks for a <see cref="Server"/> singleton to see if cheating is globally enabled.

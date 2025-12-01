@@ -30,13 +30,13 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	/// What specific pawn(if any) is under this agent's control?
 	/// </summary>
 	[Sync( SyncFlags.FromHost )]
-	public BasePawn Pawn { get; set; }
+	public Pawn Pawn { get; set; }
 
 	[Title( "Pawn" )]
 	[Property, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( AGENT ), Group( DEBUG )]
-	protected BasePawn InspectorPawn
+	protected Pawn InspectorPawn
 	{
 		get => Pawn;
 		set => TryAssignPawn( value );
@@ -146,17 +146,17 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	}
 
 	/// <summary>
-	/// Spawns a <see cref="BasePawn"/> prefab and assigns it to this agent.
+	/// Spawns a <see cref="GameFish.Pawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public BasePawn CreatePawn( PrefabFile prefab )
-		=> CreatePawn<BasePawn>( prefab );
+	public Pawn CreatePawn( PrefabFile prefab )
+		=> CreatePawn<Pawn>( prefab );
 
 	/// <summary>
 	/// Spawns a <typeparamref name="TPawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public TPawn CreatePawn<TPawn>( PrefabFile prefab ) where TPawn : BasePawn
+	public TPawn CreatePawn<TPawn>( PrefabFile prefab ) where TPawn : Pawn
 	{
 		if ( !Networking.IsHost )
 		{
@@ -189,7 +189,7 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	/// </summary>
 	/// <param name="go"> The <see cref="GameObject"/> with <typeparamref name="TPawn"/> on it. </param>
 	/// <param name="failDestroy"> Destroy the object upon failure? </param>
-	public TPawn SetPawn<TPawn>( GameObject go, bool failDestroy = false ) where TPawn : BasePawn
+	public TPawn SetPawn<TPawn>( GameObject go, bool failDestroy = false ) where TPawn : Pawn
 	{
 		if ( !Networking.IsHost )
 		{
@@ -232,7 +232,7 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	/// <summary>
 	/// Called by the host to register a pawn assigned to this agent.
 	/// </summary>
-	public virtual bool TryAssignPawn( BasePawn pawn )
+	public virtual bool TryAssignPawn( Pawn pawn )
 	{
 		if ( !Networking.IsHost )
 			return false;
@@ -286,7 +286,7 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 		if ( !Networking.IsHost )
 			return false;
 
-		if ( Pawn is not BasePawn pawn || !pawn.IsValid() )
+		if ( Pawn is not Pawn pawn || !pawn.IsValid() )
 			return true;
 
 		return pawn.TryDropOwner();
@@ -295,21 +295,21 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	/// <summary>
 	/// Called when a pawn we owned was confirmed to be removed.
 	/// </summary>
-	public virtual void OnLosePawn( BasePawn pawn )
+	public virtual void OnLosePawn( Pawn pawn )
 	{
 	}
 
 	/// <summary>
 	/// Called when a pawn we didn't own is confirmed to be owned.
 	/// </summary>
-	public virtual void OnGainPawn( BasePawn pawn )
+	public virtual void OnGainPawn( Pawn pawn )
 	{
 	}
 
 	/// <summary>
 	/// Sends a request to the host to take a pawn.
 	/// </summary>
-	public AttemptStatus RequestTakePawn( BasePawn pawn )
+	public AttemptStatus RequestTakePawn( Pawn pawn )
 	{
 		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
 			return AttemptStatus.Failure;
@@ -320,12 +320,12 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	}
 
 	[Rpc.Host( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	protected void RpcRequestTakePawn( BasePawn pawn )
+	protected void RpcRequestTakePawn( Pawn pawn )
 	{
 		TryTakePawn( pawn );
 	}
 
-	public virtual AttemptStatus TryTakePawn( BasePawn pawn )
+	public virtual AttemptStatus TryTakePawn( Pawn pawn )
 	{
 		AttemptStatus Result( in AttemptStatus result )
 		{
@@ -353,13 +353,13 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	/// This is the method you want to call so the host can tell the owner what happened.
 	/// </summary>
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	protected void RpcTryTakePawnHostResponse( BasePawn pawn, AttemptStatus result )
+	protected void RpcTryTakePawnHostResponse( Pawn pawn, AttemptStatus result )
 	{
 		if ( pawn.IsValid() )
 			OnTryTakePawnResponse( pawn, result );
 	}
 
-	protected virtual void OnTryTakePawnResponse( BasePawn pawn, in AttemptStatus result )
+	protected virtual void OnTryTakePawnResponse( Pawn pawn, in AttemptStatus result )
 	{
 	}
 }

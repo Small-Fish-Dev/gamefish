@@ -43,6 +43,6 @@ public abstract partial class EquipFunction : EquipModule
 	/// <param name="pawn"> The shmuck. </param>
 	/// <param name="aimStart"> Where the NPC would aim by default(or not). </param>
 	/// <param name="clampLength"> Prevent aiming farther than we can attack? </param>
-	public virtual Vector3? GetTargetAimPosition( BasePawn pawn, in Vector3? aimStart = null, in bool clampLength = true )
+	public virtual Vector3? GetTargetAimPosition( Pawn pawn, in Vector3? aimStart = null, in bool clampLength = true )
 		=> null;
 }

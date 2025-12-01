@@ -8,7 +8,7 @@ partial class SimpleActor
 	[Property, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( ACTOR ), Group( COMBAT )]
-	protected BasePawn InspectorTarget
+	protected Pawn InspectorTarget
 	{
 		get => Target;
 		set => Target = value;
@@ -18,7 +18,7 @@ partial class SimpleActor
 	/// Them.
 	/// </summary>
 	[Sync]
-	public BasePawn Target
+	public Pawn Target
 	{
 		get => _target.IsValid() ? _target : null;
 		protected set
@@ -33,7 +33,7 @@ partial class SimpleActor
 		}
 	}
 
-	protected BasePawn _target;
+	protected Pawn _target;
 
 	/// <summary>
 	/// Is our target visible(since the previous tick)?
@@ -50,7 +50,7 @@ partial class SimpleActor
 	[Sync] public Vector3? TargetAimPosition { get; set; }
 
 	/// <returns> If the specified pawn was a valid target. </returns>
-	public virtual bool CanTarget( BasePawn pawn )
+	public virtual bool CanTarget( Pawn pawn )
 	{
 		if ( !this.IsValid() || !IsAlive )
 			return false;
@@ -65,7 +65,7 @@ partial class SimpleActor
 	/// Sets our current target if it's a valid one.
 	/// </summary>
 	/// <returns> If the target was set. </returns>
-	public virtual bool TrySetTarget( BasePawn pawn )
+	public virtual bool TrySetTarget( Pawn pawn )
 	{
 		if ( !CanTarget( pawn ) )
 			return false;
@@ -78,14 +78,14 @@ partial class SimpleActor
 	{
 	}
 
-	protected virtual void OnSetTarget( BasePawn newTarget, BasePawn oldTarget = null )
+	protected virtual void OnSetTarget( Pawn newTarget, Pawn oldTarget = null )
 	{
 		if ( !newTarget.IsValid() )
 			Destination = null;
 	}
 
 	/// <returns> The world position of where we think the target is. </returns>
-	public virtual Vector3? GetTargetOrigin( BasePawn target = null )
+	public virtual Vector3? GetTargetOrigin( Pawn target = null )
 	{
 		target ??= Target;
 
@@ -96,7 +96,7 @@ partial class SimpleActor
 	}
 
 	/// <returns> Where we should aim at this target(such as ahead). </returns>
-	public virtual Vector3? GetTargetAimPosition( BasePawn target = null, Vector3? at = null )
+	public virtual Vector3? GetTargetAimPosition( Pawn target = null, Vector3? at = null )
 	{
 		if ( !AllowAiming )
 			return null;

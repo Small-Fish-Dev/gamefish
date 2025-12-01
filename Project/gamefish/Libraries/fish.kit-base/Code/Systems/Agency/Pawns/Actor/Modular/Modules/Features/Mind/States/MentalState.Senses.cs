@@ -11,7 +11,7 @@ partial class MentalState
 	public virtual float GetVisionFrequency( in float frequency )
 		=> frequency;
 
-	public virtual void OnTargetVisible( BasePawn target, in Vector3? at = null )
+	public virtual void OnTargetVisible( Pawn target, in Vector3? at = null )
 	{
 	}
 }

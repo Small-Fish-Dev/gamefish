@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BasePawn : ISimulate
+partial class Pawn : ISimulate
 {
 	/// <returns> If this pawn should listen to the local client's inputs(like button presses). </returns>
 	public virtual bool AllowInput()

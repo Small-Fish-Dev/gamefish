@@ -15,10 +15,10 @@ partial class Equipment : Component.INetworkSpawn
 	[Title( "Owner" )]
 	[Property, JsonIgnore]
 	[Feature( EQUIP ), Group( DEBUG )]
-	protected BasePawn InspectorPawn => Pawn;
+	protected Pawn InspectorPawn => Pawn;
 
 	[Sync( SyncFlags.FromHost )]
-	public BasePawn Pawn
+	public Pawn Pawn
 	{
 		get => _owner;
 		protected set
@@ -28,7 +28,7 @@ partial class Equipment : Component.INetworkSpawn
 		}
 	}
 
-	protected BasePawn _owner;
+	protected Pawn _owner;
 
 	public override bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
 		=> base.TrySetNetworkOwner( cn, allowProxy: allowProxy || Networking.IsHost );
@@ -41,7 +41,7 @@ partial class Equipment : Component.INetworkSpawn
 			return;
 
 		// Auto-attach to new parent pawns.
-		if ( BasePawn.TryGet( newParent, out var newOwner ) )
+		if ( Pawn.TryGet( newParent, out var newOwner ) )
 			if ( Pawn != newOwner )
 				SetOwner( newOwner );
 	}
@@ -60,7 +60,7 @@ partial class Equipment : Component.INetworkSpawn
 	/// <summary>
 	/// Allows the host to set assign the owner of the equipment.
 	/// </summary>
-	public void SetOwner( BasePawn owner )
+	public void SetOwner( Pawn owner )
 	{
 		if ( !Networking.IsHost )
 			return;
@@ -79,7 +79,7 @@ partial class Equipment : Component.INetworkSpawn
 			Network.DropOwnership();
 
 			// Make sure we ain't under some guy still.
-			if ( BasePawn.TryGet( GameObject, out _ ) )
+			if ( Pawn.TryGet( GameObject, out _ ) )
 				GameObject.SetParent( null );
 		}
 		else
@@ -101,7 +101,7 @@ partial class Equipment : Component.INetworkSpawn
 		Pawn = owner;
 	}
 
-	protected void OnOwnerSet( BasePawn owner )
+	protected void OnOwnerSet( Pawn owner )
 	{
 		if ( !this.InGame() || !GameObject.IsValid() )
 			return;

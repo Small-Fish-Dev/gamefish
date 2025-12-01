@@ -42,7 +42,7 @@ public partial class FacepunchController : BaseController
 		// Toggle the FP controller's input system with respect to our agency system.
 		if ( PlayerController is PlayerController c && c.IsValid() )
 		{
-			c.UseInputControls = Pawn is BasePawn pawn
+			c.UseInputControls = Pawn is Pawn pawn
 				&& pawn.IsValid() && pawn.AllowInput();
 
 			LocalEyeRotation = WorldTransform.RotationToLocal( c.EyeAngles );

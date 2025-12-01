@@ -35,7 +35,7 @@ public abstract partial class ActorModule : Module
 
 
 	/// <summary> The pawn we're aiming for. </summary>
-	public BasePawn Target
+	public Pawn Target
 	{
 		get => Mind?.Target;
 		set => Mind?.SetTarget( value );
@@ -111,7 +111,7 @@ public abstract partial class ActorModule : Module
 	public virtual bool CanSimulate()
 		=> !IsProxy && Actor.IsValid();
 
-	public bool IsEnemy( BasePawn target )
+	public bool IsEnemy( Pawn target )
 		=> Actor?.IsEnemy( target ) is true;
 
 	public SceneTrace GetEyeTrace()

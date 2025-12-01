@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BasePawn
+partial class Pawn
 {
 	protected override bool? IsNetworkedOverride => true;
 

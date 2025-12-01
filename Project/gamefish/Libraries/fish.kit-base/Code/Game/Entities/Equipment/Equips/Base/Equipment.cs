@@ -54,7 +54,7 @@ public partial class Equipment : PhysicsEntity
 	}
 
 	/// <returns> If a pawn can equip this. </returns>
-	public virtual bool AllowEquip( BasePawn pawn )
+	public virtual bool AllowEquip( Pawn pawn )
 		=> pawn.IsValid() && pawn.HasModule<PawnEquipment>();
 
 	/// <returns> If the owning pawn can press buttons to use this. </returns>

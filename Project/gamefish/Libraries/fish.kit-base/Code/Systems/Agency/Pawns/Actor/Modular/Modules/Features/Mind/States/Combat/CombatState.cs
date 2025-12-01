@@ -46,11 +46,11 @@ public abstract partial class CombatState : MentalState
 	public virtual bool TryFighting()
 		=> TrySetState( GetType<FightingCombatState>() );
 
-	public virtual void OnSetTarget( BasePawn target )
+	public virtual void OnSetTarget( Pawn target )
 	{
 	}
 
-	public override void OnTargetVisible( BasePawn target, in Vector3? at = null )
+	public override void OnTargetVisible( Pawn target, in Vector3? at = null )
 	{
 		if ( target.IsValid() )
 			TryFighting();

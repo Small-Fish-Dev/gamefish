@@ -4,7 +4,7 @@ namespace GameFish;
 /// A pawn that can only be owned by a player.
 /// </summary>
 [EditorHandle( Icon = "😎" )]
-public partial class PlayerPawn : BasePawn
+public partial class PlayerPawn : Pawn
 {
 	protected override void OnEnabled()
 	{

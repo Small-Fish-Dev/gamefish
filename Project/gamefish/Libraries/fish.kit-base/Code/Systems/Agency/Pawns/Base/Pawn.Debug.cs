@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
-partial class BasePawn
+partial class Pawn
 {
 	/// <summary>
 	/// Is this controlled by a player agent?

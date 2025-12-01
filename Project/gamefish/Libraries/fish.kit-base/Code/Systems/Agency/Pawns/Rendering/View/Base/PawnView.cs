@@ -12,7 +12,7 @@ public partial class PawnView : Module, ISimulate
 	protected override bool? IsNetworkedOverride => true;
 
 	public override bool IsParent( ModuleEntity comp )
-		=> comp is BasePawn;
+		=> comp is Pawn;
 
 	/// <summary>
 	/// If true: the view will be traced from aiming origin to the destination and collide according to its settings.
@@ -59,12 +59,12 @@ public partial class PawnView : Module, ISimulate
 	/// <summary>
 	/// The pawn this view actually belongs to.
 	/// </summary>
-	public virtual BasePawn ParentPawn => Parent as BasePawn;
+	public virtual Pawn ParentPawn => Parent as Pawn;
 
 	/// <summary>
 	/// The pawn we're currently looking at/through.
 	/// </summary>
-	public virtual BasePawn TargetPawn => ParentPawn;
+	public virtual Pawn TargetPawn => ParentPawn;
 
 	public virtual bool CanSimulate()
 		=> ParentPawn?.CanSimulate() ?? false;

@@ -11,7 +11,7 @@ public enum EquipState
 	Dropped = 1,
 
 	/// <summary>
-	/// Actively held in an <see cref="BasePawn"/>'s hands.
+	/// Actively held in an <see cref="Pawn"/>'s hands.
 	/// </summary>
 	Deployed = 2,
 

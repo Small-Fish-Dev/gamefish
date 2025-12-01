@@ -28,8 +28,8 @@ public abstract class ViewMode : Module
 
 	public PawnView View => Parent as PawnView;
 
-	protected BasePawn ParentPawn => View?.ParentPawn;
-	protected BasePawn TargetPawn => View?.TargetPawn;
+	protected Pawn ParentPawn => View?.ParentPawn;
+	protected Pawn TargetPawn => View?.TargetPawn;
 	protected ViewRenderer ViewRenderer => View?.ViewRenderer;
 
 	protected Offset Relative

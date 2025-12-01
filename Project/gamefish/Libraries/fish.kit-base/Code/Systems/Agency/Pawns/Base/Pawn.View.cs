@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BasePawn
+partial class Pawn
 {
 	/// <summary>
 	/// The central view manager for the pawn.

@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "theater_comedy" )]
 [EditorHandle( Icon = "🤖" )]
-public abstract partial class Actor : BasePawn
+public abstract partial class Actor : Pawn
 {
 	protected const int ACTOR_ORDER = PAWN_ORDER - 100;
 

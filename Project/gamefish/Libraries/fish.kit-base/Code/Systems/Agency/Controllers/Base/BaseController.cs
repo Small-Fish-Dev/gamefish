@@ -29,15 +29,15 @@ public abstract partial class BaseController : PhysicsEntity
 	/// </summary>
 	[Property]
 	[Feature( PAWN ), Order( PAWN_ORDER )]
-	public BasePawn Pawn
+	public Pawn Pawn
 	{
 		get => _pawn.IsValid() && _pawn.GameObject == GameObject ? _pawn
-			: _pawn = Components?.Get<BasePawn>( FindMode.EverythingInSelf );
+			: _pawn = Components?.Get<Pawn>( FindMode.EverythingInSelf );
 
 		set { _pawn = value; }
 	}
 
-	protected BasePawn _pawn;
+	protected Pawn _pawn;
 
 	public PawnView View => Pawn?.View;
 }

@@ -212,7 +212,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 			rb.Velocity = GetProjectileVelocity( tOrigin );
 	}
 
-	public override Vector3? GetTargetAimPosition( BasePawn pawn, in Vector3? aimAt = null, in bool clampLength = true )
+	public override Vector3? GetTargetAimPosition( Pawn pawn, in Vector3? aimAt = null, in bool clampLength = true )
 	{
 		if ( AimPrediction && pawn.IsValid() )
 			return GetPredictedTargetPosition( aimAt ?? pawn.Center, pawn.Velocity );

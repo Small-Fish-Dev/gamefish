@@ -98,14 +98,14 @@ partial class SimpleActor
 
 		var enemyWithDist = GetEyeTrace()
 			.Sphere( VisionDistance, eyePos, eyePos ).RunAll()
-			.Select( tr => TryGet<BasePawn>( tr.GameObject, out var pawn ) ? pawn : null )
+			.Select( tr => TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
 			.Where( pawn => pawn.IsValid() && IsEnemy( pawn ) )
 			.Select( pawn => IsPawnVisible( pawn, out var visiblePos ) ? (pawn, visiblePos) : (null, null) )
 			.Where( seen => seen.pawn.IsValid() && seen.visiblePos.HasValue )
 			.OrderBy( seen => eyePos.Distance( seen.visiblePos ?? seen.pawn.Center ) )
 			.FirstOrDefault();
 
-		if ( enemyWithDist.pawn is BasePawn pawn && pawn.IsValid() )
+		if ( enemyWithDist.pawn is Pawn pawn && pawn.IsValid() )
 			OnPawnVisible( pawn, enemyWithDist.visiblePos ?? pawn.Center );
 	}
 
@@ -124,9 +124,9 @@ partial class SimpleActor
 	}
 
 	/// <summary>
-	/// Called each update when actively looking at a <see cref="BasePawn"/>.
+	/// Called each update when actively looking at a <see cref="Pawn"/>.
 	/// </summary>
-	protected virtual void OnPawnVisible( BasePawn pawn, in Vector3 visiblePos )
+	protected virtual void OnPawnVisible( Pawn pawn, in Vector3 visiblePos )
 	{
 		if ( !pawn.IsValid() )
 			return;
@@ -138,7 +138,7 @@ partial class SimpleActor
 	/// <summary>
 	/// Actively looking at someone we just don't like.
 	/// </summary>
-	protected virtual void OnEnemyVisible( BasePawn enemy, in Vector3 at )
+	protected virtual void OnEnemyVisible( Pawn enemy, in Vector3 at )
 	{
 		// Double check that new targets are enemies.
 		if ( Target != enemy && !TrySetTarget( enemy ) )
@@ -182,7 +182,7 @@ partial class SimpleActor
 		TargetVisible = false;
 	}
 
-	public virtual bool IsPawnVisible( BasePawn pawn, out Vector3? aimPos )
+	public virtual bool IsPawnVisible( Pawn pawn, out Vector3? aimPos )
 	{
 		aimPos = null;
 
@@ -252,7 +252,7 @@ partial class SimpleActor
 	/// <param name="pawn"> The other guy. </param>
 	/// <param name="hitPos"> The place we can look at. </param>
 	/// <returns> If there was line of sight. </returns>
-	public virtual bool HasLineOfSight( BasePawn pawn, out Vector3? hitPos )
+	public virtual bool HasLineOfSight( Pawn pawn, out Vector3? hitPos )
 	{
 		hitPos = null;
 
@@ -315,7 +315,7 @@ partial class SimpleActor
 
 	/// <summary>
 	/// Determines if one of the hits within <see cref="IsVisionTraceBlocked"/> obscure detection. <br />
-	/// This assumes you've already have vision filters, like from <see cref="BasePawn.GetEyeTrace(Vector3)"/>.
+	/// This assumes you've already have vision filters, like from <see cref="Pawn.GetEyeTrace(Vector3)"/>.
 	/// </summary>
 	protected virtual bool TraceBlocksVision( in SceneTraceResult tr )
 	{

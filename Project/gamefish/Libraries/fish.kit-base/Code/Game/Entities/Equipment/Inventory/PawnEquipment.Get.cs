@@ -11,7 +11,7 @@ partial class PawnEquipment
 		if ( !Networking.IsHost || Equipped is null )
 			return;
 
-		if ( Pawn is not BasePawn pawn || !pawn.IsValid() )
+		if ( Pawn is not Pawn pawn || !pawn.IsValid() )
 			return;
 
 		// Add any missing equips.

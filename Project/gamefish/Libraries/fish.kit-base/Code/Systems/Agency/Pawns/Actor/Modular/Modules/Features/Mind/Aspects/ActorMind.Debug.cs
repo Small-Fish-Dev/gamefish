@@ -19,7 +19,7 @@ partial class ActorMind
 
 	[Property, JsonIgnore]
 	[Feature( MIND ), Group( DEBUG )]
-	protected BasePawn InspectorTarget
+	protected Pawn InspectorTarget
 	{
 		get => Target;
 		set

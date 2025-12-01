@@ -24,22 +24,22 @@ partial class Server
 	/// <summary>
 	/// Finds the <see cref="Client"/> from its connection and get its pawn.
 	/// </summary>
-	public static BasePawn FindPawn( Connection cn )
-		=> (FindClient( cn )?.Pawn is BasePawn pawn && pawn.IsValid()) ? pawn : null;
+	public static Pawn FindPawn( Connection cn )
+		=> (FindClient( cn )?.Pawn is Pawn pawn && pawn.IsValid()) ? pawn : null;
 
 	/// <summary>
 	/// Finds the <see cref="Client"/>'s <typeparamref name="T"/>(or null).
 	/// </summary>
 	/// <typeparam name="T"> ♟ </typeparam>
 	/// <returns> The <typeparamref name="T"/>(or null). </returns>
-	public static T FindPawn<T>( Connection cn ) where T : BasePawn
+	public static T FindPawn<T>( Connection cn ) where T : Pawn
 		=> FindClient( cn )?.Pawn as T;
 
 	/// <summary>
 	/// Tries to find the <see cref="Client"/>'s pawn.
 	/// </summary>
 	/// <returns> The pawn(or null). </returns>
-	public static bool TryFindPawn( Connection cn, out BasePawn pawn )
+	public static bool TryFindPawn( Connection cn, out Pawn pawn )
 		=> (pawn = FindPawn( cn )).IsValid();
 
 	/// <summary>
@@ -47,6 +47,6 @@ partial class Server
 	/// </summary>
 	/// <typeparam name="T"> ♟ </typeparam>
 	/// <returns> The <typeparamref name="T"/>(or null). </returns>
-	public static bool TryFindPawn<T>( Connection cn, out T pawn ) where T : BasePawn
+	public static bool TryFindPawn<T>( Connection cn, out T pawn ) where T : Pawn
 		=> (pawn = FindPawn<T>( cn )).IsValid();
 }

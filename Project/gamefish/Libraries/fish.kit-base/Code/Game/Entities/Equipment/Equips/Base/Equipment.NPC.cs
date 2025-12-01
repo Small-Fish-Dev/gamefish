@@ -66,7 +66,7 @@ partial class Equipment
 	/// <remarks> Would be very useful for aiming projectiles ahead. </remarks>
 	/// <param name="targetPawn"> The shmuck. </param>
 	/// <param name="baseAim"> Where the NPC would aim by default(or not). </param>
-	public virtual Vector3? GetTargetAimPosition( BasePawn targetPawn, in Vector3? baseAim = null )
+	public virtual Vector3? GetTargetAimPosition( Pawn targetPawn, in Vector3? baseAim = null )
 		=> PrimaryFunction?.GetTargetAimPosition( targetPawn, in baseAim );
 
 	/// <summary>

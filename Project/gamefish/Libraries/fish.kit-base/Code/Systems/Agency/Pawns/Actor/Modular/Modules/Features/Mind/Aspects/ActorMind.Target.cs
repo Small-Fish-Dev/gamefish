@@ -3,7 +3,7 @@ namespace GameFish;
 partial class ActorMind
 {
 	/// <summary> The pawn we're aiming for. </summary>
-	[Sync] new public BasePawn Target { get; set; }
+	[Sync] new public Pawn Target { get; set; }
 
 	/// <summary> When the target was last directly within our vision. </summary>
 	[Sync] new public TimeSince? LastSeenTarget { get; set; }
@@ -17,7 +17,7 @@ partial class ActorMind
 	/// <summary>
 	/// Forces the current target.
 	/// </summary>
-	public void SetTarget( BasePawn target, bool isVisible = false, bool knowPosition = false, bool isFighting = true )
+	public void SetTarget( Pawn target, bool isVisible = false, bool knowPosition = false, bool isFighting = true )
 	{
 		if ( Target.IsValid() && Target == target )
 			return;
@@ -41,7 +41,7 @@ partial class ActorMind
 	/// <param name="pawn"> Them. </param>
 	/// <param name="aimPos"> The position we could see them at. </param>
 	/// <returns> If we could see the pawn. </returns>
-	public virtual bool IsPawnVisible( BasePawn pawn, out Vector3? aimPos )
+	public virtual bool IsPawnVisible( Pawn pawn, out Vector3? aimPos )
 	{
 		if ( Detection?.IsPawnVisible( pawn, out aimPos ) is true )
 			return true;
@@ -53,7 +53,7 @@ partial class ActorMind
 	/// <summary>
 	/// Actively looking at someone we just don't like.
 	/// </summary>
-	public virtual void OnTargetVisible( BasePawn enemy, in Vector3? at = null )
+	public virtual void OnTargetVisible( Pawn enemy, in Vector3? at = null )
 	{
 		if ( !enemy.IsValid() )
 			return;
@@ -67,7 +67,7 @@ partial class ActorMind
 	}
 
 	/// <returns> The world position of where we think the target was. </returns>
-	protected virtual Vector3? GetTargetPosition( BasePawn target = null )
+	protected virtual Vector3? GetTargetPosition( Pawn target = null )
 	{
 		target ??= Target;
 
@@ -77,7 +77,7 @@ partial class ActorMind
 		return target.Center;
 	}
 
-	protected virtual Vector3? GetTargetAimPosition( BasePawn target = null )
+	protected virtual Vector3? GetTargetAimPosition( Pawn target = null )
 	{
 		target ??= Target;
 
