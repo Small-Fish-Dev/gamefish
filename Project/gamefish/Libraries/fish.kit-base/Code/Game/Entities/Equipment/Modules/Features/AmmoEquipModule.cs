@@ -10,13 +10,15 @@ public partial class AmmoEquipModule : EquipFunction
 {
 	protected const int AMMO_ORDER = EQUIP_ORDER - 500;
 
-	protected new const int INPUT_ORDER = AMMO_ORDER - 10;
-
 	protected const int MAGAZINE_ORDER = AMMO_ORDER + 10;
 	protected const int RESERVE_ORDER = AMMO_ORDER + 20;
 	protected const int RELOADING_ORDER = AMMO_ORDER + 30;
 
+	protected new const int INPUT_ORDER = AMMO_ORDER - 10;
+
+
 	public override int ExecutionOrder => EXECUTION_ORDER_DEFAULT - 5;
+
 
 	public override bool IsInputEnabled
 	{
@@ -25,6 +27,12 @@ public partial class AmmoEquipModule : EquipFunction
 	}
 
 	public override FunctionInput Input { get; set; } = new( "Reload", InputMode.Held, 0.1f );
+
+
+	public override bool IsCombatFunction => false;
+
+	public override FloatRange UsableRange => default;
+	public override FloatRange IdealRange => default;
 
 
 	/// <summary>

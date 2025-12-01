@@ -40,7 +40,7 @@ partial class Equipment
 	[Feature( NPC ), Group( MODULES )]
 	public virtual EquipFunction PrimaryFunction
 	{
-		get => _primary.IsValid() ? _primary : _primary = GetModules<EquipFunction>().FirstOrDefault();
+		get => _primary.GetCached( this );
 		set => _primary = value;
 	}
 
