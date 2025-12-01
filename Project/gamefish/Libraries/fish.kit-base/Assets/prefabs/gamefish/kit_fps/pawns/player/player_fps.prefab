@@ -5,7 +5,7 @@
     "Flags": 0,
     "Name": "player_fps",
     "Position": "0,0,0",
-    "Rotation": "0.000000004461438,-0.00000000446144,0.00000000000000001990444,1",
+    "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "player,team_base_player",
     "Enabled": true,
@@ -20,10 +20,10 @@
         "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
         "AllowSpectators": true,
-        "BodyComponent": {
+        "Body": {
           "_type": "component",
-          "component_id": "637bd44a-28de-4255-98f5-9aaec849914e",
-          "go": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
+          "component_id": "f50f9175-4466-4bf1-a703-2ca2ac575111",
+          "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
           "component_type": "PawnCitizenModel"
         },
         "ClassId": "player_fps",
@@ -277,7 +277,7 @@
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
+        "NetworkMode": 1,
         "NetworkInterpolation": true,
         "NetworkOrphaned": 3,
         "NetworkTransmit": true,
@@ -294,10 +294,9 @@
             "Collision": true,
             "CollisionHitTags": "solid",
             "CollisionIgnoreTags": "pawn",
-            "CollisionRadius": 8,
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
-            "DebugMode": false,
+            "DefaultCollisionRadius": 8,
             "FirstPersonMode": {
               "_type": "component",
               "component_id": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
@@ -312,6 +311,7 @@
               "go": "7fb7d7db-219f-4d0b-b904-32044e72d4e1",
               "component_type": "ThirdPersonViewMode"
             },
+            "ModeDebugLogging": false,
             "NetworkAutomatically": true,
             "NetworkId": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "NetworkingMode": "Object",
@@ -349,9 +349,9 @@
             "Scale": "1,1,1",
             "Tags": "",
             "Enabled": true,
-            "NetworkMode": 2,
+            "NetworkMode": 1,
             "NetworkInterpolation": true,
-            "NetworkOrphaned": 0,
+            "NetworkOrphaned": 3,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
             "Components": [
@@ -460,9 +460,9 @@
                 "Scale": "1,1,1",
                 "Tags": "",
                 "Enabled": false,
-                "NetworkMode": 2,
+                "NetworkMode": 1,
                 "NetworkInterpolation": true,
-                "NetworkOrphaned": 0,
+                "NetworkOrphaned": 3,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
                 "Components": [
@@ -502,9 +502,9 @@
                 "Scale": "1,1,1",
                 "Tags": "",
                 "Enabled": true,
-                "NetworkMode": 2,
+                "NetworkMode": 1,
                 "NetworkInterpolation": true,
-                "NetworkOrphaned": 0,
+                "NetworkOrphaned": 3,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
                 "Components": [
@@ -546,63 +546,10 @@
         ]
       },
       {
-        "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
+        "__guid": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
         "__version": 1,
         "Flags": 0,
-        "Name": "Equipment",
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "GameFish.PawnEquipment",
-            "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
-            "__enabled": true,
-            "AutoGiveLoadout": true,
-            "ClassId": null,
-            "ClassName": null,
-            "DebugLogging": false,
-            "InputPrefix": "Slot",
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "Loadout": [
-              {
-                "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
-                "Slot": null
-              }
-            ],
-            "NetworkAutomatically": true,
-            "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "ClearOwner",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "SlotCapacity": 1,
-            "SlotCount": 10,
-            "StrictSlots": false,
-            "UniqueEquips": true
-          }
-        ],
-        "Children": []
-      },
-      {
-        "__guid": "77ffd783-71f9-45f3-9f18-c9bd791a0356",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "Model",
+        "Name": "Body",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
@@ -616,7 +563,7 @@
         "Components": [
           {
             "__type": "GameFish.PawnCitizenModel",
-            "__guid": "637bd44a-28de-4255-98f5-9aaec849914e",
+            "__guid": "f50f9175-4466-4bf1-a703-2ca2ac575111",
             "__enabled": true,
             "BodyWeight": 1,
             "ClassId": null,
@@ -630,13 +577,13 @@
             "IkRightFoot": null,
             "IkRightHand": null,
             "IsClass": false,
-            "IsNetworkingForced": null,
+            "IsNetworkingForced": true,
             "LookAt": null,
             "LookAtEnabled": false,
-            "NetworkAutomatically": false,
-            "NetworkId": "637bd44a-28de-4255-98f5-9aaec849914e",
+            "NetworkAutomatically": true,
+            "NetworkId": "f50f9175-4466-4bf1-a703-2ca2ac575111",
             "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Destroy",
+            "NetworkOrphanedMode": "ClearOwner",
             "NetworkOwner": null,
             "NetworkTransferMode": "Fixed",
             "OnComponentDestroy": null,
@@ -645,7 +592,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Opacity": 0,
+            "Opacity": 1,
             "OpacitySpeed": 2,
             "Ragdoll": null,
             "SkinRenderer": {
@@ -657,7 +604,7 @@
           },
           {
             "__type": "GameFish.CitizenOutfitter",
-            "__guid": "469feee4-1f79-4aa8-9106-c4f007bedffb",
+            "__guid": "a9fc95a5-ef1f-4021-a3d4-4b133133116f",
             "__enabled": true,
             "Default": {
               "Clothing": [
@@ -711,26 +658,7 @@
             "PreventAvatarSlots": 0,
             "UseAvatar": true,
             "UseDefault": true
-          }
-        ],
-        "Children": []
-      },
-      {
-        "__guid": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "Body",
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
+          },
           {
             "__type": "Sandbox.ModelPhysics",
             "__guid": "2006bcc0-669e-479c-bdd5-c062a7541db0",
@@ -1082,6 +1010,59 @@
             "Static": false,
             "Surface": null,
             "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Equipment",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 1,
+        "NetworkInterpolation": false,
+        "NetworkOrphaned": 3,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.PawnEquipment",
+            "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
+            "__enabled": true,
+            "AutoGiveLoadout": true,
+            "ClassId": null,
+            "ClassName": null,
+            "DebugLogging": false,
+            "InputPrefix": "Slot",
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "Loadout": [
+              {
+                "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
+                "Slot": null
+              }
+            ],
+            "NetworkAutomatically": true,
+            "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "SlotCapacity": 1,
+            "SlotCount": 10,
+            "StrictSlots": false,
+            "UniqueEquips": true
           }
         ],
         "Children": []
