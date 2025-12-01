@@ -24,7 +24,13 @@ partial class PawnView
 		get => _mode.IsValid() ? _mode
 			: _mode = Modes.FirstOrDefault();
 
-		set { _mode = value; }
+		set
+		{
+			var oldMode = _mode != value ? value : null;
+			_mode = value;
+
+			OnSetMode( value, oldMode );
+		}
 	}
 
 	protected ViewMode _mode;
@@ -65,12 +71,13 @@ partial class PawnView
 	/// Called when <see cref="Mode"/> has been changed.
 	/// This is also called whenever it's set in the editor.
 	/// </summary>
-	protected virtual void OnSetMode( in ViewMode newMode )
+	protected virtual void OnSetMode( ViewMode newMode, ViewMode oldMode = null )
 	{
 		if ( DebugMode )
-			this.Log( "Set Mode: " + newMode );
+			this.Log( $"Set Mode: {newMode}" );
 
-
+		if ( newMode.IsValid() )
+			newMode.OnModeEnter( previousMode: oldMode );
 	}
 
 	/// <summary>
