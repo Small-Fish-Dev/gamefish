@@ -7,6 +7,7 @@ namespace GameFish;
 /// <code> func_ladder </code>
 /// </summary>
 [Icon( "stairs" )]
+[EditorHandle( Icon = "🧗‍" )]
 public partial class LadderTrigger : BaseTrigger
 {
 	[Property, Group( COLLISION )]
