@@ -6,12 +6,6 @@ public interface IHealth : Component.IDamageable
 	public float Health { get; }
 
 	/// <summary>
-	/// The collection of <see cref="IHealthEvent"/>s relevant to this object. <br />
-	/// Example: retrieved from a <see cref="ComponentList"/>.
-	/// </summary>
-	public IEnumerable<IHealthEvent> HealthEvents { get; }
-
-	/// <summary>
 	/// Indicates if this damage is allowed.
 	/// </summary>
 	public bool CanDamage( in DamageInfo dmgInfo );

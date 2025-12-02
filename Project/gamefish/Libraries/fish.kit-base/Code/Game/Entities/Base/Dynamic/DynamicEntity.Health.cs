@@ -28,10 +28,6 @@ partial class DynamicEntity : IHealth
 	[ShowIf( nameof( IsDestructible ), true )]
 	public float DebugDamage { get; set; } = 25f;
 
-	public IEnumerable<IHealthEvent> HealthEvents
-		=> Components?.GetAll<IHealthEvent>( FindMode.EnabledInSelfAndDescendants ) ?? [];
-
-
 	[Button]
 	[Order( DEBUG_ORDER )]
 	[Title( "Take Damage" )]
@@ -83,9 +79,6 @@ partial class DynamicEntity : IHealth
 
 		Health = hp.Clamp( 0f, MaxHealth );
 
-		foreach ( var e in HealthEvents )
-			e.OnSetHealth( hp );
-
 		if ( !IsAlive && Health > 0 )
 			TryRevive();
 		else if ( IsAlive && Health <= 0 )
@@ -124,17 +117,10 @@ partial class DynamicEntity : IHealth
 
 	public virtual void OnDeath()
 	{
-		if ( IsProxy )
-			return;
-
-		foreach ( var e in HealthEvents )
-			e.OnDeath();
 	}
 
 	public virtual void OnRevival()
 	{
-		foreach ( var e in HealthEvents )
-			e.OnRevival();
 	}
 
 
@@ -151,10 +137,6 @@ partial class DynamicEntity : IHealth
 		if ( !CanDamage( in dmgInfo ) )
 			return false;
 
-		foreach ( var e in HealthEvents )
-			if ( !e.TryDamage( in dmgInfo ) )
-				return false;
-
 		ApplyDamage( dmgInfo );
 		return true;
 	}
@@ -165,9 +147,6 @@ partial class DynamicEntity : IHealth
 	/// <param name="dmgInfo"></param>
 	protected virtual void ApplyDamage( DamageInfo dmgInfo )
 	{
-		foreach ( var e in HealthEvents )
-			e.OnApplyDamage( ref dmgInfo );
-
 		ModifyHealth( -dmgInfo.Damage );
 
 		OnDamaged( in dmgInfo );
