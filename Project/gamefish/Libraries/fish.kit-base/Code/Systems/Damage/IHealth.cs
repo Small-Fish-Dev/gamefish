@@ -12,15 +12,15 @@ public interface IHealth : Component.IDamageable
 	public IEnumerable<IHealthEvent> HealthEvents { get; }
 
 	/// <summary>
-	/// Lets clients and owners know if this damage is allowed.
+	/// Indicates if this damage is allowed.
 	/// </summary>
 	public bool CanDamage( in DamageInfo dmgInfo );
-
-	void Component.IDamageable.OnDamage( in DamageInfo dmgInfo )
-		=> TryDamage( dmgInfo );
 
 	public bool TryDamage( in DamageInfo dmgInfo );
 
 	public void SetHealth( in float hp );
 	public void ModifyHealth( in float hp );
+
+	void Component.IDamageable.OnDamage( in DamageInfo dmgInfo )
+		=> TryDamage( dmgInfo );
 }

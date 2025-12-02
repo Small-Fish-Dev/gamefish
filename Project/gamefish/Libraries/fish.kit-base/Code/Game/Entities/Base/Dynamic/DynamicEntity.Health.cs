@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class DynamicEntity
+partial class DynamicEntity : IHealth
 {
 	[Sync]
 	[Property, Feature( HEALTH )]
