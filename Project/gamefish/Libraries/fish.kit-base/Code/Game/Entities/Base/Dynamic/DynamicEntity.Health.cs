@@ -1,11 +1,6 @@
-using Microsoft.VisualBasic;
-
 namespace GameFish;
 
-/// <summary>
-/// An entity that supports health and physics.
-/// </summary>
-public partial class DestructibleEntity : PhysicsEntity, IHealth
+partial class DynamicEntity
 {
 	[Sync]
 	[Property, Feature( HEALTH )]

@@ -1,6 +1,3 @@
-using System.Numerics;
-using System.Text.Json.Serialization;
-
 namespace GameFish;
 
 /// <summary>
@@ -97,7 +94,7 @@ public partial struct DamageData
 		return data;
 	}
 
-	public static DamageData FromImpact( in DamageSettings s, in ImpactData impact, PhysicsEntity phys, Pawn atkr = null )
+	public static DamageData FromImpact( in DamageSettings s, in ImpactData impact, DynamicEntity phys, Pawn atkr = null )
 	{
 		var data = new DamageData();
 

@@ -92,10 +92,10 @@
         "IsClass": false,
         "IsNetworkingForced": false,
         "MoveSpeed": 250,
-        "NetworkAutomatically": false,
+        "NetworkAutomatically": true,
         "NetworkId": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
         "NetworkingMode": "Object",
-        "NetworkOrphanedMode": "Destroy",
+        "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
         "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
@@ -104,12 +104,6 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "Pawn": {
-          "_type": "component",
-          "component_id": "00a167f2-9393-469a-879d-63a09e408188",
-          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "PlayerPawn"
-        },
         "PitchClamping": true,
         "PitchRange": {
           "Min": -89.9,
@@ -190,7 +184,7 @@
         "UseButton": "use",
         "UseCameraControls": false,
         "UseFovFromPreferences": true,
-        "UseInputControls": true,
+        "UseInputControls": false,
         "UseLookControls": false,
         "WalkSpeed": 110
       },

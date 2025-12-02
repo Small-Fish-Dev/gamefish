@@ -2,14 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
-/// <summary>
-/// An entity that can have a <see cref="Sandbox.Rigidbody"/>.
-/// </summary>
-[Icon( "sports_volleyball" )]
-public partial class PhysicsEntity : ModuleEntity, IPhysics
+partial class DynamicEntity : IPhysics
 {
-	protected const int PHYSICS_ORDER = ENTITY_ORDER + 50;
-
 	protected Rigidbody _rb;
 	public Rigidbody Rigidbody => _rb.IsValid() ? _rb
 		: Components?.Get<Rigidbody>( FindMode.EverythingInSelf | FindMode.InAncestors );

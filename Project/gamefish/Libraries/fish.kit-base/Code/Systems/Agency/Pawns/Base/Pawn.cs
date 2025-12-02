@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "🐴" )]
-public abstract partial class Pawn : DestructibleEntity
+public abstract partial class Pawn : DynamicEntity
 {
 	protected const int PAWN_ORDER = DEFAULT_ORDER - 444;
 

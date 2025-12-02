@@ -152,7 +152,7 @@ public class TeleportTrigger : FilterTrigger
 		// Support Game Fish components(such as pawns with no Rigidbody) first.
 		var iVelAny = false;
 
-		foreach ( var physEnt in obj.Components.GetAll<PhysicsEntity>( FindMode.EnabledInSelf | FindMode.InAncestors ) )
+		foreach ( var physEnt in obj.Components.GetAll<DynamicEntity>( FindMode.EnabledInSelf | FindMode.InAncestors ) )
 		{
 			if ( !physEnt.IsValid() || physEnt.IsProxy )
 				continue;

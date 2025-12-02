@@ -5,7 +5,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "plumbing" )]
 [EditorHandle( Icon = "🏹" )]
-public partial class Equipment : PhysicsEntity
+public partial class Equipment : DynamicEntity
 {
 	protected const int EQUIP_ORDER = DEFAULT_ORDER - 71144;
 
