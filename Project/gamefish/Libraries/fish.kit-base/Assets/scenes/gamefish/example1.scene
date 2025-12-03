@@ -691,7 +691,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": true,
                   "FilterType": true,
                   "IsClass": false,
@@ -795,7 +795,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": false,
                   "FilterType": false,
                   "IsClass": false,
@@ -906,7 +906,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": false,
                   "FilterType": false,
                   "IsClass": false,
@@ -1017,7 +1017,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": false,
                   "FilterType": false,
                   "IsClass": false,
@@ -1128,7 +1128,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": false,
                   "FilterType": false,
                   "IsClass": false,
@@ -1239,7 +1239,7 @@
                     "Enabled": true,
                     "Tags": "pawn"
                   },
-                  "FilterRequireType": "GameFish.BasePlayer",
+                  "FilterRequireType": "GameFish.Pawn",
                   "FilterTags": false,
                   "FilterType": false,
                   "IsClass": false,

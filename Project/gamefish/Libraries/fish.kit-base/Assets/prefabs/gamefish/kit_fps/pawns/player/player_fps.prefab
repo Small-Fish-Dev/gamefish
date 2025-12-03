@@ -193,8 +193,10 @@
         "__guid": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329",
         "__enabled": true,
         "AngularDamping": 1,
+        "EnableImpactDamage": true,
         "Gravity": true,
         "GravityScale": 1,
+        "ImpactDamage": 0,
         "LinearDamping": 0.1,
         "Locking": {
           "X": false,
@@ -206,6 +208,7 @@
         },
         "MassCenterOverride": "0,0,36",
         "MassOverride": 500,
+        "MinImpactDamageSpeed": 500,
         "MotionEnabled": true,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,

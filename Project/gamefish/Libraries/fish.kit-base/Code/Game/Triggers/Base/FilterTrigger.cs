@@ -34,7 +34,7 @@ public partial class FilterTrigger : BaseTrigger
 	[ShowIf( nameof( FilterType ), true )]
 	[TargetType( typeof( Component ) )]
 	[Property, Group( GROUP_FILTER_TYPE )]
-	public Type FilterRequireType { get; set; } = typeof( BasePlayer );
+	public Type FilterRequireType { get; set; } = typeof( Pawn );
 
 	/// <summary>
 	/// How to look for the component.
