@@ -15,25 +15,17 @@ public partial class GameManager : Singleton<GameManager>, ISceneLoadingEvents
 {
 	protected const int GAME_ORDER = DEFAULT_ORDER - 1000;
 
-	protected const int NAME_ORDER = GAME_ORDER - 10;
 	protected const int NAV_MESH_ORDER = GAME_ORDER + 5;
 
 	protected new const int DEBUG_ORDER = GAME_ORDER - 100;
-
-	/// <summary>
-	/// What's your game called?
-	/// </summary>
-	[Property, WideMode]
-	[Order( NAME_ORDER )]
-	[Feature( GAME, Description = "Some important stuff." )]
-	protected virtual string Name { get; set; }
 
 	/// <summary>
 	/// Is this loaded in a valid play mode scene?
 	/// </summary>
 	[Title( "In Game" )]
 	[Property, ReadOnly, JsonIgnore]
-	[Feature( GAME ), Group( DEBUG ), Order( DEBUG_ORDER - 1 )]
+	[Group( DEBUG ), Order( DEBUG_ORDER - 1 )]
+	[Feature( GAME, Description = "Important gameplay stuff." )]
 	protected bool InspectorInGame => InGame;
 
 	/// <summary>
