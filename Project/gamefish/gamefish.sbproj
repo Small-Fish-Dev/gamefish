@@ -23,13 +23,14 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/gamefish/example1.scene",
+    "StartupScene": "gamefish/examples/scenes/example1.scene",
     "LaunchMode": "Normal",
-    "SystemScene": "scenes/gamefish/system.scene",
+    "SystemScene": "gamefish/examples/system/system.scene",
     "ControlModes": {
       "Keyboard": false,
       "VR": false,
       "Gamepad": false
-    }
+    },
+    "DedicatedServerStartupScene": "gamefish/examples/scenes/example1.scene"
   }
 }
