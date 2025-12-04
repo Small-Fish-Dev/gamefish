@@ -56,6 +56,58 @@
           "Children": []
         },
         {
+          "__guid": "bf27a2cf-021d-415c-81cc-70b03e24a43b",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Settings",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "GameFish.SceneSettings",
+              "__guid": "cdb9944f-1081-4d46-a0e3-d097760b936c",
+              "__enabled": true,
+              "ClassId": null,
+              "ClassName": null,
+              "DepthLevel": -1570.6641,
+              "DepthSettings": {
+                "Players": "Teleport",
+                "Actors": "Destroy",
+                "Physics": "Destroy"
+              },
+              "EnableBoundaries": true,
+              "EnableDepth": true,
+              "GameManagerPrefabOverride": null,
+              "GameManagerStateOverride": null,
+              "IsClass": false,
+              "IsMainMenu": false,
+              "IsNetworkingForced": true,
+              "NetworkAutomatically": true,
+              "NetworkId": "cdb9944f-1081-4d46-a0e3-d097760b936c",
+              "NetworkingMode": "Object",
+              "NetworkOrphanedMode": "Host",
+              "NetworkOwner": null,
+              "NetworkTransferMode": "Fixed",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "SpawnGameManager": true
+            }
+          ],
+          "Children": []
+        },
+        {
           "__guid": "fda8f8d3-7e45-43af-a138-6f9b259dee97",
           "__version": 1,
           "Flags": 0,
