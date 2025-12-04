@@ -75,20 +75,20 @@ public partial class Client : Agent
 
 	protected override void OnEnabled()
 	{
+		base.OnEnabled();
+
 		// Keep client objects between scenes.
 		if ( GameObject.IsValid() )
 			GameObject.Flags |= GameObjectFlags.DontDestroyOnLoad;
-
-		// Then network spawn.
-		base.OnEnabled();
 	}
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		if ( this.IsOwner() && IsPlayer )
-			Local = this;
+		if ( !Local.IsValid() )
+			if ( this.IsOwner() && IsPlayer )
+				Local = this;
 	}
 
 	protected override void OnDestroy()
