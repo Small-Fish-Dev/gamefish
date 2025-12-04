@@ -7,10 +7,19 @@ namespace GameFish;
 [EditorHandle( Icon = "🐴" )]
 public abstract partial class Pawn : DynamicEntity
 {
-	protected const int PAWN_ORDER = DEFAULT_ORDER - 444;
+	protected const int PAWN_ORDER = DEFAULT_ORDER - 5000;
 
-	// public override string ToString()
-	// => $"{GetType().ToSimpleString( includeNamespace: false )}|Agent:{Agent?.ToString() ?? "none"}";
+	protected new const int DEBUG_ORDER = PAWN_ORDER - 50;
+
+	public override string ToString()
+	{
+		var str = $"{GetType().ToSimpleString( includeNamespace: false )}";
+
+		if ( Owner.IsValid() && !Owner.DisplayName.IsBlank() )
+			str = $"{str}:\"{Owner.DisplayName}\"";
+
+		return str;
+	}
 
 	/// <summary>
 	/// A position between our aim and feet.
@@ -25,17 +34,7 @@ public abstract partial class Pawn : DynamicEntity
 		get => _owner;
 		protected set
 		{
-			if ( _owner == value )
-				return;
-
-			if ( Networking.IsHost )
-			{
-				if ( value is not null && !AllowOwnership( value ) )
-					return;
-			}
-
 			var old = _owner;
-
 			_owner = value;
 
 			OnSetOwner( old, value );
@@ -44,43 +43,49 @@ public abstract partial class Pawn : DynamicEntity
 
 	protected Agent _owner;
 
-	public virtual bool TryAssignOwner( Agent newAgent )
+	public bool TryAssignOwner( Agent newAgent )
 	{
-		if ( !Networking.IsHost || !this.IsValid() )
+		if ( !Networking.IsHost || !GameObject.IsValid() )
 			return false;
 
-		if ( !newAgent.IsValid() )
-			return TryDropOwner();
+		if ( !newAgent.IsValid() || !AllowOwnership( newAgent ) )
+			return false;
 
-		if ( Owner == newAgent )
-			return true;
+		var cn = newAgent.Connection;
+
+		if ( cn is null )
+		{
+			this.Warn( $"Failed to assign new owner:[{newAgent}] with null connection!" );
+			return false;
+		}
+
+		// If the owner is the same then no need.
+		if ( Owner.IsValid() && Owner == newAgent )
+			if ( Network?.Owner == Owner.Network?.Owner )
+				return true;
+
+		if ( !TrySetNetworkOwner( cn, allowProxy: true ) )
+		{
+			this.Warn( $"Failed to assign owner:[{newAgent}] to Connection:[{cn}]" );
+			return false;
+		}
 
 		Owner = newAgent;
-
-		if ( Owner != newAgent )
-			return false;
-
-		newAgent.OnGainPawn( this );
 
 		return true;
 	}
 
-	public virtual bool TryDropOwner()
+	public bool TryDropOwner( Agent oldOwner )
 	{
 		if ( !Networking.IsHost )
 			return false;
 
-		var owner = Owner;
-
-		if ( !this.IsValid() || !owner.IsValid() )
+		// If we don't have that owner then consider it a success.
+		if ( Owner != oldOwner )
 			return true;
 
-		Owner = null;
-
-		if ( Owner.IsValid() )
-			return false;
-
-		owner.OnLosePawn( this );
+		if ( Owner is not null )
+			Owner = null;
 
 		return true;
 	}
@@ -90,72 +95,46 @@ public abstract partial class Pawn : DynamicEntity
 	/// </summary>
 	protected virtual void OnSetOwner( Agent oldAgent, Agent newAgent )
 	{
-		if ( !Networking.IsHost || !this.IsValid() )
+		// Ignore duplicate assignment.
+		if ( oldAgent == newAgent )
 			return;
 
-		// Debug logging.
-		if ( oldAgent.IsValid() )
+		if ( DebugLogging )
 		{
-			this.Log( newAgent.IsValid()
-				? $"owner changed: [{oldAgent}] -> [{newAgent}]"
-				: $"lost owner: [{oldAgent}]" );
-		}
-		else if ( newAgent.IsValid() )
-		{
-			this.Log( $"gained owner:[{newAgent}]" );
-		}
-
-		// Old agent might've been destroyed, but not null.
-		if ( oldAgent is not null )
-		{
-			// If valid: tell previous agent to drop this pawn.
 			if ( oldAgent.IsValid() )
 			{
-				if ( oldAgent.Pawn == this && oldAgent.TryDropPawn() )
-					OnDropped( oldAgent );
+				if ( newAgent.IsValid() )
+					this.Log( $"owner changed: [{oldAgent}] -> [{newAgent}]" );
+				else
+					this.Log( $"lost owner: [{oldAgent}]" );
 			}
-			else
+			else if ( newAgent.IsValid() )
 			{
-				OnDropped( oldAgent );
+				this.Log( $"gained owner:[{newAgent}]" );
 			}
 		}
 
-		// New agent must be valid.
+		if ( oldAgent.IsValid() )
+			OnDropped( oldAgent: oldAgent );
+
 		if ( newAgent.IsValid() )
-		{
-			// Tell the new agent to register this pawn.
-			if ( newAgent.TryAssignPawn( this ) )
-			{
-				OnTaken( oldAgent, newAgent );
-			}
-			else
-			{
-				this.Warn( $"failed to add Pawn:[{this}] to Agent:[{newAgent}]" );
-				Owner = null;
-			}
-		}
-		else
-		{
-			SetWishVelocity( Vector3.Zero );
-
-			// Always drop ownership if we don't belong to an agent.
-			TrySetNetworkOwner( null );
-		}
+			OnTaken( newAgent: newAgent, oldAgent: oldAgent );
 	}
 
 	/// <summary>
 	/// Called when our new <see cref="Owner"/> has been fully confirmed.
 	/// </summary>
-	protected virtual void OnTaken( Agent old, Agent agent )
+	protected virtual void OnTaken( Agent newAgent, Agent oldAgent = null )
 	{
 	}
 
 	/// <summary>
 	/// Called whenever an <see cref="Owner"/> stops owning this.
 	/// </summary>
-	protected virtual void OnDropped( Agent old )
+	protected virtual void OnDropped( Agent oldAgent )
 	{
-		GameObject?.Destroy();
+		if ( Networking.IsHost )
+			GameObject?.Destroy();
 	}
 
 	/// <summary>

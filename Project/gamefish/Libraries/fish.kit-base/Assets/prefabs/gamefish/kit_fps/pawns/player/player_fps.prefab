@@ -35,6 +35,7 @@
           "component_type": "FacepunchController"
         },
         "DebugDamage": 25,
+        "DebugLogging": false,
         "Equipment": {
           "_type": "component",
           "component_id": "41565e7f-493f-4aa8-802e-130a36e10531",
@@ -60,7 +61,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "Team": "data/gamefish/teams/base_player.team",
+        "Team": "gamefish/base/teams/base_player.team",
         "View": {
           "_type": "component",
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",

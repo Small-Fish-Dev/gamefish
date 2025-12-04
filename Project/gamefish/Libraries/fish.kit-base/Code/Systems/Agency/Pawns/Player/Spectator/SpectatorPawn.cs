@@ -84,9 +84,9 @@ public partial class SpectatorPawn : Pawn
 		base.OnEnabled();
 	}
 
-	protected override void OnTaken( Agent oldAgent, Agent newAgent )
+	protected override void OnTaken( Agent newAgent, Agent oldAgent = null )
 	{
-		base.OnTaken( oldAgent, newAgent );
+		base.OnTaken( newAgent, oldAgent );
 
 		if ( !newAgent.IsOwner() )
 			return;

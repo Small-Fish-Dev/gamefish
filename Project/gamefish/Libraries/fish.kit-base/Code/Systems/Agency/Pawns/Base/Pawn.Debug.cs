@@ -7,6 +7,13 @@ partial class Pawn
 	/// <summary>
 	/// Is this controlled by a player agent?
 	/// </summary>
+	[Property]
+	[Feature( PAWN ), Group( DEBUG ), Order( DEBUG_ORDER )]
+	public bool DebugLogging { get; set; }
+
+	/// <summary>
+	/// Is this controlled by a player agent?
+	/// </summary>
 	[Title( "Is Player" )]
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( PAWN ), Group( DEBUG ), Order( DEBUG_ORDER )]
