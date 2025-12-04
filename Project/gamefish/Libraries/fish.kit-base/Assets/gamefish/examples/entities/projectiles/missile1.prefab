@@ -1,0 +1,238 @@
+{
+  "RootObject": {
+    "__guid": "97b2a4ba-afc3-4048-99f3-86823a80adea",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "missile1",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "GameFish.Projectile",
+        "__guid": "5a584143-fc35-4def-8f74-ccbc72193b59",
+        "__enabled": true,
+        "ClassId": "missile1",
+        "ClassName": null,
+        "CollideWithTriggers": false,
+        "CollisionHit": {
+          "Enabled": true,
+          "Tags": "solid,pawn"
+        },
+        "CollisionIgnore": {
+          "Enabled": false,
+          "Tags": "trigger"
+        },
+        "CollisionRadius": 5,
+        "DebugDamage": 25,
+        "DefaultSpeed": 1000,
+        "ExplosionDamage": {
+          "BaseDamage": 50,
+          "Types": "explosive",
+          "EnableForces": true,
+          "ScaleForces": true,
+          "Impulse": 1,
+          "EnableRange": true,
+          "Range": {
+            "rangex": "0,512",
+            "frames": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ]
+          },
+          "EnableHitboxes": false,
+          "HitboxMultipliers": {
+            "head": 2
+          }
+        },
+        "ExplosionPrefab": null,
+        "ExplosionRadius": 512,
+        "ExplosionSound": "sounds/effects/explosion/explosion_small.sound",
+        "FireSound": null,
+        "HasImpact": false,
+        "Health": 100,
+        "HomingDistance": {
+          "Min": 250,
+          "Max": 1500
+        },
+        "HomingSpeed": {
+          "Min": 0,
+          "Max": 1000
+        },
+        "ImpactDamage": {
+          "BaseDamage": 20,
+          "Types": "impact",
+          "EnableForces": false,
+          "ScaleForces": false,
+          "Impulse": 0,
+          "EnableRange": true,
+          "Range": {
+            "rangex": "0,2000",
+            "frames": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ]
+          },
+          "EnableHitboxes": false,
+          "HitboxMultipliers": {
+            "head": 2
+          }
+        },
+        "ImpactPrefab": null,
+        "ImpactSound": null,
+        "IsAlive": true,
+        "IsClass": false,
+        "IsDestructible": true,
+        "IsExplosive": true,
+        "IsHoming": false,
+        "IsNetworkingForced": null,
+        "LoopingSound": null,
+        "MaxHealth": 100,
+        "NetworkAutomatically": false,
+        "NetworkId": "5a584143-fc35-4def-8f74-ccbc72193b59",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "Destroy",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "SelfDestructDelay": 10,
+        "Team": null,
+        "Velocity": "0,0,0"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "5e2a48ab-1e73-47f1-8bf6-3a86fafe5e3f",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Model",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "0.7468358,0.1841906,0.1860252",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "7ca44a5e-8c5c-4a2c-8517-5e8d237fc024",
+            "__enabled": true,
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": "materials/default.vmat",
+            "Materials": null,
+            "Model": "models/dev/box.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,0.22295,0.16744,1"
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "e19548db-4d5a-46ed-bd46-617fb6e4dc50",
+            "__enabled": true,
+            "Center": "0,0,0",
+            "ColliderFlags": 0,
+            "Elasticity": null,
+            "Friction": null,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
+            "Scale": "50,50,50",
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

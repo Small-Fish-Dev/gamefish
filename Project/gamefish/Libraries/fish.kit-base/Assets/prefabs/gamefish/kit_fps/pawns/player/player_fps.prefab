@@ -1041,7 +1041,7 @@
             "IsNetworkingForced": true,
             "Loadout": [
               {
-                "Prefab": "prefabs/gamefish/kit_fps/equips/rocket_launcher.prefab",
+                "Prefab": "gamefish/examples/entities/equips/fps/rocket_launcher.prefab",
                 "Slot": null
               }
             ],

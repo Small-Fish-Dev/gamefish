@@ -2863,6 +2863,22 @@
             },
             "Property": "Position",
             "Value": "-673.3499,-82.65324,4.046277"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+            },
+            "Property": "Tags",
+            "Value": "player"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "00a167f2-9393-469a-879d-63a09e408188"
+            },
+            "Property": "Team",
+            "Value": null
           }
         ],
         "MovedObjects": []

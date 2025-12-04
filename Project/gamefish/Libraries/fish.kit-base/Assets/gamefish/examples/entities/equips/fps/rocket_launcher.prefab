@@ -21,6 +21,7 @@
         "__enabled": true,
         "ClassId": "rocket_launcher",
         "ClassName": null,
+        "DebugDamage": 25,
         "DefaultOffset": {
           "Position": "0,0,0",
           "Rotation": "0,0,0,1"
@@ -30,13 +31,17 @@
           "Position": "0,0,-70",
           "Rotation": "0,0,0,1"
         },
+        "Health": 100,
         "HolsteringOffset": {
           "Position": "0,0,-70",
           "Rotation": "0,0,-0.3826835,0.9238795"
         },
         "Icon": null,
+        "IsAlive": true,
         "IsClass": false,
+        "IsDestructible": true,
         "IsNetworkingForced": true,
+        "MaxHealth": 100,
         "NetworkAutomatically": true,
         "NetworkId": "04ed4e20-8ebf-48fc-9cec-822ecc06569f",
         "NetworkingMode": "Object",
@@ -178,7 +183,7 @@
               "Position": "16,0,0",
               "Rotation": "0,0,0,1"
             },
-            "ProjectilePrefab": "prefabs/gamefish/kit_fps/projectiles/missile1.prefab",
+            "ProjectilePrefab": "gamefish/examples/entities/projectiles/missile1.prefab",
             "ProjectileScale": "1,1,1",
             "ProjectileVelocity": "1500,0,0",
             "ShootSound": null,

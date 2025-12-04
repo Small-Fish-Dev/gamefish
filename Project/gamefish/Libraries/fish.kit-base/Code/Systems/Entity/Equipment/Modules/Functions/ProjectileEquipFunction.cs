@@ -20,7 +20,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	[Property]
 	[Title( "Prefab" )]
 	[Feature( MODULE ), Group( PROJECTILE )]
-	public virtual PrefabFile ProjectilePrefab { get; set; } = Prefab.GetFile( "prefabs/gamefish/kit_fps/projectiles/missile1.prefab" );
+	public virtual PrefabFile ProjectilePrefab { get; set; } = Prefab.GetFile( "gamefish/examples/entities/projectiles/missile1.prefab" );
 
 	/// <summary>
 	/// The projectile's velocity relative to the owner's aim. <br />
