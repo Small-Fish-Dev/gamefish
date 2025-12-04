@@ -1,0 +1,99 @@
+{
+  "__guid": "79a1a6bf-d16f-4da0-a93a-c8b3431590ab",
+  "GameObjects": [
+    {
+      "__guid": "ac992588-c132-446d-b5cd-bf5f3845d5bf",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Scene",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "55b2900f-8f60-4a37-a871-fd8711b5caca",
+          "__version": 1,
+          "Flags": 0,
+          "Name": "Settings",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "GameFish.SceneSettings",
+              "__guid": "3aeb8db1-1660-40f5-8638-594aa3c408d3",
+              "__enabled": true,
+              "ClassId": null,
+              "ClassName": null,
+              "DepthLevel": -9001,
+              "DepthSettings": {
+                "Players": "Nothing",
+                "Actors": "Nothing",
+                "Physics": "Nothing"
+              },
+              "EnableBoundaries": true,
+              "EnableDepth": true,
+              "GameManagerPrefabOverride": null,
+              "GameManagerStateOverride": null,
+              "IsClass": false,
+              "IsMainMenu": false,
+              "IsNetworkingForced": true,
+              "NetworkAutomatically": true,
+              "NetworkId": "3aeb8db1-1660-40f5-8638-594aa3c408d3",
+              "NetworkingMode": "Object",
+              "NetworkOrphanedMode": "Host",
+              "NetworkOwner": null,
+              "NetworkTransferMode": "Fixed",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "SpawnGameManager": true
+            }
+          ],
+          "Children": []
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {},
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": null,
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}
