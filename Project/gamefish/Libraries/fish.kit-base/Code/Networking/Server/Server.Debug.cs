@@ -4,15 +4,11 @@ namespace GameFish;
 
 partial class Server
 {
+	[Title( "Pawns" )]
 	[Property, ReadOnly, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( SERVER ), Group( DEBUG ), Order( DEBUG_ORDER )]
-	public List<Pawn> AllPawns => [.. Pawn.GetAll<Pawn>()];
-
-	[Property, ReadOnly, JsonIgnore]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( SERVER ), Group( DEBUG ), Order( DEBUG_ORDER )]
-	public List<Pawn> ActivePawns => [.. Pawn.GetAllActive<Pawn>()];
+	protected List<Pawn> InspectorActivePawns => [.. Pawn.GetAllActive<Pawn>()];
 
 	/// <summary>
 	/// Looks for a <see cref="Server"/> singleton to see if cheating is globally enabled.

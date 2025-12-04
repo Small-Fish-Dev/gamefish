@@ -100,7 +100,7 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 	/// <summary>
 	/// Creates the <see cref="Session"/> prefab if one doesn't exist.
 	/// </summary>
-	[Order( BOOT_ORDER + 1 )]
+	[Order( SESSION_ORDER )]
 	[Button( "Create Session" )]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( BOOT ), Group( SESSION )]
