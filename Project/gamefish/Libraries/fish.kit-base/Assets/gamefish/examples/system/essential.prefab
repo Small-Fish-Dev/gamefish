@@ -9,9 +9,9 @@
     "Scale": "1,1,1",
     "Tags": "",
     "Enabled": true,
-    "NetworkMode": 2,
+    "NetworkMode": 1,
     "NetworkInterpolation": true,
-    "NetworkOrphaned": 0,
+    "NetworkOrphaned": 1,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
@@ -22,11 +22,11 @@
         "ClassId": "essential",
         "ClassName": null,
         "GameManagerPrefab": "gamefish/examples/system/game/game_manager.prefab",
-        "GameName": "Game Fish - Playground",
-        "GameScene": null,
+        "GameName": "Game Fish: Playground",
+        "GameScene": "gamefish/examples/scenes/example1.scene",
         "IsClass": false,
         "IsNetworkingForced": true,
-        "MainMenuScene": null,
+        "MainMenuScene": "gamefish/examples/scenes/menu.scene",
         "NetworkAutomatically": true,
         "NetworkId": "8f0c134c-cead-4698-840e-c52953eae48c",
         "NetworkingMode": "Object",
@@ -40,7 +40,7 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "SessionPrefab": "gamefish/examples/system/session.prefab",
-        "TestingScene": null
+        "TestingScene": "gamefish/examples/scenes/testing.scene"
       }
     ],
     "Children": [],

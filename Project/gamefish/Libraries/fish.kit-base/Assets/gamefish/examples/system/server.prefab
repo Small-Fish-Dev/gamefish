@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "768a43a6-b436-4c6e-aaf6-46b36462396e",
+    "__guid": "98397a76-d11e-4114-baef-e3ac6724476c",
     "__version": 1,
     "Flags": 0,
-    "Name": "session",
+    "Name": "server",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,16 +16,16 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.Session",
-        "__guid": "78f924f5-6d37-4e7b-9589-6527173c9a3e",
+        "__type": "GameFish.Server",
+        "__guid": "27024cea-c219-4daf-a983-a29e97621f4f",
         "__enabled": true,
-        "AutoStart": true,
-        "ClassId": "session",
+        "ClassId": "server",
         "ClassName": null,
         "IsClass": false,
+        "IsNetworkingActive": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
-        "NetworkId": "78f924f5-6d37-4e7b-9589-6527173c9a3e",
+        "NetworkId": "27024cea-c219-4daf-a983-a29e97621f4f",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "Host",
         "NetworkOwner": null,
@@ -35,7 +35,10 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "PlayerClientPrefab": "prefabs/gamefish/kit_fps/net/clients/client_player.prefab",
+        "PlayerPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/player_fps.prefab",
+        "SpectatorPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/spectator_fps.prefab"
       }
     ],
     "Children": [],

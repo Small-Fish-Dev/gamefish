@@ -208,48 +208,34 @@
           "Components": [],
           "Children": [
             {
+              "__guid": "b9c9d6b0-e80d-4a3e-955b-d39ba50bb18c",
+              "__version": 1,
+              "__Prefab": "gamefish/examples/system/essential.prefab",
+              "__PrefabInstancePatch": {
+                "AddedObjects": [],
+                "RemovedObjects": [],
+                "PropertyOverrides": [],
+                "MovedObjects": []
+              },
+              "__PrefabIdToInstanceId": {
+                "8e49c22c-1015-4190-b039-e96dda3c2d95": "b9c9d6b0-e80d-4a3e-955b-d39ba50bb18c",
+                "8f0c134c-cead-4698-840e-c52953eae48c": "8684c6bb-0576-4f1f-8da5-61be617a91fe"
+              }
+            },
+            {
               "__guid": "82d10356-fd12-42e1-85b4-55efb7a1dd24",
               "__version": 1,
-              "Flags": 0,
-              "Name": "Server",
-              "Position": "0,0,0",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "GameFish.Server",
-                  "__guid": "097637a4-25b2-4791-af6f-894b98828e85",
-                  "__enabled": true,
-                  "ClassId": null,
-                  "ClassName": null,
-                  "IsClass": false,
-                  "IsNetworkingActive": false,
-                  "IsNetworkingForced": true,
-                  "NetworkAutomatically": true,
-                  "NetworkId": "097637a4-25b2-4791-af6f-894b98828e85",
-                  "NetworkingMode": "Object",
-                  "NetworkOrphanedMode": "Host",
-                  "NetworkOwner": null,
-                  "NetworkTransferMode": "Fixed",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "PlayerClientPrefab": "prefabs/gamefish/kit_fps/net/clients/client_player.prefab",
-                  "PlayerPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/player_fps.prefab",
-                  "SpectatorPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/spectator_fps.prefab"
-                }
-              ],
-              "Children": []
+              "__Prefab": "gamefish/examples/system/server.prefab",
+              "__PrefabInstancePatch": {
+                "AddedObjects": [],
+                "RemovedObjects": [],
+                "PropertyOverrides": [],
+                "MovedObjects": []
+              },
+              "__PrefabIdToInstanceId": {
+                "98397a76-d11e-4114-baef-e3ac6724476c": "82d10356-fd12-42e1-85b4-55efb7a1dd24",
+                "27024cea-c219-4daf-a983-a29e97621f4f": "097637a4-25b2-4791-af6f-894b98828e85"
+              }
             }
           ]
         }
