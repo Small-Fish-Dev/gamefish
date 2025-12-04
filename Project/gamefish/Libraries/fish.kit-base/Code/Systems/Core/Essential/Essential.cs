@@ -13,28 +13,8 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 {
 	protected const int BOOT_ORDER = DEBUG_ORDER - 1000;
 
-	protected const int GAME_ORDER = BOOT_ORDER + 10;
-	protected const int SESSION_ORDER = BOOT_ORDER + 20;
-	protected const int SCENES_ORDER = BOOT_ORDER + 100;
-
-
-	/// <summary>
-	/// What's your game called?
-	/// </summary>
-	[Property]
-	[Title( "Name" )]
-	[Feature( BOOT ), Group( GAME ), Order( GAME_ORDER )]
-	protected virtual string GameName { get; set; }
-
-	/// <summary>
-	/// The prefab with a <see cref="GameManager"/> component on it.
-	/// If defined here then it will be spawned automatically
-	/// at the start of each scene.
-	/// </summary>
-	[Title( "Manager Prefab" )]
-	[Property, Order( GAME_ORDER )]
-	[Feature( BOOT ), Group( GAME )]
-	public virtual PrefabFile GameManagerPrefab { get; set; }
+	protected const int SESSION_ORDER = BOOT_ORDER - 1;
+	protected const int SCENES_ORDER = BOOT_ORDER + 5;
 
 
 	/// <summary>
