@@ -13,7 +13,7 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 {
 	protected const int BOOT_ORDER = DEBUG_ORDER - 1000;
 
-	protected const int SESSION_ORDER = BOOT_ORDER - 1;
+	protected const int PREFABS_ORDER = BOOT_ORDER - 1;
 	protected const int SCENES_ORDER = BOOT_ORDER + 5;
 
 
@@ -25,10 +25,22 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 	/// <b> NOTE: </b> You want one of these to persist data between loading of scenes.
 	/// </summary>
 	[Property]
-	[Title( "Session Prefab" )]
-	[Feature( BOOT ), Group( SESSION ), Order( SESSION_ORDER )]
+	[Title( "Session" )]
+	[Feature( BOOT ), Group( PREFABS ), Order( PREFABS_ORDER )]
 	public virtual PrefabFile SessionPrefab { get; set; }
 
+	/// <summary>
+	/// The prefab with a <see cref="GameManager"/> component on it.
+	/// If defined here then it will be spawned at each
+	/// scene start if one does not already exist.
+	/// <br /> <br />
+	/// <b> NOTE: </b> Has state modules for both main menu
+	/// and ingame scenes to handle logic for each of them.
+	/// </summary>
+	[Property]
+	[Title( "Game Manager" )]
+	[Feature( BOOT ), Group( PREFABS ), Order( PREFABS_ORDER )]
+	public virtual PrefabFile GameManagerPrefab { get; set; }
 
 	/// <summary>
 	/// The scene you want to go to for features like level selection.
@@ -58,11 +70,7 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 	{
 		base.OnEnabled();
 
-		if ( !Networking.IsHost || !this.InGame() )
-			return;
-
-		EnsureSession();
-		EnsureGameManager();
+		EnsureEssentials();
 	}
 
 	void ISceneLoadingEvents.AfterLoad( Scene scene )
@@ -71,8 +79,16 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 			OnSceneLoad( scene );
 	}
 
-	public virtual void OnSceneLoad( Scene scene )
+	protected virtual void OnSceneLoad( Scene scene )
 	{
+		EnsureEssentials();
+	}
+
+	protected virtual void EnsureEssentials()
+	{
+		if ( !Networking.IsHost || !this.InGame() )
+			return;
+
 		EnsureSession();
 		EnsureGameManager();
 	}
@@ -80,7 +96,7 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 	/// <summary>
 	/// Spawns the <see cref="Session"/> prefab if an instance doesn't exist.
 	/// </summary>
-	[Order( SESSION_ORDER )]
+	[Order( PREFABS_ORDER )]
 	[Button( "Ensure Session" )]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( BOOT ), Group( SESSION )]
@@ -94,5 +110,30 @@ public partial class Essential : Singleton<Essential>, ISceneLoadingEvents
 
 		if ( SessionPrefab.IsValid() )
 			Session.TryCreate( SessionPrefab, out _ );
+	}
+
+	/// <summary>
+	/// Spawns the <see cref="GameManager"/> prefab if an instance doesn't exist.
+	/// </summary>
+	[Button( "Ensure Manager" )]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( BOOT ), Group( PREFABS ), Order( PREFABS_ORDER )]
+	public virtual void EnsureGameManager()
+	{
+		if ( !this.InGame() || !Networking.IsHost )
+			return;
+
+		if ( GameManager.TryGetInstance( out _ ) )
+			return;
+
+		var prefab = GameManagerPrefab;
+
+		// Scene settings might override the prefab.
+		if ( SceneSettings.TryGetInstance( out var s ) )
+			if ( s.GameManagerPrefabOverride.IsValid() )
+				prefab = s.GameManagerPrefabOverride;
+
+		if ( prefab.IsValid() )
+			GameManager.TryCreate( prefab, out var _ );
 	}
 }
