@@ -284,7 +284,9 @@ public partial class Projectile : DynamicEntity, Component.ICollisionListener, I
 
 		if ( SinceCreated > SelfDestructDelay )
 		{
-			if ( GameObject.IsValid() )
+			if ( IsExplosive )
+				PlayExplosionEffect( WorldTransform );
+			else
 				PlayImpactEffect( WorldTransform );
 
 			GameObject?.Destroy();
@@ -535,6 +537,8 @@ public partial class Projectile : DynamicEntity, Component.ICollisionListener, I
 
 	protected virtual void DoExplosion( in ImpactData impact )
 	{
+		PlayExplosionEffect( WorldTransform );
+
 		if ( !GameObject.IsValid() )
 			return;
 
