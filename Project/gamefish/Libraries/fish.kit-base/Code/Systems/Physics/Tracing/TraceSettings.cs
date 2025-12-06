@@ -81,9 +81,11 @@ public partial struct TraceSettings
 		if ( ShapeRotation != default )
 			tWorld.Rotation *= ShapeRotation;
 
+		tWorld.Scale = 1f;
+
 		return Shape switch
 		{
-			TraceShape.Line => Gizmo.Draw.DepthArrow( Vector3.Zero, Vector3.Forward, cSolid, tWorld: tWorld ),
+			TraceShape.Line => Gizmo.Draw.DepthArrow( Vector3.Zero, Vector3.Forward * 64f, cSolid, len: 8f, w: 3f, tWorld: tWorld ),
 			TraceShape.Box => Gizmo.Draw.DepthBox( Box, cLines, cSolid, tWorld: tWorld ),
 			TraceShape.Sphere => Gizmo.Draw.DepthSphere( Radius, Vector3.Zero, cLines, cSolid, tWorld: tWorld ),
 			TraceShape.Capsule => Gizmo.Draw.DepthCapsule( Capsule, cLines, cSolid, tWorld: tWorld ),
