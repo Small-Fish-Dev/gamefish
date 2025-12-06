@@ -8,6 +8,7 @@ partial class Pawn
 	/// Is this controlled by a player agent?
 	/// </summary>
 	[Property]
+	[Title( "Logging" )]
 	[Feature( PAWN ), Group( DEBUG ), Order( DEBUG_ORDER )]
 	public bool DebugLogging { get; set; }
 
