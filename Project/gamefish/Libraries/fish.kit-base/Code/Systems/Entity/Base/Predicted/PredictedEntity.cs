@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace GameFish;
 
-partial class PredictedEntity : Entity
+public abstract partial class PredictedEntity : Entity
 {
 	public override bool IsPredicted { get; set; } = true;
 

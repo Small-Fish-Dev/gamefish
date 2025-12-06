@@ -5,7 +5,7 @@ namespace GameFish;
 /// <summary>
 /// Manages client-side prediction for this object.
 /// </summary>
-partial class PredictionRoot : Entity
+public partial class PredictionRoot : Entity
 {
 	// Prediction root/manager is never networked.
 	protected override bool? IsNetworkedOverride => false;

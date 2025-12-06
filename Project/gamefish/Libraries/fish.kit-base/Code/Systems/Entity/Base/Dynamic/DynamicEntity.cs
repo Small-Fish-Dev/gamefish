@@ -8,7 +8,7 @@ namespace GameFish;
 /// <b> NOTE: </b> Looks for a <see cref="Sandbox.Rigidbody"/> by default.
 /// </summary>
 [Icon( "sports_volleyball" )]
-public partial class DynamicEntity : ModuleEntity
+public abstract partial class DynamicEntity : ModuleEntity
 {
 	protected const int PHYSICS_ORDER = ENTITY_ORDER + 50;
 }
