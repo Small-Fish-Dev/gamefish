@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// How should a trace consider triggers?
 /// </summary>
-public enum TraceTriggerHitType
+public enum TraceTriggerType
 {
 	/// <summary> Don't hit triggers. </summary>
 	Ignore,

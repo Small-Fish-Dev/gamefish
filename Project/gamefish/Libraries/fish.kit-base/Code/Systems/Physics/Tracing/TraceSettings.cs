@@ -60,7 +60,7 @@ public partial struct TraceSettings
 	/// How should this trace treat triggers/solids?
 	/// </summary>
 	[Title( "Triggers" )]
-	public TraceTriggerHitType TriggerType { get; set; }
+	public TraceTriggerType TriggerType { get; set; }
 
 	public TraceSettings() { }
 
@@ -131,9 +131,9 @@ public partial struct TraceSettings
 			tr = tr.WithoutTags( TagsIgnore.Tags );
 
 		// Trigger Hitting
-		if ( TriggerType is TraceTriggerHitType.Include )
+		if ( TriggerType is TraceTriggerType.Include )
 			tr = tr.HitTriggers();
-		else if ( TriggerType is TraceTriggerHitType.Exclusive )
+		else if ( TriggerType is TraceTriggerType.Exclusive )
 			tr = tr.HitTriggersOnly();
 
 		return tr;
