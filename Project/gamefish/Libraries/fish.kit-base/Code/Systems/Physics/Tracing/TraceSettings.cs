@@ -126,7 +126,7 @@ public partial struct TraceSettings
 			tr = tr.WithAllTags( TagsRequire.Tags );
 
 		if ( TagsIgnore.Enabled )
-			tr = tr.WithAnyTags( TagsIgnore.Tags );
+			tr = tr.WithoutTags( TagsIgnore.Tags );
 
 		// Trigger Hitting
 		if ( TriggerType is TraceTriggerHitType.Include )

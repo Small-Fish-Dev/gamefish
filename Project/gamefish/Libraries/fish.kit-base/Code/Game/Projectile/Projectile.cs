@@ -467,15 +467,15 @@ public partial class Projectile : DynamicEntity, Component.ICollisionListener, I
 
 	protected virtual void DoImpact( in ImpactData impact )
 	{
-		if ( !GameObject.IsValid() )
-			return;
-
 		var tImpact = WorldTransform;
 
 		tImpact.Position = impact.HitPosition;
 		tImpact.Rotation = Rotation.LookAt( impact.HitNormal );
 
 		PlayImpactEffect( tImpact );
+
+		if ( !GameObject.IsValid() )
+			return;
 
 		DoImpactDamage( in impact );
 		DoImpactForce( in impact );
