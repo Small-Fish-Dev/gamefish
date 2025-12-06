@@ -70,7 +70,7 @@ partial class Agent
 		if ( !this.IsValid() || !Scene.IsValid() )
 			return false;
 
-		if ( !pawn.IsValid() )
+		if ( !pawn.IsValid() || !pawn.AllowOwnership( this ) )
 			return false;
 
 		var oldPawn = Pawn;
