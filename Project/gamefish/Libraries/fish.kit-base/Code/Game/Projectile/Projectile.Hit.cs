@@ -138,7 +138,6 @@ partial class Projectile
 			return;
 
 		DoImpactDamage( in impact );
-		DoImpactForce( in impact );
 	}
 
 	protected virtual void DoImpactDamage( in ImpactData impact )
@@ -148,51 +147,24 @@ partial class Projectile
 		if ( !target.IsValid() )
 			return;
 
-		var dmg = ImpactDamage.BaseDamage;
-
-		if ( dmg is 0f )
+		if ( ImpactDamage.BaseDamage == 0f && ImpactDamage.Impulse == 0f )
 			return;
 
-		var objAtkr = Attacker?.GameObject ?? GameObject;
-		var objSource = Source?.GameObject ?? GameObject;
+		var data = DamageData.FromImpact( ImpactDamage, in impact, this, Attacker );
 
-		var info = new DamageInfo( dmg, objAtkr, objSource )
-			.WithTags( ImpactDamage.Types );
+		if ( !target.TryDamage( in data ) )
+			return;
 
-		target.TryDamage( info );
+		// TEMP: Manual impulse. Should be in `ApplyDamage`.
+		if ( data.Impulse is Vector3 vel )
+			if ( target.Components.TryGet<IVelocity>( out var iVel, FindMode.EnabledInSelf | FindMode.InAncestors ) )
+				iVel.TryImpulse( vel );
 
 		/*
 		if ( obj.TryDamage( info ) && AllowHurtEffects )
 			if ( obj.Components.Get<DamageModule>( FindMode.EnabledInSelfAndDescendants ) is var dm )
 				dm?.PlayHitEffect( hitPos + hitNormal * 10f, Rotation.LookAt( -hitNormal ) );
 		*/
-	}
-
-	protected virtual void DoImpactForce( in ImpactData impact )
-	{
-		if ( !GameObject.IsValid() )
-			return;
-
-		var target = impact.GameObject;
-
-		if ( !target.IsValid() )
-			return;
-
-		if ( ImpactDamage.Impulse is 0 )
-			return;
-
-		var moveDir = Velocity.Normal;
-		var dmg = ImpactDamage.BaseDamage;
-
-		var force = ImpactDamage.GetImpulse( moveDir, in dmg );
-
-		if ( force == Vector3.Zero )
-			return;
-
-		if ( target.Components.TryGet<IVelocity>( out var iVel, FindMode.EnabledInSelf | FindMode.InAncestors ) )
-			iVel.Velocity += force;
-		else if ( target.Components.TryGet<Rigidbody>( out var rb, FindMode.EnabledInSelf | FindMode.InAncestors ) )
-			rb.Velocity += force;
 	}
 
 	protected virtual void DoExplosion( in ImpactData impact )
@@ -202,14 +174,6 @@ partial class Projectile
 		if ( !GameObject.IsValid() )
 			return;
 
-		var baseDamage = ImpactDamage.BaseDamage;
-
-		if ( baseDamage is 0 )
-			return;
-
-		var objAtkr = Attacker?.GameObject ?? GameObject;
-		var objSource = Source?.GameObject ?? GameObject;
-
 		var origin = impact.EndPosition ?? Center;
 
 		foreach ( var enemy in GetEnemiesWithin( origin, ExplosionRadius ) )
@@ -217,12 +181,15 @@ partial class Projectile
 			if ( !enemy.IsValid() || !enemy.Active )
 				continue;
 
-			var dmg = ExplosionDamage.GetRangeDamage( in origin, enemy.Center );
+			var ePos = enemy.Center;
+			var dir = origin.Direction( ePos );
 
-			var info = new DamageInfo( dmg, objAtkr, objSource )
-				.WithTags( ImpactDamage.Types );
+			var dmg = ExplosionDamage.GetRangeDamage( in origin, ePos );
+			var impulse = ImpactDamage.GetImpulse( dir, in dmg );
 
-			enemy.TryDamage( info );
+			var data = new DamageData( dmg, impulse, Attacker, Source, ImpactDamage.Types );
+
+			enemy.TryDamage( data );
 		}
 	}
 

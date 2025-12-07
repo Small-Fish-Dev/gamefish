@@ -87,7 +87,7 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 
 
 	[Sync]
-	public Entity Attacker { get; set; }
+	public Pawn Attacker { get; set; }
 
 	[Sync]
 	public Entity Source { get; set; }
@@ -208,15 +208,18 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 
 	protected virtual IEnumerable<Pawn> GetEnemiesWithin( in Vector3 origin, in float radius )
 	{
-		if ( !Scene.IsValid() )
+		if ( !Scene.IsValid() || !Team.IsValid() )
 			return [];
 
 		var trSphere = Scene.Trace
 			.IgnoreGameObjectHierarchy( GameObject )
-			.Sphere( radius, origin, origin ).RunAll()
-			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
-			.Where( pawn => pawn.IsValid() && pawn.IsEnemy( Team ) );
+			.Sphere( radius, origin, origin ).RunAll();
 
-		return trSphere;
+		var enemies = trSphere
+			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
+			.Where( pawn => pawn.IsValid() && Team.IsEnemy( pawn.Team ) )
+			.Distinct();
+
+		return enemies;
 	}
 }

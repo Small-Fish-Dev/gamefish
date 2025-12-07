@@ -11,8 +11,6 @@ public partial struct DamageData
 	public float Damage { get; set; }
 	public Vector3? Impulse { get; set; }
 
-	public TagSet Types { get; set; } = [];
-
 	public Vector3? Origin { get; set; }
 	public Vector3? HitPosition { get; set; }
 
@@ -22,16 +20,26 @@ public partial struct DamageData
 	public Pawn Attacker { get; set; }
 	public Entity Inflictor { get; set; }
 
+	public TagSet Types { get; set; } = [];
+
 	/// <summary>
 	/// An identifying source string.
 	/// Could be an entity class name.
 	/// </summary>
 	public string Source { get; set; }
 
-	public static implicit operator DamageData( in DamageInfo info )
-		=> new( in info );
-
 	public DamageData() { }
+
+	public DamageData( in float dmg, in Vector3? impulse, Pawn atkr, Entity infl, TagSet types = null )
+	{
+		Damage = dmg;
+		Impulse = impulse;
+
+		Attacker = atkr;
+		Inflictor = infl;
+
+		Types = types;
+	}
 
 	/// <summary>
 	/// Auto-converts <see cref="DamageInfo"/> to <see cref="DamageData"/>.
@@ -40,8 +48,6 @@ public partial struct DamageData
 	{
 		Damage = info.Damage;
 		Impulse = null;
-
-		Types = info.Tags;
 
 		Origin = info.Origin;
 		HitPosition = info.Position;
@@ -59,6 +65,8 @@ public partial struct DamageData
 
 		if ( Inflictor.IsValid() && Inflictor.IsClass )
 			Source = Inflictor.ClassId;
+
+		Types = info.Tags;
 	}
 
 	public static DamageData FromBullet( in DamageSettings s, in SceneTraceResult tr, Equipment equip = null )
@@ -74,8 +82,6 @@ public partial struct DamageData
 		data.Damage = s.GetRangeDamage( in startPos, in hitPos );
 		data.Impulse = s.GetImpulse( tr.Direction, data.Damage );
 
-		data.Types = s.Types;
-
 		data.Hitbox = tr.Hitbox;
 		data.Shape = tr.Shape;
 
@@ -90,6 +96,8 @@ public partial struct DamageData
 
 		if ( data.Source.IsBlank() )
 			data.Source = DamageTypes.BULLET;
+
+		data.Types = s.Types;
 
 		return data;
 	}
@@ -109,9 +117,6 @@ public partial struct DamageData
 		var vel = phys?.Velocity.Normal ?? Vector3.Zero;
 		data.Impulse = s.GetImpulse( vel, data.Damage );
 
-		// Always use impact damage type.
-		data.Types = (s.Types ?? []).With( IMPACT );
-
 		data.Origin = origin;
 		data.HitPosition = impact.HitPosition;
 
@@ -127,6 +132,9 @@ public partial struct DamageData
 		if ( data.Source.IsBlank() )
 			data.Source = DamageTypes.IMPACT;
 
+		// Always use impact damage type.
+		data.Types = (s.Types ?? []).With( IMPACT );
+
 		return data;
 	}
 
@@ -139,9 +147,6 @@ public partial struct DamageData
 
 		// Apply impulse settings.
 		data.Impulse = s.GetImpulse( origin.Direction( hitPos ), dmg );
-
-		// Always use impact damage type.
-		data.Types = (s.Types ?? []).With( IMPACT );
 
 		data.Origin = origin;
 		data.HitPosition = hitPos;
@@ -158,6 +163,9 @@ public partial struct DamageData
 
 		if ( data.Source.IsBlank() )
 			data.Source = DamageTypes.EXPLOSIVE;
+
+		// Always use impact damage type.
+		data.Types = (s.Types ?? []).With( IMPACT );
 
 		return data;
 	}

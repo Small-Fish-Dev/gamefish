@@ -41,18 +41,20 @@ partial class DynamicEntity : IHealth
 	/// Checks if the damage is allowed before trying to network it.
 	/// </summary>
 	/// <returns> If the damage was sent(with probable success). </returns>
-	public virtual bool TryDamage( in DamageInfo dmgInfo )
+	public virtual bool TryDamage( in DamageData data )
 	{
-		if ( !CanDamage( in dmgInfo ) )
+		this.Log( data );
+
+		if ( !CanDamage( in data ) )
 			return false;
 
-		SendDamage( dmgInfo );
+		SendDamage( data );
 		return true;
 	}
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.SendImmediate )]
-	protected virtual void SendDamage( DamageInfo dmgInfo )
-		=> TryReceiveDamage( in dmgInfo );
+	protected void SendDamage( DamageData data )
+		=> TryReceiveDamage( in data );
 
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
@@ -124,38 +126,37 @@ partial class DynamicEntity : IHealth
 	}
 
 
-	/// <returns> If the damage is allowed to be applied. </returns>
-	public virtual bool CanDamage( in DamageInfo dmgInfo )
-		=> IsDestructible && dmgInfo.Damage > 0;
+	public virtual bool CanDamage( in DamageData data )
+		=> IsDestructible && data.Damage > 0;
 
 	/// <summary>
 	/// Called by the owner to attempt inflicting the damage.
 	/// </summary>
 	/// <returns> If this damage should be inflicted or not. </returns>
-	protected virtual bool TryReceiveDamage( in DamageInfo dmgInfo )
+	protected virtual bool TryReceiveDamage( in DamageData data )
 	{
-		if ( !CanDamage( in dmgInfo ) )
+		if ( !CanDamage( in data ) )
 			return false;
 
-		ApplyDamage( dmgInfo );
+		ApplyDamage( data );
 		return true;
 	}
 
 	/// <summary>
 	/// Actually performs the damage meant to be dealt.
 	/// </summary>
-	/// <param name="dmgInfo"></param>
-	protected virtual void ApplyDamage( DamageInfo dmgInfo )
+	/// <param name="data"></param>
+	protected virtual void ApplyDamage( DamageData data )
 	{
-		ModifyHealth( -dmgInfo.Damage );
+		ModifyHealth( -data.Damage );
 
-		OnDamaged( in dmgInfo );
+		OnDamaged( in data );
 	}
 
 	/// <summary>
 	/// Called after the damage has been successfully applied.
 	/// </summary>
-	protected virtual void OnDamaged( in DamageInfo dmgInfo )
+	protected virtual void OnDamaged( in DamageData data )
 	{
 	}
 }

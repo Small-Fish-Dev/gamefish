@@ -49,9 +49,12 @@ partial class DynamicEntity : IPhysics
 
 	public override bool TryTeleport( in Transform tWorld )
 	{
+		if ( IsProxy )
+			return false;
+
 		WorldPosition = tWorld.Position;
 		WorldRotation = tWorld.Rotation;
 
-		return !IsProxy;
+		return true;
 	}
 }

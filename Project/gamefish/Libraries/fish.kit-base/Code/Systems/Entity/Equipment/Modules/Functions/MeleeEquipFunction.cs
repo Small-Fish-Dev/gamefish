@@ -73,32 +73,31 @@ public partial class EquipMeleeFunction : EquipFunction
 			return;
 		}
 
-		var tags = new TagSet( [DamageTypes.MELEE] );
-
-		var dmgInfo = new DamageInfo( AttackDamage, Pawn.GameObject, GameObject )
-		{ Tags = tags };
+		var impulse = tr.Direction * AttackDamage;
+		var data = new DamageData( AttackDamage, impulse, Pawn, this, [DamageTypes.MELEE] );
 
 		// Attempt to deal damage and play appropriate sound.
-		if ( obj.TryDamage( dmgInfo ) )
+		if ( !obj.TryDamage( data ) )
 		{
-			if ( AttackKnockback != 0f )
-			{
-				if ( obj.Components.TryGet<IVelocity>( out var vel, FindMode.EnabledInSelf | FindMode.InAncestors ) )
-					vel.TryImpulse( tr.Direction * AttackKnockback );
-				else if ( obj.Components.TryGet<Rigidbody>( out var rb, FindMode.EnabledInSelf | FindMode.InAncestors ) )
-					rb.Velocity += tr.Direction * AttackKnockback;
-			}
-
-			// Blood effect or something.
-			AttackEffectPrefab.TrySpawn( tr.HitPosition, out _ );
-
-			if ( AttackHitSound.IsValid() )
-				Sound.Play( AttackHitSound, tr.HitPosition );
-		}
-		else
-		{
+			// MISS!
 			if ( AttackMissSound.IsValid() )
-				Sound.Play( AttackMissSound, tr.HitPosition );
+				BroadcastSound( AttackMissSound, tr.StartPosition );
+
+			return;
 		}
+
+		if ( AttackKnockback != 0f )
+		{
+			if ( obj.Components.TryGet<IVelocity>( out var vel, FindMode.EnabledInSelf | FindMode.InAncestors ) )
+				vel.TryImpulse( tr.Direction * AttackKnockback );
+			else if ( obj.Components.TryGet<Rigidbody>( out var rb, FindMode.EnabledInSelf | FindMode.InAncestors ) )
+				rb.Velocity += tr.Direction * AttackKnockback;
+		}
+
+		// Blood effect or something.
+		AttackEffectPrefab.TrySpawn( tr.HitPosition, out _ );
+
+		if ( AttackHitSound.IsValid() )
+			Sound.Play( AttackHitSound, tr.HitPosition );
 	}
 }
