@@ -113,10 +113,13 @@ public static partial class Strings
 	public const string NAV_MESH = "🗺 Nav Mesh";
 	public const string NAVIGATION = "🗺 Navigation";
 
-	public const string DEPTH = "👇 Depth";
-	public const string DEPTHS = DEPTH + "s";
 	public const string DIRECTION = "🧭 Direction";
 	public const string DIRECTIONS = DIRECTION + "s";
+	public const string TRANSFORM = "🧭 Transform";
+	public const string TRANSFORMS = "🧭 Transforms";
+
+	public const string DEPTH = "👇 Depth";
+	public const string DEPTHS = DEPTH + "s";
 
 	public const string BARRIER = "🚧 Barrier";
 	public const string BARRIERS = BARRIER + "s";

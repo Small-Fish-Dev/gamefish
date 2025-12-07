@@ -10,34 +10,37 @@ namespace GameFish;
 
 /// <summary>
 /// Moves and/or rotates the object.
+/// <br /> <br />
+/// <b> NOTE: </b> NOT DONE YET!
+/// <br />
+/// Probably gonna be largely scrapped.
 /// <code> func_rotating </code>
 /// </summary>
+[Hide]
+[EditorHandle( Icon = "♻" )]
 public partial class Transformer : Component
 {
-	public const string FEATURE_TRANS = "🛠 Transformation";
+	protected const string OPTIMIZATION = "Optimization";
 
-	public const string GROUP_PHYSICS = "Physics";
-	public const string GROUP_OPTIMIZATION = "Optimization";
+	protected const string POSITION = "Position";
+	protected const string ROTATION = "Rotation";
+	protected const string SCALING = "Scaling";
 
-	public const string GROUP_POSITION = "Position";
-	public const string GROUP_ROTATION = "Rotation";
-	public const string GROUP_SCALING = "Scaling";
+	protected const string OPERATION = "Operation";
+	protected const string RELATION = "Relation";
+	protected const string OFFSET = "Offset";
+	protected const string DEGREES = "Degrees";
 
-	public const int ORDER_POSITION = 99;
-	public const int ORDER_ROTATION = ORDER_POSITION + 1;
-	public const int ORDER_SCALING = ORDER_ROTATION + 1;
-
-	public const string TITLE_OPERATION = "Operation";
-	public const string TITLE_RELATION = "Relation";
-	public const string TITLE_OFFSET = "Offset";
-	public const string TITLE_DEGREES = "Degrees";
+	protected const int ORDER_POSITION = 99;
+	protected const int ORDER_ROTATION = ORDER_POSITION + 1;
+	protected const int ORDER_SCALING = ORDER_ROTATION + 1;
 
 	/// <summary>
 	/// If true: always look for valid collision-related components on the target if they havn't been found yet. <br /> <br />
 	/// Enable this if you expect the components to change somehow.
 	/// </summary>
 	[Title( "Auto-Find" )]
-	[Property, Feature( FEATURE_TRANS ), Group( GROUP_OPTIMIZATION )]
+	[Property, Feature( TRANSFORM ), Group( OPTIMIZATION )]
 	public virtual bool AutoFind { get; set; }
 
 	/// <summary>
@@ -45,14 +48,14 @@ public partial class Transformer : Component
 	/// If true: let colliders.. collide. With stuff. Potentially. <br />
 	/// If false: just set the target's transform directly with no consideration of collision.
 	/// </summary>
-	[Property, Feature( FEATURE_TRANS ), Group( GROUP_PHYSICS )]
+	[Property, Feature( TRANSFORM ), Group( PHYSICS )]
 	public virtual bool UseCollision => false;
 
 	/// <summary>
 	/// If true: velocity is applied instead of directly moving it.
 	/// </summary>
 	[ShowIf( nameof( UseCollision ), true )]
-	[Property, Feature( FEATURE_TRANS ), Group( GROUP_PHYSICS )]
+	[Property, Feature( TRANSFORM ), Group( PHYSICS )]
 	public virtual bool UseVelocity { get; set; } = false;
 
 	/*
@@ -61,7 +64,7 @@ public partial class Transformer : Component
 	/// If false: it will just crash through stuff.
 	/// </summary>
 	[ShowIf( nameof( UseCollision ), true )]
-	[Property, Feature( FEATURE_TRANS ), Group( GROUP_PHYSICS )]
+	[Property, Feature( TRANSFORM ), Group( GROUP_PHYSICS )]
 	public virtual bool Blockable { get; set; } = true;
 	*/
 
@@ -69,110 +72,110 @@ public partial class Transformer : Component
 	public virtual float TimeScale => Scene?.TimeScale ?? 0f;
 
 
-	[Title( TITLE_OPERATION )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_POSITION )]
+	[Title( OPERATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( POSITION )]
 	public virtual TransformOperation MoveOperation { get; set; } = TransformOperation.None;
 	public bool HasMoveOperation => MoveOperation is not TransformOperation.None;
 	public bool AllowMoving => HasMoveOperation && !UseRotateOrigin && !RotateOrigin.IsValid();
 
-	[Title( TITLE_RELATION )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( RELATION )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( AllowMoving ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_POSITION )]
+	[Order( ORDER_POSITION ), Group( POSITION )]
 	public virtual RotationRelation MoveRelation { get; set; } = RotationRelation.Object;
 
-	[Property, Feature( FEATURE_TRANS )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( AllowMoving ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_POSITION )]
+	[Order( ORDER_POSITION ), Group( POSITION )]
 	public virtual Vector3 Move { get; set; } = Vector3.Up;
 
 
 	[Header( "Pitch" )]
-	[Title( TITLE_OPERATION )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Title( OPERATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual TransformOperation PitchOperation { get; set; } = TransformOperation.Modify;
 	protected bool HasPitch => PitchOperation is not TransformOperation.None;
 
-	[Title( TITLE_RELATION )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( RELATION )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasPitch ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual RotationRelation PitchRelation { get; set; } = RotationRelation.Axis;
 	protected bool HasPitchOffset => HasPitch && PitchRelation is RotationRelation.Absolute;
 
-	[Title( TITLE_OFFSET )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( OFFSET )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasPitchOffset ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual Rotation PitchOffset { get; set; } = Rotation.Identity;
 
-	[Title( TITLE_DEGREES )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( DEGREES )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasPitch ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual float PitchDegrees { get; set; } = 90f;
 
 
 	[Header( "Yaw" )]
-	[Title( TITLE_OPERATION )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Title( OPERATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual TransformOperation YawOperation { get; set; } = TransformOperation.Modify;
 	protected bool HasYaw => YawOperation is not TransformOperation.None;
 
-	[Title( TITLE_RELATION )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( RELATION )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasYaw ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual RotationRelation YawRelation { get; set; } = RotationRelation.Axis;
 	protected bool HasYawOffset => HasYaw && YawRelation is RotationRelation.Absolute;
 
-	[Title( TITLE_OFFSET )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( OFFSET )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasYawOffset ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual Rotation YawOffset { get; set; } = Rotation.Identity;
 
-	[Title( TITLE_DEGREES )]
+	[Title( DEGREES )]
 	[ShowIf( nameof( HasYaw ), true )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual float YawDegrees { get; set; } = 90f;
 
 
 	[Header( "Roll" )]
-	[Title( TITLE_OPERATION )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Title( OPERATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual TransformOperation RollOperation { get; set; } = TransformOperation.Modify;
 	protected bool HasRoll => RollOperation is not TransformOperation.None;
 
-	[Title( TITLE_RELATION )]
+	[Title( RELATION )]
 	[ShowIf( nameof( HasRoll ), true )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual RotationRelation RollRelation { get; set; } = RotationRelation.Axis;
 	protected bool HasRollOffset => HasRoll && RollRelation is RotationRelation.Absolute;
 
-	[Title( TITLE_OFFSET )]
-	[Property, Feature( FEATURE_TRANS )]
+	[Title( OFFSET )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( HasRollOffset ), true )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual Rotation RollOffset { get; set; } = Rotation.Identity;
 
-	[Title( TITLE_DEGREES )]
+	[Title( DEGREES )]
 	[ShowIf( nameof( HasRoll ), true )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_POSITION ), Group( GROUP_ROTATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_POSITION ), Group( ROTATION )]
 	public virtual float RollDegrees { get; set; } = 90f;
 
 
 	/*
 	[Header( "Result" )]
 	[ReadOnly, JsonIgnore]
-	[Property, Feature( FEATURE_TRANS )]
+	[Property, Feature( TRANSFORM )]
 	[Order( ORDER_ROTATION ), Group( GROUP_ROTATION )]
 	public virtual Angles RotationAngle => new( PitchDegrees, YawDegrees, RollDegrees );
 	public bool HasAnyRotation => PitchDegrees != 0f || YawDegrees != 0f || RollDegrees != 0f;
@@ -182,17 +185,17 @@ public partial class Transformer : Component
 	/// If true: rotation will be as if <see cref="RotateOrigin"/> was at the center.
 	/// </summary>
 	[Header( "Origin" )]
-	[Property, Feature( FEATURE_TRANS )]
-	[Order( ORDER_ROTATION ), Group( GROUP_ROTATION )]
+	[Property, Feature( TRANSFORM )]
+	[Order( ORDER_ROTATION ), Group( ROTATION )]
 	public virtual bool UseRotateOrigin { get; set; }
 
 	/// <summary>
 	/// The object to be rotated around the position of this object. <br />
 	/// If <see cref="UseRotateOrigin"/> is enabled then the offset is created OnStart.
 	/// </summary>
-	[Property, Feature( FEATURE_TRANS )]
+	[Property, Feature( TRANSFORM )]
 	[ShowIf( nameof( UseRotateOrigin ), true )]
-	[Order( ORDER_ROTATION ), Group( GROUP_ROTATION )]
+	[Order( ORDER_ROTATION ), Group( ROTATION )]
 	public virtual GameObject RotateOrigin { get; set; }
 	public Vector3? OriginPosition { get; set; }
 
