@@ -6,7 +6,7 @@ namespace GameFish;
 /// <b> NOTE: </b> You can use <see cref="ModularActor"/>
 /// for a more powerful, customizable NPC base.
 /// </summary>
-public abstract partial class SimpleActor : Actor
+public partial class SimpleActor : Actor
 {
 	protected override void OnStart()
 	{

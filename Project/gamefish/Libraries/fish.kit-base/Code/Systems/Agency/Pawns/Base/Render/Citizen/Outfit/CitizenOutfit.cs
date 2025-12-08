@@ -44,7 +44,9 @@ public partial struct CitizenOutfit
 			};
 	}
 
+	[WideMode]
 	public List<Element> Clothing { get; set; } = [];
+
 	public bool? Human { get; set; } = true;
 	public float? Height { get; set; } = 0.5f;
 

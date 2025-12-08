@@ -6,6 +6,7 @@ namespace GameFish;
 /// <b> NOTE: </b> This modular version is very much a work in progress.
 /// It is suggested that you use <see cref="SimpleActor"/> meanwhile.
 /// </summary>
+[Hide]
 public partial class ModularActor : Actor
 {
 	protected const int MIND_ORDER = ACTOR_ORDER - 1000;
@@ -19,13 +20,7 @@ public partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( MIND ), Order( MIND_ORDER )]
 	public virtual ActorMind Mind
 	{
-		get
-		{
-			// Auto-cache if invalid.
-			return !_mind.IsValid()
-				? _mind = GetModule<ActorMind>()
-				: _mind;
-		}
+		get => _mind.GetCached( this );
 		set => _mind = value;
 	}
 
@@ -38,13 +33,7 @@ public partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( MOVEMENT ), Order( MOVEMENT_ORDER )]
 	public virtual ActorNavigation Navigation
 	{
-		get
-		{
-			// Auto-cache if invalid.
-			return !_nav.IsValid()
-				? _nav = GetModule<ActorNavigation>()
-				: _nav;
-		}
+		get => _nav.GetCached( this );
 		set => _nav = value;
 	}
 
@@ -57,13 +46,7 @@ public partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( DETECTION ), Order( DETECTION_ORDER )]
 	public virtual ActorDetection Detection
 	{
-		get
-		{
-			// Auto-cache if invalid.
-			return !_detection.IsValid()
-				? _detection = GetModule<ActorDetection>()
-				: _detection;
-		}
+		get => _detection.GetCached( this );
 		set => _detection = value;
 	}
 
