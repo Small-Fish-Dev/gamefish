@@ -18,7 +18,7 @@
       "WarningsAsErrors": "",
       "TreatWarningsAsErrors": false,
       "Nullables": false,
-      "ReleaseMode": "Debug",
+      "ReleaseMode": "Release",
       "AssemblyReferences": [],
       "ReplacementDirectives": {
         ".Server.cs": "SERVER"
