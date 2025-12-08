@@ -12,6 +12,7 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 {
 	// mister anderson
 	protected const int AGENT_ORDER = DEFAULT_ORDER - 1999;
+	protected const int TEAM_ORDER = AGENT_ORDER - 1;
 
 	/// <summary>
 	/// Is this owned by a player?
@@ -29,6 +30,7 @@ public abstract partial class Agent : ModuleEntity, ISimulate
 	[Title( "Identity" )]
 	[Feature( AGENT ), Group( ID )]
 	[Property, ReadOnly, JsonIgnore]
+	[ShowIf( nameof( InGame ), true )]
 	protected Identity InspectorIdentity => Identity;
 
 	public abstract Identity Identity { get; protected set; }

@@ -22,7 +22,7 @@ partial class Server
 	/// <summary>
 	/// Called when a new connection has become fully active on the server.
 	/// </summary>
-	protected virtual void OnJoined( Connection cn )
+	protected virtual void OnConnected( Connection cn )
 	{
 		if ( cn is null )
 			return;
@@ -33,24 +33,33 @@ partial class Server
 		{
 			this.Warn( $"Connection:[{cn}] was spawned as invalid Client:[{cn}]" );
 			Kick( cn, "Failed to create Client!" );
+
 			return;
 		}
 
-		OnClientJoined( cn, cl );
+		OnClientSpawned( cn, cl );
 	}
 
 	/// <summary>
 	/// Called after a client has fully connected and either found
-	/// or has had its <see cref="Client"/> object created. <br />
-	/// By default this creates a <see cref="PlayerPawnPrefab"/> for them.
+	/// or has had its <see cref="Client"/> object created.
 	/// </summary>
-	protected virtual void OnClientJoined( Connection cn, Client cl )
+	protected virtual void OnClientSpawned( Connection cn, Client cl )
 	{
 		if ( !cl.IsValid() )
 			return;
 
+		if ( GameState.TryGetCurrent( out var mode ) )
+		{
+			mode.OnClientSpawned( cl );
+			return;
+		}
+
+		if ( DefaultPawnPrefab.IsValid() )
+			cl.SetPawnFromPrefab( DefaultPawnPrefab );
+
 		if ( !cl.Pawn.IsValid() )
-			cl.CreatePawn( PlayerPawnPrefab );
+			this.Warn( $"Failed to spawn any pawn for Client:[{cl}]!!" );
 	}
 
 	/// <summary>

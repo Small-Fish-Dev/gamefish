@@ -2,7 +2,7 @@
   "RootObject": {
     "__guid": "768a43a6-b436-4c6e-aaf6-46b36462396e",
     "__version": 1,
-    "Flags": 0,
+    "Flags": 4096,
     "Name": "session",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
@@ -40,19 +40,47 @@
     ],
     "Children": [
       {
-        "__guid": "915de80b-b676-4960-b4df-32cc6cb44023",
+        "__guid": "609cd184-a9a1-45b9-8c8e-936777203b65",
         "__version": 1,
-        "__Prefab": "gamefish/examples/system/server.prefab",
-        "__PrefabInstancePatch": {
-          "AddedObjects": [],
-          "RemovedObjects": [],
-          "PropertyOverrides": [],
-          "MovedObjects": []
-        },
-        "__PrefabIdToInstanceId": {
-          "98397a76-d11e-4114-baef-e3ac6724476c": "915de80b-b676-4960-b4df-32cc6cb44023",
-          "27024cea-c219-4daf-a983-a29e97621f4f": "fe65f0ea-3184-4715-8aac-979cade7af19"
-        }
+        "Flags": 4096,
+        "Name": "Server",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 1,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 1,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.Server",
+            "__guid": "94ae4218-446c-45b3-b0df-391a259ecc12",
+            "__enabled": true,
+            "ClassId": "server",
+            "ClassName": null,
+            "DefaultPawnPrefab": "prefabs/pawns/player/player_fps.prefab",
+            "IsClass": false,
+            "IsNetworkingActive": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "94ae4218-446c-45b3-b0df-391a259ecc12",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "Host",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "PlayerClientPrefab": "prefabs/system/clients/client.prefab"
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {

@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace GameFish;
 
 /// <summary>
@@ -13,6 +15,14 @@ public abstract partial class Gamemode : GameState
 	/// The currently active gamemode(if any).
 	/// </summary>
 	public new static Gamemode Current => GameManager.Instance?.State as Gamemode;
+
+	/// <returns> The currently active gamemode(if any). </returns>
+	public static bool TryGetCurrent( out Gamemode mode )
+		=> (mode = Current).IsValid();
+
+	/// <returns> The currently active <typeparamref name="TMode"/>(if so). </returns>
+	public new static bool TryGetCurrent<TMode>( out TMode mode ) where TMode : Gamemode
+		=> (mode = GameManager.Instance?.State as TMode).IsValid();
 
 	public override string Name { get; } = "Gamemode";
 	public override string Description { get; } = "A gamemode.";

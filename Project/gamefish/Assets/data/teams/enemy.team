@@ -1,11 +1,11 @@
 {
-  "Name": "Player (Game Fish)",
+  "Name": "Enemy",
   "IsSelectable": false,
   "SelfRelationship": "Ally",
-  "DefaultRelationship": "Neutral",
+  "DefaultRelationship": "Enemy",
   "Relationships": [
     {
-      "Team": "gamefish/base/teams/base_enemy.team",
+      "Team": "data/teams/player.team",
       "Relationship": "Enemy"
     }
   ],

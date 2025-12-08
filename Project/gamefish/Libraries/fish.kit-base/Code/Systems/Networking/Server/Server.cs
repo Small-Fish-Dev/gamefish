@@ -16,20 +16,24 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	protected const int AGENTS_ORDER = SERVER_ORDER - 10;
 	protected const int PAWNS_ORDER = SERVER_ORDER - 5;
 
+	/// <summary>
+	/// The prefab with a <see cref="Client"/> component on its root.
+	/// </summary>
 	[Property]
-	[Title( "Client Prefab" )]
+	[Title( "Client" )]
 	[Feature( SERVER ), Group( AGENTS ), Order( AGENTS_ORDER )]
 	public PrefabFile PlayerClientPrefab { get; set; }
 
+	/// <summary>
+	/// The fallback prefab with a <see cref="Pawn"/> component on it.
+	/// <br /> <br />
+	/// <b> NOTE: </b> This is typically used only as a last resort such
+	/// as if there is no active game manager/state available.
+	/// </summary>
 	[Property]
-	[Title( "Player Prefab" )]
+	[Title( "Default" )]
 	[Feature( SERVER ), Group( PAWNS ), Order( PAWNS_ORDER )]
-	public virtual PrefabFile PlayerPawnPrefab { get; set; }
-
-	[Property]
-	[Title( "Spectator Prefab" )]
-	[Feature( SERVER ), Group( PAWNS ), Order( PAWNS_ORDER )]
-	public virtual PrefabFile SpectatorPawnPrefab { get; set; }
+	public PrefabFile DefaultPawnPrefab { get; set; }
 
 	/// <summary>
 	/// Time in seconds since the Unix epoch.
@@ -63,7 +67,7 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 			return;
 		}
 
-		OnJoined( cn );
+		OnConnected( cn );
 	}
 
 	public virtual void OnDisconnected( Connection cn )

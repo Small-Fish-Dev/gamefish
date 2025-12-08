@@ -16,14 +16,14 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.GameManager",
+        "__type": "Playground.GameManager",
         "__guid": "91f57bb5-33f7-4aca-99ae-b2a864a198eb",
         "__enabled": true,
         "AutoStateSelection": true,
         "ClassId": "game_manager",
         "ClassName": null,
-        "DefaultGameState": "gamefish/examples/system/game/states/game_state.prefab",
-        "DefaultMenuState": "gamefish/examples/system/game/states/menu_state.prefab",
+        "DefaultGameState": "prefabs/system/game/states/game_state.prefab",
+        "DefaultMenuState": "prefabs/system/game/states/menu_state.prefab",
         "InspectorState": null,
         "IsClass": false,
         "IsNetworkingForced": true,

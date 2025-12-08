@@ -191,9 +191,9 @@
           ]
         },
         {
-          "__guid": "b9c9d6b0-e80d-4a3e-955b-d39ba50bb18c",
+          "__guid": "ff66ed56-7bca-46c2-ba7f-ce6c4f541a3c",
           "__version": 1,
-          "__Prefab": "gamefish/examples/system/essential.prefab",
+          "__Prefab": "prefabs/system/essential.prefab",
           "__PrefabInstancePatch": {
             "AddedObjects": [],
             "RemovedObjects": [],
@@ -201,8 +201,8 @@
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {
-            "8e49c22c-1015-4190-b039-e96dda3c2d95": "b9c9d6b0-e80d-4a3e-955b-d39ba50bb18c",
-            "8f0c134c-cead-4698-840e-c52953eae48c": "8684c6bb-0576-4f1f-8da5-61be617a91fe"
+            "8e49c22c-1015-4190-b039-e96dda3c2d95": "ff66ed56-7bca-46c2-ba7f-ce6c4f541a3c",
+            "8f0c134c-cead-4698-840e-c52953eae48c": "17297473-e551-4068-92a7-95bdce980197"
           }
         }
       ]

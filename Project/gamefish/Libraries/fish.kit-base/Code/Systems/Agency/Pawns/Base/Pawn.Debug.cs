@@ -5,7 +5,7 @@ namespace GameFish;
 partial class Pawn
 {
 	/// <summary>
-	/// Is this controlled by a player agent?
+	/// Log ownership changes and such?
 	/// </summary>
 	[Property]
 	[Title( "Logging" )]

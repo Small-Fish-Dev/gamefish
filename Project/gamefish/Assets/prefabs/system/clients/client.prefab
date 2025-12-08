@@ -1,34 +1,32 @@
 {
   "RootObject": {
-    "__guid": "98397a76-d11e-4114-baef-e3ac6724476c",
+    "__guid": "962d4124-9d83-425e-ae8a-1883b6f45c52",
     "__version": 1,
     "Flags": 0,
-    "Name": "server",
+    "Name": "client",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "",
     "Enabled": true,
-    "NetworkMode": 1,
+    "NetworkMode": 2,
     "NetworkInterpolation": true,
-    "NetworkOrphaned": 1,
+    "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.Server",
-        "__guid": "27024cea-c219-4daf-a983-a29e97621f4f",
+        "__type": "GameFish.Client",
+        "__guid": "af98a2ba-66d5-4a1e-b3b9-1dab13ece240",
         "__enabled": true,
-        "ClassId": "server",
+        "ClassId": "client_player",
         "ClassName": null,
-        "InspectorCheatsEnabled": true,
         "IsClass": false,
-        "IsNetworkingActive": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
-        "NetworkId": "27024cea-c219-4daf-a983-a29e97621f4f",
+        "NetworkId": "af98a2ba-66d5-4a1e-b3b9-1dab13ece240",
         "NetworkingMode": "Object",
-        "NetworkOrphanedMode": "Host",
+        "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
         "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
@@ -36,13 +34,26 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "PlayerClientPrefab": "prefabs/gamefish/kit_fps/net/clients/client_player.prefab",
-        "PlayerPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/player_fps.prefab",
-        "SpectatorPawnPrefab": "prefabs/gamefish/kit_fps/pawns/player/spectator_fps.prefab"
+        "OnComponentUpdate": null
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "ada25c26-2bbd-403d-9c97-3d07db8e5729",
+        "__version": 1,
+        "__Prefab": "prefabs/system/clients/modules/pawn_toggler.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [],
+          "RemovedObjects": [],
+          "PropertyOverrides": [],
+          "MovedObjects": []
+        },
+        "__PrefabIdToInstanceId": {
+          "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1": "ada25c26-2bbd-403d-9c97-3d07db8e5729",
+          "e726da28-91f2-4a55-a7e8-7756731d44f9": "1e17fe4c-2c40-4392-bc5b-b9f3278f4a5b"
+        }
+      }
+    ],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,

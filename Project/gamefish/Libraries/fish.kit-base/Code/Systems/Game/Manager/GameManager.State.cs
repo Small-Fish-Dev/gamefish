@@ -182,7 +182,7 @@ partial class GameManager
 		if ( State.IsValid() || !InGame )
 			return;
 
-		var state = InMainMenu ? DefaultMenuState : DefaultGameState;
+		var state = InMenu ? DefaultMenuState : DefaultGameState;
 
 		if ( SceneSettings.TryGetInstance( out var s ) )
 			if ( s.GameManagerStateOverride.IsValid() )

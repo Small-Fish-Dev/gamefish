@@ -61,7 +61,7 @@ public partial class ClientPawnCyclerModule : Module
 		}
 
 		var oldPawn = cl.Pawn;
-		var pawn = cl.CreatePawn( prefab );
+		var pawn = cl.SetPawnFromPrefab( prefab );
 
 		if ( !pawn.IsValid() )
 		{

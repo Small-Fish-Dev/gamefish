@@ -7,7 +7,7 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "player,team_base_player",
+    "Tags": "player,team_player",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkInterpolation": true,
@@ -61,7 +61,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "Team": "gamefish/base/teams/base_player.team",
+        "Team": "data/teams/player.team",
         "View": {
           "_type": "component",
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
@@ -605,48 +605,11 @@
             "__guid": "a9fc95a5-ef1f-4021-a3d4-4b133133116f",
             "__enabled": true,
             "Default": {
-              "Clothing": [
-                {
-                  "IsValid": true,
-                  "Clothing": "models/citizen_clothes/hair/hair_bobcut/hair_bobcut.clothing",
-                  "Tint": 0,
-                  "HasOffset": false,
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "0,0,0",
-                    "Rotation": "0,0,0,0"
-                  },
-                  "Bone": null
-                },
-                {
-                  "IsValid": true,
-                  "Clothing": "models/citizen_clothes/full_outfit/medieval_armour/medieval_armour.clothing",
-                  "Tint": null,
-                  "HasOffset": false,
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "0,0,0",
-                    "Rotation": "0,0,0,0"
-                  },
-                  "Bone": null
-                },
-                {
-                  "IsValid": true,
-                  "Clothing": "models/citizen_clothes/hair/eyebrows_bushy/eyebrows_bushy.clothing",
-                  "Tint": 0.3,
-                  "HasOffset": false,
-                  "Transform": {
-                    "Position": "0,0,0",
-                    "Scale": "0,0,0",
-                    "Rotation": "0,0,0,0"
-                  },
-                  "Bone": null
-                }
-              ],
+              "Clothing": [],
               "Human": null,
               "Height": null
             },
-            "EditorAvatar": false,
+            "EditorAvatar": true,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -655,7 +618,7 @@
             "OnComponentUpdate": null,
             "PreventAvatarSlots": 0,
             "UseAvatar": true,
-            "UseDefault": true
+            "UseDefault": false
           },
           {
             "__type": "Sandbox.ModelPhysics",
@@ -695,15 +658,15 @@
             "__guid": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
             "__enabled": true,
             "AnimationGraph": null,
-            "BodyGroups": 1,
+            "BodyGroups": 642,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
             "LodOverride": null,
-            "MaterialGroup": "default",
+            "MaterialGroup": "skin_light",
             "MaterialOverride": null,
             "Materials": null,
-            "Model": "models/citizen/citizen.vmdl",
+            "Model": "models/citizen_human/citizen_human_male.vmdl",
             "Morphs": {},
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -737,10 +700,10 @@
         ],
         "Children": [
           {
-            "__guid": "f0b6ffe8-0099-4155-af48-4128babec7b8",
+            "__guid": "73f728a7-678d-4e3a-b545-87afd630d250",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - hair_bobcut",
+            "Name": "Clothing - slippers",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -754,7 +717,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "6d1ed7a1-04a8-459d-8db0-3cdf6c1f2d64",
+                "__guid": "869275ae-6db6-4c63-8bfd-a87e85827c14",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -770,7 +733,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hair/hair_bobcut/models/hair_bobcut.vmdl",
+                "Model": "models/citizen_clothes/shoes/slippers/models/slippers_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -805,10 +768,10 @@
             "Children": []
           },
           {
-            "__guid": "d3b975ea-e46c-47e7-991a-d04347a0ca4c",
+            "__guid": "31333e72-9cce-49fc-88a0-aeb3b165db42",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - medieval_armour",
+            "Name": "Clothing - goatee",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -822,7 +785,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2d0bbeff-6a3e-4ab9-a27b-2a504875b366",
+                "__guid": "b9c0a4ea-bf6f-4b67-98f1-ff04626ecc4f",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -838,7 +801,75 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/full_outfit/medieval_armour/models/medieval_armour.vmdl",
+                "Model": "models/citizen_clothes/hair/goatee/models/goatee/goatee_m_human.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "0.64478,0.41535,0.29468,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "0013b2f0-c0d1-4236-ab73-ef0d3e2074b1",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Clothing - wizard_gown",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "62727294-17c1-4ba5-bc9c-7437d2d8e91d",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "LodOverride": null,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/seasonal/2025/wizard_outfit/wizard_gown/models/wizard_gown_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -873,10 +904,10 @@
             "Children": []
           },
           {
-            "__guid": "8b4c94f5-eba2-4dc6-9d66-d0b4398584c8",
+            "__guid": "72b5e094-66ba-495c-acba-628566b1037a",
             "__version": 1,
             "Flags": 0,
-            "Name": "Clothing - eyebrows_bushy",
+            "Name": "Clothing - loose_jeans",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -890,7 +921,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2dc71e1e-113b-41d0-80cd-0d3b63d041d1",
+                "__guid": "94f7444c-1357-4fbd-9488-61e1844c3eba",
                 "__enabled": true,
                 "AnimationGraph": null,
                 "BodyGroups": 18446744073709551615,
@@ -906,7 +937,7 @@
                 "MaterialGroup": null,
                 "MaterialOverride": null,
                 "Materials": null,
-                "Model": "models/citizen_clothes/hair/eyebrows_bushy/models/eyebrows_bushy.vmdl",
+                "Model": "models/citizen_clothes/trousers/loosejeans/models/loose_jeans_m_human.vmdl",
                 "Morphs": {},
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
@@ -934,7 +965,75 @@
                   "Looping": true,
                   "Blending": false
                 },
-                "Tint": "0.73272,0.56573,0.44916,1",
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "13a2f7a6-d12a-45c1-b46f-6417ee8d78a9",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Clothing - wizard_hat",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "2e362763-5070-4d93-9c59-9fdb2462a4b2",
+                "__enabled": true,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "LodOverride": null,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/seasonal/2025/wizard_outfit/wizard_hat/models/wizard_hat_m_human.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
                 "UseAnimGraph": true
               }
             ],
@@ -1041,7 +1140,7 @@
             "IsNetworkingForced": true,
             "Loadout": [
               {
-                "Prefab": "gamefish/examples/entities/equips/fps/rocket_launcher.prefab",
+                "Prefab": "prefabs/entities/equips/fps/rocket_launcher.prefab",
                 "Slot": null
               }
             ],

@@ -9,12 +9,11 @@ namespace GameFish;
 /// <br /> <br />
 /// <b> NOTE: </b> Works well with the <see cref="Essential"/> component.
 /// </summary>
-[Title( "Game Manager (default)" )]
 [Icon( "videogame_asset" )]
+[Title( "Game Manager (default)" )]
 public partial class GameManager : Singleton<GameManager>, ISceneLoadingEvents
 {
 	protected const int GAME_ORDER = DEFAULT_ORDER - 1000;
-
 	protected const int NAV_MESH_ORDER = GAME_ORDER + 5;
 
 	protected new const int DEBUG_ORDER = GAME_ORDER - 100;
@@ -33,18 +32,19 @@ public partial class GameManager : Singleton<GameManager>, ISceneLoadingEvents
 	/// <br /> <br />
 	/// <b> TIP: </b> Add <see cref="SceneSettings"/> to the scene.
 	/// </summary>
-	[Title( "In Main Menu" )]
+	[Title( "In Menu" )]
 	[Property, ReadOnly, JsonIgnore]
 	// [ShowIf( nameof( InGame ), true )]
 	[Feature( GAME ), Group( DEBUG ), Order( DEBUG_ORDER - 1 )]
-	protected bool InspectorInMainMenu => InMainMenu;
+	protected bool InspectorInMenu => InMenu;
 
 	/// <summary>
 	/// Are we in a menu scene?
 	/// <br /> <br />
 	/// <b> TIP: </b> Add <see cref="SceneSettings"/> to the scene.
 	/// </summary>
-	public static bool InMainMenu => SceneSettings.InMainMenu;
+	public static bool InMenu => SceneSettings.InMainMenu;
+	public static bool IsPlaying => !InMenu;
 
 	/// <summary>
 	/// Does the current scene have an enabled nav mesh?
@@ -71,7 +71,7 @@ public partial class GameManager : Singleton<GameManager>, ISceneLoadingEvents
 	public virtual void OnSceneLoad( Scene scene )
 	{
 		if ( NavMeshOverride.HasValue )
-			OverrideNavMesh( isEnabled: true, scene: scene );
+			OverrideNavMesh( isEnabled: NavMeshOverride.Value, scene: scene );
 	}
 
 	public virtual void OverrideNavMesh( bool isEnabled, Scene scene = null )

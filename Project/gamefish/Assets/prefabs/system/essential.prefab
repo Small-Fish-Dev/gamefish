@@ -1,32 +1,37 @@
 {
   "RootObject": {
-    "__guid": "962d4124-9d83-425e-ae8a-1883b6f45c52",
+    "__guid": "8e49c22c-1015-4190-b039-e96dda3c2d95",
     "__version": 1,
     "Flags": 0,
-    "Name": "client_player",
+    "Name": "essential",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "",
     "Enabled": true,
-    "NetworkMode": 2,
+    "NetworkMode": 1,
     "NetworkInterpolation": true,
-    "NetworkOrphaned": 0,
+    "NetworkOrphaned": 1,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.Client",
-        "__guid": "af98a2ba-66d5-4a1e-b3b9-1dab13ece240",
+        "__type": "GameFish.Essential",
+        "__guid": "8f0c134c-cead-4698-840e-c52953eae48c",
         "__enabled": true,
-        "ClassId": "client_player",
+        "ClassId": "essential",
         "ClassName": null,
+        "GameManagerPrefab": "prefabs/system/game/game_manager.prefab",
+        "GameName": "Game Fish: Playground",
+        "GameScene": "scenes/example1.scene",
+        "GameVersion": "0.1a",
         "IsClass": false,
         "IsNetworkingForced": true,
+        "MainMenuScene": "scenes/menu.scene",
         "NetworkAutomatically": true,
-        "NetworkId": "af98a2ba-66d5-4a1e-b3b9-1dab13ece240",
+        "NetworkId": "8f0c134c-cead-4698-840e-c52953eae48c",
         "NetworkingMode": "Object",
-        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOrphanedMode": "Host",
         "NetworkOwner": null,
         "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
@@ -34,26 +39,12 @@
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null
+        "OnComponentUpdate": null,
+        "SessionPrefab": "prefabs/system/session.prefab",
+        "TestingScene": "scenes/testing.scene"
       }
     ],
-    "Children": [
-      {
-        "__guid": "8b7a14e6-28c2-43fa-a429-63049d6baa75",
-        "__version": 1,
-        "__Prefab": "prefabs/gamefish/kit_fps/net/clients/modules/pawn_toggler.prefab",
-        "__PrefabInstancePatch": {
-          "AddedObjects": [],
-          "RemovedObjects": [],
-          "PropertyOverrides": [],
-          "MovedObjects": []
-        },
-        "__PrefabIdToInstanceId": {
-          "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1": "8b7a14e6-28c2-43fa-a429-63049d6baa75",
-          "e726da28-91f2-4a55-a7e8-7756731d44f9": "c0956275-0035-4e06-9a71-a8472f66972c"
-        }
-      }
-    ],
+    "Children": [],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,

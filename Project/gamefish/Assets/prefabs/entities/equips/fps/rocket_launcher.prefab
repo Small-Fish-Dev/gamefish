@@ -188,7 +188,7 @@
               "Position": "16,-6,-4",
               "Rotation": "0,0,0,1"
             },
-            "ProjectilePrefab": "gamefish/examples/entities/projectiles/missile1.prefab",
+            "ProjectilePrefab": "prefabs/entities/projectiles/missile1.prefab",
             "ProjectileScale": "1,1,1",
             "ProjectileVelocity": "1500,0,0",
             "ShootSound": null,

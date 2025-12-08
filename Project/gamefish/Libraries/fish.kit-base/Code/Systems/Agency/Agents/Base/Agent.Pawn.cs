@@ -26,11 +26,11 @@ partial class Agent
 	[Title( "Pawn" )]
 	[Property, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
-	[Feature( AGENT ), Group( DEBUG )]
+	[Feature( AGENT ), Group( DEBUG ), Order( DEBUG_ORDER )]
 	protected Pawn InspectorPawn
 	{
 		get => Pawn;
-		set => TryAssignPawn( value );
+		set => TryTakePawn( value );
 	}
 
 	protected virtual void OnSetPawn( Pawn newPawn, Pawn oldPawn = null )
@@ -60,9 +60,9 @@ partial class Agent
 	}
 
 	/// <summary>
-	/// Called by the host to register a pawn assigned to this agent.
+	/// Called by the host to try swapping/taking a new pawn.
 	/// </summary>
-	public virtual bool TryAssignPawn( Pawn pawn )
+	public virtual bool TryTakePawn( Pawn pawn )
 	{
 		if ( !Networking.IsHost )
 			return false;
@@ -114,14 +114,14 @@ partial class Agent
 	/// Spawns a <see cref="GameFish.Pawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public Pawn CreatePawn( PrefabFile prefab )
-		=> CreatePawn<Pawn>( prefab );
+	public Pawn SetPawnFromPrefab( PrefabFile prefab )
+		=> SetPawnFromPrefab<Pawn>( prefab );
 
 	/// <summary>
 	/// Spawns a <typeparamref name="TPawn"/> prefab and assigns it to this agent.
 	/// </summary>
 	/// <param name="prefab"></param>
-	public TPawn CreatePawn<TPawn>( PrefabFile prefab ) where TPawn : Pawn
+	public TPawn SetPawnFromPrefab<TPawn>( PrefabFile prefab ) where TPawn : Pawn
 	{
 		if ( !Networking.IsHost )
 		{
@@ -146,7 +146,7 @@ partial class Agent
 		if ( !prefab.TrySpawn( spawnPoint.Value.WithScale( Vector3.One ), out var go ) )
 			return null;
 
-		return SetPawn<TPawn>( go, failDestroy: true );
+		return SetPawnFromObject<TPawn>( go, failDestroy: true );
 	}
 
 	/// <summary>
@@ -154,7 +154,7 @@ partial class Agent
 	/// </summary>
 	/// <param name="go"> The <see cref="GameObject"/> with <typeparamref name="TPawn"/> on it. </param>
 	/// <param name="failDestroy"> Destroy the object upon failure? </param>
-	public TPawn SetPawn<TPawn>( GameObject go, bool failDestroy = false ) where TPawn : Pawn
+	public TPawn SetPawnFromObject<TPawn>( GameObject go, bool failDestroy = false ) where TPawn : Pawn
 	{
 		if ( !Networking.IsHost )
 		{
@@ -177,10 +177,10 @@ partial class Agent
 			this.Warn( $"failed to find type:[{typeof( TPawn )}] on object:[{go}]" );
 		}
 
-		if ( !TryAssignPawn( newPawn ) )
+		if ( !TryTakePawn( newPawn ) )
 		{
 			failed = true;
-			this.Warn( $"failed to set pawn:[{newPawn}]" );
+			this.Warn( $"failed to take pawn:[{newPawn}]" );
 		}
 
 		if ( failed && failDestroy )
@@ -210,10 +210,10 @@ partial class Agent
 	[Rpc.Host( NetFlags.Reliable | NetFlags.OwnerOnly )]
 	protected void RpcRequestTakePawn( Pawn pawn )
 	{
-		TryTakePawn( pawn );
+		RpcReceiveTakePawn( pawn );
 	}
 
-	public virtual AttemptStatus TryTakePawn( Pawn pawn )
+	public virtual AttemptStatus RpcReceiveTakePawn( Pawn pawn )
 	{
 		AttemptStatus Result( in AttemptStatus result )
 		{

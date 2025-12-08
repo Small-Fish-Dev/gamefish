@@ -23,15 +23,14 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "gamefish/examples/scenes/example1.scene",
+    "StartupScene": "scenes/example1.scene",
     "LaunchMode": "Normal",
-    "SystemScene": "gamefish/examples/system/system.scene",
+    "SystemScene": "scenes/system/system.scene",
     "ControlModes": {
       "Keyboard": true,
       "VR": false,
       "Gamepad": true
     },
-    "DedicatedServerStartupScene": "gamefish/examples/scenes/example1.scene",
     "Compiler": {
       "RootNamespace": "Sandbox",
       "DefineConstants": "SANDBOX;ADDON;DEBUG",

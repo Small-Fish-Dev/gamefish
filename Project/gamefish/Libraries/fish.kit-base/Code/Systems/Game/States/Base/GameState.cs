@@ -6,13 +6,19 @@ namespace GameFish;
 /// A state logic module for <see cref="GameManager"/>.
 /// <br />
 /// These let you switch your game's logic on the fly,
-/// from a deathmatch gamemode to a voting screen or a lobby.
+/// from a deathmatch gamemode to a voting screen or lobby.
 /// </summary>
 [Icon( "calculate" )]
 [Title( "Game State" )]
 public abstract partial class GameState : Module
 {
-	protected const int STATE_ORDER = DEFAULT_ORDER - 1000;
+	protected const int STATE_ORDER = DEFAULT_ORDER - 5000;
+	protected const int PAWNS_ORDER = STATE_ORDER + 1000;
+
+	/// <summary>
+	/// The game manager this belongs to.
+	/// </summary>
+	public GameManager Manager => (Parent as GameManager).AsValid();
 
 	public override bool IsParent( ModuleEntity comp )
 		=> comp is GameManager;
@@ -21,6 +27,17 @@ public abstract partial class GameState : Module
 	/// The main, actively selected game state.
 	/// </summary>
 	public static GameState Current => GameManager.Instance?.State;
+
+	/// <returns> The currently active state(if any). </returns>
+	public static bool TryGetCurrent( out GameState mode )
+		=> (mode = Current).IsValid();
+
+	/// <returns> The currently active <typeparamref name="TState"/>(if so). </returns>
+	public static bool TryGetCurrent<TState>( out TState mode ) where TState : GameState
+		=> (mode = GameManager.Instance?.State as TState).IsValid();
+
+	public static bool InMenu => GameManager.InMenu;
+	public static bool IsPlaying => !InMenu;
 
 	/// <summary>
 	/// Every currently loaded(yet not necessarily active) game state.
@@ -76,12 +93,4 @@ public abstract partial class GameState : Module
 	public virtual void Simulate( in float deltaTime )
 	{
 	}
-
-	/// <summary>
-	/// Allows this state to decide where pawns should spawn.
-	/// </summary>
-	/// <param name="agent"> Probably a <see cref="Client"/>. </param>
-	/// <returns> Where they should spawn(or null). </returns>
-	public virtual Transform? FindSpawnPoint( Agent agent )
-		=> null;
 }
