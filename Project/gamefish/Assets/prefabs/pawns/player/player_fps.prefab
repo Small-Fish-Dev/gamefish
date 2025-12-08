@@ -1140,8 +1140,12 @@
             "IsNetworkingForced": true,
             "Loadout": [
               {
+                "Prefab": "prefabs/entities/equips/fps/magnum.prefab",
+                "Slot": "Primary"
+              },
+              {
                 "Prefab": "prefabs/entities/equips/fps/rocket_launcher.prefab",
-                "Slot": null
+                "Slot": "Secondary"
               }
             ],
             "NetworkAutomatically": true,
@@ -1156,10 +1160,10 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "SlotCapacity": 1,
+            "SlotCapacity": 2,
             "SlotCount": 10,
             "StrictSlots": false,
-            "UniqueEquips": true
+            "UniqueEquips": false
           }
         ],
         "Children": []

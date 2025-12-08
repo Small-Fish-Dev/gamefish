@@ -1,0 +1,231 @@
+{
+  "RootObject": {
+    "__guid": "25b1ac72-8da3-4062-96c8-32de053aab34",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "magnum",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "GameFish.Equipment",
+        "__guid": "04ed4e20-8ebf-48fc-9cec-822ecc06569f",
+        "__enabled": true,
+        "ClassId": "rocket_launcher",
+        "ClassName": null,
+        "DebugDamage": 25,
+        "DefaultOffset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1"
+        },
+        "DefaultSlot": "None",
+        "DeployedOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,0,1"
+        },
+        "Health": 100,
+        "HolsteringOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,-0.3826835,0.9238795"
+        },
+        "Icon": null,
+        "IsAlive": true,
+        "IsClass": false,
+        "IsDestructible": true,
+        "IsNetworkingForced": true,
+        "MaxHealth": 100,
+        "NetworkAutomatically": true,
+        "NetworkId": "04ed4e20-8ebf-48fc-9cec-822ecc06569f",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PrimaryFunction": {
+          "_type": "component",
+          "component_id": "74c5ab05-427d-48c3-9ada-61dc6a80f1fc",
+          "go": "0bebad5f-1164-4892-b004-86cf256737a8",
+          "component_type": "ProjectileEquipFunction"
+        },
+        "Slot": 0,
+        "ViewModel": null,
+        "WorldModel": null,
+        "WorldRenderer": null
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "e3792737-3299-4fa9-8f4a-4f7d31b8d5df",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Ammo",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.AmmoEquipModule",
+            "__guid": "3e276860-7711-4765-b05f-d0278f558086",
+            "__enabled": true,
+            "ClassId": null,
+            "ClassName": null,
+            "DefaultMagazineSize": 6,
+            "DefaultReserveLimit": 100,
+            "FunctionDescription": "Refills your ammo.",
+            "FunctionName": "Reload",
+            "InspectorInput": {
+              "Action": "Reload",
+              "Mode": "Held",
+              "Cooldown": 0.1
+            },
+            "InspectorIsInputEnabled": true,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "IsReloadingEnabled": true,
+            "IsReserveEnabled": false,
+            "NetworkAutomatically": true,
+            "NetworkId": "3e276860-7711-4765-b05f-d0278f558086",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ReloadCooldown": 0.2,
+            "ReloadDuration": 1,
+            "ReloadFinishSound": "sounds/kenney/ui/ui.upvote.sound",
+            "ReloadStartSound": "sounds/kenney/ui/ui.downvote.sound",
+            "StartingAmmo": 6,
+            "StartingReserve": 0
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "0bebad5f-1164-4892-b004-86cf256737a8",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Shooter",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.ProjectileEquipFunction",
+            "__guid": "74c5ab05-427d-48c3-9ada-61dc6a80f1fc",
+            "__enabled": true,
+            "AimPrediction": false,
+            "AimSpreadCone": 0,
+            "Ammo": {
+              "_type": "component",
+              "component_id": "3e276860-7711-4765-b05f-d0278f558086",
+              "go": "e3792737-3299-4fa9-8f4a-4f7d31b8d5df",
+              "component_type": "AmmoEquipModule"
+            },
+            "AmmoCost": 1,
+            "ClassId": "rocket_launcher",
+            "ClassName": null,
+            "FunctionDescription": "Fires a bullet.",
+            "FunctionName": "Shoot",
+            "HasScaleOverride": false,
+            "IdealRange": {
+              "Min": 200,
+              "Max": 1000
+            },
+            "InspectorInput": {
+              "Action": "Attack1",
+              "Mode": "Pressed",
+              "Cooldown": 0.15
+            },
+            "InspectorIsInputEnabled": true,
+            "IsClass": false,
+            "IsCombatFunction": true,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "74c5ab05-427d-48c3-9ada-61dc6a80f1fc",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ProjectileOffset": {
+              "Position": "16,-6,-4",
+              "Rotation": "0,0,0,1"
+            },
+            "ProjectilePrefab": "prefabs/entities/projectiles/magnum_bullet.prefab",
+            "ProjectileScale": "1,1,1",
+            "ProjectileVelocity": "5000,0,0",
+            "ShootSound": null,
+            "UsableRange": {
+              "Min": 0,
+              "Max": 2048
+            }
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
