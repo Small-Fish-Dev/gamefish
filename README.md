@@ -8,16 +8,14 @@ If you like what you see then remember: it's all MIT licensed. And we do like he
 
 ### What?
 
-It'll be a series of "kits" with a base library that already has a ton of great utilities.
+A game creation library with a ton of great utilities.
 
-A "kit" lets you drop something in your project and get started with a type of game right away.
-
-**Examples:**
+**Planned:**
 - FPS Kit
 - Vehicle Kit
 - Platformer Kit
 
-And they would all be able interact with each other where it makes sense.
+They would all be able interact with each other where it makes sense.
 
 ### Why?
 
