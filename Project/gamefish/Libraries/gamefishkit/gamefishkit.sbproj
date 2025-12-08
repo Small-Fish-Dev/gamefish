@@ -1,8 +1,8 @@
 {
-  "Title": "Game Fish - Base Kit",
+  "Title": "Game Fish - Kit",
   "Type": "library",
   "Org": "fish",
-  "Ident": "kit-base",
+  "Ident": "gamefish-kit",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": null,
@@ -29,6 +29,6 @@
       ],
       "DistinctAssemblyReferences": []
     },
-    "CsProjName": "kit-base"
+    "CsProjName": "gamefish-kit"
   }
 }
