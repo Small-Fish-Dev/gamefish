@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace GameFish;
 
@@ -6,28 +7,22 @@ namespace GameFish;
 /// Puts citizen <see cref="Clothing"/> on a <see cref="PawnCitizenModel"/>.
 /// </summary>
 [Icon( "checkroom" )]
-public partial class CitizenDresser : Component, Component.ExecuteInEditor
+public partial class CitizenDresser : Module, Component.ExecuteInEditor
 {
 	protected const int OUTFIT_ORDER = -1000;
 	protected const int OUTFIT_DEBUG_ORDER = OUTFIT_ORDER + 50;
 
-	protected bool InGame => this.InGame();
-	protected bool InEditor => this.InEditor();
+	public override bool IsParent( ModuleEntity comp )
+		=> comp is PawnCitizenModel;
 
 	/// <summary>
 	/// Your skin.
 	/// </summary>
-	[Property]
 	[Group( MODEL )]
 	[Title( "Component" )]
+	[Property, JsonIgnore, ReadOnly]
 	[Feature( OUTFIT ), Order( OUTFIT_ORDER )]
-	public PawnCitizenModel Model
-	{
-		get => _model.GetCached( GameObject );
-		set => _model = value;
-	}
-
-	protected PawnCitizenModel _model;
+	public PawnCitizenModel Model => Parent as PawnCitizenModel;
 
 	/// <summary>
 	/// Should the configuration be automatically applied on start/change?
@@ -101,20 +96,20 @@ public partial class CitizenDresser : Component, Component.ExecuteInEditor
 
 	public bool HasLoaded { get; protected set; }
 
-	protected override void OnParentChanged( GameObject oldParent, GameObject newParent )
-	{
-		base.OnParentChanged( oldParent, newParent );
-
-		if ( AutoApply )
-			UpdateOutfit();
-	}
-
 	protected override void OnStart()
 	{
 		base.OnStart();
 
 		if ( AutoApply && !HasLoaded )
 			UpdateOutfit();
+	}
+
+	protected override void OnSetNetworkOwner( Connection cn )
+	{
+		base.OnSetNetworkOwner( cn );
+
+		if ( AutoApply )
+			UpdateOutfit( cnAvatar: cn );
 	}
 
 	/// <summary>
@@ -184,16 +179,20 @@ public partial class CitizenDresser : Component, Component.ExecuteInEditor
 		ClothingCache.Age = outfit.Age ?? ClothingCache.Age;
 	}
 
-	public virtual void UpdateOutfit( Connection cnAvatar = null )
+	public virtual void UpdateOutfit( bool forceAvatar = false, Connection cnAvatar = null )
 	{
 		// Undress..
 		ClothingCache ??= new();
 		ClothingCache.Clothing?.Clear();
 
 		// User Outfit
-		if ( UseAvatar || cnAvatar is not null )
+		if ( UseAvatar || forceAvatar )
 		{
-			SetAvatar( cnAvatar ?? Model?.Network?.Owner );
+			// Use model's network owner automatically by default.
+			if ( !forceAvatar )
+				cnAvatar ??= Model?.Network?.Owner;
+
+			SetAvatar( cnAvatar );
 
 			if ( Avatar.HasValue )
 				AddOutfit( Avatar.Value );
@@ -214,8 +213,6 @@ public partial class CitizenDresser : Component, Component.ExecuteInEditor
 			if ( !Model.IsValid() || !Model.SkinRenderer.IsValid() )
 				return;
 
-			this.Log( "bingus" );
-
 			ClothingCache.Apply( Model.SkinRenderer );
 		}
 		catch ( Exception e )
@@ -230,19 +227,17 @@ public partial class CitizenDresser : Component, Component.ExecuteInEditor
 	/// Applies your own avatar to the prefab.
 	/// </summary>
 	[Button( "Load Local" )]
-	[ShowIf( nameof( InEditor ), true )]
 	[Feature( OUTFIT ), Group( DEBUG ), Order( OUTFIT_DEBUG_ORDER )]
-	public void SetLocalAvatar()
-		=> UpdateOutfit( cnAvatar: Connection.Local );
+	protected void LoadLocal()
+		=> UpdateOutfit( forceAvatar: true, cnAvatar: Connection.Local );
 
 	/// <summary>
-	/// Applies the current configuration.
+	/// Applies the default outfit.
 	/// </summary>
-	[Button( "Load Current" )]
-	[ShowIf( nameof( InEditor ), true )]
+	[Button( "Load Default" )]
 	[Feature( OUTFIT ), Group( DEBUG ), Order( OUTFIT_DEBUG_ORDER )]
-	public void SetDefaultAvatar()
-		=> UpdateOutfit( cnAvatar: null );
+	protected void LoadDefault()
+		=> UpdateOutfit( forceAvatar: true, cnAvatar: null );
 
 	/// <summary>
 	/// Broadcasts that the active configuration be re-applied.
@@ -252,5 +247,5 @@ public partial class CitizenDresser : Component, Component.ExecuteInEditor
 	[Feature( OUTFIT ), Group( DEBUG ), Order( OUTFIT_DEBUG_ORDER )]
 	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
 	public void RpcHostForceUpdate()
-		=> UpdateOutfit( cnAvatar: Model?.Network?.Owner );
+		=> UpdateOutfit();
 }

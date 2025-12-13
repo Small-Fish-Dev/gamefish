@@ -601,33 +601,6 @@
             }
           },
           {
-            "__type": "GameFish.CitizenDresser",
-            "__guid": "a9fc95a5-ef1f-4021-a3d4-4b133133116f",
-            "__enabled": true,
-            "AutoApply": true,
-            "DefaultOutfit": {
-              "Clothing": [],
-              "Human": null,
-              "Height": null,
-              "Age": null
-            },
-            "Model": {
-              "_type": "component",
-              "component_id": "f50f9175-4466-4bf1-a703-2ca2ac575111",
-              "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
-              "component_type": "PawnCitizenModel"
-            },
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "PreventAvatarSlots": 0,
-            "UseAvatar": true,
-            "UseDefault": false
-          },
-          {
             "__type": "Sandbox.ModelPhysics",
             "__guid": "2006bcc0-669e-479c-bdd5-c062a7541db0",
             "__enabled": false,
@@ -705,7 +678,58 @@
             "UseAnimGraph": true
           }
         ],
-        "Children": []
+        "Children": [
+          {
+            "__guid": "aeeb21b6-6efa-4702-a06a-154db44119e1",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Dresser",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "GameFish.CitizenDresser",
+                "__guid": "38aec465-6881-442b-9e5e-282f60cace8b",
+                "__enabled": true,
+                "AutoApply": true,
+                "ClassId": null,
+                "ClassName": null,
+                "DefaultOutfit": {
+                  "Clothing": [],
+                  "Human": null,
+                  "Height": null,
+                  "Age": null
+                },
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "38aec465-6881-442b-9e5e-282f60cace8b",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "PreventAvatarSlots": 0,
+                "UseAvatar": true,
+                "UseDefault": false
+              }
+            ],
+            "Children": []
+          }
+        ]
       },
       {
         "__guid": "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8",
