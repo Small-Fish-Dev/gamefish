@@ -50,7 +50,7 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 		if ( !GameObject.IsValid() )
 			return;
 
-		if ( !Parent.IsValid() )
+		if ( !Parent.IsValid() && Network.Active )
 			TryRegisterModule();
 	}
 
@@ -58,7 +58,6 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 	{
 		base.OnStart();
 
-		// Hackfix for OnEnable networking fuckery.
 		if ( !Parent.IsValid() )
 			TryRegisterModule();
 	}
