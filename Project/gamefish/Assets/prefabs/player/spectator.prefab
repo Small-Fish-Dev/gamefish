@@ -32,8 +32,8 @@
         "EyeTraceIgnore": "water",
         "FlyingEnabled": true,
         "FlyingFriction": {
-          "Value": 0,
-          "StopSpeed": 0
+          "Value": 5,
+          "StopSpeed": 80
         },
         "FlyingRunSpeed": 2000,
         "FlyingSpeed": 1000,
