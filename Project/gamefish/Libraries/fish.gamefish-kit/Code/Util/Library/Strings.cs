@@ -197,6 +197,8 @@ public static partial class Strings
 	public const string FORCES = "💨 Forces";
 	public const string DRAG = "🐌 Drag";
 
+	public const string TRACE = "⚡ Trace";
+	public const string TRACING = "⚡ Tracing";
 	public const string COLLISION = "⚽ Collision";
 	public const string COLLISIONS = "⚽ Collisions";
 	public const string BOUNCE = "🏀 Bounce";
