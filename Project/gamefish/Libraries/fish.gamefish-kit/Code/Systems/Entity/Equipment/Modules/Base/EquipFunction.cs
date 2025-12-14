@@ -86,8 +86,21 @@ public abstract partial class EquipFunction : EquipModule
 	{
 		base.Simulate( deltaTime );
 
-		if ( IsInputting )
-			TryActivate();
+		UpdateActivation();
+	}
+
+	/// <summary>
+	/// Tries to activate this if we're inputting.
+	/// </summary>
+	protected virtual void UpdateActivation()
+	{
+		if ( !IsInputting )
+			return;
+
+		if ( !Equip.IsValid() || !Equip.IsInputAllowed( this ) )
+			return;
+
+		TryActivate();
 	}
 
 	/// <returns> The remaining seconds before this can be used again. </returns>

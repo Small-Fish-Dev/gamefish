@@ -84,6 +84,13 @@ partial class Equipment
 	}
 
 	/// <summary>
+	/// Allows this equipment to block functions.
+	/// </summary>
+	/// <returns> If functionality is enabled. </returns>
+	public virtual bool IsInputAllowed( EquipFunction func = null )
+		=> !Mouse.Active;
+
+	/// <summary>
 	/// Allows this equipment to alter the delay before a function can be used again.
 	/// </summary>
 	/// <returns> The delay between each use(in seconds). </returns>

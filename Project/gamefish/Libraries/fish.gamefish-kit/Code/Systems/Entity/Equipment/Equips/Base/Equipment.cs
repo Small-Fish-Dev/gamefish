@@ -34,8 +34,6 @@ public partial class Equipment : DynamicEntity
 	[ShowIf( nameof( InGame ), true )]
 	public int Slot { get; set; }
 
-	public virtual float DeltaTime => Time.Delta;
-
 	public virtual Vector3 AimPosition => Pawn?.EyePosition ?? WorldPosition;
 	public virtual Rotation AimRotation => Pawn?.EyeRotation ?? Rotation.Identity;
 	public virtual Vector3 AimScale => Pawn?.WorldScale ?? Vector3.One;
@@ -80,7 +78,7 @@ public partial class Equipment : DynamicEntity
 			return;
 
 		if ( AllowInput() )
-			Simulate( DeltaTime );
+			Simulate( Time.Delta );
 	}
 
 	protected virtual void Simulate( in float deltaTime )
