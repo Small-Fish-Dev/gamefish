@@ -16,6 +16,7 @@ public partial struct TraceSettings
 	/// </summary>
 	[Group( TRANSFORM )]
 	[Title( "Rotation" )]
+	[HideIf( nameof( Shape ), TraceShape.Line )]
 	public Rotation ShapeRotation { get; set; } = Rotation.Identity;
 
 	[Group( TRANSFORM )]
@@ -42,58 +43,18 @@ public partial struct TraceSettings
 	[ShowIf( nameof( Shape ), TraceShape.Capsule )]
 	public Capsule Capsule { get; set; } = new( Vector3.Forward * 12f, Vector3.Backward * 12f, 8f );
 
-	/// <summary>
-	/// If enabled: trace against hitboxes.
-	/// </summary>
-	[Title( "Hitboxes" )]
-	[Group( TAGS, StartFolded = true )]
-	public bool UseHitboxes { get; set; }
-
-	/// <summary>
-	/// If enabled: if an object has ANY <b>ignore</b> tags then it must have ANY <b>hit</b> tags.
-	/// </summary>
-	[Title( "Whitelist" )]
-	[Group( TAGS, StartFolded = true )]
-	public bool UseTagWhitelist { get; set; }
-
-	/// <summary>
-	/// If enabled: only consider objects with ANY of these tags.
-	/// </summary>
-	[Group( TAGS )]
-	[Title( "Tags (hit)" )]
-	public TagFilter TagsHit { get; set; } = new( false, [TAG_SOLID, TAG_PAWN] );
-
-	/// <summary>
-	/// If enabled: ignore objects with ANY of these tags.
-	/// </summary>
-	[Group( TAGS )]
-	[Title( "Tags (ignore)" )]
-	public TagFilter TagsIgnore { get; set; } = new( false, [TAG_TRIGGER] );
-
-	/// <summary>
-	/// If enabled: only trace against objects that have ALL of these tags.
-	/// </summary>
-	[Group( TAGS )]
-	[Title( "Tags (require)" )]
-	public TagFilter TagsRequire { get; set; } = new( false, [] );
-
-	/// <summary>
-	/// How should this trace treat triggers/solids?
-	/// </summary>
-	[Group( TRIGGERS )]
-	[Title( "Inclusion" )]
-	public TraceTriggerType TriggerType { get; set; }
+	[Title( "Filter" )]
+	[Group( TRACE ), Order( 100 )]
+	public TraceFilter Filter { get; set; }
 
 	public TraceSettings() { }
 
-	public TraceSettings( in TraceShape shape, in Rotation? r = null, TagSet hit = null, TagSet ignore = null, TagSet require = null )
+	public TraceSettings( in TraceShape shape, in Rotation? r = null, TraceFilter filter = null )
 	{
 		Shape = shape;
 		ShapeRotation = r ?? Rotation.Identity;
 
-		TagsHit = new( hit );
-		TagsIgnore = new( ignore );
-		TagsRequire = new( require );
+		Filter = filter;
 	}
 
 	/// <summary>
@@ -144,23 +105,26 @@ public partial struct TraceSettings
 		tr = tr.Rotated( r );
 
 		// Tagging
-		if ( TagsHit.Enabled )
-			tr = tr.WithAnyTags( TagsHit.Tags );
+		if ( Filter.IsValid() )
+		{
+			if ( Filter.TagsHit.Enabled )
+				tr = tr.WithAnyTags( Filter.TagsHit.Tags );
 
-		if ( TagsIgnore.Enabled && !UseTagWhitelist )
-			tr = tr.WithoutTags( TagsIgnore.Tags );
+			if ( Filter.TagsIgnore.Enabled && !Filter.UseTagWhitelist )
+				tr = tr.WithoutTags( Filter.TagsIgnore.Tags );
 
-		if ( TagsRequire.Enabled )
-			tr = tr.WithAllTags( TagsRequire.Tags );
+			if ( Filter.TagsRequire.Enabled )
+				tr = tr.WithAllTags( Filter.TagsRequire.Tags );
 
-		// Hitboxes
-		tr = tr.UseHitboxes( UseHitboxes );
+			// Hitboxes
+			tr = tr.UseHitboxes( Filter.UseHitboxes );
 
-		// Trigger Hitting
-		if ( TriggerType is TraceTriggerType.Include )
-			tr = tr.HitTriggers();
-		else if ( TriggerType is TraceTriggerType.Exclusive )
-			tr = tr.HitTriggersOnly();
+			// Trigger Hitting
+			if ( Filter.TriggerType is TraceTriggerType.Include )
+				tr = tr.HitTriggers();
+			else if ( Filter.TriggerType is TraceTriggerType.Exclusive )
+				tr = tr.HitTriggersOnly();
+		}
 
 		return tr;
 	}
@@ -182,11 +146,14 @@ public partial struct TraceSettings
 
 	public readonly bool PassesWhitelist( SceneTraceResult tr )
 	{
-		if ( !UseTagWhitelist || tr.GameObject?.Tags is null )
+		if ( !Filter.IsValid() )
 			return true;
 
-		if ( TagsIgnore.HasAny( tr.GameObject.Tags ) )
-			return TagsHit.HasAny( tr.GameObject.Tags );
+		if ( !Filter.UseTagWhitelist || tr.GameObject?.Tags is null )
+			return true;
+
+		if ( Filter.TagsIgnore.HasAny( tr.GameObject.Tags ) )
+			return Filter.TagsHit.HasAny( tr.GameObject.Tags );
 
 		return true;
 	}
@@ -205,7 +172,7 @@ public partial struct TraceSettings
 	{
 		var results = tr.RunAll();
 
-		if ( UseTagWhitelist )
+		if ( Filter.UseTagWhitelist )
 			return results.Where( PassesWhitelist );
 
 		return results;

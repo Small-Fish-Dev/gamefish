@@ -1,0 +1,19 @@
+{
+  "UseHitboxes": false,
+  "UseTagWhitelist": false,
+  "TagsHit": {
+    "Enabled": false,
+    "Tags": "solid,pawn"
+  },
+  "TagsIgnore": {
+    "Enabled": false,
+    "Tags": "trigger"
+  },
+  "TagsRequire": {
+    "Enabled": false,
+    "Tags": ""
+  },
+  "TriggerType": "Ignore",
+  "__references": [],
+  "__version": 0
+}

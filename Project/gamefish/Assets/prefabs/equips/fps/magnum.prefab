@@ -188,7 +188,7 @@
               "Position": "16,-6,-4",
               "Rotation": "0,0,0,1"
             },
-            "ProjectilePrefab": "prefabs/entities/projectiles/magnum_bullet.prefab",
+            "ProjectilePrefab": "prefabs/equips/fps/projectiles/magnum_bullet.prefab",
             "ProjectileScale": "1,1,1",
             "ProjectileVelocity": "5000,0,0",
             "ShootSound": null,

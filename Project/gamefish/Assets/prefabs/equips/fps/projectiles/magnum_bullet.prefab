@@ -22,6 +22,7 @@
         "ClassId": "missile1",
         "ClassName": null,
         "DebugDamage": 25,
+        "DebugLogging": false,
         "DefaultSpeed": 5000,
         "ExplosionDamage": {
           "BaseDamage": 50,
@@ -68,6 +69,7 @@
           "Min": 0,
           "Max": 1000
         },
+        "IgnoreTeam": true,
         "ImpactDamage": {
           "BaseDamage": 44,
           "Types": "impact,bullet",
@@ -129,28 +131,15 @@
             "Mins": "-8,-8,-8",
             "Maxs": "8,8,8"
           },
-          "Radius": 3.4,
+          "Radius": 3.3299828,
           "Height": 32,
           "Capsule": {
             "CenterA": "12,0,0",
             "CenterB": "-12,0,0",
             "Radius": 8
           },
-          "TagsHit": {
-            "Enabled": false,
-            "Tags": "solid,pawn"
-          },
-          "TagsIgnore": {
-            "Enabled": false,
-            "Tags": "trigger"
-          },
-          "TagsRequire": {
-            "Enabled": false,
-            "Tags": ""
-          },
-          "TriggerType": "Ignore"
-        },
-        "Velocity": "0,0,0"
+          "Filter": "data/filters/projectiles.trfilter"
+        }
       }
     ],
     "Children": [

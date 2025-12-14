@@ -22,6 +22,7 @@
         "ClassId": "missile1",
         "ClassName": null,
         "DebugDamage": 25,
+        "DebugLogging": false,
         "DefaultSpeed": 1000,
         "ExplosionDamage": {
           "BaseDamage": 50,
@@ -68,6 +69,7 @@
           "Min": 0,
           "Max": 1000
         },
+        "IgnoreTeam": true,
         "ImpactDamage": {
           "BaseDamage": 20,
           "Types": "impact",
@@ -136,21 +138,8 @@
             "CenterB": "-12,0,0",
             "Radius": 8
           },
-          "TagsHit": {
-            "Enabled": false,
-            "Tags": "solid,pawn"
-          },
-          "TagsIgnore": {
-            "Enabled": false,
-            "Tags": "trigger"
-          },
-          "TagsRequire": {
-            "Enabled": false,
-            "Tags": ""
-          },
-          "TriggerType": "Ignore"
-        },
-        "Velocity": "0,0,0"
+          "Filter": "data/filters/projectiles.trfilter"
+        }
       }
     ],
     "Children": [
@@ -161,7 +150,7 @@
         "Name": "Model",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
-        "Scale": "0.7468358,0.1841906,0.1860252",
+        "Scale": "0.75,0.2,0.2",
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,

@@ -14,10 +14,8 @@ partial class Projectile
 	/// </summary>
 	[Property, WideMode, InlineEditor]
 	[Feature( PROJECTILE ), Group( COLLISION ), Order( COLLISION_ORDER + 1 )]
-	public TraceSettings TraceSettings { get; set; } = new(
-		shape: TraceShape.Box,
-		r: Rotation.Identity
-	);
+	public TraceSettings TraceSettings { get; set; }
+
 
 	/// <summary>
 	/// Is impact damage dealt with effects?
