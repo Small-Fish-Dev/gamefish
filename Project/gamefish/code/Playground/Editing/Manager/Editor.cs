@@ -17,10 +17,6 @@ public partial class Editor : Singleton<Editor>
 	public const float TRACE_DISTANCE_DEFAULT = 32768f;
 
 	[Property, InlineEditor]
-	[Feature( EDITOR ), Group( TRACING ), Order( TRACING_ORDER )]
-	public TraceSettings TraceSettings { get; set; } = new();
-
-	[Property, InlineEditor]
 	[Title( "Draw Entity Boxes" )]
 	[Feature( EDITOR ), Group( DEBUG )]
 	public bool DrawEntityBounds { get; set; }
@@ -105,14 +101,14 @@ public partial class Editor : Singleton<Editor>
 			neworTool.OnEnter();
 	}
 
-	public SceneTraceResult Trace( Scene sc, in Vector3 start, in Vector3 dir, in float? dist = null )
+	public static SceneTraceResult Trace( Scene sc, in Vector3 start, in Vector3 dir, in float? dist = null )
 	{
 		if ( !sc.IsValid() )
 			return default;
 
 		var to = start + dir * (dist ?? TRACE_DISTANCE_DEFAULT);
 
-		var tr = TraceSettings.Build( sc, start, to );
+		var tr = sc.Trace.Ray( start, to );
 
 		var objPawn = Client.Local?.Pawn?.GameObject;
 
@@ -135,11 +131,11 @@ public partial class Editor : Singleton<Editor>
 		if ( Mouse.Active )
 		{
 			var ray = cam.ScreenPixelToRay( Mouse.Position );
-			tr = e.Trace( sc, ray.Position, ray.Forward, dist );
+			tr = Trace( sc, ray.Position, ray.Forward, dist );
 		}
 		else
 		{
-			tr = e.Trace( sc, cam.WorldPosition, cam.WorldRotation.Forward, dist );
+			tr = Trace( sc, cam.WorldPosition, cam.WorldRotation.Forward, dist );
 		}
 
 		return tr.Hit;
