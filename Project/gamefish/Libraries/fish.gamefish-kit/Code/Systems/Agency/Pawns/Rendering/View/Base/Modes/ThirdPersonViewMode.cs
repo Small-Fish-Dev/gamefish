@@ -21,7 +21,7 @@ public partial class ThirdPersonViewMode : ViewMode
 
 	/// <summary>
 	/// How quickly scrolling is smoothed towards its intended distance. <br />
-	/// If zero or less: disable smoothing altogether.
+	/// If <c>zero</c> or less: disable smoothing altogether.
 	/// </summary>
 	[Property]
 	[Feature( VIEW )]
@@ -51,18 +51,21 @@ public partial class ThirdPersonViewMode : ViewMode
 		if ( !pawn.IsValid() )
 			return;
 
-		var tOrigin = View.GetViewOrigin();
-		var aimDir = tOrigin.Forward;
+		if ( !Mouse.Active )
+		{
+			var scroll = Input.MouseWheel.y * ScrollSensitivity;
+			DesiredDistance = (DesiredDistance - scroll).Clamp( DistanceRange );
 
-		DesiredDistance -= Input.MouseWheel.y * ScrollSensitivity;
-		DesiredDistance = DesiredDistance.Clamp( DistanceRange );
-
-		CurrentDistance = ScrollSpeed > 0f
-			? CurrentDistance.LerpTo( DesiredDistance, ScrollSpeed * deltaTime )
-			: DesiredDistance;
+			CurrentDistance = ScrollSpeed > 0f
+				? CurrentDistance.LerpTo( DesiredDistance, ScrollSpeed * deltaTime )
+				: DesiredDistance;
+		}
 
 		if ( View.Collision )
 		{
+			var tOrigin = View.GetViewOrigin();
+			var aimDir = tOrigin.Forward;
+
 			var startPos = tOrigin.Position;
 			var endPos = startPos - (aimDir * CurrentDistance);
 			var radius = View.GetCollisionRadius();
