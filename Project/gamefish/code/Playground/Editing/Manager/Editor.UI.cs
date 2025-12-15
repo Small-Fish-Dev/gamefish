@@ -73,6 +73,6 @@ partial class Editor
 			tr = Trace( sc, cam.WorldPosition, cam.WorldRotation.Forward, dist );
 		}
 
-		return tr.Hit;
+		return true;
 	}
 }

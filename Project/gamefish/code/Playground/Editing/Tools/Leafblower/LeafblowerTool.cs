@@ -18,10 +18,10 @@ public sealed partial class LeafblowerTool : EditorTool
 
 	public void Wind( in float deltaTime, in float force )
 	{
-		if ( !Editor.TryTrace( Scene, out var tr ) )
+		if ( !TryTrace( out var tr ) )
 			return;
 
-		if ( !tr.GameObject.IsValid() )
+		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return;
 
 		var vel = tr.Direction * force * deltaTime;

@@ -39,9 +39,9 @@
         "ShowMenuAction": "Editor",
         "Tool": {
           "_type": "component",
-          "component_id": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
-          "go": "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8",
-          "component_type": "RemoverTool"
+          "component_id": "f3f9b2a6-8975-42e1-9633-c6313e931117",
+          "go": "046bb8fe-3b84-4051-a538-d1a5c67e0934",
+          "component_type": "GrabberTool"
         }
       }
     ],
@@ -69,7 +69,7 @@
             "ClassId": null,
             "ClassName": null,
             "Filter": null,
-            "Force": 3000,
+            "Force": 400,
             "FunctionHints": [
               {
                 "Name": "Blow",
@@ -90,7 +90,7 @@
             "NetworkAutomatically": true,
             "NetworkId": "b2b066f7-5763-4eb4-8e50-205edf592d95",
             "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOrphanedMode": "Host",
             "NetworkOwner": null,
             "NetworkTransferMode": "Fixed",
             "OnComponentDestroy": null,
@@ -125,6 +125,7 @@
             "__type": "Playground.RemoverTool",
             "__guid": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
             "__enabled": true,
+            "AllowPawns": true,
             "ClassId": null,
             "ClassName": null,
             "Filter": null,
@@ -142,7 +143,7 @@
             "NetworkAutomatically": true,
             "NetworkId": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
             "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOrphanedMode": "Host",
             "NetworkOwner": null,
             "NetworkTransferMode": "Fixed",
             "OnComponentDestroy": null,
@@ -153,6 +154,59 @@
             "OnComponentUpdate": null,
             "ToolDescription": "Destroys non-essential stuff.",
             "ToolName": "Remover"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "046bb8fe-3b84-4051-a538-d1a5c67e0934",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Grabber",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Playground.GrabberTool",
+            "__guid": "f3f9b2a6-8975-42e1-9633-c6313e931117",
+            "__enabled": true,
+            "ClassId": null,
+            "ClassName": null,
+            "Filter": null,
+            "FunctionHints": [
+              {
+                "Name": "Grab",
+                "Description": null,
+                "Action": "Attack1",
+                "Mode": "Held"
+              }
+            ],
+            "HandPrefab": "prefabs/modes/sbox/tools/grabber/grabber_hand.prefab",
+            "IsAdminOnly": false,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "f3f9b2a6-8975-42e1-9633-c6313e931117",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "Host",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ToolDescription": "Moves physics objects.",
+            "ToolName": "Grabber"
           }
         ],
         "Children": []

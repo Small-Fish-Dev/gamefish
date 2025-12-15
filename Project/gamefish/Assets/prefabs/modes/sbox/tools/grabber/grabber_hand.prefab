@@ -1,0 +1,151 @@
+{
+  "RootObject": {
+    "__guid": "3b31d959-704d-413f-971d-7ea7f7084ca6",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "grabber_hand",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": false,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Playground.GrabberHand",
+        "__guid": "aa18b2e1-2782-4437-b967-2ae3bfe6e633",
+        "__enabled": true,
+        "ClassId": "grabber_hand",
+        "ClassName": null,
+        "IsClass": false,
+        "IsNetworkingForced": null,
+        "Joint": {
+          "_type": "component",
+          "component_id": "5116f2b9-5ddb-43ff-90b3-4a6f13591fda",
+          "go": "ae0e0033-79a1-435f-bb11-7cd1f02eba18",
+          "component_type": "FixedJoint"
+        },
+        "NetworkAutomatically": false,
+        "NetworkId": "aa18b2e1-2782-4437-b967-2ae3bfe6e633",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "Destroy",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "ae0e0033-79a1-435f-bb11-7cd1f02eba18",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Joint",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.FixedJoint",
+            "__guid": "5116f2b9-5ddb-43ff-90b3-4a6f13591fda",
+            "__enabled": true,
+            "AngularDamping": 1,
+            "AngularFrequency": 10,
+            "Attachment": "Auto",
+            "Body": null,
+            "BreakForce": 0,
+            "BreakTorque": 0,
+            "EnableCollision": false,
+            "LinearDamping": 1,
+            "LinearFrequency": 10,
+            "LocalFrame1": {
+              "Position": "0,0,0",
+              "Scale": "0,0,0",
+              "Rotation": "0,0,0,0"
+            },
+            "LocalFrame2": {
+              "Position": "0,0,0",
+              "Scale": "0,0,0",
+              "Rotation": "0,0,0,0"
+            },
+            "OnBreak": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "StartBroken": false
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "0f449e37-7d07-4458-910f-1007b43e205f",
+            "__enabled": true,
+            "Center": "0,0,0",
+            "ColliderFlags": 0,
+            "Elasticity": null,
+            "Friction": null,
+            "IsTrigger": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "RollingResistance": null,
+            "Scale": "1,1,1",
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0"
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": false,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

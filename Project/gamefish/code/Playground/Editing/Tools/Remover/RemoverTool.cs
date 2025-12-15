@@ -10,7 +10,7 @@ public partial class RemoverTool : EditorTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public bool AllowPawns { get; set; } = true;
 
-	public override void FixedSimulate( in float deltaTime )
+	public override void FrameSimulate( in float deltaTime )
 	{
 		if ( Input.Pressed( "Attack1" ) )
 			TryRemoveTarget();
@@ -21,7 +21,7 @@ public partial class RemoverTool : EditorTool
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
 
-		if ( !Editor.TryTrace( Scene, out var tr ) )
+		if ( !TryTrace( out var tr ) || !tr.Hit )
 			return false;
 
 		if ( !CanRemove( Client.Local, tr.GameObject ) )
