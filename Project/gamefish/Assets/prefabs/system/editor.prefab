@@ -39,39 +39,9 @@
         "ShowMenuAction": "Editor",
         "Tool": {
           "_type": "component",
-          "component_id": "917b711e-336c-47a9-9792-52605fd23f46",
+          "component_id": "b2b066f7-5763-4eb4-8e50-205edf592d95",
           "go": "52a12b49-9f06-4b71-984e-32d960f2a5be",
-          "component_type": "EditorTool"
-        },
-        "TraceSettings": {
-          "Shape": "Line",
-          "ShapeRotation": "0,0,0,1",
-          "Box": {
-            "Mins": "-8,-8,-8",
-            "Maxs": "8,8,8"
-          },
-          "Radius": 8,
-          "Height": 32,
-          "Capsule": {
-            "CenterA": "12,0,0",
-            "CenterB": "-12,0,0",
-            "Radius": 8
-          },
-          "UseHitboxes": false,
-          "UseTagWhitelist": false,
-          "TagsHit": {
-            "Enabled": false,
-            "Tags": "solid,pawn"
-          },
-          "TagsIgnore": {
-            "Enabled": false,
-            "Tags": "trigger"
-          },
-          "TagsRequire": {
-            "Enabled": false,
-            "Tags": ""
-          },
-          "TriggerType": "Ignore"
+          "component_type": "LeafblowerTool"
         }
       }
     ],
@@ -93,15 +63,30 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Playground.EditorTool",
-            "__guid": "917b711e-336c-47a9-9792-52605fd23f46",
+            "__type": "Playground.LeafblowerTool",
+            "__guid": "b2b066f7-5763-4eb4-8e50-205edf592d95",
             "__enabled": true,
             "ClassId": null,
             "ClassName": null,
+            "Force": 3000,
+            "FunctionHints": [
+              {
+                "Name": "Blow",
+                "Description": null,
+                "Action": "Attack1",
+                "Mode": "Pressed"
+              },
+              {
+                "Name": "Suck",
+                "Description": null,
+                "Action": "Attack2",
+                "Mode": "Pressed"
+              }
+            ],
             "IsClass": false,
             "IsNetworkingForced": true,
             "NetworkAutomatically": true,
-            "NetworkId": "917b711e-336c-47a9-9792-52605fd23f46",
+            "NetworkId": "b2b066f7-5763-4eb4-8e50-205edf592d95",
             "NetworkingMode": "Object",
             "NetworkOrphanedMode": "ClearOwner",
             "NetworkOwner": null,
@@ -112,36 +97,8 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "ToolDescription": "Blows.",
+            "ToolDescription": "It sucks. It blows.",
             "ToolName": "Leafblower"
-          },
-          {
-            "__type": "Playground.LeafblowerPrimary",
-            "__guid": "fc2f3bcd-a75c-4c25-93ae-b0d050d57a41",
-            "__enabled": true,
-            "ClassId": null,
-            "ClassName": null,
-            "Input": {
-              "Action": "Attack1",
-              "Mode": "Held",
-              "Cooldown": 0.1
-            },
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "fc2f3bcd-a75c-4c25-93ae-b0d050d57a41",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "ClearOwner",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "PushDelay": 0.1,
-            "PushForce": 500
           }
         ],
         "Children": []

@@ -63,12 +63,24 @@ public partial class Editor : Singleton<Editor>
 	{
 		base.OnUpdate();
 
-		// There can only be one.. (at a time)
+		// There can only be one.. (active, at a time)
 		if ( TryGetInstance( out var e ) && e != this )
 			return;
 
 		UpdateMenu();
-		UpdateTool( Time.Delta );
+
+		SimulateTool( Time.Delta, isFixedUpdate: false );
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		// There can only be one.. (active, at a time)
+		if ( TryGetInstance( out var e ) && e != this )
+			return;
+
+		SimulateTool( Time.Delta, isFixedUpdate: true );
 	}
 
 	protected void UpdateMenu()
@@ -83,13 +95,18 @@ public partial class Editor : Singleton<Editor>
 			IsOpen = false;
 	}
 
-	protected void UpdateTool( in float deltaTime )
+	protected void SimulateTool( in float deltaTime, bool isFixedUpdate )
 	{
 		if ( !IsOpen )
 			return;
 
-		if ( Tool.IsValid() )
-			Tool.Simulate( deltaTime );
+		if ( !Tool.IsValid() )
+			return;
+
+		if ( isFixedUpdate )
+			Tool.FixedSimulate( deltaTime );
+		else
+			Tool.FrameSimulate( deltaTime );
 	}
 
 	protected static void OnEditorToolSet( EditorTool neworTool, EditorTool oldorTool )
@@ -139,5 +156,19 @@ public partial class Editor : Singleton<Editor>
 		}
 
 		return tr.Hit;
+	}
+
+	[Rpc.Broadcast( NetFlags.UnreliableNoDelay )]
+	public virtual void BroadcastImpulse( GameObject obj, Vector3 vel )
+	{
+		if ( !obj.IsValid() )
+			return;
+
+		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
+
+		if ( obj.Components.TryGet<IVelocity>( out var iVel, findMode ) )
+			iVel.Velocity += vel;
+		else if ( obj.Components.TryGet<Rigidbody>( out var rb, findMode ) )
+			rb.Velocity += vel;
 	}
 }
