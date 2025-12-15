@@ -9,17 +9,30 @@ public partial class GrabberTool : EditorTool
 	[Feature( EDITOR ), Group( PREFABS ), Order( PREFABS_ORDER )]
 	public PrefabFile HandPrefab { get; set; }
 
+	[Property]
+	[Range( 0f, 100f )]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public virtual float ScrollSensitivity { get; set; } = 30f;
+
 	public GrabberHand Hand { get; set; }
 
 	public float GrabDistance { get; set; }
 
 	public override void FrameSimulate( in float deltaTime )
 	{
+		if ( !Mouse.Active )
+			return;
+
 		if ( Input.Pressed( "Attack1" ) )
 			TryGrabTarget();
 
 		if ( !Hand.IsValid() || !TryTrace( out var tr ) )
 			return;
+
+		var scroll = Input.MouseWheel.y * ScrollSensitivity;
+
+		if ( scroll != 0f )
+			GrabDistance = (GrabDistance + scroll).Max( 0.1f );
 
 		if ( GrabDistance > 0f )
 			Hand.WorldPosition = tr.StartPosition + tr.Direction * GrabDistance;
