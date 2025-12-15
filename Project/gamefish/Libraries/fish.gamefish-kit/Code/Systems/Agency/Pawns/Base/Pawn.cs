@@ -26,6 +26,9 @@ public abstract partial class Pawn : MovingEntity
 	/// </summary>
 	public override Vector3 Center => WorldPosition.LerpTo( EyePosition, 0.5f );
 
+	/// <summary>
+	/// Is this actively owned by a valid player client?
+	/// </summary>
 	public virtual bool IsPlayer => Owner.IsValid() && Owner.IsPlayer;
 
 	[Sync( SyncFlags.FromHost )]

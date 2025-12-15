@@ -27,7 +27,7 @@ partial class Editor
 			return true;
 		}
 
-		if ( !tool.IsAllowed( Connection.Local ) )
+		if ( !tool.IsClientAllowed( Client.Local ) )
 			return false;
 
 		Tool = tool;

@@ -4,6 +4,7 @@ public sealed partial class LeafblowerTool : EditorTool
 {
 	[Property]
 	[Title( "Force" )]
+	[Sync( SyncFlags.FromHost )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public float Force { get; set; } = 400f;
 

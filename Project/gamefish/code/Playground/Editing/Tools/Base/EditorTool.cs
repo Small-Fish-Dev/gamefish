@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace Playground;
 
 [Icon( "build" )]
@@ -36,8 +38,15 @@ public abstract partial class EditorTool : PlaygroundModule
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public TraceFilter Filter { get; set; }
 
-	public virtual bool IsAllowed( Connection cn )
-		=> !IsAdminOnly || cn?.IsHost is true;
+	public virtual bool IsClientAllowed( Client cl )
+		=> !IsAdminOnly || cl?.Connection?.IsHost is true;
+
+	/// <summary>
+	/// Quickly checks permision and gives you a client reference.
+	/// </summary>
+	/// <returns> If the connection(such as an RPC caller) is allowed to use this tool. </returns>
+	protected bool TryUse( Connection cn, out Client cl )
+		=> Server.TryFindClient( cn, out cl ) && IsClientAllowed( cl );
 
 	public virtual void OnEnter() { }
 	public virtual void OnExit() { }
