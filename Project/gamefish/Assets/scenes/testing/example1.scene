@@ -2656,13 +2656,140 @@
       "NetworkTransmit": true,
       "OwnerTransfer": 1,
       "Components": [],
-      "Children": []
+      "Children": [
+        {
+          "__guid": "ba70b5b7-49ca-40ea-b919-8142744c0606",
+          "__version": 1,
+          "__Prefab": "prefabs/modes/sbox/player/player_sbox.prefab",
+          "__PrefabInstancePatch": {
+            "AddedObjects": [],
+            "RemovedObjects": [],
+            "PropertyOverrides": [
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+                },
+                "Property": "Position",
+                "Value": "1920,384,0"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+                },
+                "Property": "Rotation",
+                "Value": "0,0,-0.9731919,0.2299953"
+              }
+            ],
+            "MovedObjects": []
+          },
+          "__PrefabIdToInstanceId": {
+            "26d08fde-1687-46ac-ae0e-02eed92368eb": "ba70b5b7-49ca-40ea-b919-8142744c0606",
+            "00a167f2-9393-469a-879d-63a09e408188": "0129589c-caea-4d76-b8ed-e9a0e0865133",
+            "4e886827-8cd3-4b7b-91a3-bafd4e643c61": "b3b58698-3a61-4adf-9286-f3a5882da823",
+            "edc765a1-6ab4-4b78-a07d-58125b29947f": "e3838a07-ee5e-40d5-ab22-139162c6cfe3",
+            "a0b2aa34-5b07-492c-9275-4dc2e9ff9329": "8018aede-986c-4d8a-949c-d517fbe0896a",
+            "7b4174e2-7366-459d-90ab-ad4ba7fb1f07": "97c1c9b2-dbe4-46d2-8f03-32ad2f238e81",
+            "423f50c7-f31c-476e-af51-c6378bfba339": "fb42265d-99f5-44b7-a13c-af24227ffabb",
+            "b2db92f3-8a05-4396-9a94-f0fb59931069": "c86a404a-f804-42e1-968c-42f99b352b14",
+            "503c78b4-703c-4d05-8fba-8f937bb7ffc0": "ee41dfee-b746-4ea3-89c6-694d6e877769",
+            "c7391ef4-d529-4db4-9b20-71271e0abec5": "bf9a15f7-60d9-4eb0-8809-0d9a9162e8f4",
+            "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6": "0d3cf3df-2f44-4d83-be19-5c37c0596cd4",
+            "4fa17e4b-574e-43c9-80d6-4d8967db2382": "703149a6-3b99-4c5f-b619-203620fff749",
+            "c0cb14a1-7686-432d-94de-c976c79fb5c4": "46305967-d80c-44be-970c-a1c33292df8f",
+            "9dbdcb95-38f7-4336-845f-3a5fdd9da52f": "fc844ee9-9c95-42f3-acd9-34cb5acf1929",
+            "0d477140-245e-4027-8796-e93691384711": "990143b2-aa9d-42f9-9d2e-f423ddea6350",
+            "adffe648-f1ff-4c0f-9f3f-07447c18d139": "9181cd22-4927-4eaf-bd5d-f596a4de636e",
+            "7fb7d7db-219f-4d0b-b904-32044e72d4e1": "281a8e13-b1b6-4b50-a192-560f50f5a19d",
+            "9d851d0f-e7fb-40f0-9a2a-8a4007c36d28": "5f307f18-56fa-406d-b094-23d5a22a4d5f",
+            "6e7f4c8a-47de-44e8-adba-7be294cb523c": "8060eda3-314a-405e-b868-56f4c4b1bb55",
+            "f50f9175-4466-4bf1-a703-2ca2ac575111": "32e2288d-9869-42fb-8f72-19d566c3fd2b",
+            "2006bcc0-669e-479c-bdd5-c062a7541db0": "83d281c7-3ce3-4829-8736-b2dcf3f939b7",
+            "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "6e30086a-7b47-4192-bbea-9d8c9a1548b6",
+            "aeeb21b6-6efa-4702-a06a-154db44119e1": "cb2509c9-5f42-40b2-87d8-da8291e757a5",
+            "38aec465-6881-442b-9e5e-282f60cace8b": "fc5c59a0-d4e3-4259-8cba-7aa2bb4a45df",
+            "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "622e9d98-4e61-4199-87ee-c7862bb8cf32",
+            "cdf9082a-6a58-4902-ad04-5706a69ec252": "dc3b52b7-cb74-40b8-81bf-e89a8d0582a8",
+            "ecaf68d2-3205-4636-ac23-a3076c510e85": "3470c01b-621f-405e-b48a-5a48e06cefc4",
+            "4392db66-be79-4a96-9f50-66fb797af589": "96132448-2d3e-4511-8040-d1a562a62a1c",
+            "41565e7f-493f-4aa8-802e-130a36e10531": "8cc07538-6d9b-4383-9d8e-ed8f946f9c5c"
+          }
+        },
+        {
+          "__guid": "0d191487-4340-46d0-bda3-088206238cda",
+          "__version": 1,
+          "__Prefab": "prefabs/modes/sbox/player/player_sbox.prefab",
+          "__PrefabInstancePatch": {
+            "AddedObjects": [],
+            "RemovedObjects": [],
+            "PropertyOverrides": [
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+                },
+                "Property": "Name",
+                "Value": "player_sbox (1)"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+                },
+                "Property": "Position",
+                "Value": "1661.928,257.457,0.00000005960464"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "26d08fde-1687-46ac-ae0e-02eed92368eb"
+                },
+                "Property": "Rotation",
+                "Value": "0,0,-0.2322644,-0.9726528"
+              }
+            ],
+            "MovedObjects": []
+          },
+          "__PrefabIdToInstanceId": {
+            "26d08fde-1687-46ac-ae0e-02eed92368eb": "0d191487-4340-46d0-bda3-088206238cda",
+            "00a167f2-9393-469a-879d-63a09e408188": "2dc32d16-c9f3-4c2f-907f-c7e703a86c10",
+            "4e886827-8cd3-4b7b-91a3-bafd4e643c61": "9ebc04e4-1bc6-4586-9497-8b02bb612668",
+            "edc765a1-6ab4-4b78-a07d-58125b29947f": "4ff7a1f7-ca50-4da0-9b8b-f733afe94860",
+            "a0b2aa34-5b07-492c-9275-4dc2e9ff9329": "eff10bb5-5d14-4865-aadd-3dbeb1dd706b",
+            "7b4174e2-7366-459d-90ab-ad4ba7fb1f07": "e442ff85-a6e7-4a6d-a220-339df42f869a",
+            "423f50c7-f31c-476e-af51-c6378bfba339": "957f30dd-c376-4a7b-91e6-ac41abfdc0a9",
+            "b2db92f3-8a05-4396-9a94-f0fb59931069": "a7147195-0059-472d-8bf7-7feac5187c82",
+            "503c78b4-703c-4d05-8fba-8f937bb7ffc0": "6a0e518c-fd05-477c-b20e-fa798a5f6f92",
+            "c7391ef4-d529-4db4-9b20-71271e0abec5": "a9c08b81-be39-4079-815e-f4b0f7aa3793",
+            "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6": "644acdef-97c2-4477-8957-e3eca9820309",
+            "4fa17e4b-574e-43c9-80d6-4d8967db2382": "e09c68c1-4986-450c-b254-9a84baefb432",
+            "c0cb14a1-7686-432d-94de-c976c79fb5c4": "61a5eab5-a99d-450b-91cb-575f434779c2",
+            "9dbdcb95-38f7-4336-845f-3a5fdd9da52f": "a30d9ce0-db7b-46e1-b6f4-729a8102dc75",
+            "0d477140-245e-4027-8796-e93691384711": "730bbcee-a422-4945-8d92-b970e2550197",
+            "adffe648-f1ff-4c0f-9f3f-07447c18d139": "317d2c9e-cab9-4af0-ac53-949342c01546",
+            "7fb7d7db-219f-4d0b-b904-32044e72d4e1": "8a38368f-71fe-4b65-bcfd-28488619f28f",
+            "9d851d0f-e7fb-40f0-9a2a-8a4007c36d28": "8f52a066-a5a0-43d7-a5be-4c769231ded3",
+            "6e7f4c8a-47de-44e8-adba-7be294cb523c": "5740dcc1-0c1c-46af-911f-6aa1a290eada",
+            "f50f9175-4466-4bf1-a703-2ca2ac575111": "e62a8771-4bf0-48db-ad69-91176742e50f",
+            "2006bcc0-669e-479c-bdd5-c062a7541db0": "c7889760-4d4a-4d36-8bf0-28a83642a2a5",
+            "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5": "3071daff-3cbe-49e5-8fa1-ad625e0b7934",
+            "aeeb21b6-6efa-4702-a06a-154db44119e1": "441346e6-8c91-4423-9a20-e9e03cd43a8a",
+            "38aec465-6881-442b-9e5e-282f60cace8b": "4f090a13-6bc8-40df-941c-418dff7ecc34",
+            "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8": "9346b145-2f34-49a7-adcd-fbc422c6dc4a",
+            "cdf9082a-6a58-4902-ad04-5706a69ec252": "f816c1ef-a405-4e12-b237-53134981c618",
+            "ecaf68d2-3205-4636-ac23-a3076c510e85": "ba524a7e-bdc8-4aab-98a3-3d38fdc08e42",
+            "4392db66-be79-4a96-9f50-66fb797af589": "767a6bca-d641-4f50-8914-ff6f473c9dc9",
+            "41565e7f-493f-4aa8-802e-130a36e10531": "0f724494-248c-453e-bda3-4208cc0c4cbf"
+          }
+        }
+      ]
     },
     {
       "__guid": "9e5e7db6-b549-4890-b4cf-3cf852cb585b",
       "__version": 1,
       "Flags": 0,
-      "Name": "Enemy Pawns",
+      "Name": "NPCs",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
