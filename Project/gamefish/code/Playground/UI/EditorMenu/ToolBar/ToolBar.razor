@@ -22,8 +22,12 @@
 		if (!tool.IsValid())
 			continue;
 
-		<Button class="tool-button" @onclick=@(() => Select(tool)) tooltip="@tool.ToolDescription">
+		var selClass = tool == ActiveTool ? "selected" : "";
+
+		<Button class="tool-button @selClass" tooltip="@tool.ToolDescription" @onclick=@(() => Select(tool))>
+
 			@tool.ToolName
+
 		</Button>
 	}
 

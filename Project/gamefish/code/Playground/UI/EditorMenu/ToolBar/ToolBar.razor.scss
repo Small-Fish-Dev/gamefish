@@ -16,8 +16,9 @@ ToolBar {
 		font-size: 20px;
 
 		background-color: hsla(0, 0%, 12%, 0.8);
-		
-		&:hover {
+
+		&:hover,
+		&.selected {
 			color: black;
 			background-color: hsla(0, 0%, 100%, 0.8);
 		}
