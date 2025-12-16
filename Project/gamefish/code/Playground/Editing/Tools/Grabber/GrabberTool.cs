@@ -26,7 +26,10 @@ public partial class GrabberTool : EditorTool
 	/// Hack for buggy cursor/aim toggle shit.
 	/// </summary>
 	protected RealTimeSince? SinceRotated { get; set; }
-	public bool IsLocked => SinceRotated.HasValue && SinceRotated.Value < 0.1f;
+	public bool IsLocked => SinceRotated.HasValue && SinceRotated.Value < 0.2f;
+
+	public static bool GrabHeld => Input.Down( "Attack1" );
+	public static bool RotationHeld => false; //Input.Down( "Use" );
 
 	protected override void OnUpdate()
 	{
@@ -38,10 +41,23 @@ public partial class GrabberTool : EditorTool
 		if ( !IsSelected || !IsMenuOpen )
 			TryDropHeld();
 
+		// UpdateRotation( Time.Delta );
+	}
+
+	public override void OnExit()
+	{
+		base.OnExit();
+
+		// Auto-drop on swap.
+		TryDropHeld();
+	}
+
+	protected virtual void UpdateRotation( in float deltaTime )
+	{
 		if ( !IsGrabbing )
 			return;
 
-		IsRotating = Input.Down( "Use" );
+		IsRotating = RotationHeld;
 
 		Mouse.Visibility = IsRotating
 			? MouseVisibility.Hidden
@@ -66,17 +82,9 @@ public partial class GrabberTool : EditorTool
 		}
 	}
 
-	public override void OnExit()
-	{
-		base.OnExit();
-
-		// Auto-drop on swap.
-		TryDropHeld();
-	}
-
 	public override void FrameSimulate( in float deltaTime )
 	{
-		if ( !Input.Down( "Attack1" ) )
+		if ( !GrabHeld )
 		{
 			if ( !IsRotating )
 				TryDropHeld();
@@ -84,7 +92,7 @@ public partial class GrabberTool : EditorTool
 			return;
 		}
 
-		if ( Input.Down( "Attack1" ) && !IsLocked )
+		if ( GrabHeld && !IsLocked )
 			TryGrabTarget();
 
 		if ( !IsGrabbing || IsRotating )
