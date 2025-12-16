@@ -21,7 +21,6 @@
         "__enabled": true,
         "ClassId": "editor",
         "ClassName": null,
-        "DrawEntityBounds": false,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
@@ -214,6 +213,63 @@
             "ScrollSensitivity": 30,
             "ToolDescription": "Moves and (un)freezes objects.",
             "ToolName": "Grabber"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "4a0378e9-01aa-40ed-8192-7fdeb4f12f59",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Box",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Playground.BoxTool",
+            "__guid": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
+            "__enabled": true,
+            "BoxPrefab": "prefabs/modes/sbox/tools/box/box_50.prefab",
+            "BoxSize": 50,
+            "ClassId": null,
+            "ClassName": null,
+            "Filter": null,
+            "FunctionHints": [
+              {
+                "Name": "Point",
+                "Description": null,
+                "Action": "Attack1",
+                "Mode": "Pressed"
+              }
+            ],
+            "HeightLimit": 1024,
+            "IsAdminOnly": false,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "Host",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "PlaceHeight": 32,
+            "ScrollSensitivity": 4,
+            "ToolDescription": "Creates boxes.",
+            "ToolName": "Box"
           }
         ],
         "Children": []
