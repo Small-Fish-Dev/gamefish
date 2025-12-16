@@ -517,7 +517,7 @@
                       "Min": 0,
                       "Max": 300
                     },
-                    "InitialDistance": 150,
+                    "InitialDistance": 0,
                     "IsClass": false,
                     "IsNetworkingForced": true,
                     "NetworkAutomatically": true,
