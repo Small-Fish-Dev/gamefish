@@ -42,6 +42,8 @@ public partial class GrabberTool : EditorTool
 			TryDropHeld();
 
 		// UpdateRotation( Time.Delta );
+
+		DrawGrabberGizmos();
 	}
 
 	public override void OnExit()
@@ -50,6 +52,32 @@ public partial class GrabberTool : EditorTool
 
 		// Auto-drop on swap.
 		TryDropHeld();
+	}
+
+	protected virtual void DrawGrabberGizmos()
+	{
+		if ( !Hand.IsValid() )
+			return;
+
+		var bodyObj = Hand.BodyObject;
+		var joint = Hand.Joint;
+
+		if ( !bodyObj.IsValid() || !joint.IsValid() )
+			return;
+
+		if ( !joint.Body1.IsValid() || !joint.Body2.IsValid() )
+			return;
+
+		var tPoint1 = joint.WorldPosition; //joint.Point1.Transform.Position;
+		var tPoint2 = joint.Point2.Transform.Position;
+
+		var c = Color.White.WithAlpha( 0.3f );
+
+		this.DrawArrow(
+			from: tPoint1, to: tPoint2,
+			c: c, len: 3f, w: 1f,
+			tWorld: global::Transform.Zero
+		);
 	}
 
 	protected virtual void UpdateRotation( in float deltaTime )
@@ -159,7 +187,7 @@ public partial class GrabberTool : EditorTool
 		if ( !TryTrace( out var tr ) || !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
 
-		if ( !CanGrab( Client.Local, tr.GameObject ) )
+		if ( !CanGrab( Client.Local, in tr ) )
 			return false;
 
 		GrabDistance = tr.Distance;
@@ -195,12 +223,16 @@ public partial class GrabberTool : EditorTool
 		return true;
 	}
 
-	public virtual bool CanGrab( Client cl, GameObject obj )
+	public virtual bool CanGrab( Client cl, in SceneTraceResult tr )
 	{
-		if ( !obj.IsValid() )
+		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
 
-		if ( obj.GetComponent<MapCollider>( includeDisabled: true ).IsValid() )
+		// Don't accidentally grab the map.
+		if ( tr.GameObject.GetComponent<MapCollider>( includeDisabled: true ).IsValid() )
+			return false;
+
+		if ( tr.Collider.IsValid() && tr.Collider.Static )
 			return false;
 
 		return true;
