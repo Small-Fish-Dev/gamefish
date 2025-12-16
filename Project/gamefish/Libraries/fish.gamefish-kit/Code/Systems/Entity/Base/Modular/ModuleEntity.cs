@@ -221,6 +221,8 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 			return false;
 		}
 
+		m.SetupNetworking( force: true );
+
 		go.SetParent( GameObject );
 
 		return true;
