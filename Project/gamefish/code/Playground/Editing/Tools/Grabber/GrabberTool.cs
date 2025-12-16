@@ -25,7 +25,8 @@ public partial class GrabberTool : EditorTool
 	/// <summary>
 	/// Hack for buggy cursor/aim toggle shit.
 	/// </summary>
-	protected RealTimeUntil? CooldownEnds { get; set; }
+	protected RealTimeSince? SinceRotated { get; set; }
+	public bool IsLocked => SinceRotated.HasValue && SinceRotated.Value < 0.1f;
 
 	protected override void OnUpdate()
 	{
@@ -48,6 +49,8 @@ public partial class GrabberTool : EditorTool
 
 		if ( IsRotating )
 		{
+			SinceRotated = 0.1f;
+
 			var rInv = Hand.WorldRotation.Inverse;
 
 			var rYaw = Rotation.FromAxis( rInv.Up, Input.AnalogLook.yaw );
@@ -73,13 +76,16 @@ public partial class GrabberTool : EditorTool
 
 	public override void FrameSimulate( in float deltaTime )
 	{
-		if ( Input.Pressed( "Attack1" ) )
+		if ( !Input.Down( "Attack1" ) )
 		{
-			if ( IsGrabbing )
+			if ( !IsRotating )
 				TryDropHeld();
-			else
-				TryGrabTarget();
+
+			return;
 		}
+
+		if ( Input.Down( "Attack1" ) && !IsLocked )
+			TryGrabTarget();
 
 		if ( !IsGrabbing || IsRotating )
 			return;
