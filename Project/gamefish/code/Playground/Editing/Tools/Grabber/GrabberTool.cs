@@ -28,8 +28,10 @@ public partial class GrabberTool : EditorTool
 	protected RealTimeSince? SinceRotated { get; set; }
 	public bool IsLocked => SinceRotated.HasValue && SinceRotated.Value < 0.2f;
 
-	public static bool GrabHeld => Input.Down( "Attack1" );
-	public static bool RotationHeld => false; //Input.Down( "Use" );
+	public static bool HoldingGrab => Input.Down( "Attack1" );
+	public static bool PressedFreeze => Input.Pressed( "Attack2" );
+
+	public static bool HoldingRotation => false; //Input.Down( "Use" );
 
 	protected override void OnUpdate()
 	{
@@ -85,7 +87,7 @@ public partial class GrabberTool : EditorTool
 		if ( !IsGrabbing )
 			return;
 
-		IsRotating = RotationHeld;
+		IsRotating = HoldingRotation;
 
 		Mouse.Visibility = IsRotating
 			? MouseVisibility.Hidden
@@ -112,7 +114,41 @@ public partial class GrabberTool : EditorTool
 
 	public override void FrameSimulate( in float deltaTime )
 	{
-		if ( !GrabHeld )
+		UpdateGrab( in deltaTime );
+		UpdateFreeze( in deltaTime );
+	}
+
+	protected virtual void UpdateFreeze( in float deltaTime )
+	{
+		if ( !PressedFreeze )
+			return;
+
+		// Prefer to target what we're holding first.
+		PhysicsBody body = Hand?.Joint?.Body2;
+
+		// Then point at something.
+		if ( !body.IsValid() )
+		{
+			if ( !TryTrace( out var tr ) || !CanTarget( Client.Local, in tr ) )
+				return;
+
+			body = tr.Body;
+		}
+
+		if ( !body.IsValid() )
+			return;
+
+		// Take network control if possible, otherwise it may not work.
+		if ( body.Component.IsValid() && body.Component.IsProxy )
+			if ( !body.Component.Network.TakeOwnership() )
+				return;
+
+		body.MotionEnabled = !body.MotionEnabled;
+	}
+
+	protected virtual void UpdateGrab( in float deltaTime )
+	{
+		if ( !HoldingGrab )
 		{
 			if ( !IsRotating )
 				TryDropHeld();
@@ -120,7 +156,7 @@ public partial class GrabberTool : EditorTool
 			return;
 		}
 
-		if ( GrabHeld && !IsLocked )
+		if ( HoldingGrab && !IsLocked )
 			TryGrabTarget();
 
 		if ( !IsGrabbing || IsRotating )
@@ -187,7 +223,7 @@ public partial class GrabberTool : EditorTool
 		if ( !TryTrace( out var tr ) || !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
 
-		if ( !CanGrab( Client.Local, in tr ) )
+		if ( !CanTarget( Client.Local, in tr ) )
 			return false;
 
 		GrabDistance = tr.Distance;
@@ -223,7 +259,7 @@ public partial class GrabberTool : EditorTool
 		return true;
 	}
 
-	public virtual bool CanGrab( Client cl, in SceneTraceResult tr )
+	public virtual bool CanTarget( Client cl, in SceneTraceResult tr )
 	{
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
