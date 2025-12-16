@@ -220,11 +220,17 @@ public partial class GrabberTool : EditorTool
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
 
-		if ( !TryTrace( out var tr ) || !tr.Hit || !tr.GameObject.IsValid() )
+		if ( !TryTrace( out var tr ) || !tr.GameObject.IsValid() )
 			return false;
 
 		if ( !CanTarget( Client.Local, in tr ) )
 			return false;
+
+		var obj = tr.GameObject;
+
+		if ( obj.IsProxy && obj.Network.OwnerTransfer is OwnerTransfer.Takeover )
+			if ( !obj.Network.TakeOwnership() )
+				return false;
 
 		GrabDistance = tr.Distance;
 
