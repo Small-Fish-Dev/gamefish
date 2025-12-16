@@ -532,8 +532,8 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
-                    "ScrollSensitivity": 15,
-                    "ScrollSpeed": 5,
+                    "ScrollSensitivity": 24,
+                    "ScrollSpeed": 6,
                     "ShowViewRenderer": true
                   }
                 ],
