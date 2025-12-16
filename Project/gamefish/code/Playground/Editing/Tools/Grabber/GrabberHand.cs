@@ -39,11 +39,18 @@ public partial class GrabberHand : ModuleEntity
 	{
 		base.OnUpdate();
 
+		AutoCleanup();
+	}
+
+	protected virtual void AutoCleanup()
+	{
 		if ( IsProxy )
 			return;
 
-		// Lazy but effective.
-		if ( !Mouse.Active || !Input.Down( "Attack1" ) )
-			DestroyGameObject();
+		if ( Editor.TryGetInstance( out var s ) )
+			if ( s.Tool is GrabberTool grabber && grabber.Hand == this )
+				return;
+
+		DestroyGameObject();
 	}
 }

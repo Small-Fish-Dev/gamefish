@@ -16,6 +16,9 @@ public abstract partial class EditorTool : PlaygroundModule
 
 	public Editor Editor => Parent as Editor;
 
+	public bool IsMenuOpen => Editor.IsValid() && Editor.IsOpen;
+	public bool IsSelected => Editor.IsValid() && Editor.Tool == this;
+
 	/// <summary>
 	/// Restricts this tool the the host and/or authorized users only.
 	/// </summary>

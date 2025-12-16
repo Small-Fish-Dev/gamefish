@@ -16,17 +16,75 @@ public partial class GrabberTool : EditorTool
 
 	public GrabberHand Hand { get; set; }
 
+	public bool IsGrabbing => Hand.IsValid() && Hand.BodyObject.IsValid();
 	public float GrabDistance { get; set; }
+
+	public bool IsRotating { get; set; }
+	public Vector2? LastMousePosition { get; set; }
+
+	/// <summary>
+	/// Hack for buggy cursor/aim toggle shit.
+	/// </summary>
+	protected RealTimeUntil? CooldownEnds { get; set; }
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( !IsRotating && Mouse.Active )
+			LastMousePosition = Mouse.Position;
+
+		if ( !IsSelected || !IsMenuOpen )
+			TryDropHeld();
+
+		if ( !IsGrabbing )
+			return;
+
+		IsRotating = Input.Down( "Use" );
+
+		Mouse.Visibility = IsRotating
+			? MouseVisibility.Hidden
+			: MouseVisibility.Visible;
+
+		if ( IsRotating )
+		{
+			var rInv = Hand.WorldRotation.Inverse;
+
+			var rYaw = Rotation.FromAxis( rInv.Up, Input.AnalogLook.yaw );
+			var rPitch = Rotation.FromPitch( Input.AnalogLook.pitch );
+
+			Hand.WorldRotation *= rYaw;
+			Hand.WorldRotation *= rPitch;
+
+			Input.AnalogLook = Angles.Zero;
+
+			if ( LastMousePosition.HasValue )
+				Mouse.Position = LastMousePosition.Value;
+		}
+	}
+
+	public override void OnExit()
+	{
+		base.OnExit();
+
+		// Auto-drop on swap.
+		TryDropHeld();
+	}
 
 	public override void FrameSimulate( in float deltaTime )
 	{
-		if ( !Mouse.Active )
+		if ( Input.Pressed( "Attack1" ) )
+		{
+			if ( IsGrabbing )
+				TryDropHeld();
+			else
+				TryGrabTarget();
+		}
+
+		if ( !IsGrabbing || IsRotating )
 			return;
 
-		if ( Input.Pressed( "Attack1" ) )
-			TryGrabTarget();
-
-		if ( !Hand.IsValid() || !TryTrace( out var tr ) )
+		if ( !Mouse.Active || !TryTrace( out var tr ) )
 			return;
 
 		var scroll = Input.MouseWheel.y * ScrollSensitivity;
@@ -34,12 +92,30 @@ public partial class GrabberTool : EditorTool
 		if ( scroll != 0f )
 			GrabDistance = (GrabDistance + scroll).Max( 0.1f );
 
-		if ( GrabDistance > 0f )
-			Hand.WorldPosition = tr.StartPosition + tr.Direction * GrabDistance;
+		Hand.WorldPosition = tr.StartPosition + tr.Direction * GrabDistance;
+	}
+
+	protected virtual bool TryDropHeld()
+	{
+		IsRotating = false;
+
+		if ( IsSelected && IsMenuOpen )
+			Mouse.Visibility = MouseVisibility.Visible;
+
+		if ( !Hand.IsValid() )
+			return false;
+
+		Hand.DestroyGameObject();
+		Hand = null;
+
+		return true;
 	}
 
 	protected virtual bool TryGrabTarget()
 	{
+		if ( Hand.IsValid() || IsRotating )
+			return true;
+
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
 
@@ -58,6 +134,8 @@ public partial class GrabberTool : EditorTool
 		{
 			if ( !HandPrefab.TrySpawn( in hitPos, in rAim, out var handObj ) )
 				return false;
+
+			handObj.NetworkInterpolation = false;
 
 			if ( !handObj.Components.TryGet<GrabberHand>( out var hand ) )
 			{
@@ -83,6 +161,9 @@ public partial class GrabberTool : EditorTool
 	public virtual bool CanGrab( Client cl, GameObject obj )
 	{
 		if ( !obj.IsValid() )
+			return false;
+
+		if ( obj.GetComponent<MapCollider>( includeDisabled: true ).IsValid() )
 			return false;
 
 		return true;
