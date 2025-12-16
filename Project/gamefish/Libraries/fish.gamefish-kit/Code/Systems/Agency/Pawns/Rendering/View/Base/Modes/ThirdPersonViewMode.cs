@@ -30,15 +30,27 @@ public partial class ThirdPersonViewMode : ViewMode
 	public virtual float CurrentDistance { get; set; }
 	public virtual float DesiredDistance { get; set; }
 
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		SetInitialDistance();
+	}
+
 	public override void OnModeEnter( ViewMode previousMode = null )
 	{
 		base.OnModeEnter( previousMode );
 
-		if ( InitialDistance.HasValue )
-		{
-			DesiredDistance = InitialDistance.Value;
-			CurrentDistance = DesiredDistance;
-		}
+		SetInitialDistance();
+	}
+
+	protected virtual void SetInitialDistance()
+	{
+		if ( !InitialDistance.HasValue )
+			return;
+
+		DesiredDistance = InitialDistance.Value;
+		CurrentDistance = DesiredDistance;
 	}
 
 	public override void OnModeUpdate( in float deltaTime )

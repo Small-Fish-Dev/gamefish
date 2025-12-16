@@ -28,7 +28,7 @@ partial class PawnView
 		{
 			if ( _mode == value )
 			{
-				OnSetMode( value );
+				OnSetMode( value, null );
 				return;
 			}
 
