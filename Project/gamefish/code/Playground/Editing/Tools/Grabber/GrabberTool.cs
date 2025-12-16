@@ -101,12 +101,35 @@ public partial class GrabberTool : EditorTool
 		if ( !Mouse.Active || !TryTrace( out var tr ) )
 			return;
 
-		var scroll = Input.MouseWheel.y * ScrollSensitivity;
+		var yScroll = Input.MouseWheel.y;
+		var xScroll = Input.MouseWheel.x;
 
-		if ( scroll != 0f )
-			GrabDistance = (GrabDistance + scroll).Max( 0.1f );
+		if ( yScroll != 0f )
+		{
+			if ( Input.Keyboard.Down( "Shift" ) )
+			{
+				var pitch = Rotation.FromPitch( yScroll * -5f );
+				Hand.WorldRotation *= pitch;
+			}
+			else
+			{
+				var scrollDist = yScroll * ScrollSensitivity;
+				GrabDistance = (GrabDistance + scrollDist).Positive();
+			}
+		}
 
 		Hand.WorldPosition = tr.StartPosition + tr.Direction * GrabDistance;
+
+		if ( xScroll != 0f )
+		{
+			var rInv = Hand.WorldRotation.Inverse;
+
+			var rAdd = Input.Keyboard.Down( "Shift" )
+				? Rotation.FromRoll( xScroll * 10f )
+				: Rotation.FromAxis( rInv.Up, xScroll * -10f );
+
+			Hand.WorldRotation *= rAdd;
+		}
 	}
 
 	protected virtual bool TryDropHeld()
