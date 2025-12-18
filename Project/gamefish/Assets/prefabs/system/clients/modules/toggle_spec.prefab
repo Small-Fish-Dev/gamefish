@@ -3,7 +3,7 @@
     "__guid": "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1",
     "__version": 1,
     "Flags": 0,
-    "Name": "pawn_toggler",
+    "Name": "toggle_spec",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",

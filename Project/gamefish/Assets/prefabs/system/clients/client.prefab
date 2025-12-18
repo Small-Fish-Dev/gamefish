@@ -40,18 +40,27 @@
     ],
     "Children": [
       {
-        "__guid": "ada25c26-2bbd-403d-9c97-3d07db8e5729",
+        "__guid": "7a018834-690a-4e86-adf0-a64181906d4e",
         "__version": 1,
-        "__Prefab": "prefabs/system/clients/modules/pawn_toggler.prefab",
+        "__Prefab": "prefabs/system/clients/modules/toggle_spec.prefab",
         "__PrefabInstancePatch": {
           "AddedObjects": [],
           "RemovedObjects": [],
-          "PropertyOverrides": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "Component",
+                "IdValue": "e726da28-91f2-4a55-a7e8-7756731d44f9"
+              },
+              "Property": "__type",
+              "Value": "GameFish.ClientSpectatorToggle"
+            }
+          ],
           "MovedObjects": []
         },
         "__PrefabIdToInstanceId": {
-          "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1": "ada25c26-2bbd-403d-9c97-3d07db8e5729",
-          "e726da28-91f2-4a55-a7e8-7756731d44f9": "1e17fe4c-2c40-4392-bc5b-b9f3278f4a5b"
+          "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1": "7a018834-690a-4e86-adf0-a64181906d4e",
+          "e726da28-91f2-4a55-a7e8-7756731d44f9": "1ffb7327-ae2e-45d8-9e6c-2fff570d2ef3"
         }
       }
     ],
