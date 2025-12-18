@@ -2,14 +2,6 @@ namespace Playground;
 
 public partial class RemoverTool : EditorTool
 {
-	/// <summary>
-	/// Can pawns of any kind be removed?
-	/// </summary>
-	[Property]
-	[Sync( SyncFlags.FromHost )]
-	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public bool AllowPawns { get; set; } = true;
-
 	public override void FrameSimulate( in float deltaTime )
 	{
 		if ( Input.Pressed( "Attack1" ) )
@@ -50,20 +42,17 @@ public partial class RemoverTool : EditorTool
 
 	protected virtual bool CanRemovePawn( Client cl, Pawn pawn )
 	{
-		if ( !AllowPawns )
-			return false;
-
-		if ( !pawn.IsValid() || !pawn.Owner.IsValid() )
+		// I suppose the job is already done?
+		if ( !pawn.IsValid() )
 			return true;
 
-		// Can't remove spectators using a tool.
+		// Can't ever remove spectators using a tool.
 		if ( pawn is Spectator )
 			return false;
 
-		// Only hosts can remove player pawns.
-		// TODO: Admin system for organizing this.
-		if ( pawn.Owner.IsPlayer && pawn.Owner.Connected )
-			return cl?.Connection?.IsHost is true;
+		// Can't ever remove player-owned pawns.
+		if ( pawn.IsPlayer )
+			return false;
 
 		return true;
 	}
