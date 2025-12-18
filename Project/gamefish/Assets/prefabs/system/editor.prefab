@@ -265,7 +265,7 @@
         "__guid": "3a915d16-58cf-468b-b337-a51c88adc2c3",
         "__version": 1,
         "Flags": 0,
-        "Name": "Creation",
+        "Name": "Building",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
@@ -387,7 +387,11 @@
                 "BoxSize": 50,
                 "ClassId": null,
                 "ClassName": null,
-                "DistanceLimit": 1024,
+                "Distance": 256,
+                "DistanceRange": {
+                  "Min": 16,
+                  "Max": 1024
+                },
                 "Filter": null,
                 "FunctionHints": [
                   {
@@ -418,6 +422,7 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
+                "ScrollSensitivity": 12,
                 "ToolDescription": "For your boarding needs.",
                 "ToolEmoji": "\uD83D\uDD28",
                 "ToolName": "Board",

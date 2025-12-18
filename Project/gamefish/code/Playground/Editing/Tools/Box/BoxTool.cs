@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Drawing;
-
 namespace Playground;
 
 public partial class BoxTool : EditorTool

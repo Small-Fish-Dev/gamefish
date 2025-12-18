@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Drawing;
-
 namespace Playground;
 
 public partial class BoardTool : EditorTool
@@ -17,6 +14,20 @@ public partial class BoardTool : EditorTool
 
 
 	[Property]
+	[Range( 0f, 4096f )]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public float Distance { get; set; } = 256f;
+
+	[Property]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public FloatRange DistanceRange { get; set; } = new( 16f, 1024f );
+
+	[Property]
+	[Range( 0f, 100f )]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public virtual float ScrollSensitivity { get; set; } = 20f;
+
+	[Property]
 	[Title( "Board Width" )]
 	[Range( 1f, 32f, clamped: false )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
@@ -27,11 +38,6 @@ public partial class BoardTool : EditorTool
 	[Range( 1f, 16f, clamped: false )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public float BoardHeight { get; set; } = 5f;
-
-	[Property]
-	[Range( 0f, 4096f )]
-	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public float DistanceLimit { get; set; } = 1024f;
 
 
 	/// <summary>
@@ -52,6 +58,8 @@ public partial class BoardTool : EditorTool
 		if ( !Mouse.Active )
 			return;
 
+		UpdateScroll( in deltaTime );
+
 		UpdatePlace( in deltaTime );
 		UpdateCancel( in deltaTime );
 	}
@@ -67,6 +75,19 @@ public partial class BoardTool : EditorTool
 			StopShaping();
 	}
 
+	protected virtual void UpdateScroll( in float deltaTime )
+	{
+		var yScroll = Input.MouseWheel.y;
+
+		if ( yScroll == 0f )
+			return;
+
+		if ( !HoldingShift )
+			yScroll *= ScrollSensitivity;
+
+		Distance = (Distance + yScroll).Clamp( DistanceRange );
+	}
+
 	protected virtual void UpdatePlace( in float deltaTime )
 	{
 		if ( !IsClientAllowed( Client.Local ) )
@@ -75,15 +96,23 @@ public partial class BoardTool : EditorTool
 		if ( !TryTrace( out var tr ) )
 			return;
 
-		var pointDist = tr.Distance.Min( DistanceLimit );
+		var hasHit = tr.Distance <= Distance;
+		var pointDist = tr.Distance.Min( Distance );
 		var point = tr.StartPosition + (tr.Direction * pointDist);
 
-		if ( tr.Hit )
+		var validColor = Color.White.Desaturate( 0.4f );
+		var c1 = validColor.WithAlpha( 0.4f );
+		var c2 = validColor.WithAlpha( 0.1f );
+
+		if ( hasHit )
+		{
 			point += tr.Normal * ((BoardHeight / 2f) + 0.1f);
-
-
-		var c1 = Color.White.WithAlpha( 0.4f );
-		var c2 = Color.White.WithAlpha( 0.1f );
+		}
+		else
+		{
+			c1 = c1.WithAlphaMultiplied( 0.3f );
+			c2 = c2.WithAlphaMultiplied( 0.3f );
+		}
 
 		this.DrawSphere( 2f, point, Color.Transparent, c1, global::Transform.Zero );
 
@@ -102,16 +131,19 @@ public partial class BoardTool : EditorTool
 
 			var isError = dist < BoardWidth;
 
-			if ( isError )
+			if ( isError && !hasHit )
 			{
-				var red = Color.Red.Desaturate( 0.4f );
-				c1 = red.WithAlpha( 0.4f );
-				c2 = red.WithAlpha( 0.2f );
+				var errorColor = Color.Red.Desaturate( 0.4f );
+				var c1Error = errorColor.WithAlpha( 0.4f );
+				var c2Error = errorColor.WithAlpha( 0.2f );
+
+				c1 = c1Error;
+				c2 = c2Error;
 			}
 
 			this.DrawBox( bounds, c1, c2, tBox );
 
-			if ( PressedPrimary && !isError )
+			if ( PressedPrimary )
 			{
 				var tBoard = tBox.WithScale( tBox.Scale / BoxSize );
 
@@ -121,7 +153,7 @@ public partial class BoardTool : EditorTool
 		}
 		else
 		{
-			if ( PressedPrimary )
+			if ( hasHit && PressedPrimary )
 				StartPoint = point;
 		}
 	}
