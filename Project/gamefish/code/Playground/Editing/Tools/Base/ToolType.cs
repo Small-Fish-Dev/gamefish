@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Playground;
 
 /// <summary>
@@ -44,6 +46,14 @@ public enum ToolType
 	[Icon( "💪" )]
 	[Group( "Joints" )]
 	Constraint,
+
+	/// <summary>
+	/// Silly/weird stuff
+	/// </summary>
+	[Order( 40 )]
+	[Icon( "👽" )]
+	[Group( "Fun" )]
+	Fun,
 
 	/// <summary>
 	/// You are the law.

@@ -46,10 +46,10 @@
     ],
     "Children": [
       {
-        "__guid": "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8",
+        "__guid": "c0ed4fba-972c-4dbe-a3c4-2b93b649d451",
         "__version": 1,
         "Flags": 0,
-        "Name": "Remover",
+        "Name": "Utility",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
@@ -60,51 +60,70 @@
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
-        "Components": [
+        "Components": [],
+        "Children": [
           {
-            "__type": "Playground.RemoverTool",
-            "__guid": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
-            "__enabled": true,
-            "AllowPawns": true,
-            "ClassId": null,
-            "ClassName": null,
-            "Filter": null,
-            "FunctionHints": [
+            "__guid": "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Remover",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
               {
-                "Name": "Remove",
-                "Description": null,
-                "Action": "Attack1",
-                "Mode": "Pressed"
+                "__type": "Playground.RemoverTool",
+                "__guid": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
+                "__enabled": true,
+                "AllowPawns": true,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Remove",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "ToolDescription": "Destroys non-essential stuff.",
+                "ToolEmoji": "✂",
+                "ToolName": "Remover",
+                "ToolType": "Utility"
               }
             ],
-            "IsAdminOnly": false,
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Host",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "ToolDescription": "Destroys non-essential stuff.",
-            "ToolEmoji": "✂",
-            "ToolName": "Remover",
-            "ToolType": "Utility"
+            "Children": []
           }
-        ],
-        "Children": []
+        ]
       },
       {
-        "__guid": "52a12b49-9f06-4b71-984e-32d960f2a5be",
+        "__guid": "0716a65d-742b-4a25-8aeb-3a23be488a57",
         "__version": 1,
         "Flags": 0,
-        "Name": "Leafblower",
+        "Name": "Physics",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
@@ -115,58 +134,139 @@
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
-        "Components": [
+        "Components": [],
+        "Children": [
           {
-            "__type": "Playground.LeafblowerTool",
-            "__guid": "b2b066f7-5763-4eb4-8e50-205edf592d95",
-            "__enabled": true,
-            "ClassId": null,
-            "ClassName": null,
-            "Filter": null,
-            "Force": 3000,
-            "FunctionHints": [
+            "__guid": "046bb8fe-3b84-4051-a538-d1a5c67e0934",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Grabber",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
               {
-                "Name": "Blow",
-                "Description": null,
-                "Action": "Attack1",
-                "Mode": "Pressed"
-              },
-              {
-                "Name": "Suck",
-                "Description": null,
-                "Action": "Attack2",
-                "Mode": "Pressed"
+                "__type": "Playground.GrabberTool",
+                "__guid": "f3f9b2a6-8975-42e1-9633-c6313e931117",
+                "__enabled": true,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Grab",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Held"
+                  },
+                  {
+                    "Name": "Freeze",
+                    "Description": null,
+                    "Action": "Attack2",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "HandPrefab": "prefabs/modes/sbox/tools/grabber/grabber_hand.prefab",
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "f3f9b2a6-8975-42e1-9633-c6313e931117",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "ScrollSensitivity": 30,
+                "ToolDescription": "Moves and (un)freezes objects.",
+                "ToolEmoji": "\uD83E\uDDD9‍",
+                "ToolName": "Grabber",
+                "ToolType": "Physics"
               }
             ],
-            "IsAdminOnly": false,
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "b2b066f7-5763-4eb4-8e50-205edf592d95",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Host",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "ToolDescription": "It sucks. It blows.",
-            "ToolEmoji": "\uD83C\uDF2C",
-            "ToolName": "Leafblower",
-            "ToolType": "Physics"
+            "Children": []
+          },
+          {
+            "__guid": "52a12b49-9f06-4b71-984e-32d960f2a5be",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Leafblower",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Playground.LeafblowerTool",
+                "__guid": "b2b066f7-5763-4eb4-8e50-205edf592d95",
+                "__enabled": true,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "Force": 3000,
+                "FunctionHints": [
+                  {
+                    "Name": "Blow",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Suck",
+                    "Description": null,
+                    "Action": "Attack2",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "b2b066f7-5763-4eb4-8e50-205edf592d95",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "ToolDescription": "It sucks. It blows.",
+                "ToolEmoji": "\uD83C\uDF2C",
+                "ToolName": "Leafblower",
+                "ToolType": "Physics"
+              }
+            ],
+            "Children": []
           }
-        ],
-        "Children": []
+        ]
       },
       {
-        "__guid": "046bb8fe-3b84-4051-a538-d1a5c67e0934",
+        "__guid": "3a915d16-58cf-468b-b337-a51c88adc2c3",
         "__version": 1,
         "Flags": 0,
-        "Name": "Grabber",
-        "Position": "0,0,0",
+        "Name": "Creation",
+        "Position": "31.50146,41.987,-19.7664",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "",
@@ -176,135 +276,92 @@
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
-        "Components": [
+        "Components": [],
+        "Children": [
           {
-            "__type": "Playground.GrabberTool",
-            "__guid": "f3f9b2a6-8975-42e1-9633-c6313e931117",
-            "__enabled": true,
-            "ClassId": null,
-            "ClassName": null,
-            "Filter": null,
-            "FunctionHints": [
+            "__guid": "4a0378e9-01aa-40ed-8192-7fdeb4f12f59",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Box",
+            "Position": "-31.50146,-41.987,19.7664",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
               {
-                "Name": "Grab",
-                "Description": null,
-                "Action": "Attack1",
-                "Mode": "Held"
-              },
-              {
-                "Name": "Freeze",
-                "Description": null,
-                "Action": "Attack2",
-                "Mode": "Pressed"
+                "__type": "Playground.BoxTool",
+                "__guid": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
+                "__enabled": true,
+                "BoxPrefab": "prefabs/modes/sbox/tools/box/box_50.prefab",
+                "BoxSize": 50,
+                "ClassId": null,
+                "ClassName": null,
+                "Distance": 256,
+                "DistanceRange": {
+                  "Min": 16,
+                  "Max": 1024
+                },
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Add Point",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Cancel",
+                    "Description": null,
+                    "Action": "Attack2",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Mode",
+                    "Description": null,
+                    "Action": "Use",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Precision",
+                    "Description": null,
+                    "Action": "Run",
+                    "Mode": "Held"
+                  }
+                ],
+                "Height": 32,
+                "HeightLimit": 1024,
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "ScrollSensitivity": 8,
+                "ToolDescription": "Spawns resizable boxes.",
+                "ToolEmoji": "\uD83D\uDCE6",
+                "ToolName": "Box",
+                "ToolType": "Creation",
+                "UseHeight": true
               }
             ],
-            "HandPrefab": "prefabs/modes/sbox/tools/grabber/grabber_hand.prefab",
-            "IsAdminOnly": false,
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "f3f9b2a6-8975-42e1-9633-c6313e931117",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Host",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "ScrollSensitivity": 30,
-            "ToolDescription": "Moves and (un)freezes objects.",
-            "ToolEmoji": "\uD83E\uDDD9‍",
-            "ToolName": "Grabber",
-            "ToolType": "Physics"
+            "Children": []
           }
-        ],
-        "Children": []
-      },
-      {
-        "__guid": "4a0378e9-01aa-40ed-8192-7fdeb4f12f59",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "Box",
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "Playground.BoxTool",
-            "__guid": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
-            "__enabled": true,
-            "BoxPrefab": "prefabs/modes/sbox/tools/box/box_50.prefab",
-            "BoxSize": 50,
-            "ClassId": null,
-            "ClassName": null,
-            "Distance": 256,
-            "DistanceRange": {
-              "Min": 16,
-              "Max": 1024
-            },
-            "Filter": null,
-            "FunctionHints": [
-              {
-                "Name": "Add Point",
-                "Description": null,
-                "Action": "Attack1",
-                "Mode": "Pressed"
-              },
-              {
-                "Name": "Cancel",
-                "Description": null,
-                "Action": "Attack2",
-                "Mode": "Pressed"
-              },
-              {
-                "Name": "Mode",
-                "Description": null,
-                "Action": "Use",
-                "Mode": "Pressed"
-              },
-              {
-                "Name": "Precision",
-                "Description": null,
-                "Action": "Run",
-                "Mode": "Held"
-              }
-            ],
-            "Height": 32,
-            "HeightLimit": 1024,
-            "IsAdminOnly": false,
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Host",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "ScrollSensitivity": 8,
-            "ToolDescription": "Spawns resizable boxes.",
-            "ToolEmoji": "\uD83D\uDCE6",
-            "ToolName": "Box",
-            "ToolType": "Creation",
-            "UseHeight": true
-          }
-        ],
-        "Children": []
+        ]
       }
     ],
     "__properties": {
