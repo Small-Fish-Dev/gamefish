@@ -16,15 +16,15 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.ClientPawnCyclerModule",
-        "__guid": "e726da28-91f2-4a55-a7e8-7756731d44f9",
+        "__type": "GameFish.ClientSpectatorToggle",
+        "__guid": "40505435-1abd-4235-b08e-367d8a819657",
         "__enabled": true,
         "ClassId": "pawn_toggler",
         "ClassName": null,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
-        "NetworkId": "e726da28-91f2-4a55-a7e8-7756731d44f9",
+        "NetworkId": "40505435-1abd-4235-b08e-367d8a819657",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
@@ -35,10 +35,6 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "PawnToggleList": [
-          "prefabs/player/spectator.prefab",
-          "prefabs/modes/sbox/player/player_sbox.prefab"
-        ],
         "TogglePawnButton": "Debug 1"
       }
     ],

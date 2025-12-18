@@ -173,7 +173,7 @@
                     "Mode": "Pressed"
                   }
                 ],
-                "HandPrefab": "prefabs/modes/sbox/tools/grabber/grabber_hand.prefab",
+                "HandPrefab": "prefabs/editing/tools/grabber/grabber_hand.prefab",
                 "IsAdminOnly": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
@@ -298,7 +298,7 @@
                 "__type": "Playground.BoxTool",
                 "__guid": "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc",
                 "__enabled": true,
-                "BoxPrefab": "prefabs/modes/sbox/tools/box/box_50.prefab",
+                "BoxPrefab": "prefabs/editing/tools/box/box_50.prefab",
                 "BoxSize": 50,
                 "ClassId": null,
                 "ClassName": null,
@@ -382,7 +382,7 @@
                 "__guid": "a6ba7d7b-8951-45cd-97d9-30364ccf1a37",
                 "__enabled": true,
                 "BoardHeight": 5,
-                "BoardPrefab": "prefabs/modes/sbox/tools/box/box_50.prefab",
+                "BoardPrefab": "prefabs/editing/tools/board/board_50.prefab",
                 "BoardWidth": 16,
                 "BoxSize": 50,
                 "ClassId": null,

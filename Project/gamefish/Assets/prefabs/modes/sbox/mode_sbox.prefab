@@ -39,26 +39,7 @@
         "SpectatorPrefab": "prefabs/player/spectator.prefab"
       }
     ],
-    "Children": [
-      {
-        "__guid": "c178a3eb-3d80-4f21-8b96-d1840ac40608",
-        "__version": 1,
-        "__Prefab": "prefabs/system/editor.prefab",
-        "__PrefabInstancePatch": {
-          "AddedObjects": [],
-          "RemovedObjects": [],
-          "PropertyOverrides": [],
-          "MovedObjects": []
-        },
-        "__PrefabIdToInstanceId": {
-          "bebef8e0-fb0b-4b2c-9180-fd5a95fd5e3d": "c178a3eb-3d80-4f21-8b96-d1840ac40608",
-          "993ed032-9e55-45b5-93ac-9a9578e282f3": "df2190f6-4b40-4a05-8740-dd068b787c40",
-          "52a12b49-9f06-4b71-984e-32d960f2a5be": "ff798da6-bfe9-4a1a-8a96-8b8c9fb4fa42",
-          "917b711e-336c-47a9-9792-52605fd23f46": "54044113-e70d-40df-9eee-a5e74a6aa813",
-          "fc2f3bcd-a75c-4c25-93ae-b0d050d57a41": "5509cf0f-59be-4684-baad-e5036cb76d5e"
-        }
-      }
-    ],
+    "Children": [],
     "__properties": {
       "NetworkInterpolation": true,
       "TimeScale": 1,

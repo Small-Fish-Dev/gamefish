@@ -46,21 +46,12 @@
         "__PrefabInstancePatch": {
           "AddedObjects": [],
           "RemovedObjects": [],
-          "PropertyOverrides": [
-            {
-              "Target": {
-                "Type": "Component",
-                "IdValue": "e726da28-91f2-4a55-a7e8-7756731d44f9"
-              },
-              "Property": "__type",
-              "Value": "GameFish.ClientSpectatorToggle"
-            }
-          ],
+          "PropertyOverrides": [],
           "MovedObjects": []
         },
         "__PrefabIdToInstanceId": {
           "1e9b6ab9-0fac-45cc-b3f9-3ab116b24fc1": "7a018834-690a-4e86-adf0-a64181906d4e",
-          "e726da28-91f2-4a55-a7e8-7756731d44f9": "1ffb7327-ae2e-45d8-9e6c-2fff570d2ef3"
+          "40505435-1abd-4235-b08e-367d8a819657": "1ffb7327-ae2e-45d8-9e6c-2fff570d2ef3"
         }
       }
     ],

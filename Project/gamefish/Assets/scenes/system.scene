@@ -196,6 +196,34 @@
             "8e49c22c-1015-4190-b039-e96dda3c2d95": "ff66ed56-7bca-46c2-ba7f-ce6c4f541a3c",
             "8f0c134c-cead-4698-840e-c52953eae48c": "17297473-e551-4068-92a7-95bdce980197"
           }
+        },
+        {
+          "__guid": "4e7083d9-1eac-46aa-8735-14537a735d91",
+          "__version": 1,
+          "__Prefab": "prefabs/system/editor.prefab",
+          "__PrefabInstancePatch": {
+            "AddedObjects": [],
+            "RemovedObjects": [],
+            "PropertyOverrides": [],
+            "MovedObjects": []
+          },
+          "__PrefabIdToInstanceId": {
+            "bebef8e0-fb0b-4b2c-9180-fd5a95fd5e3d": "4e7083d9-1eac-46aa-8735-14537a735d91",
+            "993ed032-9e55-45b5-93ac-9a9578e282f3": "64f49e92-c830-4eed-8ad6-c58a37ceb504",
+            "c0ed4fba-972c-4dbe-a3c4-2b93b649d451": "5d7211aa-33d4-44f8-9e25-314b6d02d5e4",
+            "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8": "b29349ff-dddf-40c8-b52e-5127b611c3a9",
+            "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da": "c35d4d60-d221-4dcc-ab3e-5c20d6a81480",
+            "0716a65d-742b-4a25-8aeb-3a23be488a57": "07c34522-9e31-48d6-ae76-eb5296f0a1af",
+            "046bb8fe-3b84-4051-a538-d1a5c67e0934": "00e4da48-fcbf-498c-8ed7-441609428fc8",
+            "f3f9b2a6-8975-42e1-9633-c6313e931117": "f6afb726-67b6-4247-b515-53c36f6a1f34",
+            "52a12b49-9f06-4b71-984e-32d960f2a5be": "be86717f-46a3-46a7-ba72-3ea176b00670",
+            "b2b066f7-5763-4eb4-8e50-205edf592d95": "53056ab5-716c-4324-b974-92bee6a597a4",
+            "3a915d16-58cf-468b-b337-a51c88adc2c3": "27c50793-ce68-487f-85d5-ae455f547a8b",
+            "4a0378e9-01aa-40ed-8192-7fdeb4f12f59": "dd77b179-5576-4676-a58c-047196b953a8",
+            "a79dcd39-4fd8-4d80-b8cf-9d69214cccdc": "b995b908-d6cf-431e-bd86-f82045c06e98",
+            "0694e9d7-6864-437a-8aec-efc9322b8b78": "8e57abea-bb5d-4692-9197-0fdfe8e6f0bf",
+            "a6ba7d7b-8951-45cd-97d9-30364ccf1a37": "62d5c3b1-8953-42a4-a388-906e94d1c9f7"
+          }
         }
       ]
     }
