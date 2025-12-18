@@ -46,6 +46,61 @@
     ],
     "Children": [
       {
+        "__guid": "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Remover",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Playground.RemoverTool",
+            "__guid": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
+            "__enabled": true,
+            "AllowPawns": true,
+            "ClassId": null,
+            "ClassName": null,
+            "Filter": null,
+            "FunctionHints": [
+              {
+                "Name": "Remove",
+                "Description": null,
+                "Action": "Attack1",
+                "Mode": "Pressed"
+              }
+            ],
+            "IsAdminOnly": false,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "Host",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ToolDescription": "Destroys non-essential stuff.",
+            "ToolEmoji": "✂",
+            "ToolName": "Remover",
+            "ToolType": "Utility"
+          }
+        ],
+        "Children": []
+      },
+      {
         "__guid": "52a12b49-9f06-4b71-984e-32d960f2a5be",
         "__version": 1,
         "Flags": 0,
@@ -100,61 +155,8 @@
             "OnComponentUpdate": null,
             "ToolDescription": "It sucks. It blows.",
             "ToolEmoji": "\uD83C\uDF2C",
-            "ToolName": "Leafblower"
-          }
-        ],
-        "Children": []
-      },
-      {
-        "__guid": "a0a01d85-f30a-4ed4-9d5d-ddbfeb6e16e8",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "Remover",
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "Playground.RemoverTool",
-            "__guid": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
-            "__enabled": true,
-            "AllowPawns": true,
-            "ClassId": null,
-            "ClassName": null,
-            "Filter": null,
-            "FunctionHints": [
-              {
-                "Name": "Remove",
-                "Description": null,
-                "Action": "Attack1",
-                "Mode": "Pressed"
-              }
-            ],
-            "IsAdminOnly": false,
-            "IsClass": false,
-            "IsNetworkingForced": true,
-            "NetworkAutomatically": true,
-            "NetworkId": "26fd1bbb-4a76-4f1f-a66b-9fa2c1be48da",
-            "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Host",
-            "NetworkOwner": null,
-            "NetworkTransferMode": "Fixed",
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "ToolDescription": "Destroys non-essential stuff.",
-            "ToolEmoji": "✂",
-            "ToolName": "Remover"
+            "ToolName": "Leafblower",
+            "ToolType": "Physics"
           }
         ],
         "Children": []
@@ -215,7 +217,8 @@
             "ScrollSensitivity": 30,
             "ToolDescription": "Moves and (un)freezes objects.",
             "ToolEmoji": "\uD83E\uDDD9‍",
-            "ToolName": "Grabber"
+            "ToolName": "Grabber",
+            "ToolType": "Physics"
           }
         ],
         "Children": []
@@ -294,9 +297,10 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "ScrollSensitivity": 8,
-            "ToolDescription": "Creates boxes.",
+            "ToolDescription": "Spawns resizable boxes.",
             "ToolEmoji": "\uD83D\uDCE6",
             "ToolName": "Box",
+            "ToolType": "Creation",
             "UseHeight": true
           }
         ],

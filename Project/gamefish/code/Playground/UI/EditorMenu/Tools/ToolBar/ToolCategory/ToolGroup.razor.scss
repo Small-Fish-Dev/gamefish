@@ -1,29 +1,38 @@
-@import "../../global.scss";
+@import "../../../../global.scss";
 
-ToolBar {
-	height: 100%;
+ToolGroup {
+	height: auto;
 	width: 250px;
 
-	padding: 5;
-	gap: 3;
+	gap: 4;
+	padding: 2;
 
-	align-self: flex-end;
+	align-self: flex-start;
 	flex-direction: column;
 
-	// background-color: rgba(30, 30, 30, 0.2);
+	background-color: rgba(30, 30, 30, 0.5);
 
-	.tools-title {
-		align-self: center;
+	.group-bar {
+		cursor: pointer;
 
-		font-size: 30px;
+		width: 100%;
+
+		padding-left: 5;
+		padding-right: 5;
+
+		color: white;
+		font-size: 26px;
 		font-weight: 600;
+
+		background-color: rgb(49, 103, 165);
 	}
 
 	.tool-button {
 		cursor: pointer;
 
 		height: 30;
-		gap: 2;
+
+		gap: 1px;
 
 		align-items: center;
 		justify-content: flex-start;
@@ -31,8 +40,10 @@ ToolBar {
 		padding-left: 7;
 		padding-right: 7;
 
-		color: white;
+		color: hsl(0, 0%, 80%);
+
 		font-size: 22px;
+		font-weight: 400;
 		text-align: center;
 
 		background-color: hsla(0, 0%, 12%, 0.8);

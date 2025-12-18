@@ -1,0 +1,28 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@{
+	var toolGroups = GetToolGroups();
+
+	if (toolGroups is null || !toolGroups.Any())
+	{
+		return;
+	}
+}
+
+<root>
+
+	<label class="tools-title"> Tools </label>
+
+	@foreach (var type in toolGroups)
+	{
+		<ToolGroup Type="@type" />
+	}
+
+</root>

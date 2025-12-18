@@ -7,9 +7,9 @@
 @namespace Playground.Razor
 
 @{
-	var editorTools = Tools;
+	var groupTools = Tools;
 
-	if (editorTools is null || !editorTools.Any())
+	if (groupTools is null || !groupTools.Any())
 	{
 		return;
 	}
@@ -17,9 +17,17 @@
 
 <root>
 
-	<label class="tools-title"> Tools </label>
+	@if (!Header.IsBlank())
+	{
+		<p class="group-bar" @onclick=@(() => Toggle())> @Header </p>
+	}
 
-	@foreach (var tool in editorTools)
+	@if (IsCollapsed)
+	{
+		return;
+	}
+
+	@foreach (var tool in groupTools)
 	{
 		if (!tool.IsValid())
 			continue;
@@ -27,8 +35,8 @@
 		var selClass = tool == ActiveTool ? "selected" : "";
 
 		var icon = tool.ToolEmoji.IsBlank()
-			? EditorTool.DEFAULT_EMOJI
-			: tool.ToolEmoji;
+		? EditorTool.DEFAULT_EMOJI
+		: tool.ToolEmoji;
 
 		<div class="tool-button @selClass" tooltip="@tool.ToolDescription" @onclick=@(() => Select(tool))>
 

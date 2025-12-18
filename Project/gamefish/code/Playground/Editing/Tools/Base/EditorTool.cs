@@ -1,5 +1,3 @@
-using Microsoft.VisualBasic;
-
 namespace Playground;
 
 [Icon( "build" )]
@@ -11,7 +9,7 @@ public abstract partial class EditorTool : PlaygroundModule
 	protected const int PREFABS_ORDER = EDITOR_ORDER + 50;
 	protected const int SETTINGS_ORDER = EDITOR_ORDER + 100;
 
-	public const string DEFAULT_EMOJI = "❔";
+	public const string DEFAULT_EMOJI = "⚪";
 
 	public override bool IsParent( ModuleEntity comp )
 		=> comp is Editor;
@@ -29,17 +27,26 @@ public abstract partial class EditorTool : PlaygroundModule
 	public bool IsAdminOnly { get; set; } = false;
 
 	[Property]
+	[Title( "Group" )]
 	[Feature( EDITOR ), Group( DISPLAY ), Order( EDITOR_ORDER )]
-	public string ToolEmoji { get; set; } = "❔";
+	public ToolType ToolType { get; set; } = ToolType.Default;
 
 	[Property]
+	[Title( "Emoji" )]
+	[Feature( EDITOR ), Group( DISPLAY ), Order( EDITOR_ORDER )]
+	public string ToolEmoji { get; set; } = DEFAULT_EMOJI;
+
+	[Property]
+	[Title( "Name" )]
 	[Feature( EDITOR ), Group( DISPLAY ), Order( EDITOR_ORDER )]
 	public string ToolName { get; set; } = "Tool";
 
 	[Property, TextArea]
+	[Title( "Description" )]
 	[Feature( EDITOR ), Group( DISPLAY ), Order( EDITOR_ORDER )]
 	public string ToolDescription { get; set; } = "Does stuff.";
 
+	[Title( "Hints" )]
 	[Property, WideMode]
 	[Feature( EDITOR ), Group( INPUT ), Order( INPUT_ORDER )]
 	public List<ToolFunction> FunctionHints { get; set; }
