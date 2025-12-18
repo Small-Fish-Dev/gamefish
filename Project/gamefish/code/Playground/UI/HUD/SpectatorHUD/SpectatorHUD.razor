@@ -1,0 +1,37 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+@using GameFish.Razor;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@if (!Spectator.IsValid())
+{
+	return;
+}
+
+<root>
+
+	<div class="bottom">
+
+		<div class="spec-hints">
+
+			@if (Target.IsValid())
+			{
+				<Keybind Action="@Spectator.StopSpectatingAction" Text="Exit" />
+			}
+			else
+			{
+				<Keybind Action="@Spectator.SpectateTargetAction" Text="Spectate" />
+			}
+
+			<Keybind Action="@Spectator.SpectatePreviousAction" Text="Prev" />
+			<Keybind Action="@Spectator.SpectateNextAction" Text="Next" />
+
+		</div>
+
+	</div>
+
+</root>

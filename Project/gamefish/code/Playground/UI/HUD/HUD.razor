@@ -8,15 +8,21 @@
 
 <root>
 
-	@if (!IsAlive)
+	@if (Spectator.IsValid())
 	{
+		<SpectatorHUD />
 		return;
 	}
 
-	<div class="hud-inner">
+	@if (IsAlive)
+	{
 
-		@* <PlayerHealth /> *@
+		<div class="hud-inner">
 
-	</div>
+			@* <PlayerHealth /> *@
+
+		</div>
+
+	}
 
 </root>

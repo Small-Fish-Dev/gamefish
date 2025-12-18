@@ -30,5 +30,5 @@ partial class UI
 	public bool IsMenuOpen { get; set; }
 
 	protected override int BuildHash()
-		=> HashCode.Combine( InMainMenu, IsMenuOpen );
+		=> HashCode.Combine( InMainMenu, IsMenuOpen, EditorMenu.IsOpen );
 }

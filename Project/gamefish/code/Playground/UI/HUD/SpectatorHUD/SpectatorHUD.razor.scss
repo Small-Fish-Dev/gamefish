@@ -1,0 +1,31 @@
+@import "../../global.scss";
+
+SpectatorHUD {
+	position: absolute;
+
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	align-items: center;
+	justify-content: center;
+
+	color: $font-color;
+
+	.bottom {
+		position: absolute;
+		bottom: 0px;
+
+		align-self: flex-end;
+		align-items: flex-end;
+		justify-content: center;
+
+		.spec-hints {
+			padding-left: 11;
+			padding-right: 15;
+
+			background-color: rgba(30, 30, 30, 0.65);
+		}
+	}
+}

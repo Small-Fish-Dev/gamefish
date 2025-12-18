@@ -27,6 +27,9 @@
 
 	<EditorMenu />
 
-	<HUD />
+	@if (!EditorMenu.IsOpen)
+	{
+		<HUD />
+	}
 
 </root>

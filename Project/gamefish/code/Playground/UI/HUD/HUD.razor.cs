@@ -5,10 +5,11 @@ namespace Playground.Razor;
 
 partial class HUD
 {
-	protected static Pawn Player => Client.Local?.Pawn;
+	protected static Pawn Pawn => Client.Local?.Pawn;
+	protected static Pawn Spectator => Pawn as Spectator;
 
-	protected static bool IsAlive => Player?.IsAlive is true;
+	protected static bool IsAlive => Pawn?.IsAlive is true;
 
 	protected override int BuildHash()
-		=> HashCode.Combine( Player, IsAlive );
+		=> HashCode.Combine( Pawn, Spectator, IsAlive );
 }
