@@ -13,6 +13,7 @@ public partial class ClientSpectatorToggle : Module
 	public string TogglePawnButton { get; set; } = "Debug 1";
 
 	public Client Client => Parent as Client;
+	public Pawn Pawn => Client?.Pawn;
 
 	public override bool IsParent( ModuleEntity comp )
 		=> comp.IsValid() && comp is Client;
@@ -48,9 +49,14 @@ public partial class ClientSpectatorToggle : Module
 		if ( !GameState.TryGetCurrent( out var s ) )
 			return;
 
-		if ( Client.Pawn is Spectator )
+		var tPrev = Client.Pawn?.EyeTransform;
+
+		if ( Pawn is Spectator )
 			s.TryAssignPlayer( Client, out _, force: true, oldCleanup: true );
 		else
 			s.TryAssignSpectator( Client, out _, force: true, oldCleanup: true );
+
+		if ( tPrev.HasValue && Pawn.IsValid() )
+			Pawn.TryTeleport( tPrev.Value );
 	}
 }
