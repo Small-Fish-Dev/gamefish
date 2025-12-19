@@ -1,0 +1,19 @@
+@import "../../global.scss";
+
+EditorHints {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+
+	height: 50;
+
+	gap: 5;
+	padding: 10;
+	padding-right: 15;
+
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
+
+	background-color: rgba(30, 30, 30, 0.65);
+}

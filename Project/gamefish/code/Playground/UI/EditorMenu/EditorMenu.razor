@@ -6,12 +6,14 @@
 
 @namespace Playground.Razor
 
-@if (!IsOpen)
-{
-	return;
-}
-
 <root>
+
+	@if (!IsOpen)
+	{
+
+		<EditorHints />
+		return;
+	}
 
 	<div class="top menu">
 

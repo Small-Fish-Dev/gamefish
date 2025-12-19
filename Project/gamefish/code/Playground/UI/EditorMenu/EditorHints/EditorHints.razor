@@ -1,0 +1,20 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+@using GameFish.Razor;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@if (!HasEditor || IsEditorOpen)
+{
+	return;
+}
+
+<root>
+
+	<Keybind Action="@EditorMenuAction" Text="Menu" tooltip="Press to toggle, hold to auto-close." />
+	<Keybind Action="Debug 1" Text="@(IsSpectator ? "Play" : "Spectate")" />
+
+</root>
