@@ -85,7 +85,7 @@ public partial class FreeCamViewMode : ViewMode
 		if ( !pawn.IsValid() )
 			return;
 
-		/*var angles = new Angles( WorldRotation * Input.AnalogLook ) with { roll = 0.0f };
+		/*var angles = new Angles( WorldRotation * Client.TryGetLocalAim ) with { roll = 0.0f };
 
 		if ( PitchClamp > 0f )
 			angles.pitch = angles.pitch.Clamp( -PitchClamp, PitchClamp );

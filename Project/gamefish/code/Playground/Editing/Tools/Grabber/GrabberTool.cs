@@ -18,7 +18,6 @@ public partial class GrabberTool : EditorTool
 	public float GrabDistance { get; set; }
 
 	public bool IsRotating { get; set; }
-	public Vector2? LastMousePosition { get; set; }
 
 	/// <summary>
 	/// Hack for buggy cursor/aim toggle shit.
@@ -34,9 +33,6 @@ public partial class GrabberTool : EditorTool
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
-
-		if ( !IsRotating && Mouse.Active )
-			LastMousePosition = Mouse.Position;
 
 		if ( !IsSelected || !IsMenuOpen )
 			TryDropHeld();
@@ -97,16 +93,12 @@ public partial class GrabberTool : EditorTool
 
 			var rInv = Hand.WorldRotation.Inverse;
 
-			var rYaw = Rotation.FromAxis( rInv.Up, Input.AnalogLook.yaw );
-			var rPitch = Rotation.FromPitch( Input.AnalogLook.pitch );
+			var aim = Input.AnalogLook;
+			var rYaw = Rotation.FromAxis( rInv.Up, aim.yaw );
+			var rPitch = Rotation.FromPitch( aim.pitch );
 
 			Hand.WorldRotation *= rYaw;
 			Hand.WorldRotation *= rPitch;
-
-			Input.AnalogLook = Angles.Zero;
-
-			if ( LastMousePosition.HasValue )
-				Mouse.Position = LastMousePosition.Value;
 		}
 	}
 

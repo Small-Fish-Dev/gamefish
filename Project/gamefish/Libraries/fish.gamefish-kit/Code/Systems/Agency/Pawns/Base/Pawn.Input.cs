@@ -37,7 +37,13 @@ partial class Pawn : ISimulate
 	/// </summary>
 	protected virtual void DoAiming( in float deltaTime )
 	{
-		if ( Controller.IsValid() && IsPlayer )
-			Controller.TryAim( Input.AnalogLook, in deltaTime );
+		if ( !IsPlayer )
+			return;
+
+		if ( !Client.TryGetLocalAim( out var aim ) )
+			return;
+
+		if ( Controller.IsValid() )
+			Controller.TryAim( aim, in deltaTime );
 	}
 }

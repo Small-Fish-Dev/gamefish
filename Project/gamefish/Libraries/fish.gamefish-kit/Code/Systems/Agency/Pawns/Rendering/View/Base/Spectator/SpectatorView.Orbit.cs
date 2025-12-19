@@ -54,8 +54,9 @@ partial class SpectatorView
 		if ( PreviousOffset.HasValue && TransitionFraction < 0.9f )
 			return false;
 
-		if ( AllowOrbiting && !Input.AnalogLook.AsVector3().AlmostEqual( Vector3.Zero ) )
-			OrbitingReset = OrbitingResetDelay;
+		if ( AllowOrbiting && Client.TryGetLocalAim( out var aim ) )
+			if ( aim.ToRotation().Angle().AlmostEqual( 0f ) )
+				OrbitingReset = OrbitingResetDelay;
 
 		return true;
 	}
@@ -76,7 +77,7 @@ partial class SpectatorView
 		if ( PreviousOffset.HasValue && TransitionFraction < 0.9f )
 			return;
 
-		if ( AllowOrbiting && !Input.AnalogLook.AsVector3().AlmostEqual( Vector3.Zero ) )
+		if ( AllowOrbiting && !Client.TryGetLocalAim.AsVector3().AlmostEqual( Vector3.Zero ) )
 			OrbitingReset = OrbitingResetDelay;
 
 		base.DoAiming();

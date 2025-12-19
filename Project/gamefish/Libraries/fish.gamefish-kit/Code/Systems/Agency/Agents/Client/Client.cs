@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace GameFish;
 
 /// <summary>
@@ -32,6 +30,11 @@ public partial class Client : Agent
 	}
 
 	private static Client _local;
+
+	/// <summary>
+	/// Is this the client we're using?
+	/// </summary>
+	public bool IsLocal => Local == this;
 
 	[Sync( SyncFlags.FromHost )]
 	public bool IsBot { get; set; }
@@ -117,8 +120,10 @@ public partial class Client : Agent
 	{
 		base.OnPreRender();
 
-		if ( this.IsOwner() )
-			UpdateCamera();
+		if ( !IsLocal )
+			return;
+
+		UpdateCamera();
 	}
 
 	/// <summary>
@@ -126,7 +131,7 @@ public partial class Client : Agent
 	/// </summary>
 	public virtual void UpdateCamera()
 	{
-		if ( Scene?.Camera is not CameraComponent cam || !cam.IsValid() )
+		if ( !Scene.IsValid() || !Scene.Camera.IsValid() )
 			return;
 
 		if ( Pawn is not Pawn pawn || !pawn.IsValid() )
@@ -135,6 +140,7 @@ public partial class Client : Agent
 		if ( !pawn.CanSimulate() )
 			return;
 
+		var cam = Scene.Camera;
 		var tView = cam.WorldTransform;
 
 		if ( pawn.TryApplyView( cam, ref tView ) )

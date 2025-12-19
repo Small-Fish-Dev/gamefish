@@ -53,14 +53,15 @@ partial class Spectator
 		if ( !view.TryAiming( in deltaTime ) )
 			return;
 
-		var angLook = Input.AnalogLook;
+		if ( !Client.TryGetLocalAim( out var aim ) )
+			return;
 
 		if ( PitchClamping )
 		{
 			Angles angAim = EyeRotation;
 
-			angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( PitchRange );
-			angAim.yaw += angLook.yaw;
+			angAim.pitch = (angAim.pitch + aim.pitch).Clamp( PitchRange );
+			angAim.yaw += aim.yaw;
 
 			angAim.roll = angAim.roll.LerpDegreesTo( 0f, Time.Delta * 10f );
 
@@ -71,8 +72,8 @@ partial class Spectator
 			var rAim = EyeRotation;
 			var rInverse = rAim.Inverse;
 
-			rAim *= Rotation.FromAxis( rInverse.Up, angLook.yaw );
-			rAim *= Rotation.FromPitch( angLook.pitch );
+			rAim *= Rotation.FromAxis( rInverse.Up, aim.yaw );
+			rAim *= Rotation.FromPitch( aim.pitch );
 
 			rAim *= Rotation.FromRoll( -rAim.Roll() * deltaTime * 10f );
 
