@@ -13,17 +13,19 @@ partial class Editor
 	/// <summary>
 	/// Should the menu be open?
 	/// </summary>
-	public bool IsOpen
+	public virtual bool IsOpen
 	{
 		get => _isOpen;
 		set
 		{
 			_isOpen = value;
-			Mouse.Visibility = _isOpen ? MouseVisibility.Visible : MouseVisibility.Auto;
+			OnSetIsOpen( _isOpen );
 		}
 	}
 
 	protected bool _isOpen;
+
+	public virtual TimeSince? LastOpened { get; set; }
 
 	protected void UpdateMenu()
 	{
@@ -31,9 +33,31 @@ partial class Editor
 			return;
 
 		if ( Input.Pressed( ShowMenuAction ) )
-			IsOpen = true;
-		else if ( Input.Released( ShowMenuAction ) )
-			IsOpen = false;
+			OnPressedOpen();
+
+		if ( Input.Released( ShowMenuAction ) )
+			OnReleasedOpen();
+	}
+
+	protected virtual void OnPressedOpen()
+	{
+		IsOpen = !IsOpen;
+
+		if ( IsOpen )
+			LastOpened = 0f;
+	}
+
+	protected virtual void OnReleasedOpen()
+	{
+		// Auto-close if held long enough.
+		if ( LastOpened.HasValue )
+			if ( LastOpened.Value > 0.3f )
+				IsOpen = false;
+	}
+
+	protected virtual void OnSetIsOpen( in bool isOpen )
+	{
+		Mouse.Visibility = _isOpen ? MouseVisibility.Visible : MouseVisibility.Auto;
 	}
 
 	public static SceneTraceResult Trace( Scene sc, in Vector3 start, in Vector3 dir, in float? dist = null )
