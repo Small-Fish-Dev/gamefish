@@ -2,10 +2,11 @@ namespace Playground;
 
 public partial class RemoverTool : EditorTool
 {
-	public override void FrameSimulate( in float deltaTime )
+	public override void OnLeftClick()
 	{
-		if ( Input.Pressed( "Attack1" ) )
-			TryRemoveTarget();
+		base.OnLeftClick();
+
+		TryRemoveTarget();
 	}
 
 	protected virtual bool TryRemoveTarget()

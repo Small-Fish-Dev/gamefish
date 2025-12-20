@@ -84,4 +84,19 @@ public abstract partial class EditorTool : PlaygroundModule
 	{
 		// this.Log( "Middle clicked." );
 	}
+
+	public virtual void OnMouseUp( in MouseButtons mb )
+	{
+		// this.Log( $"Mouse up:[{mb}]" );
+	}
+
+	public virtual void OnMouseDrag( in Vector2 delta )
+	{
+		// this.Log( "Mouse dragged." );
+	}
+
+	public virtual void OnMouseDragEnd()
+	{
+		// this.Log( "Mouse drag ended." );
+	}
 }

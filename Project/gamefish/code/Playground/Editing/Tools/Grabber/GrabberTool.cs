@@ -17,18 +17,7 @@ public partial class GrabberTool : EditorTool
 	public bool IsGrabbing => Hand.IsValid() && Hand.BodyObject.IsValid();
 	public float GrabDistance { get; set; }
 
-	public bool IsRotating { get; set; }
-
-	/// <summary>
-	/// Hack for buggy cursor/aim toggle shit.
-	/// </summary>
-	protected RealTimeSince? SinceRotated { get; set; }
-	public bool IsLocked => SinceRotated.HasValue && SinceRotated.Value < 0.2f;
-
-	public static bool HoldingGrab => Input.Down( "Attack1" );
-	public static bool PressedFreeze => Input.Pressed( "Attack2" );
-
-	public static bool HoldingRotation => false; //Input.Down( "Use" );
+	protected TimeUntil DragCooldown { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -42,12 +31,54 @@ public partial class GrabberTool : EditorTool
 		DrawGrabberGizmos();
 	}
 
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		TryDropHeld();
+	}
+
 	public override void OnExit()
 	{
 		base.OnExit();
 
 		// Auto-drop on swap.
 		TryDropHeld();
+	}
+
+	public override void FrameSimulate( in float deltaTime )
+	{
+		base.FrameSimulate( deltaTime );
+
+		UpdateGrab( in deltaTime );
+	}
+
+	public override void OnMouseDragEnd()
+	{
+		base.OnMouseDragEnd();
+
+		TryDropHeld();
+	}
+
+	public override void OnLeftClick()
+	{
+		base.OnLeftClick();
+
+		TryGrabTarget();
+	}
+
+	public override void OnMouseDrag( in Vector2 delta )
+	{
+		base.OnMouseDrag( in delta );
+
+		TryGrabTarget();
+	}
+
+	public override void OnRightClick()
+	{
+		base.OnRightClick();
+
+		TryFreeze();
 	}
 
 	protected virtual void DrawGrabberGizmos()
@@ -76,43 +107,8 @@ public partial class GrabberTool : EditorTool
 		);
 	}
 
-	protected virtual void UpdateRotation( in float deltaTime )
+	protected virtual bool TryFreeze()
 	{
-		if ( !IsGrabbing )
-			return;
-
-		IsRotating = HoldingRotation;
-
-		Mouse.Visibility = IsRotating
-			? MouseVisibility.Hidden
-			: MouseVisibility.Visible;
-
-		if ( IsRotating )
-		{
-			SinceRotated = 0.1f;
-
-			var rInv = Hand.WorldRotation.Inverse;
-
-			var aim = Input.AnalogLook;
-			var rYaw = Rotation.FromAxis( rInv.Up, aim.yaw );
-			var rPitch = Rotation.FromPitch( aim.pitch );
-
-			Hand.WorldRotation *= rYaw;
-			Hand.WorldRotation *= rPitch;
-		}
-	}
-
-	public override void FrameSimulate( in float deltaTime )
-	{
-		UpdateGrab( in deltaTime );
-		UpdateFreeze( in deltaTime );
-	}
-
-	protected virtual void UpdateFreeze( in float deltaTime )
-	{
-		if ( !PressedFreeze )
-			return;
-
 		// Prefer to target what we're holding first.
 		PhysicsBody body = Hand?.Joint?.Body2;
 
@@ -120,36 +116,27 @@ public partial class GrabberTool : EditorTool
 		if ( !body.IsValid() )
 		{
 			if ( !TryTrace( out var tr ) || !CanTarget( Client.Local, in tr ) )
-				return;
+				return false;
 
 			body = tr.Body;
 		}
 
 		if ( !body.IsValid() )
-			return;
+			return false;
 
 		// Take network control if possible, otherwise it may not work.
 		if ( body.Component.IsValid() && body.Component.IsProxy )
 			if ( !body.Component.Network.TakeOwnership() )
-				return;
+				return false;
 
 		body.MotionEnabled = !body.MotionEnabled;
+
+		return true;
 	}
 
 	protected virtual void UpdateGrab( in float deltaTime )
 	{
-		if ( !HoldingGrab )
-		{
-			if ( !IsRotating )
-				TryDropHeld();
-
-			return;
-		}
-
-		if ( HoldingGrab && !IsLocked )
-			TryGrabTarget();
-
-		if ( !IsGrabbing || IsRotating )
+		if ( !IsGrabbing )
 			return;
 
 		if ( !Mouse.Active || !TryTrace( out var tr ) )
@@ -160,7 +147,7 @@ public partial class GrabberTool : EditorTool
 
 		if ( yScroll != 0f )
 		{
-			if ( Input.Keyboard.Down( "Shift" ) )
+			if ( HoldingShift )
 			{
 				var pitch = Rotation.FromPitch( yScroll * -5f );
 				Hand.WorldRotation *= pitch;
@@ -178,7 +165,7 @@ public partial class GrabberTool : EditorTool
 		{
 			var rInv = Hand.WorldRotation.Inverse;
 
-			var rAdd = Input.Keyboard.Down( "Shift" )
+			var rAdd = HoldingShift
 				? Rotation.FromRoll( xScroll * 10f )
 				: Rotation.FromAxis( rInv.Up, xScroll * -10f );
 
@@ -188,8 +175,6 @@ public partial class GrabberTool : EditorTool
 
 	protected virtual bool TryDropHeld()
 	{
-		IsRotating = false;
-
 		if ( IsSelected && IsMenuOpen )
 			Mouse.Visibility = MouseVisibility.Visible;
 
@@ -199,12 +184,17 @@ public partial class GrabberTool : EditorTool
 		Hand.DestroyGameObject();
 		Hand = null;
 
+		DragCooldown = 0.2f;
+
 		return true;
 	}
 
-	protected virtual bool TryGrabTarget()
+	protected virtual bool TryGrabTarget( in bool isDragging = false )
 	{
-		if ( Hand.IsValid() || IsRotating )
+		if ( Hand.IsValid() )
+			return true;
+
+		if ( isDragging && DragCooldown )
 			return true;
 
 		if ( !IsClientAllowed( Client.Local ) )

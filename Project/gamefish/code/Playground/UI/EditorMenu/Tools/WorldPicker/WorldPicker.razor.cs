@@ -10,6 +10,9 @@ partial class WorldPicker
 
 	protected static EditorTool ActiveTool => Editor?.Tool;
 
+	public override bool WantsDrag => true;
+	protected override bool WantsDragScrolling => false;
+
 	protected override void OnClick( MousePanelEvent e )
 	{
 		base.OnClick( e );
@@ -32,6 +35,30 @@ partial class WorldPicker
 
 		if ( ActiveTool.IsValid() )
 			ActiveTool.OnMiddleClick();
+	}
+
+	protected override void OnMouseUp( MousePanelEvent e )
+	{
+		base.OnMouseUp( e );
+
+		if ( ActiveTool.IsValid() )
+			ActiveTool.OnMouseUp( e.MouseButton );
+	}
+
+	protected override void OnDrag( DragEvent e )
+	{
+		base.OnDrag( e );
+
+		if ( ActiveTool.IsValid() )
+			ActiveTool.OnMouseDrag( e.MouseDelta );
+	}
+
+	protected override void OnDragEnd( DragEvent e )
+	{
+		base.OnDragEnd( e );
+
+		if ( ActiveTool.IsValid() )
+			ActiveTool.OnMouseDragEnd();
 	}
 
 	protected override int BuildHash()
