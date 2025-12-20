@@ -65,4 +65,26 @@ partial class Client
 		moveDir = Vector3.Zero;
 		return false;
 	}
+
+	/// <returns> If this action/key is allowed and was pressed. </returns>
+	public virtual bool IsButtonPressed( in string code, in bool isKeyboard )
+	{
+		if ( IFocus.Action )
+			return false;
+
+		return isKeyboard
+			? Input.Keyboard.Pressed( code )
+			: Input.Pressed( code );
+	}
+
+	/// <returns> If this action/key is allowed and being pressed. </returns>
+	public virtual bool IsButtonDown( in string code, in bool isKeyboard, in bool warnMissing = true )
+	{
+		if ( IFocus.Action )
+			return false;
+
+		return isKeyboard
+			? Input.Keyboard.Down( code )
+			: Input.Down( code, complainOnMissing: warnMissing );
+	}
 }

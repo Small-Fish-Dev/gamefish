@@ -68,7 +68,6 @@ public partial class FacepunchController : BaseController
 		return base.GetLocalEyePosition();
 	}
 
-
 	// The engine's controller handles this stuff.
 	public override bool TryMove( in float deltaTime, in bool isFixedUpdate, in Vector3 wishVel = default )
 		=> false;

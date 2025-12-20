@@ -17,6 +17,8 @@ public abstract partial class EditorTool : PlaygroundModule
 
 	public Editor Editor => Parent as Editor;
 
+	public static Client Client => Client.Local;
+
 	public bool IsMenuOpen => Editor.IsValid() && Editor.IsOpen;
 	public bool IsSelected => Editor.IsValid() && Editor.Tool == this;
 
