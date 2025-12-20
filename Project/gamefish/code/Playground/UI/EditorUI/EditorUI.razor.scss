@@ -1,0 +1,24 @@
+@import "../global.scss";
+
+EditorUI {
+	pointer-events: none;
+
+	z-index: 500;
+
+	position: absolute;
+
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	align-items: center;
+	justify-content: flex-start;
+
+	color: $font-color;
+
+	font-weight: normal;
+	font-family: $font;
+
+	flex-direction: column;
+}

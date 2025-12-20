@@ -6,19 +6,7 @@
 
 @namespace Playground.Razor
 
-@if (!HasEditor)
-{
-	return;
-}
-
-<root>
-
-	@if (!IsOpen)
-	{
-
-		<EditorHints />
-		return;
-	}
+<root class="@MenuClass">
 
 	<WorldPicker />
 
