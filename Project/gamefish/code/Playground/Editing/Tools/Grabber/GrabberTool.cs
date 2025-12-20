@@ -17,7 +17,7 @@ public partial class GrabberTool : EditorTool
 	public bool IsGrabbing => Hand.IsValid() && Hand.BodyObject.IsValid();
 	public float GrabDistance { get; set; }
 
-	protected TimeUntil DragCooldown { get; set; }
+	protected TimeUntil GrabCooldown { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -63,6 +63,13 @@ public partial class GrabberTool : EditorTool
 		base.OnRightClick();
 
 		TryFreeze();
+	}
+
+	public override void OnMouseUp( in MouseButtons mb )
+	{
+		base.OnMouseUp( mb );
+
+		TryDropHeld();
 	}
 
 	public override void OnMouseDrag( in Vector2 delta )
@@ -168,18 +175,18 @@ public partial class GrabberTool : EditorTool
 		Hand.DestroyGameObject();
 		Hand = null;
 
-		DragCooldown = 0.2f;
+		GrabCooldown = 0.2f;
 
 		return true;
 	}
 
-	protected virtual bool TryGrabTarget( in bool isDragging = false )
+	protected virtual bool TryGrabTarget()
 	{
 		if ( Hand.IsValid() )
 			return true;
 
-		if ( isDragging && DragCooldown )
-			return true;
+		if ( !GrabCooldown )
+			return false;
 
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
