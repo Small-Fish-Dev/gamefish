@@ -2,9 +2,9 @@ namespace Playground;
 
 partial class EditorTool
 {
-	public static bool HoldingAlt => IsDown( "Alt", isKeyboard: true );
-	public static bool HoldingShift => IsDown( "Shift", isKeyboard: true );
-	public static bool HoldingControl => IsDown( "Control", isKeyboard: true );
+	public static bool HoldingAlt => Input.Keyboard.Down( "ALT" );
+	public static bool HoldingShift => Input.Keyboard.Down( "SHIFT" );
+	public static bool HoldingControl => Input.Keyboard.Down( "CTRL" );
 
 	public static bool PressedUse => IsPressed( "Use", isKeyboard: false );
 	public static bool PressedReload => IsPressed( "Reload", isKeyboard: false );
