@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Playground;
 
 [Icon( "rocket_launch" )]
-public partial class Thruster : Entity
+public partial class Spinner : Entity
 {
 	protected const int EDITOR_ORDER = DEFAULT_ORDER - 1000;
 	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
@@ -14,7 +14,7 @@ public partial class Thruster : Entity
 	protected Rigidbody _rb;
 
 	/// <summary>
-	/// The local transform of thrust origin.
+	/// The local transform of spin origin.
 	/// </summary>
 	[Sync]
 	[Property, InlineEditor]
@@ -22,17 +22,17 @@ public partial class Thruster : Entity
 	public Offset Offset { get; set; }
 
 	/// <summary>
-	/// The key you press to activate the thruster you're placing.
+	/// The key you press to activate the spiner you're placing.
 	/// </summary>
 	[Sync]
 	[Property, InlineEditor]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public ThrusterSettings Settings { get; set; }
+	public SpinnerSettings Settings { get; set; }
 
 	[Sync]
-	[Property, JsonIgnore, ReadOnly]
+	[Property, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public float ThrustDirection { get; set; }
+	public float Direction { get; set; }
 
 	protected override void OnStart()
 	{
@@ -47,30 +47,30 @@ public partial class Thruster : Entity
 	{
 		base.OnUpdate();
 
-		DrawThrusterGizmo();
+		DrawPhysicsGizmo();
 
 		if ( IsProxy )
 			return;
 
 		var fwd = Input.Keyboard.Down( Settings.KeyForward );
-		var back = Input.Keyboard.Down( Settings.KeyBackward );
+		var back = Input.Keyboard.Down( Settings.KeyReverse );
 
 		if ( fwd && !back )
-			ThrustDirection = 1f;
+			Direction = 1f;
 		else if ( back && !fwd )
-			ThrustDirection = -1f;
+			Direction = -1f;
 		else
-			ThrustDirection = 0f;
+			Direction = 0f;
 	}
 
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
 
-		if ( ThrustDirection == 0f )
+		if ( Direction == 0f )
 			return;
 
-		ApplyForce( Time.Delta, ThrustDirection );
+		ApplyPhysics( Time.Delta, Direction );
 	}
 
 	protected override void OnDestroy()
@@ -80,7 +80,7 @@ public partial class Thruster : Entity
 		if ( !this.InGame() || !GameObject.IsValid() )
 			return;
 
-		// Auto-cleanup empty objects that only had a thruster.
+		// Auto-cleanup empty objects that only had a spiner.
 		var comps = GameObject.Components.GetAll( FindMode.EverythingInSelf )
 			.Where( comp => comp.IsValid() );
 
@@ -88,37 +88,36 @@ public partial class Thruster : Entity
 			GameObject.Destroy();
 	}
 
-	protected virtual void DrawThrusterGizmo()
+	protected virtual void DrawPhysicsGizmo()
 	{
-		var tOrigin = GetThrusterOrigin( Rigidbody );
+		var tOrigin = GetPhysicsOrigin( Rigidbody );
 
-		var c = Color.Orange.WithAlpha( 0.3f );
+		var c = Color.Cyan.WithAlpha( 0.3f );
 
 		this.DrawArrow(
-			from: tOrigin.Position - (tOrigin.Forward * 10f),
-			to: tOrigin.Position,
+			from: tOrigin.Position,
+			to: tOrigin.Position - (tOrigin.Forward * 24f),
 			c: c, len: 7f, w: 5f,
 			tWorld: global::Transform.Zero
 		);
 	}
 
-	public virtual void ApplyForce( in float deltaTime, float thrustDir )
+	public virtual void ApplyPhysics( in float deltaTime, float spinDir )
 	{
 		if ( !Rigidbody.IsValid() || Rigidbody.IsProxy )
 			return;
 
-		var tWorld = GetThrusterOrigin( Rigidbody );
+		var tWorld = GetPhysicsOrigin( Rigidbody );
 
-		thrustDir = thrustDir.Clamp( -1f, 1f );
-		var dir = tWorld.Rotation * Vector3.Forward * thrustDir;
+		spinDir = spinDir.Clamp( -1f, 1f );
+		var dir = tWorld.Rotation * Vector3.Forward * spinDir;
 
-		var vel = dir * Settings.Force;
-		vel *= Rigidbody.Mass;
+		var vel = dir * Settings.Speed;
 
-		Rigidbody.ApplyForceAt( tWorld.Position, vel );
+		Rigidbody.AngularVelocity += vel * deltaTime;
 	}
 
-	public Transform GetThrusterOrigin( Rigidbody rb )
+	public Transform GetPhysicsOrigin( Rigidbody rb )
 	{
 		// Fallback transform.
 		if ( !rb.IsValid() )
@@ -127,7 +126,6 @@ public partial class Thruster : Entity
 		// Relative transform.
 		return rb.WorldTransform.WithOffset( Offset );
 	}
-
 
 	public virtual bool TryAttachTo( Rigidbody rb, in Offset offs )
 	{

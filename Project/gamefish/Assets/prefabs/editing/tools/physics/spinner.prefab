@@ -1,0 +1,78 @@
+{
+  "RootObject": {
+    "__guid": "1bab51ce-6af7-4603-8f7e-e3cb4dc26f5d",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "spinner",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Playground.Spinner",
+        "__guid": "5c1484d0-469f-4070-a6a9-04a6e97e4252",
+        "__enabled": true,
+        "ClassId": "thruster",
+        "ClassName": null,
+        "Direction": 0,
+        "IsClass": false,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "5c1484d0-469f-4070-a6a9-04a6e97e4252",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "Offset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,0"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Settings": {
+          "Speed": 100,
+          "KeyForward": "KP_4",
+          "KeyReverse": "KP_6"
+        }
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

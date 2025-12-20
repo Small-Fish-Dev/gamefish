@@ -1,14 +1,14 @@
 namespace Playground;
 
-public partial class ThrusterTool : EditorTool
+public partial class SpinnerTool : EditorTool
 {
 	[Property]
-	[Title( "Thruster" )]
+	[Title( "Spinner" )]
 	[Feature( EDITOR ), Group( PREFABS ), Order( PREFABS_ORDER )]
-	public PrefabFile ThrusterPrefab { get; set; }
+	public PrefabFile SpinnerPrefab { get; set; }
 
 	[Property]
-	[Title( "Place Thruster" )]
+	[Title( "Attach" )]
 	[Feature( EDITOR ), Group( SOUNDS ), Order( SOUNDS_ORDER )]
 	public virtual SoundEvent AttachingSound { get; set; }
 
@@ -17,7 +17,7 @@ public partial class ThrusterTool : EditorTool
 	/// </summary>
 	[Property, InlineEditor]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public virtual ThrusterSettings ThrusterSettings { get; set; }
+	public virtual SpinnerSettings SpinnerSettings { get; set; }
 
 	public Rigidbody Target { get; set; }
 
@@ -38,7 +38,7 @@ public partial class ThrusterTool : EditorTool
 		if ( !Target.IsValid() )
 			return;
 
-		if ( TryAttachThruster( Target, HitPosition, HitNormal ) )
+		if ( TryAttachSpinner( Target, HitPosition, HitNormal ) )
 			if ( AttachingSound.IsValid() )
 				Sound.Play( AttachingSound, HitPosition );
 	}
@@ -56,9 +56,9 @@ public partial class ThrusterTool : EditorTool
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return;
 
-		// Clear Thrusters
+		// Clear Spinners
 		if ( PressedReload )
-			TryClearThrusters( tr.GameObject );
+			TryClearSpinners( tr.GameObject );
 
 		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
 
@@ -72,12 +72,12 @@ public partial class ThrusterTool : EditorTool
 
 		// Placement Preview
 		if ( CanTarget( Client.Local, rb, HitPosition, HitNormal ) )
-			DrawThrusterGizmo( HitPosition, HitNormal );
+			DrawSpinnerGizmo( HitPosition, HitNormal );
 	}
 
-	protected virtual void DrawThrusterGizmo( in Vector3 hitPos, in Vector3 hitNormal )
+	protected virtual void DrawSpinnerGizmo( in Vector3 hitPos, in Vector3 hitNormal )
 	{
-		var c = Color.Orange.WithAlpha( 0.3f );
+		var c = Color.Cyan.WithAlpha( 0.3f );
 
 		this.DrawArrow(
 			from: hitPos + (hitNormal * 64f),
@@ -87,7 +87,7 @@ public partial class ThrusterTool : EditorTool
 		);
 	}
 
-	protected virtual bool TryAttachThruster( Rigidbody rb, in Vector3 hitPos, in Vector3 hitNormal )
+	protected virtual bool TryAttachSpinner( Rigidbody rb, in Vector3 hitPos, in Vector3 hitNormal )
 	{
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
@@ -98,19 +98,19 @@ public partial class ThrusterTool : EditorTool
 		var rAim = Rotation.LookAt( -hitNormal );
 		var tWorld = new Transform( hitPos, rAim );
 
-		if ( !ThrusterPrefab.TrySpawn( tWorld, out var thrusterObj ) )
+		if ( !SpinnerPrefab.TrySpawn( tWorld, out var thrusterObj ) )
 			return false;
 
 		thrusterObj.NetworkInterpolation = false;
 
-		if ( !thrusterObj.Components.TryGet<Thruster>( out var thruster ) )
+		if ( !thrusterObj.Components.TryGet<Spinner>( out var thruster ) )
 		{
-			this.Warn( $"No {typeof( Thruster )} on obj:[{thrusterObj}]!" );
+			this.Warn( $"No {typeof( Spinner )} on obj:[{thrusterObj}]!" );
 			thrusterObj.Destroy();
 			return false;
 		}
 
-		thruster.Settings = ThrusterSettings;
+		thruster.Settings = SpinnerSettings;
 		thruster.Offset = rb.WorldTransform.ToLocal( tWorld );
 
 		thruster.TrySetNetworkOwner( Connection.Local, allowProxy: true );
@@ -125,17 +125,17 @@ public partial class ThrusterTool : EditorTool
 		return true;
 	}
 
-	protected virtual bool TryClearThrusters( GameObject obj )
+	protected virtual bool TryClearSpinners( GameObject obj )
 	{
 		if ( !obj.IsValid() )
 			return false;
 
-		var thrusters = obj.Components.GetAll<Thruster>( FindMode.EverythingInSelfAndDescendants );
+		var thrusters = obj.Components.GetAll<Spinner>( FindMode.EverythingInSelfAndDescendants );
 
 		if ( !thrusters.Any( th => th.IsValid() ) )
 			return false;
 
-		RpcRemoveThrusters( obj );
+		RpcRemoveSpinners( obj );
 		return true;
 	}
 
@@ -151,14 +151,14 @@ public partial class ThrusterTool : EditorTool
 	}
 
 	[Rpc.Host]
-	protected void RpcRemoveThrusters( GameObject obj )
+	protected void RpcRemoveSpinners( GameObject obj )
 	{
 		if ( !obj.IsValid() || !TryUse( Rpc.Caller, out _ ) )
 			return;
 
 		const FindMode findMode = FindMode.EverythingInSelf | FindMode.InDescendants;
 
-		var thrusters = obj.Components.GetAll<Thruster>( findMode );
+		var thrusters = obj.Components.GetAll<Spinner>( findMode );
 
 		if ( !thrusters.Any() )
 			return;

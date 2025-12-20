@@ -125,7 +125,7 @@
         "Name": "Collider",
         "Position": "0,0,0",
         "Rotation": "0.7071067,0,0,0.7071068",
-        "Scale": "0.6600941,0.6639124,0.5711251",
+        "Scale": "0.6600941,0.66,0.57",
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
