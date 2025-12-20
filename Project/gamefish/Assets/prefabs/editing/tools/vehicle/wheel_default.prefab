@@ -43,7 +43,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "OverrideMassCenter": true,
+        "OverrideMassCenter": false,
         "RigidbodyFlags": 0,
         "StartAsleep": false
       }
@@ -55,7 +55,7 @@
         "Flags": 0,
         "Name": "Model",
         "Position": "0,0,0",
-        "Rotation": "0.00000003161023,-0.0000001053671,1,0.000000000000002997604",
+        "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
@@ -117,6 +117,68 @@
           }
         ],
         "Children": []
+      },
+      {
+        "__guid": "3db00fd6-e4c5-4ba7-be27-3a0adf3f53ed",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Joint",
+        "Position": "0,0,0",
+        "Rotation": "0.5,0.5,0.5,0.5",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.WheelJoint",
+            "__guid": "bb150ebc-c854-4c08-aa51-b1df61fe0f75",
+            "__enabled": true,
+            "Attachment": "Auto",
+            "Body": null,
+            "BreakForce": 0,
+            "BreakTorque": 0,
+            "EnableCollision": false,
+            "EnableSpinMotor": false,
+            "EnableSteering": false,
+            "EnableSteeringLimit": false,
+            "EnableSuspension": true,
+            "EnableSuspensionLimit": true,
+            "LocalFrame1": {
+              "Position": "0,0,0",
+              "Scale": "1,1,1",
+              "Rotation": "0,0,0,1"
+            },
+            "LocalFrame2": {
+              "Position": "0,0,0",
+              "Scale": "1,1,1",
+              "Rotation": "0,0,0,1"
+            },
+            "MaxSpinTorque": 999,
+            "MaxSteeringTorque": 999,
+            "OnBreak": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "SpinMotorSpeed": 500,
+            "StartBroken": false,
+            "SteeringDampingRatio": 1,
+            "SteeringHertz": 10,
+            "SteeringLimits": "0,0",
+            "SuspensionDampingRatio": 1,
+            "SuspensionHertz": 5,
+            "SuspensionLimits": "-25,0",
+            "TargetSteeringAngle": 0
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {
@@ -144,8 +206,6 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [
-    "garry.wheel#10656"
-  ],
+  "__references": [],
   "__version": 2
 }
