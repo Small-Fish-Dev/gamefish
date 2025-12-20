@@ -73,6 +73,21 @@ public partial class Thruster : Entity
 		ApplyForce( Time.Delta, ThrustDirection );
 	}
 
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		if ( !this.InGame() || !GameObject.IsValid() )
+			return;
+
+		// Auto-cleanup empty objects that only had a thruster.
+		var comps = GameObject.Components.GetAll( FindMode.EverythingInSelf )
+			.Where( comp => comp.IsValid() );
+
+		if ( !comps.Any() )
+			GameObject.Destroy();
+	}
+
 	protected virtual void DrawThrusterGizmo()
 	{
 		var tOrigin = GetThrusterOrigin( Rigidbody );

@@ -287,6 +287,12 @@
                     "Description": null,
                     "Action": "Attack1",
                     "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Clear",
+                    "Description": null,
+                    "Action": "Reload",
+                    "Mode": "Pressed"
                   }
                 ],
                 "IsAdminOnly": false,

@@ -7,9 +7,14 @@ partial class EditorTool
 	public static bool HoldingControl => Input.Keyboard.Down( "Control" );
 
 	public static bool PressedUse => Input.Pressed( "Use" );
-
+	public static bool PressedReload => Input.Pressed( "Reload" );
 	public static bool PressedPrimary => Input.Pressed( "Attack1" );
 	public static bool PressedSecondary => Input.Pressed( "Attack2" );
+
+	public static bool HoldingUse => Input.Down( "Use" );
+	public static bool HoldingReload => Input.Down( "Reload" );
+	public static bool HoldingPrimary => Input.Down( "Attack1" );
+	public static bool HoldingSecondary => Input.Down( "Attack2" );
 
 	public virtual bool PreventAiming => IsMenuOpen;
 	public virtual bool PreventMoving => false;

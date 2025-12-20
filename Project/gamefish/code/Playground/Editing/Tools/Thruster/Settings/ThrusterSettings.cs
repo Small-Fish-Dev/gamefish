@@ -6,7 +6,7 @@ public partial struct ThrusterSettings
 	/// The push to apply.
 	/// </summary>
 	[Range( 1f, 9999f )]
-	public float Force { get; set; } = 300f;
+	public float Force { get; set; } = 1000f;
 
 	/// <summary>
 	/// The keyboard code(if any) to push it forward.

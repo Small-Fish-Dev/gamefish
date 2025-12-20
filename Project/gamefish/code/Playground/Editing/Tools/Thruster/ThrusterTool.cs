@@ -1,5 +1,3 @@
-using Microsoft.VisualBasic;
-
 namespace Playground;
 
 public partial class ThrusterTool : EditorTool
@@ -32,6 +30,10 @@ public partial class ThrusterTool : EditorTool
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return;
 
+		// Clear Thrusters
+		if ( PressedReload )
+			TryClearThrusters( tr.GameObject );
+
 		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
 
 		if ( !tr.GameObject.Components.TryGet<Rigidbody>( out var rb, findMode ) )
@@ -40,15 +42,17 @@ public partial class ThrusterTool : EditorTool
 		var hitPos = tr.HitPosition;
 		var hitNormal = tr.Normal;
 
+		// Placement Preview
 		if ( CanTarget( Client.Local, rb, in hitPos, in hitNormal ) )
 			DrawThrusterGizmo( hitPos, hitNormal );
 
-		if ( !PressedPrimary )
-			return;
-
-		if ( TryAttachThruster( rb, in hitPos, in hitNormal ) )
-			if ( PlaceThrusterSound.IsValid() )
-				Sound.Play( PlaceThrusterSound, hitPos );
+		// Attach Thruster
+		if ( PressedPrimary )
+		{
+			if ( TryAttachThruster( rb, in hitPos, in hitNormal ) )
+				if ( PlaceThrusterSound.IsValid() )
+					Sound.Play( PlaceThrusterSound, hitPos );
+		}
 	}
 
 	protected virtual void DrawThrusterGizmo( in Vector3 hitPos, in Vector3 hitNormal )
@@ -101,6 +105,20 @@ public partial class ThrusterTool : EditorTool
 		return true;
 	}
 
+	protected virtual bool TryClearThrusters( GameObject obj )
+	{
+		if ( !obj.IsValid() )
+			return false;
+
+		var thrusters = obj.Components.GetAll<Thruster>( FindMode.EverythingInSelfAndDescendants );
+
+		if ( !thrusters.Any( th => th.IsValid() ) )
+			return false;
+
+		RpcRemoveThrusters( obj );
+		return true;
+	}
+
 	public virtual bool CanTarget( Client cl, Rigidbody rb, in Vector3 hitPos, in Vector3 hitNormal )
 	{
 		if ( !rb.IsValid() )
@@ -110,5 +128,22 @@ public partial class ThrusterTool : EditorTool
 			return false;
 
 		return ITransform.IsValid( in hitPos ) && ITransform.IsValid( in hitNormal );
+	}
+
+	[Rpc.Host]
+	protected void RpcRemoveThrusters( GameObject obj )
+	{
+		if ( !obj.IsValid() || !TryUse( Rpc.Caller, out _ ) )
+			return;
+
+		const FindMode findMode = FindMode.EverythingInSelf | FindMode.InDescendants;
+
+		var thrusters = obj.Components.GetAll<Thruster>( findMode );
+
+		if ( !thrusters.Any() )
+			return;
+
+		foreach ( var th in thrusters.ToArray() )
+			th.Destroy();
 	}
 }
