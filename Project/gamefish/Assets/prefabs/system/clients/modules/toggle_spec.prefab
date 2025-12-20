@@ -35,7 +35,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "TogglePawnButton": "Debug 1"
+        "TogglePawnButton": "Toggle Spectating"
       }
     ],
     "Children": [],

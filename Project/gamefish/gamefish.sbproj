@@ -29,7 +29,7 @@
     "ControlModes": {
       "Keyboard": true,
       "VR": false,
-      "Gamepad": true
+      "Gamepad": false
     },
     "Compiler": {
       "RootNamespace": "Sandbox",
