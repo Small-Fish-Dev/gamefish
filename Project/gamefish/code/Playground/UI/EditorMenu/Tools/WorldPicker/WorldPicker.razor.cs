@@ -45,6 +45,14 @@ partial class WorldPicker
 			ActiveTool.OnMouseUp( e.MouseButton );
 	}
 
+	public override void OnMouseWheel( Vector2 value )
+	{
+		base.OnMouseWheel( value );
+
+		if ( ActiveTool.IsValid() )
+			ActiveTool.OnMouseWheel( in value );
+	}
+
 	protected override void OnDrag( DragEvent e )
 	{
 		base.OnDrag( e );

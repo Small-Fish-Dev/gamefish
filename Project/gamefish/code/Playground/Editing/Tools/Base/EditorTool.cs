@@ -90,6 +90,11 @@ public abstract partial class EditorTool : PlaygroundModule
 		// this.Log( $"Mouse up:[{mb}]" );
 	}
 
+	public virtual void OnMouseWheel( in Vector2 dir )
+	{
+		// this.Log( $"Mouse wheel:[{dir}]" );
+	}
+
 	public virtual void OnMouseDrag( in Vector2 delta )
 	{
 		// this.Log( "Mouse dragged." );

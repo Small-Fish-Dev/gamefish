@@ -26,8 +26,6 @@ public partial class GrabberTool : EditorTool
 		if ( !IsSelected || !IsMenuOpen )
 			TryDropHeld();
 
-		// UpdateRotation( Time.Delta );
-
 		DrawGrabberGizmos();
 	}
 
@@ -53,23 +51,9 @@ public partial class GrabberTool : EditorTool
 		UpdateGrab( in deltaTime );
 	}
 
-	public override void OnMouseDragEnd()
-	{
-		base.OnMouseDragEnd();
-
-		TryDropHeld();
-	}
-
 	public override void OnLeftClick()
 	{
 		base.OnLeftClick();
-
-		TryGrabTarget();
-	}
-
-	public override void OnMouseDrag( in Vector2 delta )
-	{
-		base.OnMouseDrag( in delta );
 
 		TryGrabTarget();
 	}
@@ -79,6 +63,34 @@ public partial class GrabberTool : EditorTool
 		base.OnRightClick();
 
 		TryFreeze();
+	}
+
+	public override void OnMouseDrag( in Vector2 delta )
+	{
+		base.OnMouseDrag( in delta );
+
+		TryGrabTarget();
+	}
+
+	public override void OnMouseDragEnd()
+	{
+		base.OnMouseDragEnd();
+
+		TryDropHeld();
+	}
+
+	public override void OnMouseWheel( in Vector2 dir )
+	{
+		base.OnMouseWheel( dir );
+
+		if ( !Hand.IsValid() )
+			return;
+
+		if ( dir == Vector2.Zero )
+			return;
+
+		var scrollDist = -dir.y * ScrollSensitivity;
+		GrabDistance = (GrabDistance + scrollDist).Positive();
 	}
 
 	protected virtual void DrawGrabberGizmos()
@@ -142,35 +154,7 @@ public partial class GrabberTool : EditorTool
 		if ( !Mouse.Active || !TryTrace( out var tr ) )
 			return;
 
-		var yScroll = Input.MouseWheel.y;
-		var xScroll = Input.MouseWheel.x;
-
-		if ( yScroll != 0f )
-		{
-			if ( HoldingShift )
-			{
-				var pitch = Rotation.FromPitch( yScroll * -5f );
-				Hand.WorldRotation *= pitch;
-			}
-			else
-			{
-				var scrollDist = yScroll * ScrollSensitivity;
-				GrabDistance = (GrabDistance + scrollDist).Positive();
-			}
-		}
-
 		Hand.WorldPosition = tr.StartPosition + tr.Direction * GrabDistance;
-
-		if ( xScroll != 0f )
-		{
-			var rInv = Hand.WorldRotation.Inverse;
-
-			var rAdd = HoldingShift
-				? Rotation.FromRoll( xScroll * 10f )
-				: Rotation.FromAxis( rInv.Up, xScroll * -10f );
-
-			Hand.WorldRotation *= rAdd;
-		}
 	}
 
 	protected virtual bool TryDropHeld()
