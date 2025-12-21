@@ -134,12 +134,16 @@ public partial class BoardTool : EditorTool
 		var c1 = validColor.WithAlpha( 0.4f );
 		var c2 = validColor.WithAlpha( 0.1f );
 
+		var hitNormal = tr.Normal;
+
 		if ( traceHit )
 		{
 			point += tr.Normal * ((BoardHeight / 2f) + 0.1f);
 		}
 		else
 		{
+			hitNormal = Vector3.Up;
+
 			c1 = c1.WithAlphaMultiplied( 0.3f );
 			c2 = c2.WithAlphaMultiplied( 0.3f );
 		}
@@ -156,7 +160,7 @@ public partial class BoardTool : EditorTool
 
 			var length = dist;
 			var scale = new Vector3( length, BoardWidth, BoardHeight );
-			var rDir = Rotation.LookAt( dir, tr.Normal );
+			var rDir = Rotation.LookAt( dir, hitNormal );
 
 			var bounds = BBox.FromPositionAndSize( Vector3.Zero, Vector3.One );
 			var tBox = new Transform( center, rDir, scale );
