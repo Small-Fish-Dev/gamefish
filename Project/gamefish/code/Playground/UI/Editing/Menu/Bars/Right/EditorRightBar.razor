@@ -12,30 +12,20 @@
 
 <root>
 
-	<EditorMenuPanel @PanelTitle="test 1" @ShowContents=@false>
+	<EditorMenuPanel @PanelTitle="Options">
+		<ChildContent>
+
+			<ToolOptions />
+
+		</ChildContent>
+	</EditorMenuPanel>
+
+	<EditorMenuPanel @PanelTitle="Tools">
 		<ChildContent>
 
 			<ToolList />
 
 		</ChildContent>
 	</EditorMenuPanel>
-
-	<EditorMenuPanel @PanelTitle="test 2" @ShowContents=@false>
-		<ChildContent>
-
-			<ToolList />
-
-		</ChildContent>
-	</EditorMenuPanel>
-
-	<EditorMenuPanel @PanelTitle="Tool List">
-		<ChildContent>
-
-			<ToolList />
-
-		</ChildContent>
-	</EditorMenuPanel>
-
-	<body />
 
 </root>

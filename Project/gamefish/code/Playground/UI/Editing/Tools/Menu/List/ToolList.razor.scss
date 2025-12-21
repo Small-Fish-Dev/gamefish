@@ -1,4 +1,4 @@
-@import "../../../global.scss";
+@import "../../../../global.scss";
 
 ToolList {
 	pointer-events: all;
@@ -10,6 +10,4 @@ ToolList {
 
 	align-self: flex-start;
 	flex-direction: column;
-
-	background-color: $bg-black4;
 }

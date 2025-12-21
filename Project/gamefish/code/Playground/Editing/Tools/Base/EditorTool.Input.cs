@@ -32,6 +32,8 @@ partial class EditorTool
 	public List<ToolFunction> FunctionHints { get; set; }
 
 	[Property]
+	[ToolOption]
+	[Title( "Trace Filter" )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public TraceFilter Filter { get; set; }
 

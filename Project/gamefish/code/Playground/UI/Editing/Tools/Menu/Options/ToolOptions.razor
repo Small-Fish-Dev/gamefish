@@ -1,0 +1,45 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+<root>
+
+	@{
+		var toolOptions = GetToolOptions();
+
+		if (toolOptions is null || !toolOptions.Any())
+		{
+			return;
+		}
+	}
+
+	@foreach (var property in toolOptions)
+	{
+		if (property is null)
+		{
+			continue;
+		}
+
+		<div class="property">
+
+			<p class="property-name">
+				@(property.GetDisplayInfo().Name ?? property.Name)
+			</p>
+
+			<p class="property-value">
+				<label>
+					@(property.GetValue(ActiveTool) ?? "N/A")
+				</label>
+			</p>
+
+		</div>
+
+		@* <EditorOption Property="@property" /> *@
+	}
+
+</root>
