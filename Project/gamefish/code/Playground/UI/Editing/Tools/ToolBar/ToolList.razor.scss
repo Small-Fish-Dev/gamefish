@@ -1,6 +1,6 @@
 @import "../../../global.scss";
 
-ToolBar {
+ToolList {
 	pointer-events: all;
 
 	height: 100%;
@@ -15,8 +15,6 @@ ToolBar {
 	// background-color: rgba(30, 30, 30, 0.2);
 
 	.tools-title {
-		align-self: center;
-
 		font-size: 30px;
 		font-weight: 600;
 	}

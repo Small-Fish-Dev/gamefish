@@ -3,7 +3,10 @@ using GameFish;
 
 namespace Playground.Razor;
 
-partial class ToolBar
+/// <summary>
+/// Lists tools in groups you can collapse.
+/// </summary>
+partial class ToolList
 {
 	protected static Editor Editor => Editor.Instance;
 

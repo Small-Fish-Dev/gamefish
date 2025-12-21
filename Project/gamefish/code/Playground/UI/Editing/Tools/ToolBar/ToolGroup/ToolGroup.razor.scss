@@ -20,11 +20,22 @@ ToolGroup {
 		padding-left: 5;
 		padding-right: 5;
 
+		align-items: center;
+		justify-content: space-between;
+
 		color: white;
-		font-size: 26px;
-		font-weight: 600;
 
 		background-color: rgb(49, 103, 165);
+
+		.group-name {
+			font-size: 26px;
+			font-weight: 600;
+		}
+
+		.tool-count {
+			font-size: 20px;
+			font-weight: 500;
+		}
 	}
 
 	.tool-list {

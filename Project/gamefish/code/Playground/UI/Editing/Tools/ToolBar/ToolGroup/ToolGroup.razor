@@ -19,7 +19,10 @@
 
 	@if (!Header.IsBlank())
 	{
-		<p class="group-bar" @onclick=@(() => Toggle())> @Header </p>
+		<p class="group-bar" @onclick=@(() => Toggle())>
+			<label class="group-name"> @Header </label>
+			<label class="tool-count"> @groupTools.Count() </label>
+		</p>
 	}
 
 	@if (IsCollapsed)
