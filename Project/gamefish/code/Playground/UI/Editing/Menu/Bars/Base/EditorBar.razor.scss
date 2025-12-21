@@ -1,0 +1,13 @@
+@import "../../../../global.scss";
+
+EditorBar {
+	pointer-events: all;
+
+	gap: 3;
+	padding: 5;
+
+	align-self: flex-start;
+	flex-direction: column;
+
+	background-color: $bg-black3;
+}

@@ -1,0 +1,25 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@{
+}
+
+<root>
+
+	<p class="panel-header" @onclick=@(() => TogglePanel())>
+		@PanelTitle
+	</p>
+
+	<content class="@ContentsClass">
+
+		@ChildContent
+
+	</content>
+
+</root>

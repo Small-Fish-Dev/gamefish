@@ -27,6 +27,10 @@ ToolGroup {
 
 		background-color: $blue-bar1;
 
+		&:hover {
+			background-color: $blue-bar1-hover;
+		}
+
 		.group-name {
 			font-size: 26px;
 			font-weight: 600;

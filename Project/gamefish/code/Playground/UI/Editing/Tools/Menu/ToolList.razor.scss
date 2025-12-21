@@ -3,20 +3,15 @@
 ToolList {
 	pointer-events: all;
 
-	height: 100%;
-	width: 300px;
+	width: 100%;
 
-	padding: 5;
+	padding: 3;
 	gap: 3;
+
+	overflow-y: scroll;
 
 	align-self: flex-start;
 	flex-direction: column;
 
-	background-color: $bg-black3;
-
-	.tools-title {
-		padding-left: 10;
-		font-size: 24px;
-		font-weight: 600;
-	}
+	background-color: $bg-black4;
 }

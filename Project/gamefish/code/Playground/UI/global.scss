@@ -7,6 +7,10 @@ $shadow-full: 2px 2px 2px hsla(0, 0%, 0%, 1);
 $bg-black1: hsla(0, 0%, 12%, 0.91);
 $bg-black2: hsla(0, 0%, 12%, 0.82);
 $bg-black3: hsla(0, 0%, 12%, 0.65);
-$bg-black4: hsla(0, 0%, 12%, 0.45);
+$bg-black4: hsla(0, 0%, 12%, 0.47);
 
-$blue-bar1: rgb(45, 102, 150);
+$white-bar1: hsl(0, 0%, 90%);
+$white-bar1-hover: hsl(0, 0%, 100%);
+
+$blue-bar1: hsl(207, 38%, 38%);
+$blue-bar1-hover: hsl(207, 38%, 45%);
