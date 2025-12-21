@@ -1,0 +1,31 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+@using GameFish.Razor;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@if (!ActiveTool.IsValid())
+{
+	return;
+}
+
+<root>
+
+	<div class="tool-left">
+
+		<ToolInfo />
+
+	</div>
+
+	<div class="tool-middle" />
+
+	<div class="tool-right">
+
+		<ToolHints />
+
+	</div>
+
+</root>

@@ -50,6 +50,8 @@ EditorMenu {
 
 				align-items: center;
 				justify-content: center;
+
+				text-shadow: $shadow1;
 			}
 		}
 	}
@@ -59,26 +61,5 @@ EditorMenu {
 		width: 100%;
 
 		flex-grow: 1;
-		flex-direction: row;
-
-		.left {
-			height: 100%;
-			flex-shrink: 0;
-
-			align-self: flex-start;
-			justify-content: flex-start;
-		}
-
-		.center {
-			flex-grow: 1;
-		}
-
-		.right {
-			height: 100%;
-			flex-shrink: 0;
-
-			align-self: flex-end;
-			justify-content: flex-end;
-		}
 	}
 }

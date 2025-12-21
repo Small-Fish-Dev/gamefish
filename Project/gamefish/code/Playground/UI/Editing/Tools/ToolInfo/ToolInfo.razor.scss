@@ -1,0 +1,25 @@
+@import "../../../global.scss";
+
+ToolInfo {
+	padding-top: 10;
+	padding-left: 20;
+
+	align-self: flex-start;
+	flex-direction: column;
+
+	align-items: flex-start;
+	justify-content: space-evenly;
+
+	color: white;
+	text-shadow: $shadow2;
+
+	.tool-name {
+		font-size: 36;
+		font-weight: 600;
+	}
+
+	.tool-desc {
+		font-size: 22;
+		font-weight: 500;
+	}
+}

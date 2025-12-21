@@ -1,0 +1,21 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using GameFish;
+@using GameFish.Razor;
+
+@inherits Panel
+
+@namespace Playground.Razor
+
+@if (!ActiveTool.IsValid())
+{
+	return;
+}
+
+<root>
+
+	<p class="tool-name"> @ActiveTool.ToolEmoji @ActiveTool.ToolName </p>
+
+	<p class="tool-desc"> @ActiveTool.ToolDescription </p>
+
+</root>
