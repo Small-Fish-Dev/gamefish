@@ -3,7 +3,10 @@
 EditorMenuPanel {
 	pointer-events: all;
 
-	flex-shrink: 0;
+	height: auto;
+
+	overflow: hidden;
+
 	flex-direction: column;
 
 	background-color: $bg-black4;
@@ -35,6 +38,11 @@ EditorMenuPanel {
 	}
 
 	content {
+		flex-grow: 1;
+		flex-shrink: 1;
+
+		overflow: scroll;
+
 		&.hide {
 			display: none;
 		}
