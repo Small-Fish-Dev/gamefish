@@ -1,13 +1,14 @@
 @import "../../../../global.scss";
 
 EditorRightBar {
-	pointer-events: all;
-
 	width: 320px;
 	height: 100%;
 
 	gap: 3;
 	padding: 4;
+
+	overflow-y: scroll;
+	overflow-x: visible;
 
 	align-self: flex-start;
 	flex-direction: column;

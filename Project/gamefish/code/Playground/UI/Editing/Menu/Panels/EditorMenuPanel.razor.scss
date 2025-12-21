@@ -3,7 +3,7 @@
 EditorMenuPanel {
 	pointer-events: all;
 
-	// flex-grow: 1;
+	flex-shrink: 0;
 	flex-direction: column;
 
 	background-color: $bg-black4;
@@ -11,6 +11,8 @@ EditorMenuPanel {
 	.panel-header {
 		width: 100%;
 		height: 40;
+
+		flex-shrink: 0;
 
 		padding-left: 10;
 
@@ -33,8 +35,6 @@ EditorMenuPanel {
 	}
 
 	content {
-		flex-grow: 1;
-
 		&.hide {
 			display: none;
 		}
