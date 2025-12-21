@@ -16,19 +16,14 @@ public enum InputMode
 	Held = 1,
 
 	/// <summary>
-	/// Continuously while not held.
-	/// </summary>
-	Unheld = 2,
-
-	/// <summary>
 	/// Once when the key is first pressed.
 	/// </summary>
-	Pressed = 3,
+	Pressed = 2,
 
 	/// <summary>
 	/// Once when the key is let go of.
 	/// </summary>
-	Released = 4,
+	Released = 3,
 }
 
 partial class Library
@@ -42,7 +37,6 @@ partial class Library
 		return mode switch
 		{
 			InputMode.Held => Input.Down( action, complainOnMissing ),
-			InputMode.Unheld => !Input.Down( action, complainOnMissing ),
 			InputMode.Pressed => Input.Pressed( action ),
 			InputMode.Released => Input.Released( action ),
 			_ => false,
