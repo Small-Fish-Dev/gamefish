@@ -9,13 +9,14 @@ ToolList {
 	padding: 5;
 	gap: 3;
 
-	align-self: flex-end;
+	align-self: flex-start;
 	flex-direction: column;
 
-	// background-color: rgba(30, 30, 30, 0.2);
+	background-color: $bg-black3;
 
 	.tools-title {
-		font-size: 30px;
+		padding-left: 10;
+		font-size: 24px;
 		font-weight: 600;
 	}
 }

@@ -1,4 +1,4 @@
-@import "../../../global.scss";
+@import "../../../../global.scss";
 
 ToolHints {
 	height: 50;
@@ -13,5 +13,5 @@ ToolHints {
 	align-items: center;
 	justify-content: center;
 
-	background-color: rgba(30, 30, 30, 0.65);
+	background-color: $bg-black4;
 }

@@ -10,22 +10,22 @@ ToolGroup {
 	align-self: flex-start;
 	flex-direction: column;
 
-	background-color: rgba(30, 30, 30, 0.5);
+	background-color: $bg-black3;
 
 	.group-bar {
 		cursor: pointer;
 
 		width: 100%;
 
-		padding-left: 5;
-		padding-right: 5;
+		padding-left: 10;
+		padding-right: 10;
 
 		align-items: center;
 		justify-content: space-between;
 
 		color: white;
 
-		background-color: rgb(49, 103, 165);
+		background-color: $blue-bar1;
 
 		.group-name {
 			font-size: 26px;

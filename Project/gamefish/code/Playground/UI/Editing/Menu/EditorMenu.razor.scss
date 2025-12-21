@@ -23,10 +23,6 @@ EditorMenu {
 		display: flex;
 	}
 
-	.menu {
-		background-color: rgba(30, 30, 30, 0.9);
-	}
-
 	.top {
 		position: relative;
 
@@ -38,7 +34,7 @@ EditorMenu {
 		align-self: flex-start;
 		align-content: center;
 
-		background-color: rgba(30, 30, 30, 0.95);
+		background-color: $bg-black1;
 
 		.bar {
 			padding: 5;
@@ -51,7 +47,7 @@ EditorMenu {
 				align-items: center;
 				justify-content: center;
 
-				text-shadow: $shadow1;
+				text-shadow: $shadow-lite;
 			}
 		}
 	}

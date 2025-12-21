@@ -1,4 +1,4 @@
-@import "../../../global.scss";
+@import "../../../../global.scss";
 
 ToolInfo {
 	padding-top: 10;
@@ -11,7 +11,7 @@ ToolInfo {
 	justify-content: space-evenly;
 
 	color: white;
-	text-shadow: $shadow2;
+	text-shadow: $shadow-full;
 
 	.tool-name {
 		font-size: 36;
