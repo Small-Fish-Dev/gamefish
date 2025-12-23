@@ -576,7 +576,7 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "ToolDescription": "A fixed hinge with angle control.",
+                "ToolDescription": "Sticks things together with angular control.",
                 "ToolEmoji": "\uD83D\uDCAA",
                 "ToolName": "Arm",
                 "ToolType": "Mechanical"

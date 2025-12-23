@@ -103,10 +103,10 @@ public partial class Arm : Entity
 			&& Input.Keyboard.Down( Settings.KeyPitchDown );
 
 		if ( pitchUp )
-			steer.pitch -= 1;
+			steer.pitch += 1;
 
 		if ( pitchDown )
-			steer.pitch += 1;
+			steer.pitch -= 1;
 
 		SteerAngles = steer;
 	}
