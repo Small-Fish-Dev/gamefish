@@ -58,8 +58,6 @@ public partial class SliderJoint : JointEntity
 	{
 		base.OnUpdate();
 
-		DrawJointGizmo();
-
 		if ( IsProxy )
 			return;
 

@@ -44,8 +44,6 @@ public partial class Arm : JointEntity
 	{
 		base.OnUpdate();
 
-		DrawJointGizmo();
-
 		if ( IsProxy )
 			return;
 

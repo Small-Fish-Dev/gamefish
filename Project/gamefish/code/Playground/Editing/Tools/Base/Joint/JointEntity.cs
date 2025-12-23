@@ -1,3 +1,5 @@
+using Playground.Razor;
+
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
@@ -19,6 +21,14 @@ public abstract class JointEntity : Entity
 
 	[Sync]
 	public ToolAttachPoint TargetPoint { get; set; }
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( EditorMenu.IsOpen )
+			DrawJointGizmo();
+	}
 
 	protected override void OnFixedUpdate()
 	{
