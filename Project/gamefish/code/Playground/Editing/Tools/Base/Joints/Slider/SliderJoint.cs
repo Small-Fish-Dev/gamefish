@@ -136,6 +136,10 @@ public partial class SliderJoint : JointEntity
 		);
 	}
 
+	public override void ApplySettings()
+	{
+	}
+
 	public override void UpdateJoint( in float deltaTime )
 	{
 		if ( !Slider.IsValid() )

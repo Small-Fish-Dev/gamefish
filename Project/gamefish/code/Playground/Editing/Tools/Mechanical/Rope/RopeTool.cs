@@ -1,16 +1,16 @@
 namespace Playground;
 
-public partial class SliderTool : JointTool
+public partial class RopeTool : JointTool
 {
 	/// <summary>
 	/// The key you press to activate the thruster you're placing.
 	/// </summary>
 	[Property, InlineEditor]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public virtual SliderSettings SliderSettings { get; set; }
+	public virtual RopeSettings RopeSettings { get; set; }
 
 	public override bool TryAttach( in ToolAttachPoint point1, in ToolAttachPoint point2 )
-		=> TryAttach<SliderJoint>( in point1, in point2 );
+		=> TryAttach<RopeJoint>( in point1, in point2 );
 
 	protected override void DrawJointGizmos()
 	{
@@ -25,7 +25,7 @@ public partial class SliderTool : JointTool
 		var tParentPoint = a.Object.WorldTransform.WithOffset( a.Offset.Value );
 		var tTargetPoint = b.Object.WorldTransform.WithOffset( b.Offset.Value );
 
-		var c = Color.Red.Desaturate( 0.3f ).WithAlpha( 0.3f );
+		var c = Color.Orange.Desaturate( 0.3f ).WithAlpha( 0.3f );
 
 		this.DrawArrow(
 			from: tParentPoint.Position,
@@ -43,7 +43,7 @@ public partial class SliderTool : JointTool
 		if ( !ValidAttachment( point ) )
 			return;
 
-		var c = Color.Red.Desaturate( 0.3f ).WithAlpha( 0.3f );
+		var c = Color.Orange.Desaturate( 0.3f ).WithAlpha( 0.3f );
 
 		var tObj = point.Object.WorldTransform;
 		var tArrow = tObj.ToWorld( point.Offset.Value );
@@ -60,14 +60,14 @@ public partial class SliderTool : JointTool
 
 	public override void ApplySettings<TJoint>( TJoint joint )
 	{
-		if ( joint is not SliderJoint slider )
+		if ( joint is not RopeJoint rope )
 			return;
 
-		slider.Settings = SliderSettings;
+		rope.Settings = RopeSettings;
 	}
 
 	public override bool TryClear( GameObject obj )
-		=> TryClear<SliderJoint>( obj );
+		=> TryClear<RopeJoint>( obj );
 
 	[Rpc.Host]
 	protected override void RpcRemoveJoints( GameObject obj )
@@ -77,7 +77,7 @@ public partial class SliderTool : JointTool
 
 		const FindMode findMode = FindMode.EverythingInSelf | FindMode.InDescendants;
 
-		var arms = obj.Components.GetAll<SliderJoint>( findMode );
+		var arms = obj.Components.GetAll<RopeJoint>( findMode );
 
 		if ( !arms.Any() )
 			return;

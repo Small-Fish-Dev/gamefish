@@ -41,6 +41,9 @@ public abstract class JointEntity : Entity
 	{
 	}
 
+	public abstract void ApplySettings();
+
 	public abstract void UpdateJoint( in float deltaTime );
+
 	public abstract bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b );
 }

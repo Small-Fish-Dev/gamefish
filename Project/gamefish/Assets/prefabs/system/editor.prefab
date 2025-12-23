@@ -584,6 +584,76 @@
             "Children": []
           },
           {
+            "__guid": "e3aaf472-e677-4f02-bb68-a194c5f4f045",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Rope",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 1,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Playground.RopeTool",
+                "__guid": "52cf0a80-452e-44bf-a1e9-17042ce33e2a",
+                "__enabled": true,
+                "Flags": 0,
+                "AttachingSound": null,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Attach",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Clear",
+                    "Description": null,
+                    "Action": "Reload",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "JointPrefab": "prefabs/editing/tools/physics/rope.prefab",
+                "NetworkAutomatically": true,
+                "NetworkId": "52cf0a80-452e-44bf-a1e9-17042ce33e2a",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "RopeSettings": {
+                  "Slack": 256,
+                  "Damping": 0.7,
+                  "LengthSpeed": 150,
+                  "KeyShorten": "KP_7",
+                  "KeyLengthen": "KP_1"
+                },
+                "ToolDescription": "Dangle something from a cable.",
+                "ToolEmoji": "\uD83D\uDC0D",
+                "ToolName": "Rope",
+                "ToolType": "Mechanical"
+              }
+            ],
+            "Children": []
+          },
+          {
             "__guid": "e24b3f97-16e0-4118-9b27-89def68cf8f0",
             "__version": 1,
             "Flags": 0,

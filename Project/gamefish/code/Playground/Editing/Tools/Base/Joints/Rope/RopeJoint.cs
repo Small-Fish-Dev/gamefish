@@ -1,11 +1,13 @@
+using System.Drawing;
+
 namespace Playground;
 
-[Icon( "precision_manufacturing" )]
-public partial class ArmJoint : JointEntity
+[Icon( "import_export" )]
+public partial class RopeJoint : JointEntity
 {
 	[Property]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Sandbox.BallJoint Joint { get; set; }
+	public Sandbox.SpringJoint Joint { get; set; }
 
 	/// <summary>
 	/// The key you press to activate the spiner you're placing.
@@ -13,23 +15,27 @@ public partial class ArmJoint : JointEntity
 	[Sync]
 	[Property, InlineEditor]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public ArmSettings Settings { get; set; }
+	public RopeSettings Settings { get; set; }
 
 	[Sync]
 	[Property, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Angles SteerAngles { get; set; } = Angles.Zero;
-
-	[Sync]
-	[Property]
-	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Angles TargetAngles
+	public float Direction
 	{
-		get => _targetAngles;
-		set => _targetAngles = value.Normal;
+		get => _direction.Clamp( -1f, 1f );
+		set => _direction = value.Clamp( -1f, 1f );
 	}
 
-	protected Angles _targetAngles;
+	protected float _direction;
+
+	[Sync]
+	public float TargetLength { get; set; }
+
+	[Sync]
+	public float MinLength { get; set; }
+
+	[Sync]
+	public float MaxLength { get; set; }
 
 	protected override void OnStart()
 	{
@@ -47,7 +53,7 @@ public partial class ArmJoint : JointEntity
 		if ( IsProxy )
 			return;
 
-		UpdateSteering( Time.Delta );
+		UpdateInput( Time.Delta );
 	}
 
 	protected override void OnDestroy()
@@ -65,43 +71,63 @@ public partial class ArmJoint : JointEntity
 			GameObject.Destroy();
 	}
 
-	protected void UpdateSteering( in float deltaTime )
+	protected void UpdateInput( in float deltaTime )
 	{
-		var steer = Angles.Zero;
+		var dir = 0f;
 
-		// Pitch
-		var pitchUp = !Settings.KeyPitchUp.IsBlank()
-			&& Input.Keyboard.Down( Settings.KeyPitchUp );
+		var bShorten = !Settings.KeyShorten.IsBlank()
+			&& Input.Keyboard.Down( Settings.KeyShorten );
 
-		var pitchDown = !Settings.KeyPitchDown.IsBlank()
-			&& Input.Keyboard.Down( Settings.KeyPitchDown );
+		var bLengthen = !Settings.KeyLengthen.IsBlank()
+			&& Input.Keyboard.Down( Settings.KeyLengthen );
 
-		if ( pitchUp )
-			steer.pitch += 1;
+		if ( bShorten )
+			dir += 1;
 
-		if ( pitchDown )
-			steer.pitch -= 1;
+		if ( bLengthen )
+			dir -= 1;
 
-		SteerAngles = steer;
+		Direction = dir;
 	}
 
 	protected override void DrawJointGizmo()
 	{
-		var c = Color.Green.WithAlpha( 0.3f );
+		var c = Color.Orange.Desaturate( 0.3f ).WithAlpha( 0.3f );
 
-		var tObj = WorldTransform.WithScale( 1f );
-		var dir = tObj.Forward;
+		var objParent = ParentPoint.Object;
+		var objTarget = TargetPoint.Object;
+
+		if ( !objParent.IsValid() || !objTarget.IsValid() )
+			return;
+
+		if ( ParentPoint.Offset is not Offset parentOffset )
+			return;
+
+		if ( TargetPoint.Offset is not Offset targetOffset )
+			return;
+
+		var tParentPoint = objParent.WorldTransform.WithOffset( parentOffset );
+		var tTargetPoint = objTarget.WorldTransform.WithOffset( targetOffset );
 
 		this.DrawArrow(
-			from: tObj.Position,
-			to: tObj.Position + (dir * 6f),
-			c: c, len: 0.1f, w: 5f, th: 4f,
+			from: tParentPoint.Position,
+			to: tTargetPoint.Position,
+			c: c, len: 16f, w: 4f, th: 3f,
 			tWorld: global::Transform.Zero
 		);
 	}
 
 	public override void ApplySettings()
 	{
+		if ( !Joint.IsValid() )
+			return;
+
+		Joint.Damping = Settings.Damping;
+
+		Joint.RestLength = MaxLength;
+
+		Joint.MinLength = 0f;
+		Joint.MaxLength = Joint.RestLength + Settings.Slack;
 	}
 
 	public override void UpdateJoint( in float deltaTime )
@@ -109,36 +135,22 @@ public partial class ArmJoint : JointEntity
 		if ( !Joint.IsValid() )
 			return;
 
-		if ( SteerAngles.IsNearlyZero() )
-			return;
-
 		if ( !ParentPoint.Object.IsValid() )
 			return;
 
-		var dirYaw = SteerAngles.yaw.Clamp( -1f, 1f );
-		var dirPitch = SteerAngles.pitch.Clamp( -1f, 1f );
-		var dirRoll = SteerAngles.roll.Clamp( -1f, 1f );
+		/*
+		if ( Direction.AlmostEqual( 0f ) )
+			return;
 
-		var addYaw = dirYaw * Settings.Speed * deltaTime;
-		var addPitch = dirPitch * Settings.Speed * deltaTime;
-		var addRoll = dirRoll * Settings.Speed * deltaTime;
+		// var newLength = 
+		*/
 
-		var angTarget = TargetAngles;
-
-		const float angleLimit = -89.5f;
-
-		angTarget.yaw = (angTarget.yaw + addYaw).Clamp( -angleLimit, angleLimit );
-		angTarget.pitch = (angTarget.pitch + addPitch).Clamp( -angleLimit, angleLimit );
-		angTarget.roll = (angTarget.roll + addRoll).Clamp( -angleLimit, angleLimit );
-
-		TargetAngles = angTarget;
-
-		Joint.TargetRotation = TargetAngles;
+		ApplySettings();
 	}
 
 	public override bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b )
 	{
-		// Must have a Ball(the entire point).
+		// Must have a Slider(the entire point).
 		if ( !Joint.IsValid() )
 			return false;
 
@@ -165,8 +177,13 @@ public partial class ArmJoint : JointEntity
 		var tParentPoint = objParent.WorldTransform.WithOffset( parentOffset );
 		var tTargetPoint = objTarget.WorldTransform.WithOffset( targetOffset );
 
+		var length = tParentPoint.Position.Distance( tTargetPoint.Position );
+
+		MinLength = 0;
+		MaxLength = length;
+
 		var aPhysLocal = aPhys.Transform.ToLocal( tParentPoint );
-		var bPhysLocal = bPhys.Transform.ToLocal( tParentPoint );
+		var bPhysLocal = bPhys.Transform.ToLocal( tTargetPoint );
 
 		// var aPhysPoint = new PhysicsPoint( aPhys, aPhysLocal.Position, aPhysLocal.Rotation );
 		// var bPhysPoint = new PhysicsPoint( bPhys, bPhysLocal.Position, bPhysLocal.Rotation );
