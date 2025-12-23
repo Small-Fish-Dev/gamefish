@@ -7,6 +7,13 @@ public abstract class JointEntity : Entity
 	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
 	protected const int SETTINGS_ORDER = EDITOR_ORDER + 50;
 
+	protected override bool? IsNetworkedOverride => true;
+	protected override bool IsNetworkedAutomatically => true;
+
+	protected override NetworkMode NetworkingModeDefault => NetworkMode.Object;
+	protected override OwnerTransfer NetworkTransferModeDefault => OwnerTransfer.Fixed;
+	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
+
 	[Sync]
 	public ToolAttachPoint ParentPoint { get; set; }
 

@@ -515,6 +515,75 @@
             "Children": []
           },
           {
+            "__guid": "f88780fb-20a1-470e-807f-ffb9006f8089",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Slider",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 1,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Playground.SliderTool",
+                "__guid": "2ce72447-f4a9-4d82-bd8f-33163e5a24af",
+                "__enabled": true,
+                "Flags": 0,
+                "AttachingSound": null,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Attach",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Clear",
+                    "Description": null,
+                    "Action": "Reload",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "JointPrefab": "prefabs/editing/tools/physics/slider.prefab",
+                "NetworkAutomatically": true,
+                "NetworkId": "2ce72447-f4a9-4d82-bd8f-33163e5a24af",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "SliderSettings": {
+                  "Speed": 120,
+                  "KeyToggle": "KP_MULTIPLY",
+                  "KeyShorten": "KP_MINUS",
+                  "KeyLengthen": "KP_PLUS"
+                },
+                "ToolDescription": "Restrict movement along a pole.",
+                "ToolEmoji": "\uD83C\uDF9A",
+                "ToolName": "Slider",
+                "ToolType": "Mechanical"
+              }
+            ],
+            "Children": []
+          },
+          {
             "__guid": "e24b3f97-16e0-4118-9b27-89def68cf8f0",
             "__version": 1,
             "Flags": 0,

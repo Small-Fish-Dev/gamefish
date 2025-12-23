@@ -24,10 +24,7 @@ public abstract class JointTool : EditorTool
 		if ( !IsSelected )
 			return;
 
-		DrawPointGizmo( Point1 );
-		DrawPointGizmo( Point2 );
-
-		DrawPointGizmo( PointTarget );
+		DrawJointGizmos();
 	}
 
 	public override void FrameSimulate( in float deltaTime )
@@ -170,6 +167,14 @@ public abstract class JointTool : EditorTool
 	public virtual void ApplySettings<TJoint>( TJoint joint )
 		where TJoint : JointEntity
 	{
+	}
+
+	protected virtual void DrawJointGizmos()
+	{
+		DrawPointGizmo( Point1 );
+		DrawPointGizmo( Point2 );
+
+		DrawPointGizmo( PointTarget );
 	}
 
 	protected virtual void DrawPointGizmo( in ToolAttachPoint point )

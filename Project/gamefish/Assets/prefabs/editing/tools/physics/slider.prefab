@@ -1,0 +1,136 @@
+{
+  "RootObject": {
+    "__guid": "1bab51ce-6af7-4603-8f7e-e3cb4dc26f5d",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "slider",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Playground.SliderJoint",
+        "__guid": "116af9ad-366b-426a-aaba-25f9290a9531",
+        "__enabled": true,
+        "Flags": 0,
+        "ClassId": "arm",
+        "ClassName": null,
+        "Direction": 0,
+        "IsClass": false,
+        "IsLengthEnabled": false,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "116af9ad-366b-426a-aaba-25f9290a9531",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Settings": {
+          "Speed": 0,
+          "KeyToggle": "",
+          "KeyShorten": "",
+          "KeyLengthen": ""
+        },
+        "Slider": {
+          "_type": "component",
+          "component_id": "b7b0d581-2761-4d63-9507-2d71c563dec4",
+          "go": "b39ddaea-b5d8-409d-9f34-e6cf402a02f7",
+          "component_type": "SliderJoint"
+        },
+        "TargetLength": 0
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "b39ddaea-b5d8-409d-9f34-e6cf402a02f7",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Joint",
+        "Position": "0,0,0",
+        "Rotation": "0,-0.7071067,0,0.7071068",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SliderJoint",
+            "__guid": "b7b0d581-2761-4d63-9507-2d71c563dec4",
+            "__enabled": true,
+            "Flags": 0,
+            "Attachment": "Auto",
+            "Body": null,
+            "BreakForce": 0,
+            "BreakTorque": 0,
+            "EnableCollision": false,
+            "Friction": 0.5,
+            "LocalFrame1": {
+              "Position": "0,0,0",
+              "Scale": "0,0,0",
+              "Rotation": "0,0,0,0"
+            },
+            "LocalFrame2": {
+              "Position": "0,0,0",
+              "Scale": "0,0,0",
+              "Rotation": "0,0,0,0"
+            },
+            "MaxLength": 0,
+            "MinLength": 0,
+            "OnBreak": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "StartBroken": false
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
