@@ -16,22 +16,22 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Playground.Arm",
-        "__guid": "116af9ad-366b-426a-aaba-25f9290a9531",
+        "__type": "Playground.ArmJoint",
+        "__guid": "c9b92d8e-a091-4641-82fa-249362f6f89b",
         "__enabled": true,
         "Flags": 0,
-        "Ball": {
+        "ClassId": "arm",
+        "ClassName": null,
+        "IsClass": false,
+        "IsNetworkingForced": true,
+        "Joint": {
           "_type": "component",
           "component_id": "b7b0d581-2761-4d63-9507-2d71c563dec4",
           "go": "b39ddaea-b5d8-409d-9f34-e6cf402a02f7",
           "component_type": "BallJoint"
         },
-        "ClassId": "arm",
-        "ClassName": null,
-        "IsClass": false,
-        "IsNetworkingForced": true,
         "NetworkAutomatically": true,
-        "NetworkId": "116af9ad-366b-426a-aaba-25f9290a9531",
+        "NetworkId": "c9b92d8e-a091-4641-82fa-249362f6f89b",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
@@ -44,8 +44,8 @@
         "OnComponentUpdate": null,
         "Settings": {
           "Speed": 0,
-          "KeyPitchUp": "",
-          "KeyPitchDown": "",
+          "KeyPitchUp": null,
+          "KeyPitchDown": null,
           "KeyYawUp": null,
           "KeyYawDown": null
         },

@@ -10,7 +10,7 @@ public partial class ArmTool : JointTool
 	public virtual ArmSettings ArmSettings { get; set; }
 
 	public override bool TryAttach( in ToolAttachPoint point1, in ToolAttachPoint point2 )
-		=> TryAttach<Arm>( in point1, in point2 );
+		=> TryAttach<ArmJoint>( in point1, in point2 );
 
 	protected override void DrawPointGizmo( in ToolAttachPoint point )
 	{
@@ -37,14 +37,14 @@ public partial class ArmTool : JointTool
 
 	public override void ApplySettings<TJoint>( TJoint joint )
 	{
-		if ( joint is not Arm arm )
+		if ( joint is not ArmJoint arm )
 			return;
 
 		arm.Settings = ArmSettings;
 	}
 
 	public override bool TryClear( GameObject obj )
-		=> TryClear<Arm>( obj );
+		=> TryClear<ArmJoint>( obj );
 
 	[Rpc.Host]
 	protected override void RpcRemoveJoints( GameObject obj )
@@ -54,7 +54,7 @@ public partial class ArmTool : JointTool
 
 		const FindMode findMode = FindMode.EverythingInSelf | FindMode.InDescendants;
 
-		var arms = obj.Components.GetAll<Arm>( findMode );
+		var arms = obj.Components.GetAll<ArmJoint>( findMode );
 
 		if ( !arms.Any() )
 			return;

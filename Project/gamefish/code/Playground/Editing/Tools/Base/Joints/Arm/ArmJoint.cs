@@ -1,11 +1,11 @@
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public partial class Arm : JointEntity
+public partial class ArmJoint : JointEntity
 {
 	[Property]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Sandbox.BallJoint Ball { get; set; }
+	public Sandbox.BallJoint Joint { get; set; }
 
 	/// <summary>
 	/// The key you press to activate the spiner you're placing.
@@ -102,7 +102,7 @@ public partial class Arm : JointEntity
 
 	public override void UpdateJoint( in float deltaTime )
 	{
-		if ( !Ball.IsValid() )
+		if ( !Joint.IsValid() )
 			return;
 
 		if ( SteerAngles.IsNearlyZero() )
@@ -129,13 +129,13 @@ public partial class Arm : JointEntity
 
 		TargetAngles = angTarget;
 
-		Ball.TargetRotation = TargetAngles;
+		Joint.TargetRotation = TargetAngles;
 	}
 
 	public override bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b )
 	{
 		// Must have a Ball(the entire point).
-		if ( !Ball.IsValid() )
+		if ( !Joint.IsValid() )
 			return false;
 
 		var objParent = a.Object;
@@ -176,13 +176,13 @@ public partial class Arm : JointEntity
 		Transform.ClearInterpolation();
 
 		// Let the engine's component handle it.
-		Ball.Attachment = Joint.AttachmentMode.LocalFrames;
+		Joint.Attachment = Sandbox.Joint.AttachmentMode.LocalFrames;
 
-		Ball.LocalFrame1 = aPhysLocal;
-		Ball.LocalFrame2 = bPhysLocal;
+		Joint.LocalFrame1 = aPhysLocal;
+		Joint.LocalFrame2 = bPhysLocal;
 
 		// Set the other body.
-		Ball.Body = objTarget;
+		Joint.Body = objTarget;
 
 		return true;
 	}
