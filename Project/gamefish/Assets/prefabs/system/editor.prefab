@@ -535,7 +535,6 @@
                 "__guid": "99855a87-1db7-4ae9-b26f-5d3c8bd92e25",
                 "__enabled": true,
                 "Flags": 0,
-                "ArmPrefab": "prefabs/editing/tools/physics/arm.prefab",
                 "ArmSettings": {
                   "Speed": 100,
                   "KeyPitchUp": "KP_9",
@@ -564,6 +563,7 @@
                 "IsAdminOnly": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
+                "JointPrefab": "prefabs/editing/tools/physics/arm.prefab",
                 "NetworkAutomatically": true,
                 "NetworkId": "99855a87-1db7-4ae9-b26f-5d3c8bd92e25",
                 "NetworkingMode": "Object",
