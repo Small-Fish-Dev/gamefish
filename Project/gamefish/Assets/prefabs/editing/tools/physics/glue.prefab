@@ -44,7 +44,7 @@
         "OnComponentUpdate": null,
         "Settings": {
           "Strength": 15,
-          "Damping": 2
+          "Damping": 1
         }
       }
     ],

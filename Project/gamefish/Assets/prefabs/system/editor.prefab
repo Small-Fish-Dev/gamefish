@@ -493,7 +493,7 @@
                 "JointPrefab": "prefabs/editing/tools/physics/glue.prefab",
                 "JointSettings": {
                   "Strength": 15,
-                  "Damping": 2
+                  "Damping": 1
                 },
                 "NetworkAutomatically": true,
                 "NetworkId": "5b74a1b1-165a-4b5f-9507-1b97401a2af3",

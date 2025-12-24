@@ -12,7 +12,7 @@ public partial struct GlueSettings
 	/// How much forces are softened.
 	/// </summary>
 	[Range( 0f, 10f )]
-	public float Damping { get; set; } = 2f;
+	public float Damping { get; set; } = 1f;
 
 	public GlueSettings() { }
 }
