@@ -784,7 +784,7 @@
                   "KeyForward": "KP_6",
                   "KeyReverse": "KP_4"
                 },
-                "ToolDescription": "Adds turny thingies.",
+                "ToolDescription": "Lets you spin the thing(s).",
                 "ToolEmoji": "♻",
                 "ToolName": "Spinner",
                 "ToolType": "Mechanical"
