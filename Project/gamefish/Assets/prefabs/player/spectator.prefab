@@ -36,8 +36,8 @@
           "Value": 5,
           "StopSpeed": 80
         },
-        "FlyingRunSpeed": 3500,
-        "FlyingSpeed": 1500,
+        "FlyingRunSpeed": 5000,
+        "FlyingSpeed": 2000,
         "Health": 0,
         "IsAlive": false,
         "IsClass": false,
