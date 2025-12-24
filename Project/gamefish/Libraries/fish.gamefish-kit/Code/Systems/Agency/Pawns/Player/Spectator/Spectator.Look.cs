@@ -47,10 +47,10 @@ partial class Spectator
 
 	protected override void DoAiming( in float deltaTime )
 	{
-		if ( View is not SpectatorView view || !view.IsValid() )
+		if ( !View.IsValid() )
 			return;
 
-		if ( !view.TryAiming( in deltaTime ) )
+		if ( !View.TryAiming( in deltaTime ) )
 			return;
 
 		if ( !Client.TryGetLocalAim( out var aim ) )
