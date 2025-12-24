@@ -23,7 +23,7 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/testing/example1.scene",
+    "StartupScene": "scenes/modes/sbox/sandbox1.scene",
     "LaunchMode": "Normal",
     "SystemScene": "scenes/system.scene",
     "ControlModes": {
@@ -47,6 +47,6 @@
       "DistinctAssemblyReferences": []
     },
     "MapStartupScene": "scenes/game/maps.scene",
-    "DedicatedServerStartupScene": "scenes/game/game.scene"
+    "DedicatedServerStartupScene": "scenes/modes/sbox/sandbox1.scene"
   }
 }
