@@ -7,9 +7,9 @@ public partial class EditorEntity : ModuleEntity
 	protected const int EDITOR_ORDER = DEFAULT_ORDER - 1000;
 
 	[Title( "Owner" )]
-	[Property, JsonIgnore]
+	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( ID ), Order( EDITOR_ORDER - 100 )]
-	public Client InspectorOwner
+	public SteamId InspectorOwner
 	{
 		get => Owner;
 		set => Owner = value;
@@ -20,5 +20,5 @@ public partial class EditorEntity : ModuleEntity
 	/// Probably the one that spawn/requested it.
 	/// </summary>
 	[Sync( SyncFlags.FromHost )]
-	public Client Owner { get; protected set; }
+	public SteamId Owner { get; protected set; }
 }
