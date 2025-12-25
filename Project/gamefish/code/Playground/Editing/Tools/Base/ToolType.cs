@@ -38,11 +38,11 @@ public enum ToolType
 	Physics,
 
 	/// <summary>
-	/// Contraption parts.
+	/// Contraption helpers.
 	/// </summary>
 	[Order( 30 )]
 	[Icon( "⚙" )]
-	[Group( "Mechanical" )]
+	[Group( "Joints" )]
 	Mechanical,
 
 	/// <summary>
