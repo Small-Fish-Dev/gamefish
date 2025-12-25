@@ -6,6 +6,28 @@ public partial class PhysicsWheelTool : JointTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual PhysicsWheelSettings JointSettings { get; set; }
 
+	public override void FrameSimulate( in float deltaTime )
+	{
+		base.FrameSimulate( deltaTime );
+
+		if ( PressedUse )
+			TryToggleSteering();
+	}
+
+	protected void TryToggleSteering()
+	{
+		if ( !TryTrace( out var tr ) || !tr.Hit )
+			return;
+
+		if ( !tr.GameObject.IsValid() )
+			return;
+
+		if ( !tr.GameObject.Components.TryGet<PhysicsWheel>( out var w ) )
+			return;
+
+		w.RpcToggleSteering();
+	}
+
 	public override bool TryAddPointAtTarget()
 		=> TryAttach( PointTarget );
 

@@ -1146,6 +1146,18 @@
                     "Description": null,
                     "Action": "Attack1",
                     "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Steering",
+                    "Description": null,
+                    "Action": "Use",
+                    "Mode": "Pressed"
+                  },
+                  {
+                    "Name": "Reverse",
+                    "Description": null,
+                    "Action": "Reload",
+                    "Mode": "Pressed"
                   }
                 ],
                 "IsAdminOnly": false,

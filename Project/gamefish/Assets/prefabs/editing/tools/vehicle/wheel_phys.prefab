@@ -230,7 +230,7 @@
             "EnableSpinMotor": true,
             "EnableSteering": false,
             "EnableSteeringLimit": false,
-            "EnableSuspension": false,
+            "EnableSuspension": true,
             "EnableSuspensionLimit": true,
             "LocalFrame1": {
               "Position": "0,0,0",
@@ -243,7 +243,7 @@
               "Rotation": "0,0,0,1"
             },
             "MaxSpinTorque": 500000,
-            "MaxSteeringTorque": 10,
+            "MaxSteeringTorque": 9999999,
             "OnBreak": null,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -253,12 +253,12 @@
             "OnComponentUpdate": null,
             "SpinMotorSpeed": 0,
             "StartBroken": false,
-            "SteeringDampingRatio": 1,
+            "SteeringDampingRatio": 0.5,
             "SteeringHertz": 10,
             "SteeringLimits": "0,0",
             "SuspensionDampingRatio": 1,
             "SuspensionHertz": 2,
-            "SuspensionLimits": "-15,0",
+            "SuspensionLimits": "-10,0",
             "TargetSteeringAngle": 0
           }
         ],

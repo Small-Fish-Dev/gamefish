@@ -23,6 +23,9 @@ public partial class PhysicsWheel : EditorEntity
 	public ToolAttachPoint ParentPoint { get; set; }
 
 	[Sync]
+	public bool IsSteering { get; set; }
+
+	[Sync]
 	public bool IsReversed { get; set; }
 
 	protected override void OnStart()
@@ -90,10 +93,10 @@ public partial class PhysicsWheel : EditorEntity
 			&& Input.Keyboard.Down( Settings.KeyRight );
 
 		if ( bLeft )
-			drive.x -= 1;
+			drive.x += 1;
 
 		if ( bRight )
-			drive.x += 1;
+			drive.x -= 1;
 
 		DriveInput = drive;
 	}
@@ -103,10 +106,17 @@ public partial class PhysicsWheel : EditorEntity
 		if ( !Joint.IsValid() )
 			return;
 
-		Joint.TargetSteeringAngle = DriveInput.x * 30f;
+		// Steering
+		if ( Joint.EnableSteering != IsSteering )
+			Joint.EnableSteering = IsSteering;
 
-		Joint.SpinMotorSpeed = DriveInput.y * Joint.MaxSpinTorque
-			* (IsReversed ? -1f : 1f);
+		var steeringAngle = DriveInput.x * 30f;
+		Joint.TargetSteeringAngle = steeringAngle;
+		// Joint.SteeringLimits = new( -steeringAngle, steeringAngle );
+
+		// Acceleration
+		var motorSpeed = DriveInput.y * Joint.MaxSpinTorque;
+		Joint.SpinMotorSpeed = motorSpeed * (IsReversed ? -1f : 1f);
 	}
 
 	public bool TryAttachTo( in ToolAttachPoint point )
@@ -185,6 +195,15 @@ public partial class PhysicsWheel : EditorEntity
 			c: c, len: 7f, w: 2f, th: 4f,
 			tWorld: global::Transform.Zero
 		);
+	}
+
+	[Rpc.Owner( NetFlags.Reliable | NetFlags.SendImmediate )]
+	public void RpcToggleSteering()
+	{
+		if ( !Server.TryFindClient( Rpc.Caller, out var _ ) )
+			return;
+
+		IsSteering = !IsSteering;
 	}
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.SendImmediate )]
