@@ -44,7 +44,7 @@ public abstract class JointTool : EditorTool
 				ClearPoints();
 		}
 
-		PointTarget = new( tr );
+		PointTarget = GetAttachmentPoint( in tr );
 
 		if ( PressedPrimary )
 			TryAddPointAtTarget();
@@ -55,6 +55,9 @@ public abstract class JointTool : EditorTool
 
 	public virtual bool TryAddPointAtTarget()
 		=> TryAddPoint( PointTarget );
+
+	protected virtual ToolAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
+		=> new( tr );
 
 	protected virtual bool TryAddPoint( in ToolAttachPoint point )
 	{

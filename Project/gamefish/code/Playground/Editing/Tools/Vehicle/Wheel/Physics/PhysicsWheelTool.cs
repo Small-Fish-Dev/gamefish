@@ -9,6 +9,15 @@ public partial class PhysicsWheelTool : JointTool
 	public override bool TryAddPointAtTarget()
 		=> TryAttach( PointTarget );
 
+	protected override ToolAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
+	{
+		// Pull it out a bit.
+		var vPos = tr.EndPosition;
+		vPos += tr.Normal * 1f;
+
+		return new ToolAttachPoint( tr, vPos );
+	}
+
 	public override bool TryAttach( in ToolAttachPoint hitPoint, in ToolAttachPoint _ )
 		=> false;
 
@@ -23,9 +32,9 @@ public partial class PhysicsWheelTool : JointTool
 		if ( !hitPoint.IsValid() || !ValidAttachment( hitPoint ) )
 			return false;
 
-		var tHit = hitPoint.Object.WorldTransform.WithOffset( hitPoint.Offset.Value );
+		// var tHit = hitPoint.Object.WorldTransform.WithOffset( hitPoint.Offset.Value );
 
-		if ( !JointPrefab.TrySpawn( in tHit, out var jointObj ) )
+		if ( !JointPrefab.TrySpawn( out var jointObj ) )
 		{
 			this.Warn( $"Couldn't find/spawn {typeof( PhysicsWheel )} prefab:[{JointPrefab}]!" );
 			return false;

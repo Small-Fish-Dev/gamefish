@@ -38,6 +38,13 @@ public partial class PhysicsWheel : EditorEntity
 		UpdateInput( Time.Delta );
 	}
 
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		UpdateWheel( Time.Delta );
+	}
+
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
@@ -94,7 +101,7 @@ public partial class PhysicsWheel : EditorEntity
 			return;
 
 		Joint.TargetSteeringAngle = DriveInput.x * 30f;
-		Joint.SpinMotorSpeed = DriveInput.y * 360f;
+		Joint.SpinMotorSpeed = DriveInput.y * Joint.MaxSpinTorque;
 	}
 
 	public bool TryAttachTo( in ToolAttachPoint point )
@@ -105,43 +112,47 @@ public partial class PhysicsWheel : EditorEntity
 
 		var objTarget = point.Object;
 
-		if ( !objTarget.IsValid() )
+		if ( !objTarget.IsValid() || point.Offset is not Offset offset )
 			return false;
 
 		// Disgraceful..
 		if ( objTarget == GameObject )
 			return false;
 
-		var aPhys = Physics.FindBody( objTarget );
+		var aPhys = Physics.FindBody( GameObject );
 
-		if ( !aPhys.IsValid() || point.Offset is not Offset offset )
+		if ( !aPhys.IsValid() )
 			return false;
 
-		var bPhys = Physics.FindBody( GameObject );
+		var bPhys = Physics.FindBody( objTarget );
 
 		if ( !bPhys.IsValid() )
 			return false;
 
-		var tPoint = objTarget.WorldTransform.WithOffset( offset );
+		var tParent = objTarget.WorldTransform.WithOffset( offset );
+		tParent.Rotation *= Rotation.FromPitch( -90f );
 
-		var aPhysLocal = aPhys.Transform.ToLocal( tPoint );
-		var bPhysLocal = bPhys.Transform.ToLocal( tPoint );
-
-		// var aPhysPoint = new PhysicsPoint( aPhys, aPhysLocal.Position, aPhysLocal.Rotation );
-		// var bPhysPoint = new PhysicsPoint( bPhys, bPhysLocal.Position, bPhysLocal.Rotation );
+		var aPhysLocal = new Transform( Vector3.Zero, Rotation.From( -90f, 90f, 0f ) );
+		var bPhysLocal = bPhys.Transform.ToLocal( tParent );
 
 		if ( !ITransform.IsValid( aPhysLocal ) || !ITransform.IsValid( bPhysLocal ) )
 			return false;
 
-		WorldTransform = tPoint;
+		var tWheel = tParent
+			.ToWorld( aPhysLocal )
+			.WithScale( WorldScale );
+
+		tWheel.Rotation *= Rotation.From( -90f, 0f, 90f );
+
+		WorldTransform = tWheel;
 
 		Transform.ClearInterpolation();
 
 		// Let the engine's component handle it.
 		Joint.Attachment = Sandbox.Joint.AttachmentMode.LocalFrames;
 
-		Joint.LocalFrame2 = aPhysLocal;
-		Joint.LocalFrame1 = bPhysLocal;
+		Joint.LocalFrame1 = aPhysLocal;
+		Joint.LocalFrame2 = bPhysLocal;
 
 		// Set the other body.
 		Joint.Body = objTarget;
