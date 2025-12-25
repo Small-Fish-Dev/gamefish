@@ -20,7 +20,7 @@ public partial class PhysicsWheel : EditorEntity
 	public Vector2 DriveInput { get; set; } = Vector2.Zero;
 
 	[Sync]
-	public ToolAttachPoint ParentPoint { get; set; }
+	public DeviceAttachPoint ParentPoint { get; set; }
 
 	[Sync]
 	public bool IsSteering { get; set; }
@@ -119,7 +119,7 @@ public partial class PhysicsWheel : EditorEntity
 		Joint.SpinMotorSpeed = motorSpeed * (IsReversed ? -1f : 1f);
 	}
 
-	public bool TryAttachTo( in ToolAttachPoint point )
+	public bool TryAttachTo( in DeviceAttachPoint point )
 	{
 		// Must have a Wheel(the entire point).
 		if ( !Joint.IsValid() )

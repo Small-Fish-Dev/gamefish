@@ -3,11 +3,8 @@ using System.Text.Json.Serialization;
 namespace Playground;
 
 [Icon( "rocket_launch" )]
-public partial class Spinner : Entity
+public partial class Spinner : EditorDevice
 {
-	protected const int EDITOR_ORDER = DEFAULT_ORDER - 1000;
-	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
-
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public Rigidbody Rigidbody => _rb.GetCached( GameObject, FindMode.InAncestors );

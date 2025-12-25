@@ -10,12 +10,12 @@ public abstract class JointTool : EditorTool
 	[Property]
 	[Title( "Attach" )]
 	[Feature( EDITOR ), Group( SOUNDS ), Order( SOUNDS_ORDER )]
-	public virtual SoundEvent AttachingSound { get; set; }
+	public virtual SoundEvent AttachmentSound { get; set; }
 
-	public ToolAttachPoint PointTarget { get; set; }
+	public DeviceAttachPoint PointTarget { get; set; }
 
-	public ToolAttachPoint Point1 { get; set; }
-	public ToolAttachPoint Point2 { get; set; }
+	public DeviceAttachPoint Point1 { get; set; }
+	public DeviceAttachPoint Point2 { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -56,10 +56,10 @@ public abstract class JointTool : EditorTool
 	public virtual bool TryAddPointAtTarget()
 		=> TryAddPoint( PointTarget );
 
-	protected virtual ToolAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
+	protected virtual DeviceAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
 		=> new( tr );
 
-	protected virtual bool TryAddPoint( in ToolAttachPoint point )
+	protected virtual bool TryAddPoint( in DeviceAttachPoint point )
 	{
 		if ( !point.IsValid() )
 			return false;
@@ -117,7 +117,7 @@ public abstract class JointTool : EditorTool
 		return true;
 	}
 
-	public virtual bool ValidAttachment( in ToolAttachPoint point )
+	public virtual bool ValidAttachment( in DeviceAttachPoint point )
 	{
 		if ( Pawn.TryGet( point.Object, out _ ) )
 			return false;
@@ -125,9 +125,9 @@ public abstract class JointTool : EditorTool
 		return true;
 	}
 
-	public abstract bool TryAttach( in ToolAttachPoint point1, in ToolAttachPoint point2 );
+	public abstract bool TryAttach( in DeviceAttachPoint point1, in DeviceAttachPoint point2 );
 
-	protected virtual bool TryAttach<TJoint>( in ToolAttachPoint point1, in ToolAttachPoint point2 )
+	protected virtual bool TryAttach<TJoint>( in DeviceAttachPoint point1, in DeviceAttachPoint point2 )
 		where TJoint : JointEntity
 	{
 		if ( !IsClientAllowed( Client.Local ) )
@@ -154,7 +154,7 @@ public abstract class JointTool : EditorTool
 			return false;
 		}
 
-		joint.ParentPoint = point1;
+		joint.LocalPoint = point1;
 		joint.TargetPoint = point2;
 
 		ApplySettings( joint );
@@ -186,7 +186,7 @@ public abstract class JointTool : EditorTool
 		DrawPointGizmo( PointTarget );
 	}
 
-	protected virtual void DrawPointGizmo( in ToolAttachPoint point )
+	protected virtual void DrawPointGizmo( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

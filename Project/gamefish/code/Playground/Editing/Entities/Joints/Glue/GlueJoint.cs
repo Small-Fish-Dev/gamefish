@@ -18,7 +18,7 @@ public partial class GlueJoint : JointEntity
 
 		// Snap to the offset without lag if we're the owner.
 		if ( GameObject.Parent.IsValid() && !GameObject.Parent.IsProxy )
-			TryAttachTo( a: ParentPoint, b: TargetPoint );
+			TryAttachTo( a: LocalPoint, b: TargetPoint );
 	}
 
 	protected override void OnDestroy()
@@ -38,13 +38,13 @@ public partial class GlueJoint : JointEntity
 
 	protected override void DrawJointGizmo()
 	{
-		var objParent = ParentPoint.Object;
+		var objParent = LocalPoint.Object;
 		var objTarget = TargetPoint.Object;
 
 		if ( !objParent.IsValid() || !objTarget.IsValid() )
 			return;
 
-		if ( ParentPoint.Offset is not Offset parentOffset )
+		if ( LocalPoint.Offset is not Offset parentOffset )
 			return;
 
 		if ( TargetPoint.Offset is not Offset targetOffset )
@@ -82,7 +82,7 @@ public partial class GlueJoint : JointEntity
 	{
 	}
 
-	public override bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b )
+	public override bool TryAttachTo( in DeviceAttachPoint a, in DeviceAttachPoint b )
 	{
 		if ( !Joint.IsValid() )
 			return false;

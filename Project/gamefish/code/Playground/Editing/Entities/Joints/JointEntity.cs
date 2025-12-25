@@ -3,7 +3,7 @@ using Playground.Razor;
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public abstract class JointEntity : EditorEntity
+public abstract class JointEntity : EditorDevice
 {
 	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
 	protected const int SETTINGS_ORDER = EDITOR_ORDER + 50;
@@ -16,10 +16,10 @@ public abstract class JointEntity : EditorEntity
 	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
 
 	[Sync]
-	public ToolAttachPoint ParentPoint { get; set; }
+	public DeviceAttachPoint LocalPoint { get; set; }
 
 	[Sync]
-	public ToolAttachPoint TargetPoint { get; set; }
+	public DeviceAttachPoint TargetPoint { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -44,5 +44,5 @@ public abstract class JointEntity : EditorEntity
 
 	public abstract void UpdateJoint( in float deltaTime );
 
-	public abstract bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b );
+	public abstract bool TryAttachTo( in DeviceAttachPoint a, in DeviceAttachPoint b );
 }

@@ -6,7 +6,7 @@ public partial class GlueTool : JointTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual GlueSettings JointSettings { get; set; }
 
-	public override bool TryAttach( in ToolAttachPoint point1, in ToolAttachPoint point2 )
+	public override bool TryAttach( in DeviceAttachPoint point1, in DeviceAttachPoint point2 )
 		=> TryAttach<GlueJoint>( in point1, in point2 );
 
 	protected override void DrawJointGizmos()
@@ -32,7 +32,7 @@ public partial class GlueTool : JointTool
 		);
 	}
 
-	protected override void DrawPointGizmo( in ToolAttachPoint point )
+	protected override void DrawPointGizmo( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

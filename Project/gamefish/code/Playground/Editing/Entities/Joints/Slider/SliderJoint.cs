@@ -48,7 +48,7 @@ public partial class SliderJoint : JointEntity
 
 		// Snap to the offset without lag if we're the owner.
 		if ( GameObject.Parent.IsValid() && !GameObject.Parent.IsProxy )
-			TryAttachTo( a: ParentPoint, b: TargetPoint );
+			TryAttachTo( a: LocalPoint, b: TargetPoint );
 	}
 
 	protected override void OnUpdate()
@@ -110,13 +110,13 @@ public partial class SliderJoint : JointEntity
 	{
 		var c = Color.Red.Desaturate( 0.3f ).WithAlpha( 0.3f );
 
-		var objParent = ParentPoint.Object;
+		var objParent = LocalPoint.Object;
 		var objTarget = TargetPoint.Object;
 
 		if ( !objParent.IsValid() || !objTarget.IsValid() )
 			return;
 
-		if ( ParentPoint.Offset is not Offset parentOffset )
+		if ( LocalPoint.Offset is not Offset parentOffset )
 			return;
 
 		if ( TargetPoint.Offset is not Offset targetOffset )
@@ -142,7 +142,7 @@ public partial class SliderJoint : JointEntity
 		if ( !Slider.IsValid() )
 			return;
 
-		if ( !ParentPoint.Object.IsValid() )
+		if ( !LocalPoint.Object.IsValid() )
 			return;
 
 		/*
@@ -161,7 +161,7 @@ public partial class SliderJoint : JointEntity
 		*/
 	}
 
-	public override bool TryAttachTo( in ToolAttachPoint a, in ToolAttachPoint b )
+	public override bool TryAttachTo( in DeviceAttachPoint a, in DeviceAttachPoint b )
 	{
 		// Must have a Slider(the entire point).
 		if ( !Slider.IsValid() )

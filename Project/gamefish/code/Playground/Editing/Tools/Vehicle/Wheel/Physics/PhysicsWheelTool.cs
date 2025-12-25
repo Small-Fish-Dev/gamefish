@@ -45,22 +45,22 @@ public partial class PhysicsWheelTool : JointTool
 	public override bool TryAddPointAtTarget()
 		=> TryAttach( PointTarget );
 
-	protected override ToolAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
+	protected override DeviceAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
 	{
 		// Pull it out a bit.
 		var vPos = tr.EndPosition;
 		vPos += tr.Normal * 1f;
 
-		return new ToolAttachPoint( tr, vPos );
+		return new DeviceAttachPoint( tr, vPos );
 	}
 
-	public override bool TryAttach( in ToolAttachPoint hitPoint, in ToolAttachPoint _ )
+	public override bool TryAttach( in DeviceAttachPoint hitPoint, in DeviceAttachPoint _ )
 		=> false;
 
-	protected override bool TryAttach<TJoint>( in ToolAttachPoint hitPoint, in ToolAttachPoint _ )
+	protected override bool TryAttach<TJoint>( in DeviceAttachPoint hitPoint, in DeviceAttachPoint _ )
 		=> false;
 
-	protected bool TryAttach( in ToolAttachPoint hitPoint )
+	protected bool TryAttach( in DeviceAttachPoint hitPoint )
 	{
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
@@ -105,7 +105,7 @@ public partial class PhysicsWheelTool : JointTool
 	{
 	}
 
-	protected override void DrawPointGizmo( in ToolAttachPoint point )
+	protected override void DrawPointGizmo( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

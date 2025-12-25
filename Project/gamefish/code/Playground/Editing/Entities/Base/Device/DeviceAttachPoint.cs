@@ -1,6 +1,6 @@
 namespace Playground;
 
-public partial struct ToolAttachPoint : IValid
+public partial struct DeviceAttachPoint : IValid
 {
 	public readonly bool IsValid => Object.IsValid()
 		&& Position.HasValue && HitNormal.HasValue
@@ -14,9 +14,9 @@ public partial struct ToolAttachPoint : IValid
 
 	public Offset? Offset { get; set; }
 
-	public ToolAttachPoint() { }
+	public DeviceAttachPoint() { }
 
-	public ToolAttachPoint( in SceneTraceResult tr, in Vector3? worldPos = null, in bool withNormal = true )
+	public DeviceAttachPoint( in SceneTraceResult tr, in Vector3? worldPos = null, in bool withNormal = true )
 	{
 		Object = tr.GameObject;
 		Collider = tr.Collider;
@@ -38,7 +38,7 @@ public partial struct ToolAttachPoint : IValid
 		}
 	}
 
-	public ToolAttachPoint( in SceneTraceResult tr, in Offset offset )
+	public DeviceAttachPoint( in SceneTraceResult tr, in Offset offset )
 	{
 		Object = tr.GameObject;
 		Collider = tr.Collider;
