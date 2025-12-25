@@ -99,11 +99,12 @@ public partial class VoxelTool : EditorTool
 
 		TargetPosition = tr.EndPosition;
 
-		var c1 = Color.Black.WithAlpha( 0.4f );
-		var c2 = Color.White.WithAlpha( 0.1f );
+		var c1 = Color.Black.WithAlpha( 0.5f );
+		var c2 = Color.White.WithAlpha( 0.02f );
 
-		var bounds = BBox.FromPositionAndSize( Vector3.Zero, v.Scale );
 		var placePos = GetPlaceWorldPosition( in tr, v.Scale );
+		var bounds = BBox.FromPositionAndSize( Vector3.Zero, v.Scale )
+			.Grow( -0.01f );
 
 		this.DrawBox( bounds, c1, c2, tWorld: new( placePos ) );
 	}

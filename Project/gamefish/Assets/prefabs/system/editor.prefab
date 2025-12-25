@@ -475,7 +475,7 @@
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
                     "ToolDescription": "Place and break blocks on a grid.",
-                    "ToolEmoji": "⚒",
+                    "ToolEmoji": "⛏",
                     "ToolName": "Voxel",
                     "ToolType": "Construction",
                     "VoxelPrefab": "prefabs/editing/tools/voxel/voxel_world.prefab"
