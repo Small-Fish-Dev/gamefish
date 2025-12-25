@@ -43,46 +43,42 @@ public partial class BoardTool : EditorTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public float BoardHeight { get; set; } = 5f;
 
-
-	public bool IsPlacingBoard { get; protected set; }
-
 	public Vector3? TargetPoint { get; protected set; }
-	public Vector3 StartPoint { get; protected set; }
+	public Vector3? StartPoint { get; protected set; }
 
 	public BBox BoardBounds { get; protected set; }
 	public Transform BoardTransform { get; protected set; }
-
 
 	public override void OnExit()
 	{
 		base.OnExit();
 
-		TryStopShaping();
+		StopShaping();
 	}
 
 	public override void FrameSimulate( in float deltaTime )
 	{
-		if ( !Mouse.Active )
-			return;
-
 		UpdateScroll( in deltaTime );
 
+		if ( PressedReload )
+			StopShaping();
+
 		UpdatePlace( in deltaTime );
+
+		if ( PressedPrimary )
+			if ( TargetPoint.HasValue )
+				TryPlacePoint( TargetPoint.Value );
 	}
 
 	public override bool TryLeftClick()
-	{
-		if ( IsPlacingBoard )
-		{
-			if ( TryCreateBoard( BoardTransform, out _ ) )
-				TryStopShaping();
-		}
-		else if ( TargetPoint.HasValue )
-		{
-			StartPoint = TargetPoint.Value;
-			IsPlacingBoard = true;
-		}
+		=> true;
 
+	public override bool TryRightClick()
+	{
+		if ( !StartPoint.HasValue )
+			return false;
+
+		StopShaping();
 		return true;
 	}
 
@@ -96,16 +92,22 @@ public partial class BoardTool : EditorTool
 		return true;
 	}
 
-	public override bool TryRightClick()
-		=> TryStopShaping();
-
-	protected virtual bool TryStopShaping()
+	protected virtual void StopShaping()
 	{
-		if ( !IsPlacingBoard )
-			return false;
+		StartPoint = null;
+	}
 
-		TargetPoint = null;
-		IsPlacingBoard = false;
+	protected virtual bool TryPlacePoint( Vector3 point )
+	{
+		if ( StartPoint.HasValue )
+		{
+			if ( TryCreateBoard( BoardTransform, out _ ) )
+				StopShaping();
+		}
+		else if ( TargetPoint.HasValue )
+		{
+			StartPoint = point;
+		}
 
 		return true;
 	}
@@ -120,8 +122,6 @@ public partial class BoardTool : EditorTool
 
 	protected virtual void UpdatePlace( in float deltaTime )
 	{
-		TargetPoint = null;
-
 		if ( !IsClientAllowed( Client.Local ) )
 			return;
 
@@ -154,11 +154,11 @@ public partial class BoardTool : EditorTool
 
 		this.DrawSphere( 2f, point, Color.Transparent, c1, global::Transform.Zero );
 
-		if ( IsPlacingBoard )
+		if ( StartPoint is Vector3 start )
 		{
-			var dist = StartPoint.Distance( point );
-			var dir = StartPoint.Direction( point );
-			var center = StartPoint.LerpTo( point, 0.5f );
+			var dist = start.Distance( point );
+			var dir = start.Direction( point );
+			var center = start.LerpTo( point, 0.5f );
 
 			var length = dist;
 			var scale = new Vector3( length, BoardWidth, BoardHeight );

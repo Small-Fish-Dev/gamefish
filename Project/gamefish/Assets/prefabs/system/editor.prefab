@@ -345,7 +345,7 @@
                 "BoxSize": 50,
                 "ClassId": null,
                 "ClassName": null,
-                "Distance": 256,
+                "Distance": 512,
                 "DistanceRange": {
                   "Min": 16,
                   "Max": 1024
@@ -361,7 +361,7 @@
                   {
                     "Name": "Cancel",
                     "Description": null,
-                    "Action": "Attack2",
+                    "Action": "Reload",
                     "Mode": "Pressed"
                   }
                 ],
@@ -380,7 +380,7 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "ScrollSensitivity": 12,
+                "ScrollSensitivity": 20,
                 "ToolDescription": "For your boarding needs.",
                 "ToolEmoji": "\uD83D\uDD28",
                 "ToolName": "Board",
