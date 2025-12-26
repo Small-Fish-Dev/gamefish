@@ -2,6 +2,14 @@ namespace Playground;
 
 public abstract class JointTool : EditorTool
 {
+	/// <summary>
+	/// Should the objects be snapped together? (WIP)
+	/// </summary>
+	[Title( "Tele-Snap" )]
+	[Property, InlineEditor]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public virtual bool PointSnapping { get; set; }
+
 	[Property]
 	[Title( "Joint" )]
 	[Feature( EDITOR ), Group( PREFABS ), Order( PREFABS_ORDER )]
