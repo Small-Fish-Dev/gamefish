@@ -3,6 +3,60 @@ namespace GameFish;
 partial class Client
 {
 	/// <summary>
+	/// Vehicle steering direction.
+	/// </summary>
+	[Sync]
+	public VehicleInput VehicleInput
+	{
+		get;
+		set;
+	}
+
+	public override void FrameSimulate( in float deltaTime )
+	{
+		UpdateVehicleInput();
+
+		base.FrameSimulate( deltaTime );
+	}
+
+	protected virtual void UpdateVehicleInput()
+	{
+		if ( IControls.BlockMoving )
+		{
+			VehicleInput = VehicleInput with
+			{
+				Acceleration = 0f,
+				Steering = 0f
+			};
+
+			return;
+		}
+
+		var vMove = Input.AnalogMove;
+
+		var accelDir = vMove.x;
+		var steerDir = vMove.y;
+
+		if ( Input.Down( "Forward" ) )
+			accelDir += 1f;
+
+		if ( Input.Down( "Back" ) )
+			accelDir -= 1f;
+
+		if ( Input.Down( "Left" ) )
+			steerDir += 1f;
+
+		if ( Input.Down( "Right" ) )
+			steerDir -= 1f;
+
+		VehicleInput = VehicleInput with
+		{
+			Acceleration = accelDir.Clamp( -1f, 1f ),
+			Steering = steerDir.Clamp( -1f, 1f )
+		};
+	}
+
+	/// <summary>
 	/// Tells you if the client is aiming and if so by what angle.
 	/// </summary>
 	/// <param name="aim"> The current aim delta. </param>
