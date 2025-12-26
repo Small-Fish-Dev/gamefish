@@ -195,6 +195,15 @@ public static partial class Strings
 	public const string EVASION = "🐱‍👤 Evasion";
 	public const string FLYING = "🦅 Flying";
 
+	public const string AIM = "👓 Aim";
+	public const string AIMING = AIM + "ing";
+	public const string COMBAT = "⚔ Combat";
+
+	public const string SEAT = "💺 Seat";
+	public const string SEATS = "💺 Seats";
+	public const string VEHICLE = "🚙 Vehicle";
+	public const string VEHICLES = "🚙 Vehicles";
+
 	public const string CONSTRAINT = "🧲 Constraint";
 	public const string CONSTRAINTS = "🧲 Constraints";
 	public const string PHYSICS = "🍎 Physics";
@@ -283,10 +292,6 @@ public static partial class Strings
 	public const string WEAPONS = "🔫 Weapons";
 	public const string TOOLGUN = "🧙 Toolgun";
 	public const string INVENTORY = "🎒 Inventory";
-
-	public const string AIM = "👓 Aim";
-	public const string AIMING = AIM + "ing";
-	public const string COMBAT = "⚔ Combat";
 
 	public const string CHARGE = "🔋 Charge";
 	public const string CHARGES = "🔋 Charges";
