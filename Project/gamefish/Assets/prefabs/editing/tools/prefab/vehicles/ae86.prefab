@@ -26,9 +26,9 @@
         "Scale": "0.45,0.45,0.45",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
+        "NetworkMode": 1,
         "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
+        "NetworkOrphaned": 1,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
@@ -47,9 +47,9 @@
               "component_type": "Seat"
             },
             "Health": 100,
-            "IsAlive": true,
+            "IsAlive": false,
             "IsClass": false,
-            "IsDestructible": true,
+            "IsDestructible": false,
             "IsNetworkingForced": true,
             "MaxHealth": 100,
             "NetworkAutomatically": true,
