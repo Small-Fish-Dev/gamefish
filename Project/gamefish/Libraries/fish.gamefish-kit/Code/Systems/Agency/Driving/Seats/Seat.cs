@@ -134,6 +134,7 @@ public partial class Seat : Module, IUsable, ISitTarget
 		if ( !CanEnter( pawn ) )
 			return;
 
+		// TEMP: this is shit
 		if ( Sitter.IsValid() )
 			Sitter.Seat = null;
 
@@ -143,6 +144,12 @@ public partial class Seat : Module, IUsable, ISitTarget
 
 	protected virtual void OnRequestExit( Pawn pawn )
 	{
+		if ( Sitter.IsValid() && Sitter != pawn )
+			return;
+
+		// TEMP: this is also shit
+		Sitter = null;
+		pawn.Seat = null;
 	}
 
 	protected virtual void OnPawnEnter( Pawn pawn )
