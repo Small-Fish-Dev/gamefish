@@ -40,7 +40,7 @@ partial class Client
 		if ( Input.Down( "Forward" ) )
 			accelDir += 1f;
 
-		if ( Input.Down( "Back" ) )
+		if ( Input.Down( "Backward" ) )
 			accelDir -= 1f;
 
 		if ( Input.Down( "Left" ) )

@@ -113,7 +113,7 @@ public partial class Seat : Module, IUsable, ISitTarget
 	protected virtual void OnRequestUse( Pawn pawn )
 	{
 		if ( IsUsable( pawn ) )
-			TryRequestEnter( pawn );
+			OnRequestEnter( pawn );
 	}
 
 	/// <summary>
