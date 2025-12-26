@@ -810,7 +810,7 @@
                       "KeyYawUp": null,
                       "KeyYawDown": null
                     },
-                    "AttachingSound": null,
+                    "AttachmentSound": null,
                     "ClassId": null,
                     "ClassName": null,
                     "Filter": null,
@@ -873,7 +873,7 @@
                     "__guid": "5b74a1b1-165a-4b5f-9507-1b97401a2af3",
                     "__enabled": true,
                     "Flags": 0,
-                    "AttachingSound": null,
+                    "AttachmentSound": null,
                     "ClassId": null,
                     "ClassName": null,
                     "Filter": null,
@@ -940,7 +940,7 @@
                     "__guid": "52cf0a80-452e-44bf-a1e9-17042ce33e2a",
                     "__enabled": true,
                     "Flags": 0,
-                    "AttachingSound": null,
+                    "AttachmentSound": null,
                     "ClassId": null,
                     "ClassName": null,
                     "Filter": null,
@@ -1010,7 +1010,7 @@
                     "__guid": "2ce72447-f4a9-4d82-bd8f-33163e5a24af",
                     "__enabled": true,
                     "Flags": 0,
-                    "AttachingSound": null,
+                    "AttachmentSound": null,
                     "ClassId": null,
                     "ClassName": null,
                     "Filter": null,
@@ -1079,7 +1079,7 @@
                     "__guid": "88b83b11-1425-4751-8ca7-f8ef41da6ec0",
                     "__enabled": true,
                     "Flags": 0,
-                    "AttachingSound": null,
+                    "AttachmentSound": null,
                     "ClassId": null,
                     "ClassName": null,
                     "Filter": null,
@@ -1148,141 +1148,266 @@
             "Components": [],
             "Children": [
               {
-                "__guid": "18bab7a0-1746-47f3-af0c-4771089ea9a2",
+                "__guid": "12dbfdf6-df36-4c7d-adc0-d3731b40983c",
                 "__version": 1,
                 "Flags": 0,
-                "Name": "Physics Car",
+                "Name": "Examples",
                 "Position": "0,0,0",
                 "Rotation": "0,0,0,1",
                 "Scale": "1,1,1",
                 "Tags": "",
                 "Enabled": true,
-                "NetworkMode": 1,
+                "NetworkMode": 2,
                 "NetworkInterpolation": true,
-                "NetworkOrphaned": 1,
+                "NetworkOrphaned": 0,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
-                "Components": [
+                "Components": [],
+                "Children": [
                   {
-                    "__type": "Playground.PrefabTool",
-                    "__guid": "772d151b-8359-414e-a211-c451fb8d000d",
-                    "__enabled": true,
+                    "__guid": "18bab7a0-1746-47f3-af0c-4771089ea9a2",
+                    "__version": 1,
                     "Flags": 0,
-                    "ClassId": null,
-                    "ClassName": null,
-                    "Distance": 512,
-                    "DistanceRange": {
-                      "Min": 16,
-                      "Max": 2048
-                    },
-                    "Filter": null,
-                    "FunctionHints": [
+                    "Name": "Physics Car",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": true,
+                    "NetworkMode": 1,
+                    "NetworkInterpolation": true,
+                    "NetworkOrphaned": 1,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "Components": [
                       {
-                        "Name": "Spawn",
-                        "Description": null,
-                        "Action": "Attack1",
-                        "Mode": "Pressed"
+                        "__type": "Playground.PrefabTool",
+                        "__guid": "772d151b-8359-414e-a211-c451fb8d000d",
+                        "__enabled": true,
+                        "Flags": 0,
+                        "ClassId": null,
+                        "ClassName": null,
+                        "Distance": 512,
+                        "DistanceRange": {
+                          "Min": 16,
+                          "Max": 2048
+                        },
+                        "Filter": null,
+                        "FunctionHints": [
+                          {
+                            "Name": "Spawn",
+                            "Description": null,
+                            "Action": "Attack1",
+                            "Mode": "Pressed"
+                          }
+                        ],
+                        "IsAdminOnly": false,
+                        "IsClass": false,
+                        "IsNetworkingForced": true,
+                        "NetworkAutomatically": true,
+                        "NetworkId": "772d151b-8359-414e-a211-c451fb8d000d",
+                        "NetworkingMode": "Object",
+                        "NetworkOrphanedMode": "Host",
+                        "NetworkOwner": null,
+                        "NetworkTransferMode": "Fixed",
+                        "OnComponentDestroy": null,
+                        "OnComponentDisabled": null,
+                        "OnComponentEnabled": null,
+                        "OnComponentFixedUpdate": null,
+                        "OnComponentStart": null,
+                        "OnComponentUpdate": null,
+                        "Prefab": "prefabs/editing/tools/prefab/vehicles/ae86.prefab",
+                        "ScrollSensitivity": 20,
+                        "ToolDescription": "Spawns a car with physics wheels.",
+                        "ToolEmoji": "\uD83D\uDE98",
+                        "ToolName": "Physics Car",
+                        "ToolType": "Vehicle"
                       }
                     ],
-                    "IsAdminOnly": false,
-                    "IsClass": false,
-                    "IsNetworkingForced": true,
-                    "NetworkAutomatically": true,
-                    "NetworkId": "772d151b-8359-414e-a211-c451fb8d000d",
-                    "NetworkingMode": "Object",
-                    "NetworkOrphanedMode": "Host",
-                    "NetworkOwner": null,
-                    "NetworkTransferMode": "Fixed",
-                    "OnComponentDestroy": null,
-                    "OnComponentDisabled": null,
-                    "OnComponentEnabled": null,
-                    "OnComponentFixedUpdate": null,
-                    "OnComponentStart": null,
-                    "OnComponentUpdate": null,
-                    "Prefab": "prefabs/editing/tools/prefab/vehicles/ae86.prefab",
-                    "ScrollSensitivity": 20,
-                    "ToolDescription": "Spawns a car with physics wheels.",
-                    "ToolEmoji": "\uD83D\uDE98",
-                    "ToolName": "Physics Car",
-                    "ToolType": "Vehicle"
+                    "Children": []
                   }
-                ],
-                "Children": []
+                ]
               },
               {
-                "__guid": "232949bf-12aa-4ad9-9465-ce2724b62f2b",
+                "__guid": "609a419b-7926-4d92-80a6-c8f107c50b3e",
                 "__version": 1,
                 "Flags": 0,
-                "Name": "Physics Wheel",
+                "Name": "Wheels",
                 "Position": "0,0,0",
                 "Rotation": "0,0,0,1",
                 "Scale": "1,1,1",
                 "Tags": "",
                 "Enabled": true,
-                "NetworkMode": 1,
+                "NetworkMode": 2,
                 "NetworkInterpolation": true,
-                "NetworkOrphaned": 1,
+                "NetworkOrphaned": 0,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
-                "Components": [
+                "Components": [],
+                "Children": [
                   {
-                    "__type": "Playground.PhysicsWheelTool",
-                    "__guid": "c29abc18-31ba-4c27-8a78-a8621a843a15",
-                    "__enabled": true,
+                    "__guid": "232949bf-12aa-4ad9-9465-ce2724b62f2b",
+                    "__version": 1,
                     "Flags": 0,
-                    "AttachingSound": null,
-                    "ClassId": null,
-                    "ClassName": null,
-                    "Filter": null,
-                    "FunctionHints": [
+                    "Name": "Physics Wheel",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": true,
+                    "NetworkMode": 1,
+                    "NetworkInterpolation": true,
+                    "NetworkOrphaned": 1,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "Components": [
                       {
-                        "Name": "Attach",
-                        "Description": null,
-                        "Action": "Attack1",
-                        "Mode": "Pressed"
-                      },
-                      {
-                        "Name": "Steering",
-                        "Description": null,
-                        "Action": "Use",
-                        "Mode": "Pressed"
-                      },
-                      {
-                        "Name": "Reverse",
-                        "Description": null,
-                        "Action": "Reload",
-                        "Mode": "Pressed"
+                        "__type": "Playground.PhysicsWheelTool",
+                        "__guid": "c29abc18-31ba-4c27-8a78-a8621a843a15",
+                        "__enabled": true,
+                        "Flags": 0,
+                        "AttachmentSound": null,
+                        "ClassId": null,
+                        "ClassName": null,
+                        "Filter": null,
+                        "FunctionHints": [
+                          {
+                            "Name": "Attach",
+                            "Description": null,
+                            "Action": "Attack1",
+                            "Mode": "Pressed"
+                          },
+                          {
+                            "Name": "Steering",
+                            "Description": null,
+                            "Action": "Use",
+                            "Mode": "Pressed"
+                          },
+                          {
+                            "Name": "Reverse",
+                            "Description": null,
+                            "Action": "Reload",
+                            "Mode": "Pressed"
+                          }
+                        ],
+                        "IsAdminOnly": false,
+                        "IsClass": false,
+                        "IsNetworkingForced": true,
+                        "JointPrefab": "prefabs/editing/tools/vehicle/wheel_phys.prefab",
+                        "JointSettings": {
+                          "KeyForward": "KP_8",
+                          "KeyReverse": "KP_2",
+                          "KeyLeft": "KP_4",
+                          "KeyRight": "KP_6"
+                        },
+                        "NetworkAutomatically": true,
+                        "NetworkId": "c29abc18-31ba-4c27-8a78-a8621a843a15",
+                        "NetworkingMode": "Object",
+                        "NetworkOrphanedMode": "Host",
+                        "NetworkOwner": null,
+                        "NetworkTransferMode": "Fixed",
+                        "OnComponentDestroy": null,
+                        "OnComponentDisabled": null,
+                        "OnComponentEnabled": null,
+                        "OnComponentFixedUpdate": null,
+                        "OnComponentStart": null,
+                        "OnComponentUpdate": null,
+                        "ToolDescription": "Places a bouncy, wobbly wheel.",
+                        "ToolEmoji": "\uD83C\uDFA1",
+                        "ToolName": "Physics Wheel",
+                        "ToolType": "Vehicle"
                       }
                     ],
-                    "IsAdminOnly": false,
-                    "IsClass": false,
-                    "IsNetworkingForced": true,
-                    "JointPrefab": "prefabs/editing/tools/vehicle/wheel_phys.prefab",
-                    "JointSettings": {
-                      "KeyForward": "KP_8",
-                      "KeyReverse": "KP_2",
-                      "KeyLeft": "KP_4",
-                      "KeyRight": "KP_6"
-                    },
-                    "NetworkAutomatically": true,
-                    "NetworkId": "c29abc18-31ba-4c27-8a78-a8621a843a15",
-                    "NetworkingMode": "Object",
-                    "NetworkOrphanedMode": "Host",
-                    "NetworkOwner": null,
-                    "NetworkTransferMode": "Fixed",
-                    "OnComponentDestroy": null,
-                    "OnComponentDisabled": null,
-                    "OnComponentEnabled": null,
-                    "OnComponentFixedUpdate": null,
-                    "OnComponentStart": null,
-                    "OnComponentUpdate": null,
-                    "ToolDescription": "Places a bouncy, wobbly wheel.",
-                    "ToolEmoji": "\uD83C\uDFA1",
-                    "ToolName": "Physics Wheel",
-                    "ToolType": "Vehicle"
+                    "Children": []
                   }
-                ],
-                "Children": []
+                ]
+              },
+              {
+                "__guid": "8ddeac8f-934f-441a-bcb2-39c817f4f608",
+                "__version": 1,
+                "Flags": 0,
+                "Name": "Flight",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkInterpolation": true,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": [
+                  {
+                    "__guid": "443af80a-7154-438e-b18c-ef4f3f67dc1e",
+                    "__version": 1,
+                    "Flags": 0,
+                    "Name": "Propeller",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": true,
+                    "NetworkMode": 1,
+                    "NetworkInterpolation": true,
+                    "NetworkOrphaned": 1,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "Components": [
+                      {
+                        "__type": "Playground.PropellerTool",
+                        "__guid": "293b4072-556f-4fd6-b2be-49d106502ce8",
+                        "__enabled": true,
+                        "Flags": 0,
+                        "AttachmentSound": null,
+                        "ClassId": null,
+                        "ClassName": null,
+                        "DeviceSettings": {
+                          "KeyForward": "KP_8",
+                          "KeyReverse": "KP_2",
+                          "Speed": 40,
+                          "Limit": 40,
+                          "TorqueLift": 0.5,
+                          "Friction": {
+                            "Value": 0.05,
+                            "StopSpeed": 2
+                          }
+                        },
+                        "Filter": null,
+                        "FunctionHints": [
+                          {
+                            "Name": "Attach",
+                            "Description": null,
+                            "Action": "Attack1",
+                            "Mode": "Pressed"
+                          }
+                        ],
+                        "IsAdminOnly": false,
+                        "IsClass": false,
+                        "IsNetworkingForced": true,
+                        "JointPrefab": "prefabs/editing/tools/vehicle/propellers/propeller_medium.prefab",
+                        "NetworkAutomatically": true,
+                        "NetworkId": "293b4072-556f-4fd6-b2be-49d106502ce8",
+                        "NetworkingMode": "Object",
+                        "NetworkOrphanedMode": "Host",
+                        "NetworkOwner": null,
+                        "NetworkTransferMode": "Fixed",
+                        "OnComponentDestroy": null,
+                        "OnComponentDisabled": null,
+                        "OnComponentEnabled": null,
+                        "OnComponentFixedUpdate": null,
+                        "OnComponentStart": null,
+                        "OnComponentUpdate": null,
+                        "ToolDescription": "Provides force as it spins.",
+                        "ToolEmoji": "\uD83D\uDE81",
+                        "ToolName": "Propeller",
+                        "ToolType": "Vehicle"
+                      }
+                    ],
+                    "Children": []
+                  }
+                ]
               }
             ]
           }
