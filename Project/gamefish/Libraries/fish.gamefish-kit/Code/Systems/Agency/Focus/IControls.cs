@@ -35,5 +35,7 @@ public partial interface IControls
 	public static bool BlockMoving => All?.Any( f => f?.HasMovingFocus is true ) is true;
 	public static bool BlockActions => All?.Any( f => f?.HasActionFocus is true ) is true;
 
+	public static Angles Aim => Input.AnalogLook == default || BlockAiming ? default : Input.AnalogLook;
+	public static Vector3 Move => Input.AnalogMove == default || BlockMoving ? default : Input.AnalogMove;
 	public static Vector2 Scroll => Input.MouseWheel == default || BlockScroll ? default : Input.MouseWheel;
 }

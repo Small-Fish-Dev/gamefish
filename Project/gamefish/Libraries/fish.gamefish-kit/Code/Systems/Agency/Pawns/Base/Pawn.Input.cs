@@ -2,6 +2,26 @@ namespace GameFish;
 
 partial class Pawn : ISimulate
 {
+	/*
+	/// <summary>
+	/// The thing we're currently focusing on.
+	/// </summary>
+	[Title( "Focus" )]
+	[Property, JsonIgnore]
+	[Feature( PAWN ), Group( INPUT )]
+	protected DynamicEntity InspectorFocus
+	{
+		get => FocusEntity;
+		set => FocusEntity = value;
+	}
+
+	/// <summary>
+	/// The thing we're currently focusing on.
+	/// </summary>
+	[Sync]
+	public DynamicEntity FocusEntity { get; set; }
+	*/
+
 	/// <returns> If this pawn should listen to the local client's inputs(like button presses). </returns>
 	public virtual bool AllowInput()
 		=> Owner.IsValid() && Owner == Client.Local;

@@ -26,4 +26,38 @@ public partial class Player : Pawn
 
 		return base.AllowOwnership( agent );
 	}
+
+	protected override void UpdateInput( in float deltaTime )
+	{
+		base.UpdateInput( deltaTime );
+
+		if ( Input.Pressed( "Use" ) )
+			TryUse( EyeForward );
+	}
+
+	public virtual bool TryUse( in Vector3 dir )
+	{
+		if ( !TryFindUsable( in dir, out var usable ) )
+			return false;
+
+		return usable.TryUse( this );
+	}
+
+	public virtual bool TryFindUsable( in Vector3 dir, out IUsable usable )
+	{
+		usable = null;
+
+		var tr = GetEyeTrace( distance: 150f, dir: dir ).Run();
+
+		if ( !tr.Hit || !tr.GameObject.IsValid() )
+			return false;
+
+		usable = tr.GameObject.Components
+			.GetAll<IUsable>( FindMode.EnabledInSelf | FindMode.InDescendants | FindMode.InAncestors )
+			.Where( u => u.IsUsable( this ) )
+			.OrderBy( u => u.UsablePriority )
+			.FirstOrDefault();
+
+		return usable is not null;
+	}
 }

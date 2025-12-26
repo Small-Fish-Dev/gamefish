@@ -26,6 +26,6 @@ public interface IUsable
 			return false;
 
 		RpcUse();
-		return false;
+		return true;
 	}
 }
