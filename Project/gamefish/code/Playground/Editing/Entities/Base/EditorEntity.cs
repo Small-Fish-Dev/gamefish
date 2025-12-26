@@ -13,7 +13,7 @@ public partial class EditorEntity : ModuleEntity
 	[Title( "Owner" )]
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( ID ), Order( EDITOR_ORDER - 100 )]
-	public SteamId InspectorOwner
+	public SteamId? InspectorOwner
 	{
 		get => Owner;
 		set => Owner = value;
@@ -24,7 +24,7 @@ public partial class EditorEntity : ModuleEntity
 	/// Probably the one that spawn/requested it.
 	/// </summary>
 	[Sync( SyncFlags.FromHost )]
-	public SteamId Owner { get; protected set; }
+	public SteamId? Owner { get; protected set; }
 
 	protected override void OnDestroy()
 	{
