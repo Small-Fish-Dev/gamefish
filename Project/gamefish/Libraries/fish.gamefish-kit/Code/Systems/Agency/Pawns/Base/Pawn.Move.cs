@@ -11,7 +11,7 @@ partial class Pawn
 	public virtual BaseController Controller
 	{
 		get => _controller.GetCached( GameObject );
-		set => _controller = value;
+		protected set => _controller = value;
 	}
 
 	protected BaseController _controller;
@@ -43,6 +43,16 @@ partial class Pawn
 	/// </summary>
 	protected override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
+		if ( Seat.IsValid() )
+		{
+			FollowSeat( Seat );
+
+			if ( Controller.IsValid() )
+				Controller.WishVelocity = default;
+
+			return;
+		}
+
 		if ( !Controller.IsValid() )
 			return;
 

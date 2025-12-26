@@ -17,6 +17,13 @@ public abstract partial class Vehicle : DynamicEntity
 	[Feature( VEHICLE ), Group( SEATS ), Order( SEATS_ORDER )]
 	public Seat DriverSeat { get; set; }
 
+	protected override void OnEnabled()
+	{
+		Tags?.Add( TAG_VEHICLE );
+
+		base.OnEnabled();
+	}
+
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();

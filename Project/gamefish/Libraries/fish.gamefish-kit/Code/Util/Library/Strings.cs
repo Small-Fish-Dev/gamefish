@@ -357,4 +357,8 @@ public static partial class Strings
 	public const string TAG_DEAD = "dead";
 	public const string TAG_HULL = "hull";
 	public const string TAG_NPC = "npc";
+
+	public const string TAG_VEHICLE = "vehicle";
+	public const string TAG_SITTING = "sitting";
+	public const string TAG_SEAT = "seat";
 }

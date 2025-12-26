@@ -44,6 +44,13 @@ public partial class Seat : Module, IUsable, ISitTarget
 
 	public bool IsOccupied => Sitter.IsValid() && Sitter.Seat == this;
 
+	protected override void OnEnabled()
+	{
+		Tags?.Add( TAG_SEAT );
+
+		base.OnEnabled();
+	}
+
 	protected virtual void OnSetSitter( Pawn newSitter, Pawn oldSitter )
 	{
 		if ( newSitter.IsValid() )

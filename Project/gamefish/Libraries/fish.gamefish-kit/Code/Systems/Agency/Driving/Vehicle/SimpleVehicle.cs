@@ -16,7 +16,7 @@ public partial class SimpleVehicle : Vehicle
 		var rDrive = WorldRotation;
 
 		Velocity += rDrive.Forward * DriveDirection * 1000f * deltaTime;
-		Rigidbody.AngularVelocity += rDrive.Up * SteerDirection * 10f * deltaTime;
+		Rigidbody.AngularVelocity += rDrive.Up * SteerDirection * 5f * deltaTime;
 	}
 
 	public override void UpdateInput( Seat seat, Pawn sitter, in float deltaTime, in bool isFixedUpdate )
@@ -32,7 +32,7 @@ public partial class SimpleVehicle : Vehicle
 		if ( Input.Down( "Forward" ) )
 			driveDir += 1f;
 
-		if ( Input.Down( "Back" ) )
+		if ( Input.Down( "Backward" ) )
 			driveDir -= 1f;
 
 		if ( Input.Down( "Left" ) )

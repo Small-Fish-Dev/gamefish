@@ -33,16 +33,10 @@ partial class Pawn : ISimulate
 	{
 		UpdateInput( in deltaTime );
 
-		// TEMP!
-		// if ( Rigidbody.IsValid() )
-			// Rigidbody.Enabled = !Seat.IsValid();
+		SimulateSeat( in deltaTime, isFixedUpdate: false );
 
-		if ( Seat.IsValid() )
-			SimulateSeat( in deltaTime, isFixedUpdate: false );
-		else
-			Move( in deltaTime, isFixedUpdate: false );
+		Move( in deltaTime, isFixedUpdate: false );
 
-		// Update view after parent transforms change.
 		UpdateView( in deltaTime );
 	}
 
