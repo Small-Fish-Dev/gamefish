@@ -36,5 +36,5 @@ public partial class FunctionInput
 
 	/// <returns> If the input is active this frame. </returns>
 	public virtual bool IsInputting()
-		=> Mode.Active( Action ) && !IFocus.Action;
+		=> Mode.Active( Action ) && !IControls.BlockActions;
 }

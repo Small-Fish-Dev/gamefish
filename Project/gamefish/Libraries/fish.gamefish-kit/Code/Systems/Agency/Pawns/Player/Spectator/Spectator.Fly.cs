@@ -79,10 +79,12 @@ partial class Spectator
 		var rEye = EyeRotation;
 		var move = rEye * (wishVel * deltaTime);
 
-		if ( Input.MouseWheel != Vector2.Zero )
+		var scroll = IControls.Scroll;
+
+		if ( scroll != Vector2.Zero )
 		{
-			var xWheel = Input.MouseWheel.x;
-			var yWheel = Input.MouseWheel.y;
+			var xWheel = scroll.x;
+			var yWheel = scroll.y;
 
 			move += rEye.Right * xWheel * speed * 0.1f;
 			move += rEye.Forward * yWheel * speed * 0.05f;

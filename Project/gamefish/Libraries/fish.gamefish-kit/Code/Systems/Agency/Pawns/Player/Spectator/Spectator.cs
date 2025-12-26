@@ -129,7 +129,7 @@ public partial class Spectator : Player
 		if ( !IsPlayer )
 			return;
 
-		if ( Mouse.Active || IFocus.Action )
+		if ( Mouse.Active || IControls.BlockActions )
 			return;
 
 		if ( Spectating.IsValid() )

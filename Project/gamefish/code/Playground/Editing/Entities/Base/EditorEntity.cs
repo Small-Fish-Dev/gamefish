@@ -14,7 +14,7 @@ public partial class EditorEntity : ModuleEntity
 	[Property, JsonIgnore, ReadOnly]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( EDITOR ), Group( ID ), Order( EDITOR_ORDER - 100 )]
-	public SteamId? InspectorOwner
+	protected SteamId? InspectorOwner
 	{
 		get => Owner;
 		set => Owner = value;

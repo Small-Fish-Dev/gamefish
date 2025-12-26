@@ -10,7 +10,7 @@ partial class Client
 	public virtual bool TryGetAim( out Angles aim )
 	{
 		// Must be ours and with no input focus.
-		if ( !IsLocal || IFocus.Aiming )
+		if ( !IsLocal || IControls.BlockAiming )
 		{
 			aim = Angles.Zero;
 			return false;
@@ -42,7 +42,7 @@ partial class Client
 	public virtual bool TryGetMove( out Vector3 moveDir )
 	{
 		// Must be ours and with no input focus.
-		if ( !IsLocal || IFocus.Moving )
+		if ( !IsLocal || IControls.BlockMoving )
 		{
 			moveDir = Vector3.Zero;
 			return false;
@@ -69,7 +69,7 @@ partial class Client
 	/// <returns> If this action/key is allowed and was pressed. </returns>
 	public virtual bool IsButtonPressed( in string code, in bool isKeyboard )
 	{
-		if ( IFocus.Action )
+		if ( IControls.BlockActions )
 			return false;
 
 		return isKeyboard
@@ -80,7 +80,7 @@ partial class Client
 	/// <returns> If this action/key is allowed and being pressed. </returns>
 	public virtual bool IsButtonDown( in string code, in bool isKeyboard, in bool warnMissing = true )
 	{
-		if ( IFocus.Action )
+		if ( IControls.BlockActions )
 			return false;
 
 		return isKeyboard
@@ -91,7 +91,7 @@ partial class Client
 	/// <returns> If this action/key is allowed and being released. </returns>
 	public virtual bool IsButtonReleased( in string code, in bool isKeyboard )
 	{
-		if ( IFocus.Action )
+		if ( IControls.BlockActions )
 			return false;
 
 		return isKeyboard
