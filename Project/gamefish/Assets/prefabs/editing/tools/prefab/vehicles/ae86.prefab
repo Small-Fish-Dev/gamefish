@@ -33,6 +33,34 @@
         "OwnerTransfer": 1,
         "Components": [
           {
+            "__type": "GameFish.Vehicle",
+            "__guid": "e7ef8a40-aefb-41a1-831b-3de64c692402",
+            "__enabled": true,
+            "Flags": 0,
+            "ClassId": null,
+            "ClassName": null,
+            "DriverSeat": {
+              "_type": "component",
+              "component_id": "e4d71557-b2dd-4ba2-8c19-d836b345de17",
+              "go": "b5512442-37cb-4752-96dc-e38d3690b519",
+              "component_type": "Seat"
+            },
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "e7ef8a40-aefb-41a1-831b-3de64c692402",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
             "__type": "Sandbox.Rigidbody",
             "__guid": "2ba0edf5-74ea-4037-bb84-b839248aee84",
             "__enabled": true,
@@ -120,6 +148,47 @@
           }
         ],
         "Children": [
+          {
+            "__guid": "b5512442-37cb-4752-96dc-e38d3690b519",
+            "__version": 1,
+            "Flags": 0,
+            "Name": "Seat",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "GameFish.Seat",
+                "__guid": "e4d71557-b2dd-4ba2-8c19-d836b345de17",
+                "__enabled": true,
+                "Flags": 0,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "e4d71557-b2dd-4ba2-8c19-d836b345de17",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null
+              }
+            ],
+            "Children": []
+          },
           {
             "__guid": "57fb4402-cbef-4a01-87b6-7bceed590e8e",
             "__version": 1,
