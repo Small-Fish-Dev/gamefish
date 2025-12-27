@@ -77,14 +77,14 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 	{
 		Tags?.Add( TAG_SEAT );
 
-		FindVehicle();
-
 		base.OnEnabled();
 	}
 
 	protected override void OnStart()
 	{
 		base.OnStart();
+
+		FindVehicle();
 
 		Transform.OnTransformChanged = OnMoved;
 	}
@@ -96,6 +96,9 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 
 		if ( !Vehicle.IsValid() )
 			Vehicle = Components.Get<Vehicle>( FindMode.EnabledInSelf | FindMode.InAncestors );
+
+		if ( Vehicle.IsValid() )
+			Vehicle.TryAddSeat( this );
 	}
 
 	protected virtual void OnSetSitter( Pawn newSitter, Pawn oldSitter )
