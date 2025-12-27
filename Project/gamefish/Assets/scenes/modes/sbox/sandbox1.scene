@@ -1213,14 +1213,6 @@
             },
             "Property": "Position",
             "Value": "-5.330387,880,32"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "b5512442-37cb-4752-96dc-e38d3690b519"
-            },
-            "Property": "Tags",
-            "Value": "seat"
           }
         ],
         "MovedObjects": []
