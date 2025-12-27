@@ -29,7 +29,16 @@ public abstract partial class Device : EditorEntity, IWired
 	{
 		base.OnUpdate();
 
-		SimulateWires( Time.Delta, isFixedUpdate: false );
+		SimulateDevice( Time.Delta, isFixedUpdate: false );
+	}
+
+	protected virtual void SimulateDevice( in float deltaTime, in bool isFixedUpdate )
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		// Tell our connections to do stuff.
+		SimulateWires( in deltaTime, in isFixedUpdate );
 	}
 
 	protected virtual void SimulateWires( in float deltaTime, in bool isFixedUpdate )
