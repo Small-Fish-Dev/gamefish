@@ -78,6 +78,14 @@ public partial class PhysicsWheel : Device
 
 		var drive = Vector2.Zero;
 
+		if ( Wires is not null )
+		{
+			foreach ( var (ent, _) in Wires )
+				if ( ent is WiredSeat seat )
+					if ( seat.DriveInput != default )
+						drive = seat.DriveInput;
+		}
+
 		// Pitch
 		var bForward = !Settings.KeyForward.IsBlank()
 			&& Input.Keyboard.Down( Settings.KeyForward );

@@ -3,7 +3,7 @@ namespace Playground;
 /// <summary>
 /// Something that can be controlled and wired.
 /// </summary>
-public partial class Device : EditorEntity, IWired
+public abstract partial class Device : EditorEntity, IWired
 {
 	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
 
@@ -21,10 +21,36 @@ public partial class Device : EditorEntity, IWired
 	public int WireCount => Wires?.Count( kv => kv.Key.IsValid() ) ?? 0;
 
 	/// <summary>
-	/// Is this not under the wire count it allows?
+	/// Does this have too many active connections for a new one?
 	/// </summary>
 	public virtual bool TooManyWires => WireCount >= WIRE_LIMIT;
 
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		SimulateWires( Time.Delta, isFixedUpdate: false );
+	}
+
+	protected virtual void SimulateWires( in float deltaTime, in bool isFixedUpdate )
+	{
+		if ( Wires is null || Wires.Count == 0 )
+			return;
+
+		foreach ( var (ent, _) in Wires )
+			if ( ent.IsValid() && ent is IWired wire )
+				SimulateWire( wire, in deltaTime, in isFixedUpdate );
+	}
+
+	/// <summary>
+	/// Update a particular connection to something else.
+	/// </summary>
+	protected virtual void SimulateWire( IWired wire, in float deltaTime, in bool isFixedUpdate )
+		=> wire?.WireSimulate( this, in deltaTime, in isFixedUpdate );
+
+	/// <summary>
+	/// Show active connections.
+	/// </summary>
 	public virtual void DrawWireGizmos()
 	{
 		if ( Wires is null || Wires.Count == 0 )
@@ -94,5 +120,9 @@ public partial class Device : EditorEntity, IWired
 			return;
 
 		TryWire( to, localPos, cl );
+	}
+
+	public virtual void WireSimulate( Device device, in float deltaTime, in bool isFixedUpdate )
+	{
 	}
 }

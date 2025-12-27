@@ -28,13 +28,6 @@ partial class Client
 
 	protected virtual void UpdateVehicleInput()
 	{
-		if ( IControls.BlockMoving )
-		{
-			InputForward = 0f;
-			InputHorizontal = 0f;
-			return;
-		}
-
 		var vMove = Input.AnalogMove;
 
 		var accelDir = vMove.x;
