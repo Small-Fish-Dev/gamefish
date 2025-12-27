@@ -5,19 +5,27 @@ partial class Client
 	[Sync]
 	public float InputForward
 	{
-		get => _vForward.Clamp( -1f, 1f );
-		set => _vForward = value.Clamp( -1f, 1f );
+		get => _inputForward.Clamp( -1f, 1f );
+		set => _inputForward = value.Clamp( -1f, 1f );
 	}
 
 	[Sync]
 	public float InputHorizontal
 	{
-		get => _vHorizontal.Clamp( -1f, 1f );
-		set => _vHorizontal = value.Clamp( -1f, 1f );
+		get => _inputHorizontal.Clamp( -1f, 1f );
+		set => _inputHorizontal = value.Clamp( -1f, 1f );
 	}
 
-	protected float _vForward;
-	protected float _vHorizontal;
+	[Sync]
+	public float InputVertical
+	{
+		get => _inputVertical.Clamp( -1f, 1f );
+		set => _inputVertical = value.Clamp( -1f, 1f );
+	}
+
+	protected float _inputForward;
+	protected float _inputHorizontal;
+	protected float _inputVertical;
 
 	public override void FrameSimulate( in float deltaTime )
 	{
@@ -30,23 +38,31 @@ partial class Client
 	{
 		var vMove = Input.AnalogMove;
 
-		var accelDir = vMove.x;
-		var steerDir = vMove.y;
+		var x = vMove.x;
+		var y = vMove.y;
+		var z = 0f;
 
 		if ( Input.Down( "Forward" ) )
-			accelDir += 1f;
+			x += 1f;
 
 		if ( Input.Down( "Backward" ) )
-			accelDir -= 1f;
+			x -= 1f;
 
 		if ( Input.Down( "Left" ) )
-			steerDir += 1f;
+			y += 1f;
 
 		if ( Input.Down( "Right" ) )
-			steerDir -= 1f;
+			y -= 1f;
 
-		InputForward = accelDir.Clamp( -1f, 1f );
-		InputHorizontal = steerDir.Clamp( -1f, 1f );
+		if ( Input.Down( "Jump" ) )
+			z += 1f;
+
+		if ( Input.Down( "Duck" ) )
+			z -= 1f;
+
+		InputForward = x.Clamp( -1f, 1f );
+		InputHorizontal = y.Clamp( -1f, 1f );
+		InputVertical = z.Clamp( -1f, 1f );
 	}
 
 	/// <summary>
