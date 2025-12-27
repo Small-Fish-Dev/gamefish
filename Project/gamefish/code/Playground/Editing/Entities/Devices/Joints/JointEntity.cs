@@ -3,7 +3,7 @@ using Playground.Razor;
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public abstract class JointEntity : EditorDevice
+public abstract class JointEntity : Device
 {
 	protected const int SETTINGS_ORDER = EDITOR_ORDER + 50;
 

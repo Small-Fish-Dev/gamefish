@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Playground;
 
 [Icon( "rocket_launch" )]
-public partial class Thruster : EditorDevice
+public partial class Thruster : Device
 {
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
