@@ -64,6 +64,12 @@ public partial class RemoverTool : EditorTool
 		if ( !TryUse( Rpc.Caller, out var cl ) )
 			return;
 
+		if ( !obj.IsValid() )
+			return;
+
+		if ( obj.Components.TryGet<DynamicEntity>( out var ent, FindMode.Enabled | FindMode.InAncestors ) )
+			obj = ent.GameObject;
+
 		if ( !CanRemove( cl, obj ) )
 			return;
 
