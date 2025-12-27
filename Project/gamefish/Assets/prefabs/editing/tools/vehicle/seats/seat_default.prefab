@@ -3,7 +3,7 @@
     "__guid": "30ae8fdf-5b1d-4784-bb5c-cd1dd97bbf12",
     "__version": 1,
     "Flags": 0,
-    "Name": "seat_debug",
+    "Name": "seat_default",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -16,7 +16,7 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.Seat",
+        "__type": "Playground.WiredSeat",
         "__guid": "043b053a-9406-495f-bcc7-548727cc03c4",
         "__enabled": true,
         "Flags": 0,

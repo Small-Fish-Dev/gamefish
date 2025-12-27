@@ -11,7 +11,9 @@ public partial class DeviceTool : PrefabTool
 	{
 		TargetObject = tr.GameObject;
 
-		HasTarget = TargetObject.IsValid() && tr.Distance <= Distance;
+		HasTarget = TargetObject.IsValid()
+			&& tr.Collider.IsValid() && !tr.Collider.Static
+			&& tr.Distance <= Distance;
 
 		var targetPos = tr.StartPosition + (tr.Direction * Distance.Min( tr.Distance ));
 		TargetTransform = new Transform( targetPos, GetPrefabRotation() );

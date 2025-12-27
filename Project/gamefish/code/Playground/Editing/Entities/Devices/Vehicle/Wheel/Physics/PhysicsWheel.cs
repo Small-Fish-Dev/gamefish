@@ -1,10 +1,8 @@
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public partial class PhysicsWheel : EditorEntity
+public partial class PhysicsWheel : Device
 {
-	protected const int PHYSICS_ORDER = EDITOR_ORDER + 10;
-
 	[Property]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public Sandbox.WheelJoint Joint { get; set; }

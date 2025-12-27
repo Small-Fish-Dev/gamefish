@@ -191,7 +191,7 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
-                    "ToolDescription": "Gets rid of most stuff.",
+                    "ToolDescription": "Deletes entities.",
                     "ToolEmoji": "✂",
                     "ToolName": "Remover",
                     "ToolType": "Utility"
@@ -1153,6 +1153,67 @@
             "Components": [],
             "Children": [
               {
+                "__guid": "3082151e-ece0-4796-ae3c-0c5c2028d482",
+                "__version": 1,
+                "Flags": 0,
+                "Name": "Wiring",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 1,
+                "NetworkInterpolation": true,
+                "NetworkOrphaned": 1,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Playground.WiringTool",
+                    "__guid": "2bf9197a-53e3-4912-96a8-ea66675d7ef5",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "ClassId": null,
+                    "ClassName": null,
+                    "Filter": null,
+                    "FunctionHints": [
+                      {
+                        "Name": "Connect",
+                        "Description": null,
+                        "Action": "Attack1",
+                        "Mode": "Pressed"
+                      },
+                      {
+                        "Name": "Clear",
+                        "Description": null,
+                        "Action": "Reload",
+                        "Mode": "Pressed"
+                      }
+                    ],
+                    "IsAdminOnly": false,
+                    "IsClass": false,
+                    "IsNetworkingForced": true,
+                    "NetworkAutomatically": true,
+                    "NetworkId": "2bf9197a-53e3-4912-96a8-ea66675d7ef5",
+                    "NetworkingMode": "Object",
+                    "NetworkOrphanedMode": "Host",
+                    "NetworkOwner": null,
+                    "NetworkTransferMode": "Fixed",
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "ToolDescription": "Connects devices.",
+                    "ToolEmoji": "\uD83D\uDD0C",
+                    "ToolName": "Wiring",
+                    "ToolType": "Vehicle"
+                  }
+                ],
+                "Children": []
+              },
+              {
                 "__guid": "77cff09e-fa02-462b-a213-fa03fa197d55",
                 "__version": 1,
                 "Flags": 0,
@@ -1221,7 +1282,7 @@
                         "OnComponentFixedUpdate": null,
                         "OnComponentStart": null,
                         "OnComponentUpdate": null,
-                        "Prefab": "prefabs/editing/tools/vehicle/seats/seat_debug.prefab",
+                        "Prefab": "prefabs/editing/tools/vehicle/seats/seat_default.prefab",
                         "ScrollSensitivity": 20,
                         "ToolDescription": "Lets you sit on something.",
                         "ToolEmoji": "\uD83E\uDE91",

@@ -152,10 +152,9 @@ public partial class BoxTool : EditorTool
 			TryPlacePoint( point );
 
 		// Shape Helper Rendering
-		var c1 = Color.White.WithAlpha( 0.4f );
-		var c2 = Color.White.WithAlpha( 0.1f );
+		var cSphere = Color.White.WithAlpha( 0.4f );
 
-		this.DrawSphere( 2f, point, Color.Transparent, c1, global::Transform.Zero );
+		this.DrawSphere( 2f, point, Color.Transparent, cSphere, global::Transform.Zero );
 
 		if ( StartPoint is Vector3 start )
 		{
@@ -164,6 +163,9 @@ public partial class BoxTool : EditorTool
 
 			if ( bounds.Volume >= 2f )
 			{
+				var c1 = Color.Black.WithAlpha( 0.5f );
+				var c2 = Color.White.WithAlpha( 0.1f );
+
 				this.DrawArrow(
 					from: start, to: point,
 					c: c1, len: 3f, w: 1f,

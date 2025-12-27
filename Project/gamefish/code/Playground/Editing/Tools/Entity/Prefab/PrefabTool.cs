@@ -121,20 +121,17 @@ public partial class PrefabTool : EditorTool
 		if ( !TryTrace( out var tr ) )
 			return;
 
-		var traceHit = tr.Distance <= Distance;
+		if ( !TrySetTarget( in tr ) )
+			return;
 
-		var c = Color.White.Desaturate( 0.4f );
-		var c1 = c.WithAlpha( 0.4f );
-		var c2 = c.WithAlpha( 0.1f );
+		var c1 = Color.Black.WithAlpha( 0.5f );
+		var c2 = Color.White.WithAlpha( 0.02f );
 
-		if ( !traceHit )
+		if ( !HasTarget )
 		{
 			c1 = c1.WithAlphaMultiplied( 0.3f );
 			c2 = c2.WithAlphaMultiplied( 0.3f );
 		}
-
-		if ( !TrySetTarget( in tr ) )
-			return;
 
 		var bounds = PrefabBounds.Value;
 		this.DrawBox( bounds, c1, c2, tWorld: TargetTransform );
