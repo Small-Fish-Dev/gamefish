@@ -8,7 +8,7 @@ public partial class PrefabTool : EditorTool
 	[ToolOption]
 	[Range( 0f, 4096f )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public float Distance { get; set; } = 512;
+	public virtual float Distance { get; set; } = 512;
 
 	[Property]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
@@ -19,7 +19,6 @@ public partial class PrefabTool : EditorTool
 	[Range( 0f, 100f )]
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual float ScrollSensitivity { get; set; } = 20f;
-
 
 	[Property]
 	[ToolOption]
@@ -68,10 +67,13 @@ public partial class PrefabTool : EditorTool
 		var scroll = dir.y != 0f ? -dir.y : dir.x;
 		scroll *= ScrollSensitivity;
 
-		Distance = (Distance + scroll).Clamp( DistanceRange );
+		OnScroll( in scroll );
 
 		return true;
 	}
+
+	protected virtual void OnScroll( in float scroll )
+		=> Distance = (Distance + scroll).Clamp( DistanceRange );
 
 	public virtual Rotation GetPrefabRotation()
 	{
@@ -125,7 +127,7 @@ public partial class PrefabTool : EditorTool
 			return;
 
 		var c1 = Color.Black.WithAlpha( 0.5f );
-		var c2 = Color.White.WithAlpha( 0.02f );
+		var c2 = Color.White.WithAlpha( 0.04f );
 
 		if ( !HasTarget )
 		{

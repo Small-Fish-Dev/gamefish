@@ -1253,7 +1253,6 @@
                         "Flags": 0,
                         "ClassId": null,
                         "ClassName": null,
-                        "Distance": 512,
                         "DistanceRange": {
                           "Min": 16,
                           "Max": 1024
@@ -1283,11 +1282,12 @@
                         "OnComponentStart": null,
                         "OnComponentUpdate": null,
                         "Prefab": "prefabs/editing/tools/vehicle/seats/seat_default.prefab",
-                        "ScrollSensitivity": 20,
-                        "ToolDescription": "Lets you sit on something.",
+                        "ScrollSensitivity": 5,
+                        "ToolDescription": "Lets you sit and control devices.",
                         "ToolEmoji": "\uD83E\uDE91",
                         "ToolName": "Seat",
-                        "ToolType": "Vehicle"
+                        "ToolType": "Vehicle",
+                        "Yaw": 0
                       }
                     ],
                     "Children": []
