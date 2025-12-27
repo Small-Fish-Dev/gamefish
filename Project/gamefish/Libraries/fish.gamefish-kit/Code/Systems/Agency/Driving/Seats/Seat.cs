@@ -63,7 +63,7 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 	[Property]
 	[Sync( SyncFlags.FromHost )]
 	[Feature( SEAT ), Group( VEHICLE ), Order( VEHICLE_ORDER )]
-	public bool IsDriver { get; set; } = false;
+	public bool IsDriving { get; set; } = true;
 
 	public virtual float GetUsablePriority( Pawn pawn )
 	{

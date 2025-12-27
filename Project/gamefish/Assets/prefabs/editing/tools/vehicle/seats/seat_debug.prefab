@@ -27,6 +27,7 @@
         "IsAlive": true,
         "IsClass": false,
         "IsDestructible": true,
+        "IsDriving": true,
         "IsNetworkingForced": true,
         "MaxHealth": 100,
         "NetworkAutomatically": true,

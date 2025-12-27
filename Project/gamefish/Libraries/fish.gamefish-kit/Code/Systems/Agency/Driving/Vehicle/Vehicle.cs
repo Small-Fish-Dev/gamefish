@@ -10,7 +10,7 @@ public abstract partial class Vehicle : DynamicEntity
 	protected override bool IsNetworkedAutomatically => true;
 
 	[Sync( SyncFlags.FromHost )]
-	public NetDictionary<Seat, bool> Seats { get; set; }
+	public NetList<Seat> Seats { get; set; }
 
 	[Sync]
 	public float InputAcceleration { get; set; }
@@ -22,18 +22,7 @@ public abstract partial class Vehicle : DynamicEntity
 	{
 		Tags?.Add( TAG_VEHICLE );
 
-		if ( Networking.IsHost && this.InGame() )
-		{
-			(Seats ??= [])?.Clear(); // fuck you. bitch. pussy.
-
-			if ( Seats is not null )
-			{
-				var childSeats = Components.GetAll<Seat>();
-
-				foreach ( var seat in childSeats )
-					TryAddSeat( seat );
-			}
-		}
+		FindSeats();
 
 		base.OnEnabled();
 	}
@@ -58,15 +47,83 @@ public abstract partial class Vehicle : DynamicEntity
 		ApplyForces( Time.Delta, isFixedUpdate: true );
 	}
 
-	public virtual bool TryAddSeat( Seat seat )
+	/// <summary>
+	/// Looks for seats this belongs to.
+	/// </summary>
+	public virtual void FindSeats()
 	{
-		if ( !Networking.IsHost || !seat.IsValid() )
+		if ( Networking.IsHost && this.InGame() )
+			return;
+
+		Seats ??= [];
+
+		if ( Seats is null )
+			return;
+
+		ValidateSeats();
+
+		var childSeats = Components.GetAll<Seat>();
+
+		foreach ( var seat in childSeats )
+			TryAddSeat( seat, autoValidate: false );
+	}
+
+	/// <returns> The actively registered seats(or null). </returns>
+	public virtual IEnumerable<Seat> GetSeats()
+		=> Seats?.Where( seat => seat.IsValid() );
+
+	/// <returns> The actively registered driver seats(or null). </returns>
+	public virtual IEnumerable<Seat> GetDriverSeats()
+		=> GetSeats()?.Where( seat => seat?.IsDriving is true );
+
+	public virtual bool TryAddSeat( Seat seat, bool autoValidate = true )
+	{
+		if ( !Networking.IsHost )
+			return false;
+
+		if ( !seat.IsValid() || !GameObject.IsValid() )
 			return false;
 
 		Seats ??= [];
-		Seats[seat] = seat.IsDriver;
+
+		if ( !Seats.Contains( seat ) )
+			Seats.Add( seat );
+
+		seat.Vehicle = this;
+
+		if ( autoValidate )
+			ValidateSeats();
 
 		return true;
+	}
+
+	/// <summary>
+	/// Cleans up references towards invalid/unowned seats.
+	/// </summary>
+	protected virtual void ValidateSeats()
+	{
+		if ( !Networking.IsHost || !GameObject.IsValid() )
+			return;
+
+		if ( Seats is null || Seats.Count == 0 )
+			return;
+
+		var badSeats = Seats.Where( seat => !seat.IsValid() || seat.Vehicle != this );
+
+		if ( badSeats.Any() )
+		{
+			foreach ( var seat in badSeats.ToArray() )
+				Seats.Remove( seat );
+		}
+	}
+
+	/// <returns> If the pawn is able to drive in this seat. </returns>
+	public virtual bool CanDrive( Pawn pawn, Seat seat )
+	{
+		if ( !seat.IsValid() || !seat.IsDriving || seat.Vehicle != this )
+			return false;
+
+		return pawn.IsValid() && pawn.IsAlive;
 	}
 
 	/// <summary>
@@ -74,10 +131,9 @@ public abstract partial class Vehicle : DynamicEntity
 	/// </summary>
 	protected virtual void UpdateInput( in float deltaTime )
 	{
-		var driverSeat = Seats?
-			.Select( kv => kv.Key )
+		var driverSeat = GetDriverSeats()
 			.Where( seat => seat.IsValid() && seat.IsOccupied )
-			.FirstOrDefault( seat => IsDriver( seat, seat.Sitter ) );
+			.FirstOrDefault( seat => CanDrive( seat.Sitter, seat ) );
 
 		var driver = driverSeat?.Sitter;
 
@@ -90,14 +146,6 @@ public abstract partial class Vehicle : DynamicEntity
 
 		InputAcceleration = cl.InputForward;
 		InputSteering = cl.InputHorizontal;
-	}
-
-	public virtual bool IsDriver( Seat seat, Pawn pawn )
-	{
-		if ( !seat.IsValid() || !seat.IsDriver )
-			return false;
-
-		return pawn.IsValid() && pawn.IsAlive;
 	}
 
 	/// <summary>
