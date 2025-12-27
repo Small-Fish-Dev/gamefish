@@ -9,6 +9,8 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 	protected const int SEAT_ORDER = DEFAULT_ORDER - 1000;
 	protected const int SEAT_DEBUG_ORDER = SEAT_ORDER - 10;
 
+	protected const int VEHICLE_ORDER = SEAT_ORDER + 50;
+
 	protected override bool? IsNetworkedOverride => true;
 	protected override bool IsNetworkedAutomatically => true;
 
@@ -54,6 +56,14 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 	}
 
 	protected Vehicle _vehicle;
+
+	/// <summary>
+	/// Is this a seat that lets you drive?
+	/// </summary>
+	[Property]
+	[Sync( SyncFlags.FromHost )]
+	[Feature( SEAT ), Group( VEHICLE ), Order( VEHICLE_ORDER )]
+	public bool IsDriver { get; set; } = false;
 
 	public virtual float GetUsablePriority( Pawn pawn )
 	{

@@ -9,13 +9,8 @@ public abstract partial class Vehicle : DynamicEntity
 	protected override bool? IsNetworkedOverride => true;
 	protected override bool IsNetworkedAutomatically => true;
 
-	/// <summary>
-	/// The designated driver seat.
-	/// </summary>
-	[Property]
 	[Sync( SyncFlags.FromHost )]
-	[Feature( VEHICLE ), Group( SEATS ), Order( SEATS_ORDER )]
-	public Seat DriverSeat { get; set; }
+	public NetDictionary<Seat, bool> Seats { get; set; }
 
 	[Sync]
 	public float InputAcceleration { get; set; }
@@ -26,6 +21,19 @@ public abstract partial class Vehicle : DynamicEntity
 	protected override void OnEnabled()
 	{
 		Tags?.Add( TAG_VEHICLE );
+
+		if ( Networking.IsHost && this.InGame() )
+		{
+			(Seats ??= [])?.Clear(); // fuck you. bitch. pussy.
+
+			if ( Seats is not null )
+			{
+				var childSeats = Components.GetAll<Seat>();
+
+				foreach ( var seat in childSeats )
+					TryAddSeat( seat );
+			}
+		}
 
 		base.OnEnabled();
 	}
@@ -50,18 +58,33 @@ public abstract partial class Vehicle : DynamicEntity
 		ApplyForces( Time.Delta, isFixedUpdate: true );
 	}
 
+	public virtual bool TryAddSeat( Seat seat )
+	{
+		if ( !Networking.IsHost || !seat.IsValid() )
+			return false;
+
+		Seats ??= [];
+		Seats[seat] = seat.IsDriver;
+
+		return true;
+	}
+
 	/// <summary>
 	/// Called to set how the vehicle is being controlled.
 	/// </summary>
 	protected virtual void UpdateInput( in float deltaTime )
 	{
-		var driver = GetDriver();
+		var driverSeat = Seats?
+			.Select( kv => kv.Key )
+			.Where( seat => seat.IsValid() && seat.IsOccupied )
+			.FirstOrDefault( seat => IsDriver( seat, seat.Sitter ) );
+
+		var driver = driverSeat?.Sitter;
 
 		if ( !driver.IsValid() || driver.Owner is not Client cl )
 		{
 			InputAcceleration = 0f;
 			InputSteering = 0f;
-
 			return;
 		}
 
@@ -71,14 +94,11 @@ public abstract partial class Vehicle : DynamicEntity
 
 	public virtual bool IsDriver( Seat seat, Pawn pawn )
 	{
-		if ( !seat.IsValid() || !pawn.IsValid() )
+		if ( !seat.IsValid() || !seat.IsDriver )
 			return false;
 
-		return seat == DriverSeat;
+		return pawn.IsValid() && pawn.IsAlive;
 	}
-
-	public virtual Pawn GetDriver()
-		=> DriverSeat?.Sitter;
 
 	/// <summary>
 	/// Called by the occupant of a seat.

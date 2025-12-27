@@ -40,12 +40,6 @@
             "ClassId": null,
             "ClassName": null,
             "DebugDamage": 25,
-            "DriverSeat": {
-              "_type": "component",
-              "component_id": "e4d71557-b2dd-4ba2-8c19-d836b345de17",
-              "go": "b5512442-37cb-4752-96dc-e38d3690b519",
-              "component_type": "Seat"
-            },
             "DrivingAxis": "1,0,0",
             "DrivingSpeed": 800,
             "Health": 100,
@@ -185,6 +179,7 @@
                 "IsAlive": true,
                 "IsClass": false,
                 "IsDestructible": true,
+                "IsDriver": true,
                 "IsNetworkingForced": true,
                 "MaxHealth": 100,
                 "NetworkAutomatically": true,
