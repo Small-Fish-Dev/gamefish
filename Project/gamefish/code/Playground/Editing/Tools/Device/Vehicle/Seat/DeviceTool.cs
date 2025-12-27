@@ -1,7 +1,9 @@
-
 namespace Playground;
 
-public partial class SeatTool : PrefabTool
+/// <summary>
+/// Places something as a child(shrimply all for now).
+/// </summary>
+public partial class DeviceTool : PrefabTool
 {
 	public GameObject TargetObject { get; set; }
 

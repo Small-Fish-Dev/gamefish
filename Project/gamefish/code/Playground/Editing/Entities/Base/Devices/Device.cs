@@ -20,12 +20,18 @@ public partial class Device : EditorEntity, IWired
 	/// </summary>
 	public int WireCount => Wires?.Count( kv => kv.Key.IsValid() ) ?? 0;
 
+	/// <summary>
+	/// Is this not under the wire count it allows?
+	/// </summary>
+	public virtual bool TooManyWires => WireCount >= WIRE_LIMIT;
+
+	/// <returns> If these two are compatible. </returns>
 	public virtual bool CanWire( Entity to )
 	{
-		if ( !to.IsValid() || to is not IWired )
+		if ( !to.IsValid() )
 			return false;
 
-		return WireCount < WIRE_LIMIT;
+		return to is IWired;
 	}
 
 	/// <summary>
@@ -38,6 +44,9 @@ public partial class Device : EditorEntity, IWired
 			this.Warn( $"Tried wiring to:[{to}] as a non-host!" );
 			return false;
 		}
+
+		if ( TooManyWires )
+			return false;
 
 		if ( !CanWire( to ) )
 			return false;

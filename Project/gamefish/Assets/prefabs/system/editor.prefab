@@ -1186,7 +1186,7 @@
                     "OwnerTransfer": 1,
                     "Components": [
                       {
-                        "__type": "Playground.SeatTool",
+                        "__type": "Playground.DeviceTool",
                         "__guid": "f63ec69a-0643-4d13-b929-f545a1dabe39",
                         "__enabled": true,
                         "Flags": 0,
