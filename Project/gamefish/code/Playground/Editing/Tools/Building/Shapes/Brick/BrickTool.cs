@@ -78,23 +78,6 @@ public partial class BrickTool : ShapeTool
 		BrickHeight = 1;
 	}
 
-	protected override void OnPrimary( in SceneTraceResult tr )
-	{
-		if ( !TryGetCursorPosition( out var cursorPos ) )
-			return;
-
-		if ( !HasPoints && TargetObject.IsValid() )
-		{
-			var tWorld = TargetObject.WorldTransform;
-			var rNormal = Rotation.LookAt( tr.Normal, tWorld.Forward );
-			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
-
-			SetOrigin( tLocal, TargetObject, TargetComponent );
-		}
-
-		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
-	}
-
 	protected override void OnMiddleMouse( in SceneTraceResult tr )
 	{
 		base.OnMiddleMouse( tr );
@@ -221,9 +204,6 @@ public partial class BrickTool : ShapeTool
 
 		return tBrick.PointToWorld( localPos );
 	}
-
-	public override bool TryTrace( out SceneTraceResult tr )
-		=> Editor.TryTrace( Scene, out tr, dist: Distance );
 
 	protected override bool TryGetOffsetFromTrace( in SceneTraceResult tr, out Offset offset )
 	{

@@ -85,10 +85,32 @@ public abstract class ShapeTool : EditorTool
 	public override bool TryTrace( out SceneTraceResult tr )
 		=> Editor.TryTrace( Scene, out tr, dist: Distance );
 
+	protected override bool TryGetCursorPosition( out Vector3 cursorPos )
+	{
+		if ( !base.TryGetCursorPosition( out cursorPos ) )
+			return false;
+
+		if ( HoldingShift )
+			cursorPos = cursorPos.SnapToGrid( 16f );
+
+		return true;
+	}
+
 	protected override void OnPrimary( in SceneTraceResult tr )
 	{
-		if ( TryGetCursorPosition( out var cursorPos ) )
-			TryAddWorldPoint( new( cursorPos, Rotation.LookAt( tr.Normal ) ) );
+		if ( !TryGetCursorPosition( out var cursorPos ) )
+			return;
+
+		if ( !HasPoints && TargetObject.IsValid() )
+		{
+			var tWorld = TargetObject.WorldTransform;
+			var rNormal = Rotation.LookAt( tr.Normal );
+			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
+
+			SetOrigin( tLocal, TargetObject, TargetComponent );
+		}
+
+		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
 	}
 
 	public override bool TryMouseWheel( in Vector2 dir )
@@ -102,7 +124,12 @@ public abstract class ShapeTool : EditorTool
 	}
 
 	protected virtual void OnScroll( in float scroll )
-		=> Distance = (Distance + scroll).Clamp( DistanceRange );
+	{
+		if ( !Mouse.Active )
+			return;
+
+		Distance = (Distance + scroll).Clamp( DistanceRange );
+	}
 
 	protected override void OnReload( in SceneTraceResult tr )
 	{
@@ -179,8 +206,8 @@ public abstract class ShapeTool : EditorTool
 	{
 		if ( AtLimit )
 		{
-			if ( TryCreateShape( out _ ) )
-				Clear();
+			TryCreateShape( out _ );
+			Clear();
 		}
 	}
 
@@ -219,7 +246,10 @@ public abstract class ShapeTool : EditorTool
 		var points = Points?.Select( pr => pr.Position ).ToList() ?? [];
 		var box = BBox.FromPoints( points );
 
-		if ( box.Volume < 0.01f )
+		// If the shape is too small then prevent it to stop physics bugs.
+		var size = box.Size.Abs();
+
+		if ( size.x <= 1 || size.y <= 1 || size.z <= 1 )
 			return false;
 
 		tWorld = tOrigin.ToWorld( new( box.Center, Rotation.Identity, box.Size ) );
