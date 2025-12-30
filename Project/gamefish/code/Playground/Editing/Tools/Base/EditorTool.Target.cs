@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Playground;
 
 partial class EditorTool
@@ -58,6 +56,8 @@ partial class EditorTool
 	{
 		if ( !target.IsValid() )
 			return false;
+
+		HasTarget = true;
 
 		TargetTrace = tr;
 		TargetObject = target.GameObject;

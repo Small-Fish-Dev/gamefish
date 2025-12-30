@@ -15,7 +15,7 @@ partial class Editor
 
 	protected void UpdateTargetOutline()
 	{
-		if ( !Tool.IsValid() || !Mouse.Active )
+		if ( !Tool.IsValid() || !Tool.HasTarget )
 		{
 			SetOutlineTarget( null );
 			return;
