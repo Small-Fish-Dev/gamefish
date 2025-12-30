@@ -20,7 +20,7 @@ partial class EditorTool
 		}
 
 		cursorPos = tr.EndPosition;
-		return false;
+		return true;
 	}
 
 	protected virtual void RenderCursor()
