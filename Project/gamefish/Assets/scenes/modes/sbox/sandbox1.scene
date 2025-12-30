@@ -370,16 +370,7 @@
           "__PrefabInstancePatch": {
             "AddedObjects": [],
             "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "Component",
-                  "IdValue": "a96e820a-e828-4478-9dea-97964fde0e5d"
-                },
-                "Property": "VoxelScale",
-                "Value": 32
-              }
-            ],
+            "PropertyOverrides": [],
             "MovedObjects": []
           },
           "__PrefabIdToInstanceId": {

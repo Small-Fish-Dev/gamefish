@@ -1084,116 +1084,186 @@
                 "ToolEmoji": "\uD83D\uDE98",
                 "ToolName": "Physics Car",
                 "ToolType": "Vehicle"
-              },
-              {
-                "__type": "Playground.PhysicsWheelTool",
-                "__guid": "04e09c64-9219-4828-87c1-d7a54dbab4a8",
-                "__enabled": true,
-                "Flags": 0,
-                "AttachmentSound": null,
-                "ClassId": null,
-                "ClassName": null,
-                "Filter": null,
-                "FunctionHints": [
-                  {
-                    "Name": "Attach",
-                    "Description": null,
-                    "Action": "Attack1",
-                    "Mode": "Pressed"
-                  },
-                  {
-                    "Name": "Steering",
-                    "Description": null,
-                    "Action": "Use",
-                    "Mode": "Pressed"
-                  },
-                  {
-                    "Name": "Reverse",
-                    "Description": null,
-                    "Action": "Reload",
-                    "Mode": "Pressed"
-                  }
-                ],
-                "IsAdminOnly": false,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "JointPrefab": "prefabs/editing/tools/vehicle/wheel_phys.prefab",
-                "JointSettings": {
-                  "KeyForward": "KP_8",
-                  "KeyReverse": "KP_2",
-                  "KeyLeft": "KP_4",
-                  "KeyRight": "KP_6"
-                },
-                "NetworkAutomatically": true,
-                "NetworkId": "04e09c64-9219-4828-87c1-d7a54dbab4a8",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "Host",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "PointSnapping": false,
-                "ToolDescription": "Places a bouncy, wobbly wheel.",
-                "ToolEmoji": "\uD83C\uDFA1",
-                "ToolName": "Physics Wheel",
-                "ToolType": "Vehicle"
-              },
-              {
-                "__type": "Playground.PropellerTool",
-                "__guid": "7a70169a-ba1e-4582-bc76-bef3b2633520",
-                "__enabled": true,
-                "Flags": 0,
-                "AttachmentSound": null,
-                "ClassId": null,
-                "ClassName": null,
-                "DeviceSettings": {
-                  "KeyForward": "KP_8",
-                  "KeyReverse": "KP_2",
-                  "Speed": 40,
-                  "Limit": 40,
-                  "TorqueLift": 0.5,
-                  "Friction": {
-                    "Value": 0.05,
-                    "StopSpeed": 2
-                  }
-                },
-                "Filter": null,
-                "FunctionHints": [
-                  {
-                    "Name": "Attach",
-                    "Description": null,
-                    "Action": "Attack1",
-                    "Mode": "Pressed"
-                  }
-                ],
-                "IsAdminOnly": false,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "JointPrefab": "prefabs/editing/tools/vehicle/propellers/propeller_medium.prefab",
-                "NetworkAutomatically": true,
-                "NetworkId": "7a70169a-ba1e-4582-bc76-bef3b2633520",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "Host",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "PointSnapping": false,
-                "ToolDescription": "Provides force as it spins.",
-                "ToolEmoji": "\uD83D\uDE81",
-                "ToolName": "Propeller",
-                "ToolType": "Vehicle"
               }
             ],
-            "Children": []
+            "Children": [
+              {
+                "__guid": "db7d67da-f8e7-41d3-802b-4b7f3a767c25",
+                "__version": 1,
+                "Flags": 0,
+                "Name": "Vehicle",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 1,
+                "NetworkInterpolation": true,
+                "NetworkOrphaned": 1,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Playground.PhysicsWheelTool",
+                    "__guid": "e54bcbda-292b-4639-8d63-a26e352cf39d",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AttachmentSound": null,
+                    "ClassId": null,
+                    "ClassName": null,
+                    "Filter": null,
+                    "FunctionHints": [
+                      {
+                        "Name": "Attach",
+                        "Description": null,
+                        "Action": "Attack1",
+                        "Mode": "Pressed"
+                      },
+                      {
+                        "Name": "Steering",
+                        "Description": null,
+                        "Action": "Use",
+                        "Mode": "Pressed"
+                      },
+                      {
+                        "Name": "Reverse",
+                        "Description": null,
+                        "Action": "Reload",
+                        "Mode": "Pressed"
+                      }
+                    ],
+                    "IsAdminOnly": false,
+                    "IsClass": false,
+                    "IsNetworkingForced": true,
+                    "JointPrefab": "prefabs/editing/tools/vehicle/wheel_phys.prefab",
+                    "JointSettings": {
+                      "KeyForward": "KP_8",
+                      "KeyReverse": "KP_2",
+                      "KeyLeft": "KP_4",
+                      "KeyRight": "KP_6"
+                    },
+                    "NetworkAutomatically": true,
+                    "NetworkId": "e54bcbda-292b-4639-8d63-a26e352cf39d",
+                    "NetworkingMode": "Object",
+                    "NetworkOrphanedMode": "Host",
+                    "NetworkOwner": null,
+                    "NetworkTransferMode": "Fixed",
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "PointSnapping": false,
+                    "ToolDescription": "Places a bouncy, wobbly wheel.",
+                    "ToolEmoji": "\uD83C\uDFA1",
+                    "ToolName": "Physics Wheel",
+                    "ToolType": "Vehicle"
+                  },
+                  {
+                    "__type": "Playground.PropellerTool",
+                    "__guid": "ca17fd6c-30ea-40fd-bb09-d6eda9115a5c",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AttachmentSound": null,
+                    "ClassId": null,
+                    "ClassName": null,
+                    "DeviceSettings": {
+                      "KeyForward": "KP_5",
+                      "KeyReverse": "KP_0",
+                      "Speed": 40,
+                      "Limit": 40,
+                      "TorqueLift": 0.5,
+                      "Friction": {
+                        "Value": 0.05,
+                        "StopSpeed": 2
+                      }
+                    },
+                    "Filter": null,
+                    "FunctionHints": [
+                      {
+                        "Name": "Attach",
+                        "Description": null,
+                        "Action": "Attack1",
+                        "Mode": "Pressed"
+                      }
+                    ],
+                    "IsAdminOnly": false,
+                    "IsClass": false,
+                    "IsNetworkingForced": true,
+                    "JointPrefab": "prefabs/editing/tools/vehicle/propellers/propeller_up.prefab",
+                    "NetworkAutomatically": true,
+                    "NetworkId": "ca17fd6c-30ea-40fd-bb09-d6eda9115a5c",
+                    "NetworkingMode": "Object",
+                    "NetworkOrphanedMode": "Host",
+                    "NetworkOwner": null,
+                    "NetworkTransferMode": "Fixed",
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "PointSnapping": false,
+                    "ToolDescription": "Provides force as it spins.",
+                    "ToolEmoji": "\uD83D\uDE81",
+                    "ToolName": "Propeller (up)",
+                    "ToolType": "Vehicle"
+                  },
+                  {
+                    "__type": "Playground.PropellerTool",
+                    "__guid": "02cc99cd-f107-4a80-9357-884ec50effcc",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AttachmentSound": null,
+                    "ClassId": null,
+                    "ClassName": null,
+                    "DeviceSettings": {
+                      "KeyForward": "KP_8",
+                      "KeyReverse": "KP_2",
+                      "Speed": 40,
+                      "Limit": 40,
+                      "TorqueLift": 0.5,
+                      "Friction": {
+                        "Value": 0.05,
+                        "StopSpeed": 2
+                      }
+                    },
+                    "Filter": null,
+                    "FunctionHints": [
+                      {
+                        "Name": "Attach",
+                        "Description": null,
+                        "Action": "Attack1",
+                        "Mode": "Pressed"
+                      }
+                    ],
+                    "IsAdminOnly": false,
+                    "IsClass": false,
+                    "IsNetworkingForced": true,
+                    "JointPrefab": "prefabs/editing/tools/vehicle/propellers/propeller_forward.prefab",
+                    "NetworkAutomatically": true,
+                    "NetworkId": "02cc99cd-f107-4a80-9357-884ec50effcc",
+                    "NetworkingMode": "Object",
+                    "NetworkOrphanedMode": "Host",
+                    "NetworkOwner": null,
+                    "NetworkTransferMode": "Fixed",
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "PointSnapping": false,
+                    "ToolDescription": "Provides force as it spins.",
+                    "ToolEmoji": "\uD83D\uDE81",
+                    "ToolName": "Propeller (forward)",
+                    "ToolType": "Vehicle"
+                  }
+                ],
+                "Children": []
+              }
+            ]
           }
         ]
       }

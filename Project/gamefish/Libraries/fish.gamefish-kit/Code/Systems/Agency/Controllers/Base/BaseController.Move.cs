@@ -40,7 +40,7 @@ partial class BaseController
 	public virtual float Acceleration { get; set; } = 10f;
 
 	/// <summary>
-	/// Reduces horizontal velocity over time.
+	/// Slows their speed down over time.
 	/// </summary>
 	[Property]
 	[ToggleGroup( nameof( AllowMovement ) )]
