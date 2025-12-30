@@ -187,6 +187,9 @@ public abstract partial class EditorTool : PlaygroundModule
 		// TODO: Not this. Something less stupid.
 		if ( !Mouse.Active )
 		{
+			if ( Input.MouseWheel != default )
+				TryMouseWheel( -Input.MouseWheel );
+
 			if ( PressedPrimary )
 				if ( TryTrace( out var tr ) )
 					OnPrimary( in tr );
