@@ -78,6 +78,88 @@ public partial class BrickTool : ShapeTool
 		BrickHeight = 1;
 	}
 
+	protected override void OnPrimary( in SceneTraceResult tr )
+	{
+		if ( !TryGetCursorPosition( out var cursorPos ) )
+			return;
+
+		if ( !HasPoints && TargetObject.IsValid() )
+		{
+			var tWorld = TargetObject.WorldTransform;
+			var rNormal = Rotation.LookAt( tr.Normal, tWorld.Forward );
+			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
+
+			SetOrigin( tLocal, TargetObject, TargetComponent );
+		}
+
+		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
+	}
+
+	protected override void OnMiddleMouse( in SceneTraceResult tr )
+	{
+		base.OnMiddleMouse( tr );
+
+		if ( !tr.Hit || !tr.Collider.IsValid() )
+			return;
+
+		var brick = tr.Collider.GetComponent<BrickBlock>();
+
+		if ( !brick.IsValid() )
+			return;
+
+		if ( HoldingShift )
+		{
+			BrickColor = brick.BrickColor;
+			return;
+		}
+
+		var nextColor = GetNextColor( brick.BrickColor );
+
+		BrickColor = nextColor;
+
+		RpcSetBrickColor( brick, BrickColor );
+	}
+
+	protected override void OnReload( in SceneTraceResult tr )
+	{
+		base.OnReload( tr );
+
+		if ( !tr.Hit || !tr.Collider.IsValid() )
+			return;
+
+		var brick = tr.Collider.GetComponent<BrickBlock>();
+
+		if ( !brick.IsValid() )
+			return;
+
+		if ( !Editor.TryFindIsland( brick.GameObject, out var island ) )
+			return;
+
+		if ( !TrySetOrigin( island.GameObject, island, brick.LocalTransform ) )
+			return;
+
+		AddPoint( Vector3.Zero, brick.LocalRotation );
+
+		RpcDestroyBrick( brick );
+	}
+
+	protected override void OnScroll( in float scroll )
+	{
+		if ( HasPoints )
+		{
+			BrickHeight += scroll.Round().CeilToInt().Sign();
+			return;
+		}
+
+		// if ( HoldingShift )
+		// {
+		// BrickSize += scroll.Round().CeilToInt();
+		// return;
+		// }
+
+		base.OnScroll( scroll );
+	}
+
 	public static Color GetRandomBrickColor()
 	{
 		var step = (Random.Float( 360 ) / BRICK_HUE_DELTA).Floor();
@@ -140,71 +222,6 @@ public partial class BrickTool : ShapeTool
 		return tBrick.PointToWorld( localPos );
 	}
 
-	protected override void OnScroll( in float scroll )
-	{
-		if ( HasPoints )
-		{
-			BrickHeight += scroll.Round().CeilToInt().Sign();
-			return;
-		}
-
-		// if ( HoldingShift )
-		// {
-		// BrickSize += scroll.Round().CeilToInt();
-		// return;
-		// }
-
-		base.OnScroll( scroll );
-	}
-
-	protected override void OnReload( in SceneTraceResult tr )
-	{
-		base.OnReload( tr );
-
-		if ( !tr.Hit || !tr.Collider.IsValid() )
-			return;
-
-		var brick = tr.Collider.GetComponent<BrickBlock>();
-
-		if ( !brick.IsValid() )
-			return;
-
-		if ( !Editor.TryFindIsland( brick.GameObject, out var island ) )
-			return;
-
-		if ( !TrySetOrigin( island.GameObject, island, brick.LocalTransform ) )
-			return;
-
-		AddPoint( Vector3.Zero, brick.LocalRotation );
-
-		RpcDestroyBrick( brick );
-	}
-
-	protected override void OnMiddleMouse( in SceneTraceResult tr )
-	{
-		base.OnMiddleMouse( tr );
-
-		if ( !tr.Hit || !tr.Collider.IsValid() )
-			return;
-
-		var brick = tr.Collider.GetComponent<BrickBlock>();
-
-		if ( !brick.IsValid() )
-			return;
-
-		if ( HoldingShift )
-		{
-			BrickColor = brick.BrickColor;
-			return;
-		}
-
-		var nextColor = GetNextColor( brick.BrickColor );
-
-		BrickColor = nextColor;
-
-		RpcSetBrickColor( brick, BrickColor );
-	}
-
 	public override bool TryTrace( out SceneTraceResult tr )
 		=> Editor.TryTrace( Scene, out tr, dist: Distance );
 
@@ -212,23 +229,6 @@ public partial class BrickTool : ShapeTool
 	{
 		offset = default;
 		return false;
-	}
-
-	protected override void OnPrimary( in SceneTraceResult tr )
-	{
-		if ( !TryGetCursorPosition( out var cursorPos ) )
-			return;
-
-		if ( !HasPoints && TargetObject.IsValid() )
-		{
-			var tWorld = TargetObject.WorldTransform;
-			var rNormal = Rotation.LookAt( tr.Normal, tWorld.Forward );
-			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
-
-			SetOrigin( tLocal, TargetObject, TargetComponent );
-		}
-
-		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
 	}
 
 	protected override void SetOrigin( Offset offset, GameObject obj = null, Component c = null )

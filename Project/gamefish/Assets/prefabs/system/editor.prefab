@@ -285,14 +285,13 @@
                 "__guid": "32d96842-65da-49e3-8f00-72eff86ffe37",
                 "__enabled": true,
                 "Flags": 0,
-                "BoxPrefab": "prefabs/editing/tools/box/box_50.prefab",
-                "BoxSize": 50,
+                "BoxSize": "50,50,50",
                 "ClassId": null,
                 "ClassName": null,
-                "Distance": 256,
+                "Distance": 512,
                 "DistanceRange": {
                   "Min": 16,
-                  "Max": 1024
+                  "Max": 2048
                 },
                 "Filter": null,
                 "FunctionHints": [
@@ -321,8 +320,6 @@
                     "Mode": "Held"
                   }
                 ],
-                "Height": 32,
-                "HeightLimit": 1024,
                 "IsAdminOnly": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
@@ -338,12 +335,12 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "ScrollSensitivity": 8,
+                "ScrollSensitivity": 32,
+                "ShapePrefab": "prefabs/editing/tools/shapes/box_50.prefab",
                 "ToolDescription": "Spawns resizable boxes.",
                 "ToolEmoji": "\uD83D\uDCE6",
                 "ToolName": "Box",
-                "ToolType": "Construction",
-                "UseHeight": true
+                "ToolType": "Construction"
               },
               {
                 "__type": "Playground.BrickTool",
@@ -402,7 +399,7 @@
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
                 "ScrollSensitivity": 32,
-                "ShapePrefab": "prefabs/editing/tools/brick/block_brick.prefab",
+                "ShapePrefab": "prefabs/editing/tools/shapes/block_brick.prefab",
                 "ToolDescription": "Create and snap resizeable bricks.",
                 "ToolEmoji": "\uD83E\uDDF1",
                 "ToolName": "Brick",

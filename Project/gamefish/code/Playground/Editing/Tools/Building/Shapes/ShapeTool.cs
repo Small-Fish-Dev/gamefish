@@ -82,6 +82,9 @@ public abstract class ShapeTool : EditorTool
 		return false;
 	}
 
+	public override bool TryTrace( out SceneTraceResult tr )
+		=> Editor.TryTrace( Scene, out tr, dist: Distance );
+
 	protected override void OnPrimary( in SceneTraceResult tr )
 	{
 		if ( TryGetCursorPosition( out var cursorPos ) )
@@ -142,10 +145,7 @@ public abstract class ShapeTool : EditorTool
 	{
 		// Floating origin.
 		if ( !HasOrigin && !HasPoints )
-		{
-			if ( Scene.IsValid() && Scene.Camera.IsValid() )
-				SetOrigin( new( tWorld.Position, Scene.Camera.WorldRotation ) );
-		}
+			SetOrigin( new( tWorld.Position, Rotation.Identity ) );
 
 		var tOrigin = GetShapeOrigin();
 		var tLocal = tOrigin.ToLocal( in tWorld );
@@ -177,11 +177,11 @@ public abstract class ShapeTool : EditorTool
 
 	protected virtual void OnPointAdded( in Vector3 pos, in Rotation r )
 	{
-		if ( !AtLimit )
-			return;
-
-		if ( TryCreateShape( out _ ) )
-			Clear();
+		if ( AtLimit )
+		{
+			if ( TryCreateShape( out _ ) )
+				Clear();
+		}
 	}
 
 	public virtual Transform GetShapeOrigin( in Transform? tOverride = null )
@@ -191,7 +191,10 @@ public abstract class ShapeTool : EditorTool
 		{
 			// fallback or something idk
 			if ( HasTarget )
+			{
+
 				return new( TargetTrace.EndPosition );
+			}
 
 			return tOverride ?? global::Transform.Zero;
 		}
@@ -200,11 +203,44 @@ public abstract class ShapeTool : EditorTool
 			?? OriginObject.AsValid()?.WorldTransform
 			?? OriginWorldTransform;
 
-		if ( OriginOffset is Offset offset )
-			tOrigin = tOrigin.WithOffset( offset );
+		tOrigin = tOrigin.WithOffset( OriginOffset );
 
 		return tOrigin;
 	}
 
-	protected abstract bool TryCreateShape( out GameObject obj );
+	protected virtual bool TryGetShapeTransform( out Transform tWorld )
+	{
+		var tOrigin = GetShapeOrigin();
+		tWorld = tOrigin;
+
+		if ( !HasPoints || !ValidShape )
+			return false;
+
+		var points = Points?.Select( pr => pr.Position ).ToList() ?? [];
+		var box = BBox.FromPoints( points );
+
+		if ( box.Volume < 0.01f )
+			return false;
+
+		tWorld = tOrigin.ToWorld( new( box.Center, Rotation.Identity, box.Size ) );
+
+		return true;
+	}
+
+	protected virtual bool TryCreateShape( out GameObject obj )
+	{
+		obj = null;
+
+		if ( !TryGetShapeTransform( out var tShape ) )
+			return false;
+
+		if ( Editor.TryFindIsland( OriginObject, out var island ) )
+			if ( TrySpawnObject( ShapePrefab, tShape, island, out _ ) )
+				return true;
+
+		if ( TrySpawnObject( ShapePrefab, tShape, out _, withIsland: true ) )
+			return true;
+
+		return false;
+	}
 }

@@ -28,7 +28,7 @@ partial class EditorTool
 	[Property, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( EDITOR ), Group( DEBUG ), Order( EDITOR_DEBUG_ORDER )]
-	public Offset OriginOffset { get; set; }
+	public Offset OriginOffset { get; set; } = new();
 
 	/// <summary>
 	/// The last known transform of the origin.
