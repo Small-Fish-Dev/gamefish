@@ -57,39 +57,6 @@ public abstract partial class EditorTool : PlaygroundModule
 	public string ToolDescription { get; set; } = "Does stuff.";
 
 	/// <summary>
-	/// The last targeting trace attempt.
-	/// </summary>
-	public SceneTraceResult? TargetTrace { get; set; }
-
-	/// <summary>
-	/// The thing we're looking at.
-	/// </summary>
-	public GameObject TargetObject { get; protected set; }
-	public Component TargetComponent { get; protected set; }
-
-	/// <summary>
-	/// The thing we're trying to do stuff on top of.
-	/// </summary>
-	[Property, JsonIgnore]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( EDITOR ), Group( DEBUG ), Order( EDITOR_DEBUG_ORDER )]
-	public GameObject OriginObject { get; set; }
-
-	[Property, JsonIgnore]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( EDITOR ), Group( DEBUG ), Order( EDITOR_DEBUG_ORDER )]
-	public Component OriginComponent { get; set; }
-
-	[Property, JsonIgnore]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( EDITOR ), Group( DEBUG ), Order( EDITOR_DEBUG_ORDER )]
-	public Offset? OriginOffset { get; set; }
-
-	protected virtual Color ColorOutline => Color.Black.WithAlpha( 0.5f );
-	protected virtual Color ColorFilled => Color.White.WithAlpha( 0.1f );
-	protected virtual Color ColorArrow => Color.Black.WithAlpha( 0.8f );
-
-	/// <summary>
 	/// Quickly checks permision and gives you a client reference.
 	/// </summary>
 	/// <returns> If the connection(such as an RPC caller) is allowed to use this tool. </returns>
@@ -108,8 +75,11 @@ public abstract partial class EditorTool : PlaygroundModule
 
 	public virtual void FrameSimulate( in float deltaTime )
 	{
-		UpdateTarget( in deltaTime );
+		FindTarget( in deltaTime );
+
 		UpdateActions( in deltaTime );
+
+		UpdateOrigin( in deltaTime );
 
 		RenderHelpers();
 	}
@@ -125,39 +95,6 @@ public abstract partial class EditorTool : PlaygroundModule
 	{
 		ClearTarget();
 		ClearOrigin();
-	}
-
-	protected virtual void ClearTarget()
-	{
-		TargetTrace = null;
-		TargetObject = null;
-		TargetComponent = null;
-	}
-
-	protected virtual void ClearOrigin()
-	{
-		OriginObject = null;
-		OriginComponent = null;
-		OriginOffset = null;
-	}
-
-	/// <summary>
-	/// Attempt to assign this uhh thing as our origin of doing stuff.
-	/// </summary>
-	protected virtual bool TrySetOrigin( GameObject obj, Component c, Offset offset, bool allowReplace = true )
-	{
-		if ( !obj.IsValid() || !c.IsValid() )
-			return false;
-
-		// respec'
-		if ( !allowReplace && OriginObject.IsValid() )
-			return false;
-
-		OriginObject = obj;
-		OriginComponent = c;
-		OriginOffset = offset;
-
-		return true;
 	}
 
 	protected virtual bool TryGetOffsetFromTrace( in SceneTraceResult tr, out Offset offset )
@@ -236,77 +173,4 @@ public abstract partial class EditorTool : PlaygroundModule
 	{
 	}
 
-	/// <summary>
-	/// Figure out what we're looking at right now.
-	/// </summary>
-	protected virtual void UpdateTarget( in float deltaTime, bool clearPrevious = true )
-	{
-		if ( clearPrevious )
-			ClearTarget();
-
-		if ( !IsClientAllowed( Client.Local ) )
-			return;
-
-		if ( !TryTrace( out var tr ) )
-			return;
-
-		TargetTrace = tr;
-
-		if ( !TryGetTarget( in tr, out var target ) )
-			return;
-
-		TrySetTarget( in tr, target );
-	}
-
-	public virtual bool TrySetTarget( in SceneTraceResult tr, Component target )
-	{
-		if ( !target.IsValid() )
-			return false;
-
-		TargetTrace = tr;
-		TargetObject = target.GameObject;
-		TargetComponent = target;
-
-		return true;
-	}
-
-	public virtual bool TryGetTarget( in SceneTraceResult tr, out Component target )
-	{
-		if ( TryGetTargetEntity( in tr, out var ent ) )
-		{
-			target = ent;
-			return true;
-		}
-
-		if ( tr.Component.IsValid() )
-		{
-			target = tr.Component;
-			return true;
-		}
-
-		if ( tr.Collider.IsValid() && tr.Collider.Static is true )
-		{
-			target = tr.Collider;
-			return true;
-		}
-
-		target = null;
-		return false;
-	}
-
-	protected virtual bool TryGetTargetEntity( in SceneTraceResult tr, out EditorObject e )
-	{
-		e = null;
-
-		if ( !tr.Hit || !tr.GameObject.IsValid() )
-			return false;
-
-		const FindMode findMode = FindMode.EnabledInSelf
-			| FindMode.InAncestors;
-
-		return tr.GameObject.Components.TryGet( out e, findMode );
-	}
-
-	public virtual bool IsValidTarget( Component ent )
-		=> ent.IsValid();
 }

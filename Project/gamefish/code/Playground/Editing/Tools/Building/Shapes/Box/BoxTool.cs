@@ -95,7 +95,7 @@ public partial class BoxTool : EditorTool
 	{
 		UpdateUse( in deltaTime );
 
-		UpdateTarget( in deltaTime );
+		FindTarget( in deltaTime );
 		UpdatePlace( in deltaTime );
 		UpdateCancel( in deltaTime );
 	}

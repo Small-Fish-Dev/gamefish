@@ -219,31 +219,27 @@ public partial class BrickTool : ShapeTool
 		if ( !TryGetCursorPosition( out var cursorPos ) )
 			return;
 
-		if ( !HasPoints && tr.Hit && TargetObject.IsValid() )
+		if ( !HasPoints && TargetObject.IsValid() )
 		{
 			var tWorld = TargetObject.WorldTransform;
 			var rNormal = Rotation.LookAt( tr.Normal, tWorld.Forward );
 			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
 
-			TrySetOrigin( TargetObject, TargetComponent, tLocal );
+			SetOrigin( tLocal, TargetObject, TargetComponent );
 		}
 
 		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
 	}
 
-	protected override bool TrySetOrigin( GameObject obj, Component c, Offset offset, bool allowReplace = true )
+	protected override void SetOrigin( Offset offset, GameObject obj = null, Component c = null )
 	{
-		if ( !obj.IsValid() )
-			return false;
-
-		// var tTarget = TargetObject.WorldTransform;
-
-		// var vAxis = tTarget.Rotation.ClosestAxis( offset.Rotation.Forward );
-		// var rAxis = Rotation.LookAt( vAxis );
-
 		offset.Position = offset.Position.SnapToGrid( BRICK_SIZE_MIN );
 
-		return base.TrySetOrigin( obj, c, offset, allowReplace );
+		var vForward = offset.Rotation.Forward;
+		var vSnapped = Rotation.Identity.ClosestAxis( vForward );
+		offset.Rotation = Rotation.LookAt( vSnapped );
+
+		base.SetOrigin( offset, obj, c );
 	}
 
 	protected override void AddPoint( Vector3 pos, Rotation r )
@@ -265,7 +261,7 @@ public partial class BrickTool : ShapeTool
 		var userDistance = tr.Distance.Min( Distance );
 		cursorPos = tr.StartPosition + (tr.Direction * userDistance);
 
-		if ( OriginObject.IsValid() )
+		if ( HasOrigin )
 		{
 			var tOrigin = GetShapeOrigin();
 			var vUp = tOrigin.Forward;
@@ -281,7 +277,7 @@ public partial class BrickTool : ShapeTool
 				return false;
 
 			// Horizontal Drag
-			cursorPos = SnapToBrickGrid( OriginObject.WorldTransform, hitPoint );
+			cursorPos = SnapToBrickGrid( OriginWorldTransform, hitPoint );
 
 			// Vertical Layers
 			cursorPos += vUp * BrickSize * BrickHeight;

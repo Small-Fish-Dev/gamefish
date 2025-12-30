@@ -36,7 +36,7 @@ public partial class WiringTool : EditorTool
 
 	protected void RenderWireHelper()
 	{
-		if ( TargetTrace is not SceneTraceResult tr )
+		if ( !TryGetCursorPosition( out var cursorPos ) )
 			return;
 
 		var c1 = Point1.Parent;
@@ -53,7 +53,7 @@ public partial class WiringTool : EditorTool
 			c = c.WithAlpha( 0.3f );
 
 		this.DrawArrow(
-			from: startPoint, to: tr.EndPosition,
+			from: startPoint, to: cursorPos,
 			c: c, len: 7f, w: 2f, th: 4f,
 			tWorld: global::Transform.Zero
 		);

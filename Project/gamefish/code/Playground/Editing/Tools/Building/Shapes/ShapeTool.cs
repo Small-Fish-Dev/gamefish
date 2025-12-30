@@ -122,7 +122,7 @@ public abstract class ShapeTool : EditorTool
 
 	protected virtual void RenderBoxShape()
 	{
-		if ( !HasPoints )
+		if ( !HasPoints || !HasOrigin )
 			return;
 
 		var tOrigin = GetShapeOrigin();
@@ -140,6 +140,13 @@ public abstract class ShapeTool : EditorTool
 
 	protected virtual bool TryAddWorldPoint( Transform tWorld )
 	{
+		// Floating origin.
+		if ( !HasOrigin && !HasPoints )
+		{
+			if ( Scene.IsValid() && Scene.Camera.IsValid() )
+				SetOrigin( new( tWorld.Position, Scene.Camera.WorldRotation ) );
+		}
+
 		var tOrigin = GetShapeOrigin();
 		var tLocal = tOrigin.ToLocal( in tWorld );
 
@@ -180,10 +187,18 @@ public abstract class ShapeTool : EditorTool
 	public virtual Transform GetShapeOrigin( in Transform? tOverride = null )
 	{
 		// Might be snapping to something.
-		if ( !OriginObject.IsValid() )
-			return tOverride ?? global::Transform.Zero;
+		if ( !HasOrigin )
+		{
+			// fallback or something idk
+			if ( HasTarget )
+				return new( TargetTrace.EndPosition );
 
-		var tOrigin = tOverride ?? OriginObject.WorldTransform;
+			return tOverride ?? global::Transform.Zero;
+		}
+
+		var tOrigin = tOverride
+			?? OriginObject.AsValid()?.WorldTransform
+			?? OriginWorldTransform;
 
 		if ( OriginOffset is Offset offset )
 			tOrigin = tOrigin.WithOffset( offset );
