@@ -28,7 +28,8 @@ partial class EditorObject
 
 	protected virtual void OnSetIsland( EditorIsland newIsland, EditorIsland oldIsland )
 	{
-		this.Log( $"group new:[{newIsland}] old:[{oldIsland}]" );
+		if ( oldIsland.IsValid() )
+			this.Log( $"group new:[{newIsland}] old:[{oldIsland}]" );
 
 		if ( newIsland.IsValid() )
 			newIsland.OnObjectAdded( this );
