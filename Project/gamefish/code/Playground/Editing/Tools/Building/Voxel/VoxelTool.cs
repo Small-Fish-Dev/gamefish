@@ -4,7 +4,7 @@ using Microsoft.VisualBasic;
 
 namespace Playground;
 
-public partial class VoxelTool : EditorTool
+public partial class VoxelTool : ShapeTool
 {
 	[Property]
 	[Feature( EDITOR ), Group( PREFABS ), Order( PREFABS_ORDER )]
@@ -12,7 +12,7 @@ public partial class VoxelTool : EditorTool
 
 	public NetworkedVoxelVolume TargetVolume => Scene?.Get<NetworkedVoxelVolume>();
 
-	public Vector3? TargetPosition { get; set; }
+	public override int PointLimit => 2;
 
 	public override void OnExit()
 	{
@@ -21,101 +21,65 @@ public partial class VoxelTool : EditorTool
 		ClearTarget();
 	}
 
-	public override void FrameSimulate( in float deltaTime )
+	protected override void RenderPointer()
 	{
-		if ( !Mouse.Active )
+		base.RenderPointer();
+
+		if ( !TargetVolume.IsValid() )
 			return;
 
-		UpdateTarget( in deltaTime );
+		var placePos = GetPlaceWorldPosition( TargetTrace, TargetVolume.VoxelScale );
+		var mins = TargetVolume.WorldToVoxel( placePos );
 
-		UpdatePlacing();
-		UpdateBreaking();
+		DrawVoxelBox( TargetVolume, mins, mins + 1 );
 	}
 
-	public override bool TryLeftClick()
-		=> true;
-
-	/*
-	public override bool TryTrace( out SceneTraceResult tr )
+	protected void DrawVoxelBox( NetworkedVoxelVolume v, in Vector3Int mins, in Vector3Int maxs )
 	{
-		if ( !Editor.TryGetAimRay( Scene, out var ray ) )
-			return base.TryTrace( out tr );
+		if ( !v.IsValid() )
+			return;
 
-		tr = Scene.Trace.Box( bounds.Extents, ray, Editor.TRACE_DISTANCE_DEFAULT )
-			.IgnoreGameObjectHierarchy( Client.Local?.Pawn?.GameObject )
-			.Rotated( GetPrefabRotation() )
-			.Run();
+		var tVox = v.WorldTransform;
 
-		return true;
-	}
-	*/
+		var bounds = new BBox( mins, maxs ) * v.VoxelScale;
 
-	protected override void ClearTarget()
-	{
-		base.ClearTarget();
+		bounds = bounds.Translate( v.VoxelScale * -0.5f );
+		bounds = bounds.Grow( -0.01f );
 
-		// TargetVolume = null;
-		TargetPosition = null;
+		this.DrawBox( bounds, ColorOutline, ColorFilled, tWorld: tVox );
 	}
 
-	protected void UpdatePlacing()
+	protected override void OnPrimary( in SceneTraceResult tr )
 	{
-		if ( !PressedPrimary )
-			return;
+		// base.OnPrimary( tr );
 
-		if ( !TryGetGrid( out _ ) )
-		{
-			RpcHostCreateGrid();
-			return;
-		}
-
-		TryPlaceVoxel( TargetPosition );
+		TryPlaceVoxel( in tr );
 	}
 
-	protected void UpdateBreaking()
+	protected override void OnSecondary( in SceneTraceResult tr )
 	{
-		if ( !PressedSecondary )
-			return;
+		// base.OnSecondary( tr );
 
-		if ( !TryTrace( out var tr ) || !tr.Hit )
-			return;
-
-		if ( !TryGetGrid( out var v ) || TargetPosition is not Vector3 pos )
-			return;
-
-		TryBreakVoxel( pos );
+		TryBreakVoxel( in tr );
 	}
 
-	protected virtual void UpdateTarget( in float deltaTime )
+	protected override void FindTarget( bool clearPrevious = true )
 	{
-		ClearTarget();
-
-		if ( !IsClientAllowed( Client.Local ) )
-			return;
-
-		if ( !TryTrace( out var tr ) || !tr.Hit )
-			return;
-
-		if ( !TryGetGrid( out var v ) )
-			return;
-
-		TargetPosition = tr.EndPosition;
-
-		var c1 = Color.Black.WithAlpha( 0.5f );
-		var c2 = Color.White.WithAlpha( 0.02f );
-
-		var placePos = GetPlaceWorldPosition( in tr, v.Scale );
-		var bounds = BBox.FromPositionAndSize( Vector3.Zero, v.Scale )
-			.Grow( -0.01f );
-
-		this.DrawBox( bounds, c1, c2, tWorld: new( placePos ) );
+		base.FindTarget( clearPrevious );
 	}
 
-	public virtual Vector3 GetGridSnappedPosition( in Vector3 worldPos, in float voxelScale )
+	public override bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
 	{
-		var x = (worldPos.x / voxelScale).Round() * voxelScale;
-		var y = (worldPos.y / voxelScale).Round() * voxelScale;
-		var z = (worldPos.z / voxelScale).Round() * voxelScale;
+		target = TargetVolume;
+
+		return target.IsValid();
+	}
+
+	public virtual Vector3 GetGridSnappedPosition( in Vector3 pos, in float voxelScale )
+	{
+		var x = (pos.x / voxelScale).Round() * voxelScale;
+		var y = (pos.y / voxelScale).Round() * voxelScale;
+		var z = (pos.z / voxelScale).Round() * voxelScale;
 
 		return new( x, y, z );
 	}
@@ -128,7 +92,7 @@ public partial class VoxelTool : EditorTool
 		return GetGridSnappedPosition( worldPos, in voxelScale );
 	}
 
-	public virtual Vector3 GetBlockWorldPosition( in SceneTraceResult tr, in float voxelScale )
+	public virtual Vector3 GetBreakWorldPosition( in SceneTraceResult tr, in float voxelScale )
 	{
 		var offset = tr.Normal * (voxelScale / 2f).Min( 1f );
 		var worldPos = tr.EndPosition - offset;
@@ -136,19 +100,13 @@ public partial class VoxelTool : EditorTool
 		return GetGridSnappedPosition( worldPos, in voxelScale );
 	}
 
-	protected virtual bool TryPlaceVoxel( in Vector3? worldPos )
+	protected virtual bool TryPlaceVoxel( in SceneTraceResult tr )
 	{
-		if ( !TryTrace( out var tr ) )
-			return false;
-
 		if ( !TryGetGrid( out var v ) )
 		{
 			RpcHostCreateGrid();
 			return false;
 		}
-
-		if ( !worldPos.HasValue )
-			return false;
 
 		var placePos = GetPlaceWorldPosition( in tr, v.Scale );
 		var voxPos = v.WorldToVoxel( placePos );
@@ -162,18 +120,12 @@ public partial class VoxelTool : EditorTool
 		return true;
 	}
 
-	protected virtual bool TryBreakVoxel( in Vector3? worldPos )
+	protected virtual bool TryBreakVoxel( in SceneTraceResult tr )
 	{
-		if ( !TryTrace( out var tr ) )
-			return false;
-
 		if ( !TryGetGrid( out var v ) )
 			return false;
 
-		if ( !worldPos.HasValue )
-			return false;
-
-		var breakPos = GetBlockWorldPosition( in tr, v.Scale );
+		var breakPos = GetBreakWorldPosition( in tr, v.Scale );
 		var voxPos = v.WorldToVoxel( breakPos );
 
 		v.BroadcastSet( voxPos, Voxel.Empty );

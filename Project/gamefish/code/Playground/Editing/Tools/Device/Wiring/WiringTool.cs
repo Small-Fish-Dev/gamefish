@@ -122,7 +122,7 @@ public partial class WiringTool : EditorTool
 		return true;
 	}
 
-	public override bool TryGetTarget( in SceneTraceResult tr, out Component target )
+	public override bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
 	{
 		target = null;
 
@@ -141,7 +141,7 @@ public partial class WiringTool : EditorTool
 			return true;
 		}
 
-		return base.TryGetTarget( tr, out target );
+		return base.TryGetTargetComponent( tr, out target );
 	}
 
 	public static bool CanWire( Component c1, Component c2 )

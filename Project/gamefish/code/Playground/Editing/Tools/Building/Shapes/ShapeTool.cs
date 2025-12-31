@@ -116,6 +116,7 @@ public abstract class ShapeTool : EditorTool
 				SetOrigin( new( tr.EndPosition, Rotation.LookAt( vWorldAxis ) ) );
 			}
 		}
+
 		TryAddWorldPoint( new( tCursor.Position, Rotation.Identity ) );
 	}
 

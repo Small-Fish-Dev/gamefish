@@ -9,7 +9,7 @@ public partial class RemoverTool : EditorTool
 		if ( !IsClientAllowed( Client.Local ) )
 			return;
 
-		if ( !TryGetTarget( in tr, out var target ) )
+		if ( !TryGetTargetComponent( in tr, out var target ) )
 			return;
 
 		if ( !CanRemove( Client.Local, target?.GameObject ) )
@@ -18,7 +18,7 @@ public partial class RemoverTool : EditorTool
 		RpcRemoveObject( target?.GameObject );
 	}
 
-	public override bool TryGetTarget( in SceneTraceResult tr, out Component target )
+	public override bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
 	{
 		target = null;
 
@@ -37,7 +37,7 @@ public partial class RemoverTool : EditorTool
 			return true;
 		}
 
-		return base.TryGetTarget( tr, out target );
+		return base.TryGetTargetComponent( tr, out target );
 	}
 
 	protected override bool TryGetTargetEntity( in SceneTraceResult tr, out EditorObject e )

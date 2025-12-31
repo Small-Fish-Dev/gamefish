@@ -47,7 +47,7 @@ partial class EditorTool
 	/// <summary>
 	/// Figure out what we're looking at right now.
 	/// </summary>
-	protected virtual void FindTarget( in float deltaTime, bool clearPrevious = true )
+	protected virtual void FindTarget( bool clearPrevious = true )
 	{
 		if ( clearPrevious )
 			ClearTarget();
@@ -60,7 +60,7 @@ partial class EditorTool
 
 		TargetTrace = tr;
 
-		if ( !TryGetTarget( in tr, out var target ) )
+		if ( !TryGetTargetComponent( in tr, out var target ) )
 			return;
 
 		TrySetTarget( in tr, target );
@@ -80,7 +80,7 @@ partial class EditorTool
 		return true;
 	}
 
-	public virtual bool TryGetTarget( in SceneTraceResult tr, out Component target )
+	public virtual bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
 	{
 		if ( TryGetTargetEntity( in tr, out var ent ) )
 		{

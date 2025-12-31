@@ -172,7 +172,7 @@ public partial class GrabberTool : EditorTool
 	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.SendImmediate )]
 	protected void RpcSetMotionEnabled( Rigidbody rb, bool isEnabled )
 	{
-		if ( !rb.IsValid() || !rb.Active || rb.IsProxy )
+		if ( !rb.IsValid() || !rb.Active )
 			return;
 
 		if ( !TryUse( Rpc.Caller, out _ ) )

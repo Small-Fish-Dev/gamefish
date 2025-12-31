@@ -49,7 +49,7 @@ public partial class PrefabTool : EditorTool
 
 	public override void FrameSimulate( in float deltaTime )
 	{
-		FindTarget( in deltaTime );
+		FindTarget();
 
 		if ( PressedPrimary )
 			TrySpawnAtTarget( out _ );
@@ -103,7 +103,7 @@ public partial class PrefabTool : EditorTool
 		return true;
 	}
 
-	protected override void FindTarget( in float deltaTime, bool clearPrevious = true )
+	protected override void FindTarget( bool clearPrevious = true )
 	{
 		if ( !Prefab.IsValid() || !PrefabBounds.HasValue )
 		{
@@ -111,7 +111,7 @@ public partial class PrefabTool : EditorTool
 			return;
 		}
 
-		base.FindTarget( deltaTime, clearPrevious );
+		base.FindTarget( clearPrevious );
 
 		var c1 = Color.Black.WithAlpha( 0.5f );
 		var c2 = Color.White.WithAlpha( 0.04f );
