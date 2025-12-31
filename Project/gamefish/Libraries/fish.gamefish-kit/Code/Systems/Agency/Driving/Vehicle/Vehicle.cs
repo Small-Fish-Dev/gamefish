@@ -131,7 +131,7 @@ public abstract partial class Vehicle : DynamicEntity
 	/// </summary>
 	protected virtual void UpdateInput( in float deltaTime )
 	{
-		var driverSeat = GetDriverSeats()
+		var driverSeat = GetDriverSeats()?
 			.Where( seat => seat.IsValid() && seat.IsOccupied )
 			.FirstOrDefault( seat => CanDrive( seat.Sitter, seat ) );
 
