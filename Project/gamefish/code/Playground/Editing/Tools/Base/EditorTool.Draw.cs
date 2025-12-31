@@ -13,20 +13,6 @@ partial class EditorTool
 		RenderPointer();
 	}
 
-	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
-	{
-		if ( tr.Hit )
-		{
-			var rNormal = Rotation.LookAt( tr.Normal );
-			tPointer = new( tr.EndPosition, rNormal );
-			return true;
-		}
-
-		tPointer = new( tr.EndPosition );
-
-		return true;
-	}
-
 	protected virtual void RenderPointer()
 	{
 		if ( !TryGetPointer( TargetTrace, out var tPointer ) )
@@ -55,16 +41,16 @@ partial class EditorTool
 
 	protected virtual void RenderTransform( in Transform tWorld )
 	{
+		const float lineLen = 22f;
+		const float lineThick = 0.8f;
+		const float aLen = 5f;
+		const float aWidth = 2f;
+
 		const float a = 0.75f;
 
 		var cUp = new ColorHsv( 200, .9f, .9f ).WithAlpha( a );
 		var cFwd = new ColorHsv( 7, .62f, .85f ).WithAlpha( a );
 		var cRight = new ColorHsv( 103, .6f, .84f ).WithAlpha( a );
-
-		const float lineLen = 24f;
-		const float lineThick = 1.25f;
-		const float aLen = 6f;
-		const float aWidth = 2f;
 
 		this.DrawArrow( Vector3.Zero, Vector3.Up * lineLen, cUp, tWorld: tWorld, th: lineThick, len: aLen, w: aWidth );
 		this.DrawArrow( Vector3.Zero, Vector3.Forward * lineLen, cFwd, tWorld: tWorld, th: lineThick, len: aLen, w: aWidth );

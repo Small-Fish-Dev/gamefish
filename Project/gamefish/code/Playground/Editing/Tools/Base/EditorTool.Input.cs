@@ -76,13 +76,11 @@ partial class EditorTool
 	{
 		// this.Log( "Left clicked." );
 
-		if ( TryTrace( out var tr ) )
-		{
-			OnPrimary( in tr );
-			return true;
-		}
+		if ( !TryTrace( out var tr ) )
+			return false;
 
-		return false;
+		OnPrimary( in tr );
+		return true;
 	}
 
 	/// <returns> If the default editor behavior should be prevented. </returns>
@@ -90,7 +88,11 @@ partial class EditorTool
 	{
 		// this.Log( "Right clicked." );
 
-		return false;
+		if ( !TryTrace( out var tr ) )
+			return false;
+
+		OnSecondary( in tr );
+		return true;
 	}
 
 	/// <returns> If the default editor behavior should be prevented. </returns>
@@ -98,13 +100,11 @@ partial class EditorTool
 	{
 		// this.Log( "Middle clicked." );
 
-		if ( TryTrace( out var tr ) )
-		{
-			OnMiddleMouse( in tr );
-			return true;
-		}
+		if ( !TryTrace( out var tr ) )
+			return false;
 
-		return false;
+		OnMiddleMouse( in tr );
+		return true;
 	}
 
 	public virtual void OnMouseUp( in MouseButtons mb )

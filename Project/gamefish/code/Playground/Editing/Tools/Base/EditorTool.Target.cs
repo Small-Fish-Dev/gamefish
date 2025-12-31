@@ -18,6 +18,20 @@ partial class EditorTool
 	public GameObject TargetObject { get; protected set; }
 	public Component TargetComponent { get; protected set; }
 
+	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
+	{
+		if ( tr.Hit )
+		{
+			var rNormal = Rotation.LookAt( tr.Normal );
+			tPointer = new( tr.EndPosition, rNormal );
+			return true;
+		}
+
+		tPointer = new( tr.EndPosition );
+
+		return true;
+	}
+
 	protected virtual void ClearTarget()
 	{
 		HasTarget = false;
