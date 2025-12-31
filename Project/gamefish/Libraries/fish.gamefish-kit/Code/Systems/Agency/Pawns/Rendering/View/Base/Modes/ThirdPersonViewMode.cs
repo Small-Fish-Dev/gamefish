@@ -65,7 +65,7 @@ public partial class ThirdPersonViewMode : ViewMode
 
 		if ( !Mouse.Active )
 		{
-			var scroll = Input.MouseWheel.y * ScrollSensitivity;
+			var scroll = IControls.Scroll.y * ScrollSensitivity;
 			DesiredDistance = (DesiredDistance - scroll).Clamp( DistanceRange );
 		}
 

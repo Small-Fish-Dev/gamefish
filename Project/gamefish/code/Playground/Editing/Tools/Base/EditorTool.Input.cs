@@ -24,7 +24,7 @@ partial class EditorTool
 	public static bool ReleasedSecondary => IsReleased( "Attack2", isKeyboard: false );
 	public static bool ReleasedMiddleMouse => IsReleased( "MMB", isKeyboard: false );
 
-	public virtual bool HasAimingFocus => ShowCursor is true;
+	public virtual bool HasAimingFocus => Mouse.Active;
 	public virtual bool HasScrollFocus => Mouse.Active || HasAimingFocus;
 	public virtual bool HasActionFocus => true; //ShowCursor is true;
 	public virtual bool HasMovingFocus => false;

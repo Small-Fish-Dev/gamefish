@@ -23,6 +23,7 @@ public partial class GrabberTool : EditorTool
 
 	public bool IsRotating => IsGrabbing && HoldingUse && !Mouse.Active;
 
+	public override bool HasScrollFocus => base.HasScrollFocus || IsGrabbing;
 	public override bool HasAimingFocus => base.HasAimingFocus || IsRotating;
 
 	protected override void OnUpdate()
@@ -171,7 +172,7 @@ public partial class GrabberTool : EditorTool
 			var angLook = Input.AnalogLook;
 
 			var yaw = Rotation.FromAxis( rInv.Up, angLook.yaw );
-			var pitch = Rotation.FromAxis( rInv * tHand.Right, angLook.pitch );
+			var pitch = Rotation.FromAxis( rInv * tHand.Right, -angLook.pitch );
 			var roll = Rotation.FromAxis( rInv * tHand.Forward, angLook.roll );
 
 			Hand.WorldRotation *= pitch * yaw * roll;
