@@ -85,32 +85,38 @@ public abstract class ShapeTool : EditorTool
 	public override bool TryTrace( out SceneTraceResult tr )
 		=> Editor.TryTrace( Scene, out tr, dist: Distance );
 
-	protected override bool TryGetCursorPosition( out Vector3 cursorPos )
+	protected override bool TryGetPointer( out Transform tCursor )
 	{
-		if ( !base.TryGetCursorPosition( out cursorPos ) )
+		if ( !base.TryGetPointer( out tCursor ) )
 			return false;
 
 		if ( HoldingShift )
-			cursorPos = cursorPos.SnapToGrid( 16f );
+			tCursor.Position = tCursor.Position.SnapToGrid( 16f );
 
 		return true;
 	}
 
 	protected override void OnPrimary( in SceneTraceResult tr )
 	{
-		if ( !TryGetCursorPosition( out var cursorPos ) )
+		if ( !TryGetPointer( out var tCursor ) )
 			return;
 
-		if ( !HasPoints && TargetObject.IsValid() )
+		if ( !HasPoints )
 		{
-			var tWorld = TargetObject.WorldTransform;
-			var rNormal = Rotation.LookAt( tr.Normal );
-			var tLocal = tWorld.ToLocal( new( tr.EndPosition, rNormal ) );
+			if ( HasTarget && TargetObject.IsValid() )
+			{
+				var tWorld = TargetObject.WorldTransform;
+				var tLocal = tWorld.ToLocal( tCursor );
 
-			SetOrigin( tLocal, TargetObject, TargetComponent );
+				SetOrigin( tLocal, TargetObject, TargetComponent );
+			}
+			else
+			{
+				var vWorldAxis = Rotation.Identity.ClosestAxis( tr.Direction );
+				SetOrigin( new( tr.EndPosition, Rotation.LookAt( vWorldAxis ) ) );
+			}
 		}
-
-		TryAddWorldPoint( new( cursorPos, Rotation.Identity ) );
+		TryAddWorldPoint( new( tCursor.Position, Rotation.Identity ) );
 	}
 
 	public override bool TryMouseWheel( in Vector2 dir )
@@ -159,8 +165,8 @@ public abstract class ShapeTool : EditorTool
 
 		var points = Points?.Select( pr => pr.Position ).ToList();
 
-		if ( TryGetCursorPosition( out var cursorPos ) )
-			points.Add( tOrigin.PointToLocal( cursorPos ) );
+		if ( TryGetPointer( out var tCursor ) )
+			points.Add( tOrigin.PointToLocal( tCursor.Position ) );
 
 		var box = BBox.FromPoints( points );
 		box = BBox.FromPositionAndSize( box.Center, box.Size - 0.1f );
@@ -219,8 +225,8 @@ public abstract class ShapeTool : EditorTool
 			// fallback or something idk
 			if ( HasTarget )
 			{
-
-				return new( TargetTrace.EndPosition );
+				var rNormal = Rotation.LookAt( TargetTrace.Normal );
+				return new( TargetTrace.EndPosition, rNormal );
 			}
 
 			return tOverride ?? global::Transform.Zero;

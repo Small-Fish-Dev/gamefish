@@ -8,34 +8,37 @@ partial class EditorTool
 
 	protected virtual void RenderHelpers()
 	{
-		RenderCursor();
+		RenderPointer();
 	}
 
-	protected virtual bool TryGetCursorPosition( out Vector3 cursorPos )
+	protected virtual bool TryGetPointer( out Transform tCursor )
 	{
 		if ( !TryTrace( out var tr ) )
 		{
-			cursorPos = Scene?.Camera?.WorldPosition ?? default;
+			tCursor = default;
 			return false;
 		}
 
-		cursorPos = tr.EndPosition;
+		tCursor = tr.Hit
+			? new( tr.EndPosition, Rotation.LookAt( tr.Normal ) )
+			: new( tr.EndPosition );
+
 		return true;
 	}
 
-	protected virtual void RenderCursor()
+	protected virtual void RenderPointer()
 	{
-		if ( TryGetCursorPosition( out var cursorPos ) )
-			RenderCursor( cursorPos );
+		if ( TryGetPointer( out var tCursor ) )
+			RenderPointer( tCursor );
 	}
 
-	protected virtual void RenderCursor( in Vector3 pos )
+	protected virtual void RenderPointer( in Transform tCursor )
 	{
 		var cBlack = Color.Black.WithAlpha( 0.3f );
 		var cWhite = Color.White.WithAlpha( 1.2f );
 
-		this.DrawSphere( 2.5f, pos, Color.Transparent, cBlack, global::Transform.Zero );
-		this.DrawSphere( 1.5f, pos, Color.Transparent, cWhite, global::Transform.Zero );
+		this.DrawSphere( 2.5f, Vector3.Zero, Color.Transparent, cBlack, tCursor );
+		this.DrawSphere( 1.5f, Vector3.Zero, Color.Transparent, cWhite, tCursor );
 	}
 
 	/*

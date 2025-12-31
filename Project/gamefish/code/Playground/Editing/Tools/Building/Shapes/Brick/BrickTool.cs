@@ -229,26 +229,22 @@ public partial class BrickTool : ShapeTool
 		base.AddPoint( pos, r );
 	}
 
-	protected override bool TryGetCursorPosition( out Vector3 cursorPos )
+	protected override bool TryGetPointer( out Transform tCursor )
 	{
 		if ( !TryTrace( out var tr ) )
 		{
-			cursorPos = default;
+			tCursor = default;
 			return false;
 		}
 
-		// Manual distance for air placement.
-		var userDistance = tr.Distance.Min( Distance );
-		cursorPos = tr.StartPosition + (tr.Direction * userDistance);
+		tCursor = tr.Hit
+			? new( tr.HitPosition, Rotation.LookAt( tr.Normal ) )
+			: new( tr.EndPosition, Rotation.LookAt( tr.Direction ) );
 
 		if ( HasOrigin )
 		{
 			var tOrigin = GetShapeOrigin();
 			var vUp = tOrigin.Forward;
-
-			// this.DrawArrow( tOrigin.Position, tOrigin.Position + tOrigin.Up * 64f, Color.Cyan, tWorld: global::Transform.Zero );
-			// this.DrawArrow( tOrigin.Position, tOrigin.Position + tOrigin.Forward * 64f, Color.Red, tWorld: global::Transform.Zero );
-			// this.DrawArrow( tOrigin.Position, tOrigin.Position + tOrigin.Right * 64f, Color.Green, tWorld: global::Transform.Zero );
 
 			var plane = new Plane( tOrigin.Position, vUp );
 			var ray = new Ray( tr.StartPosition, tr.Direction );
@@ -257,10 +253,10 @@ public partial class BrickTool : ShapeTool
 				return false;
 
 			// Horizontal Drag
-			cursorPos = SnapToBrickGrid( OriginWorldTransform, hitPoint );
+			tCursor.Position = SnapToBrickGrid( OriginWorldTransform, hitPoint );
 
 			// Vertical Layers
-			cursorPos += vUp * BrickSize * BrickHeight;
+			tCursor.Position += vUp * BrickSize * BrickHeight;
 
 			return true;
 		}
@@ -269,12 +265,12 @@ public partial class BrickTool : ShapeTool
 		if ( TargetObject.IsValid() )
 		{
 			var tBrick = GetShapeOrigin( TargetObject.WorldTransform );
-			cursorPos = SnapToBrickGrid( tBrick, cursorPos );
+			tCursor.Position = SnapToBrickGrid( tBrick, tCursor.Position );
 			return true;
 		}
 
 		// Global Snapping
-		cursorPos = SnapToBrickGrid( global::Transform.Zero, cursorPos );
+		tCursor.Position = SnapToBrickGrid( global::Transform.Zero, tCursor.Position );
 
 		return true;
 	}
