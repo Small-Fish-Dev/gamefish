@@ -16,10 +16,14 @@ public partial class GrabberTool : EditorTool
 
 	public GrabberHand Hand { get; set; }
 
+	protected RealTimeUntil GrabCooldown { get; set; }
+
 	public bool IsGrabbing => Hand.IsValid() && Hand.BodyObject.IsValid();
 	public float GrabDistance { get; set; }
 
-	protected RealTimeUntil GrabCooldown { get; set; }
+	public bool IsRotating => IsGrabbing && HoldingUse && !Mouse.Active;
+
+	public override bool HasAimingFocus => base.HasAimingFocus || IsRotating;
 
 	protected override void OnUpdate()
 	{
@@ -44,6 +48,14 @@ public partial class GrabberTool : EditorTool
 
 		// Auto-drop on swap.
 		TryDropHeld();
+	}
+
+	protected override void RenderPointer()
+	{
+		base.RenderPointer();
+
+		if ( Hand.IsValid() )
+			RenderTransform( Hand.WorldTransform );
 	}
 
 	public override void FrameSimulate( in float deltaTime )
@@ -151,6 +163,19 @@ public partial class GrabberTool : EditorTool
 
 		if ( !IsGrabbing )
 			return;
+
+		if ( IsRotating && Hand.IsValid() )
+		{
+			var tHand = Hand.WorldTransform;
+			var rInv = tHand.Rotation.Inverse;
+			var angLook = Input.AnalogLook;
+
+			var yaw = Rotation.FromAxis( rInv.Up, angLook.yaw );
+			var pitch = Rotation.FromAxis( rInv * tHand.Right, angLook.pitch );
+			var roll = Rotation.FromAxis( rInv * tHand.Forward, angLook.roll );
+
+			Hand.WorldRotation *= pitch * yaw * roll;
+		}
 
 		if ( !TryTrace( out var tr ) )
 			return;
