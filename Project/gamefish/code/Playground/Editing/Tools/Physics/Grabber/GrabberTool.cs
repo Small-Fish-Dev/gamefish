@@ -84,7 +84,7 @@ public partial class GrabberTool : EditorTool
 	{
 		base.OnSecondary( tr );
 
-		TryFreeze( in tr );
+		TryToggleMotion( in tr );
 	}
 
 	public override bool TryMouseDrag( in Vector2 delta )
@@ -137,22 +137,48 @@ public partial class GrabberTool : EditorTool
 		);
 	}
 
-	protected virtual bool TryFreeze( in SceneTraceResult tr )
+	protected virtual bool TryToggleMotion( in SceneTraceResult tr )
 	{
-		Rigidbody rb = null;
+		Rigidbody rb;
 
+		// If we're holding something then only consider that.
 		if ( Hand.IsValid() && Hand.BodyObject.IsValid() )
+		{
 			rb = Hand.BodyObject.Components.Get<Rigidbody>( FindMode.EnabledInSelf | FindMode.InAncestors );
+			goto Freeze;
+		}
 
-		if ( !rb.IsValid() && tr.GameObject.IsValid() )
-			rb = tr.GameObject.Components.Get<Rigidbody>( FindMode.EnabledInSelf | FindMode.InAncestors );
-
-		if ( !rb.IsValid() )
+		// Try to freeze what we're looking at.
+		if ( !tr.GameObject.IsValid() )
 			return false;
 
-		rb.MotionEnabled = !rb.MotionEnabled;
+		rb = tr.GameObject.Components.Get<Rigidbody>( FindMode.EnabledInSelf | FindMode.InAncestors );
+
+		Freeze:
+
+		return TryToggleMotion( rb );
+	}
+
+	protected bool TryToggleMotion( Rigidbody rb )
+	{
+		if ( !rb.IsValid() || !rb.Network.Active )
+			return false;
+
+		RpcSetMotionEnabled( rb, !rb.MotionEnabled );
 
 		return true;
+	}
+
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.SendImmediate )]
+	protected void RpcSetMotionEnabled( Rigidbody rb, bool isEnabled )
+	{
+		if ( !rb.IsValid() || !rb.Active || rb.IsProxy )
+			return;
+
+		if ( !TryUse( Rpc.Caller, out _ ) )
+			return;
+
+		rb.MotionEnabled = isEnabled;
 	}
 
 	protected virtual void UpdateGrab( in float deltaTime )
