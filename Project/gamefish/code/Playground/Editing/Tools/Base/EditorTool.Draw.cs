@@ -11,14 +11,8 @@ partial class EditorTool
 		RenderPointer();
 	}
 
-	protected virtual bool TryGetPointer( out Transform tCursor )
+	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tCursor )
 	{
-		if ( !TryTrace( out var tr ) )
-		{
-			tCursor = default;
-			return false;
-		}
-
 		tCursor = tr.Hit
 			? new( tr.EndPosition, Rotation.LookAt( tr.Normal ) )
 			: new( tr.EndPosition );
@@ -28,7 +22,7 @@ partial class EditorTool
 
 	protected virtual void RenderPointer()
 	{
-		if ( TryGetPointer( out var tCursor ) )
+		if ( TryGetPointer( TargetTrace, out var tCursor ) )
 			RenderPointer( tCursor );
 	}
 

@@ -36,7 +36,7 @@ public partial class WiringTool : EditorTool
 
 	protected void RenderWireHelper()
 	{
-		if ( !TryGetPointer( out var tCursor ) )
+		if ( !TryTrace( out var tr ) || !TryGetPointer( in tr, out var tCursor ) )
 			return;
 
 		var c1 = Point1.Parent;

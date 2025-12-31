@@ -229,17 +229,10 @@ public partial class BrickTool : ShapeTool
 		base.AddPoint( pos, r );
 	}
 
-	protected override bool TryGetPointer( out Transform tCursor )
+	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tCursor )
 	{
-		if ( !TryTrace( out var tr ) )
-		{
-			tCursor = default;
+		if ( !base.TryGetPointer( in tr, out tCursor ) )
 			return false;
-		}
-
-		tCursor = tr.Hit
-			? new( tr.HitPosition, Rotation.LookAt( tr.Normal ) )
-			: new( tr.EndPosition, Rotation.LookAt( tr.Direction ) );
 
 		if ( HasOrigin )
 		{

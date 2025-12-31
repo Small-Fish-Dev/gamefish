@@ -85,9 +85,9 @@ public abstract class ShapeTool : EditorTool
 	public override bool TryTrace( out SceneTraceResult tr )
 		=> Editor.TryTrace( Scene, out tr, dist: Distance );
 
-	protected override bool TryGetPointer( out Transform tCursor )
+	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tCursor )
 	{
-		if ( !base.TryGetPointer( out tCursor ) )
+		if ( !base.TryGetPointer( in tr, out tCursor ) )
 			return false;
 
 		if ( HoldingShift )
@@ -98,7 +98,7 @@ public abstract class ShapeTool : EditorTool
 
 	protected override void OnPrimary( in SceneTraceResult tr )
 	{
-		if ( !TryGetPointer( out var tCursor ) )
+		if ( !TryGetPointer( in tr, out var tCursor ) )
 			return;
 
 		if ( !HasPoints )
@@ -165,7 +165,7 @@ public abstract class ShapeTool : EditorTool
 
 		var points = Points?.Select( pr => pr.Position ).ToList();
 
-		if ( TryGetPointer( out var tCursor ) )
+		if ( TryTrace( out var tr ) && TryGetPointer( in tr, out var tCursor ) )
 			points.Add( tOrigin.PointToLocal( tCursor.Position ) );
 
 		var box = BBox.FromPoints( points );
@@ -222,14 +222,14 @@ public abstract class ShapeTool : EditorTool
 		// Might be snapping to something.
 		if ( !HasOrigin )
 		{
-			// fallback or something idk
-			if ( HasTarget )
-			{
-				var rNormal = Rotation.LookAt( TargetTrace.Normal );
-				return new( TargetTrace.EndPosition, rNormal );
-			}
+			if ( tOverride.HasValue )
+				return tOverride.Value;
 
-			return tOverride ?? global::Transform.Zero;
+			// fallback or something idk
+			if ( HasTarget && TargetObject.IsValid() )
+				return TargetObject.WorldTransform;
+
+			return global::Transform.Zero;
 		}
 
 		var tOrigin = tOverride
