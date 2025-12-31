@@ -12,12 +12,14 @@ public partial class GrabberTool : EditorTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual float ScrollSensitivity { get; set; } = 30f;
 
+	public override bool ShowPointerTransform => false;
+
 	public GrabberHand Hand { get; set; }
 
 	public bool IsGrabbing => Hand.IsValid() && Hand.BodyObject.IsValid();
 	public float GrabDistance { get; set; }
 
-	protected TimeUntil GrabCooldown { get; set; }
+	protected RealTimeUntil GrabCooldown { get; set; }
 
 	protected override void OnUpdate()
 	{
@@ -239,7 +241,13 @@ public partial class GrabberTool : EditorTool
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
 
-		if ( tr.Collider.IsValid() && tr.Collider.Static )
+		// If it has no collider then at least be a point entity.
+		if ( !tr.Collider.IsValid() )
+			if ( !tr.GameObject.Components.TryGet<EditorObject>( out var e ) )
+				return false;
+
+		// If it's not meant to move then don't.
+		if ( tr.Collider.Static )
 			return false;
 
 		// Don't ever accidentally grab the map.

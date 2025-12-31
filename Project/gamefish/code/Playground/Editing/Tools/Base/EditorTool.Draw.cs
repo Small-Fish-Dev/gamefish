@@ -6,7 +6,7 @@ partial class EditorTool
 	protected virtual Color ColorFilled => Color.White.WithAlpha( 0.1f );
 	protected virtual Color ColorArrow => Color.Black.WithAlpha( 0.8f );
 
-	public virtual bool ShowTransform => HasTarget || HasOrigin;
+	public virtual bool ShowPointerTransform => HasTarget || HasOrigin;
 
 	protected virtual void RenderHelpers()
 	{
@@ -20,7 +20,7 @@ partial class EditorTool
 
 		RenderPointerSphere( tPointer );
 
-		if ( ShowTransform )
+		if ( ShowPointerTransform )
 		{
 			var tGizmo = HasOrigin
 				? OriginWorldTransform.WithOffset( OriginOffset )
