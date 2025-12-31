@@ -65,10 +65,11 @@ public partial class GrabberTool : EditorTool
 		return true;
 	}
 
-	public override bool TryRightClick()
+	protected override void OnSecondary( in SceneTraceResult tr )
 	{
-		TryFreeze();
-		return true;
+		base.OnSecondary( tr );
+
+		TryFreeze( in tr );
 	}
 
 	public override bool TryMouseDrag( in Vector2 delta )
@@ -121,29 +122,20 @@ public partial class GrabberTool : EditorTool
 		);
 	}
 
-	protected virtual bool TryFreeze()
+	protected virtual bool TryFreeze( in SceneTraceResult tr )
 	{
-		// Prefer to target what we're holding first.
-		PhysicsBody body = Hand?.Joint?.Body2;
+		Rigidbody rb = null;
 
-		// Then point at something.
-		if ( !body.IsValid() )
-		{
-			if ( !TryTrace( out var tr ) || !CanTarget( Client.Local, in tr ) )
-				return false;
+		if ( Hand.IsValid() && Hand.BodyObject.IsValid() )
+			rb = Hand.BodyObject.Components.Get<Rigidbody>( FindMode.EnabledInSelf | FindMode.InAncestors );
 
-			body = tr.Body;
-		}
+		if ( !rb.IsValid() && tr.GameObject.IsValid() )
+			rb = tr.GameObject.Components.Get<Rigidbody>( FindMode.EnabledInSelf | FindMode.InAncestors );
 
-		if ( !body.IsValid() )
+		if ( !rb.IsValid() )
 			return false;
 
-		// Take network control if possible, otherwise it may not work.
-		if ( body.Component.IsValid() && body.Component.IsProxy )
-			if ( !body.Component.Network.TakeOwnership() )
-				return false;
-
-		body.MotionEnabled = !body.MotionEnabled;
+		rb.MotionEnabled = !rb.MotionEnabled;
 
 		return true;
 	}
@@ -192,10 +184,6 @@ public partial class GrabberTool : EditorTool
 			return false;
 
 		if ( !CanTarget( Client.Local, in tr ) )
-			return false;
-
-		// TEMP: Can't grab frozen treats.
-		if ( tr.Body.IsValid() && !tr.Body.MotionEnabled )
 			return false;
 
 		var obj = tr.GameObject;
