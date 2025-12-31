@@ -6,33 +6,69 @@ partial class EditorTool
 	protected virtual Color ColorFilled => Color.White.WithAlpha( 0.1f );
 	protected virtual Color ColorArrow => Color.Black.WithAlpha( 0.8f );
 
+	public virtual bool ShowTransform => HasTarget || HasOrigin;
+
 	protected virtual void RenderHelpers()
 	{
 		RenderPointer();
 	}
 
-	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tCursor )
+	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
-		tCursor = tr.Hit
-			? new( tr.EndPosition, Rotation.LookAt( tr.Normal ) )
-			: new( tr.EndPosition );
+		if ( tr.Hit )
+		{
+			var rNormal = Rotation.LookAt( tr.Normal );
+			tPointer = new( tr.EndPosition, rNormal );
+			return true;
+		}
+
+		tPointer = new( tr.EndPosition );
 
 		return true;
 	}
 
 	protected virtual void RenderPointer()
 	{
-		if ( TryGetPointer( TargetTrace, out var tCursor ) )
-			RenderPointer( tCursor );
+		if ( !TryGetPointer( TargetTrace, out var tPointer ) )
+			return;
+
+		RenderPointerSphere( tPointer );
+
+		if ( ShowTransform )
+		{
+			var tGizmo = HasOrigin
+				? OriginWorldTransform.WithOffset( OriginOffset )
+				: tPointer;
+
+			RenderTransform( tGizmo );
+		}
 	}
 
-	protected virtual void RenderPointer( in Transform tCursor )
+	protected virtual void RenderPointerSphere( in Transform tPointer )
 	{
 		var cBlack = Color.Black.WithAlpha( 0.3f );
 		var cWhite = Color.White.WithAlpha( 1.2f );
 
-		this.DrawSphere( 2.5f, Vector3.Zero, Color.Transparent, cBlack, tCursor );
-		this.DrawSphere( 1.5f, Vector3.Zero, Color.Transparent, cWhite, tCursor );
+		this.DrawSphere( 2.5f, Vector3.Zero, Color.Transparent, cBlack, tPointer );
+		this.DrawSphere( 1.5f, Vector3.Zero, Color.Transparent, cWhite, tPointer );
+	}
+
+	protected virtual void RenderTransform( in Transform tWorld )
+	{
+		const float a = 0.75f;
+
+		var cUp = new ColorHsv( 200, .9f, .9f ).WithAlpha( a );
+		var cFwd = new ColorHsv( 7, .62f, .85f ).WithAlpha( a );
+		var cRight = new ColorHsv( 103, .6f, .84f ).WithAlpha( a );
+
+		const float lineLen = 24f;
+		const float lineThick = 1.25f;
+		const float aLen = 6f;
+		const float aWidth = 2f;
+
+		this.DrawArrow( Vector3.Zero, Vector3.Up * lineLen, cUp, tWorld: tWorld, th: lineThick, len: aLen, w: aWidth );
+		this.DrawArrow( Vector3.Zero, Vector3.Forward * lineLen, cFwd, tWorld: tWorld, th: lineThick, len: aLen, w: aWidth );
+		this.DrawArrow( Vector3.Zero, Vector3.Right * lineLen, cRight, tWorld: tWorld, th: lineThick, len: aLen, w: aWidth );
 	}
 
 	/*
