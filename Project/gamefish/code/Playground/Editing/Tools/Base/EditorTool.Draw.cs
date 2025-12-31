@@ -31,9 +31,11 @@ partial class EditorTool
 
 	protected virtual void RenderCursor( in Vector3 pos )
 	{
-		var cSphere = Color.White.WithAlpha( 0.4f );
+		var cBlack = Color.Black.WithAlpha( 0.3f );
+		var cWhite = Color.White.WithAlpha( 1.2f );
 
-		this.DrawSphere( 2.5f, pos, Color.Transparent, cSphere, global::Transform.Zero );
+		this.DrawSphere( 2.5f, pos, Color.Transparent, cBlack, global::Transform.Zero );
+		this.DrawSphere( 1.5f, pos, Color.Transparent, cWhite, global::Transform.Zero );
 	}
 
 	/*
