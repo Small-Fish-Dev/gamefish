@@ -10,7 +10,7 @@ public partial class ClientSpectatorToggle : Module
 	[Property]
 	[InputAction]
 	[Feature( DEBUG ), Group( INPUT ), Order( DEBUG_ORDER )]
-	public string TogglePawnButton { get; set; } = "Toggle Spectating";
+	public string TogglePawnButton { get; set; } = "Noclip";
 
 	public Client Client => Parent as Client;
 	public Pawn Pawn => Client?.Pawn;
