@@ -9,6 +9,7 @@
 
 obj
 bin
+*.bin/
 
 # Local Storage
 Archive
