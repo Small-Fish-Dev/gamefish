@@ -12,6 +12,8 @@ public partial class VoxelMap : NetworkedVoxelVolume, Component.ExecuteInEditor
 	[Change( Name = nameof( ReloadMap ) )]
 	public string MapPath { get; set; }
 
+	public override bool StoreEditorChunks => true;
+
 	/*
 	protected override async Task OnLoad()
 	{
@@ -26,6 +28,28 @@ public partial class VoxelMap : NetworkedVoxelVolume, Component.ExecuteInEditor
 		base.OnStart();
 
 		Task.RunInThreadAsync( ReloadMap );
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( !this.InEditor() )
+			return;
+
+		if ( Chunks is null || !Chunks.Any() )
+			return;
+
+		using ( Gizmo.Scope( MapPath, global::Transform.Zero ) )
+		{
+			// Render chunk models in editor only!
+			foreach ( var (position, model) in EditorChunks )
+			{
+				var transform = new Transform( position );
+				var obj = Gizmo.Draw.Model( model, transform );
+				SetAttributes( obj.Attributes );
+			}
+		}
 	}
 
 	protected async Task LoadMap( string path = null )
