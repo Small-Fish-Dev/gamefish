@@ -110,30 +110,6 @@
           "Children": []
         },
         {
-          "__guid": "f41c08b4-31c5-4dfa-a2cb-28b6a1e9e2e6",
-          "__version": 1,
-          "__Prefab": "prefabs/editing/tools/voxel/voxel_world.prefab",
-          "__PrefabInstancePatch": {
-            "AddedObjects": [],
-            "RemovedObjects": [],
-            "PropertyOverrides": [
-              {
-                "Target": {
-                  "Type": "Component",
-                  "IdValue": "a96e820a-e828-4478-9dea-97964fde0e5d"
-                },
-                "Property": "MapPath",
-                "Value": "voxel\\maps\\bnb\\yart_dusty.vox"
-              }
-            ],
-            "MovedObjects": []
-          },
-          "__PrefabIdToInstanceId": {
-            "2d0ddc99-76b3-4bc1-881a-109a9bd26b02": "f41c08b4-31c5-4dfa-a2cb-28b6a1e9e2e6",
-            "a96e820a-e828-4478-9dea-97964fde0e5d": "a2505e10-48a5-4738-a90f-3bd1a392fe95"
-          }
-        },
-        {
           "__guid": "fda8f8d3-7e45-43af-a138-6f9b259dee97",
           "__version": 1,
           "Flags": 0,
@@ -257,13 +233,13 @@
       ]
     },
     {
-      "__guid": "54747f2c-9b14-4b2d-9d10-5521f3c1e427",
+      "__guid": "457f9da8-6873-4f61-a12c-2273317879f8",
       "__version": 1,
       "Flags": 0,
-      "Name": "Player Spawns",
+      "Name": "Dusty",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
+      "Scale": "2.5,2.5,0.9999999",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -274,13 +250,53 @@
       "Components": [],
       "Children": [
         {
-          "__guid": "457f9da8-6873-4f61-a12c-2273317879f8",
+          "__guid": "f41c08b4-31c5-4dfa-a2cb-28b6a1e9e2e6",
+          "__version": 1,
+          "__Prefab": "prefabs/editing/tools/voxel/voxel_world.prefab",
+          "__PrefabInstancePatch": {
+            "AddedObjects": [],
+            "RemovedObjects": [],
+            "PropertyOverrides": [
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "2d0ddc99-76b3-4bc1-881a-109a9bd26b02"
+                },
+                "Property": "Position",
+                "Value": "-819.2,-819.2,0"
+              },
+              {
+                "Target": {
+                  "Type": "GameObject",
+                  "IdValue": "2d0ddc99-76b3-4bc1-881a-109a9bd26b02"
+                },
+                "Property": "Scale",
+                "Value": "0.4,0.4,1"
+              },
+              {
+                "Target": {
+                  "Type": "Component",
+                  "IdValue": "a96e820a-e828-4478-9dea-97964fde0e5d"
+                },
+                "Property": "MapPath",
+                "Value": "voxel\\maps\\bnb\\yart_dusty.vox"
+              }
+            ],
+            "MovedObjects": []
+          },
+          "__PrefabIdToInstanceId": {
+            "2d0ddc99-76b3-4bc1-881a-109a9bd26b02": "f41c08b4-31c5-4dfa-a2cb-28b6a1e9e2e6",
+            "a96e820a-e828-4478-9dea-97964fde0e5d": "a2505e10-48a5-4738-a90f-3bd1a392fe95"
+          }
+        },
+        {
+          "__guid": "54747f2c-9b14-4b2d-9d10-5521f3c1e427",
           "__version": 1,
           "Flags": 0,
-          "Name": "Topside",
-          "Position": "3146.678,2885.11,2646.643",
+          "Name": "Player Spawns",
+          "Position": "-819.2,-768,-256",
           "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
+          "Scale": "0.4,0.4,1",
           "Tags": "",
           "Enabled": true,
           "NetworkMode": 2,
@@ -295,7 +311,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "231.4472,-558.7625,32",
+              "Position": "1536,96,1344",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -327,7 +343,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "558.7626,-231.4467,32",
+              "Position": "3776,928,1248",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -359,7 +375,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "558.7623,231.4472,32",
+              "Position": "2848,2560,704",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -391,7 +407,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "231.4467,558.7625,32",
+              "Position": "2626.617,3316.906,1568",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -419,107 +435,11 @@
               "Children": []
             },
             {
-              "__guid": "4e75bf19-cfad-45e9-b5d1-aee9b5d93d33",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Player Spawn",
-              "Position": "-231.4471,558.7623,32",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SpawnPoint",
-                  "__guid": "208016bf-e506-4aee-8e50-e9205b9a64c2",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Color": "0.8902,0.31765,0.05098,1",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null
-                }
-              ],
-              "Children": []
-            },
-            {
-              "__guid": "8817eeb6-79e7-4d90-bc2d-afcf8c8e9b5b",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Player Spawn",
-              "Position": "-558.7625,231.4469,32",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SpawnPoint",
-                  "__guid": "bf3c05db-55c3-4e7e-b6ad-0b3b84da8d62",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Color": "0.8902,0.31765,0.05098,1",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null
-                }
-              ],
-              "Children": []
-            },
-            {
-              "__guid": "c3b11c2f-9c00-4e79-b942-93f22b332a80",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Player Spawn",
-              "Position": "-558.7623,-231.4469,32",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SpawnPoint",
-                  "__guid": "cd801ed4-fc06-49c9-a5e5-27a93cce21f8",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Color": "0.8902,0.31765,0.05098,1",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null
-                }
-              ],
-              "Children": []
-            },
-            {
               "__guid": "39a16662-0dce-4a82-9e2c-bc6fd9d0269c",
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "-231.4469,-558.7623,32",
+              "Position": "1088,448,768",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -551,7 +471,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "427.6586,-427.658,32",
+              "Position": "2880,512,1312",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -583,7 +503,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "604.8002,0.0003570557,32",
+              "Position": "1760,2400,1504",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -615,7 +535,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "427.658,427.6586,32",
+              "Position": "3712,3584,800",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -647,7 +567,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "-0.000315857,604.8002,32",
+              "Position": "2400,3136,1408",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -679,7 +599,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "-427.6584,427.658,32",
+              "Position": "1344,2752,768",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -711,7 +631,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "-604.8002,-0.0001647949,32",
+              "Position": "160,2560,1024",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -743,7 +663,7 @@
               "__version": 1,
               "Flags": 0,
               "Name": "Player Spawn",
-              "Position": "-427.6582,-427.6582,32",
+              "Position": "160,832,768",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "",
@@ -757,38 +677,6 @@
                 {
                   "__type": "Sandbox.SpawnPoint",
                   "__guid": "1a915863-db16-470c-8749-6660092e0a7f",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "Color": "0.8902,0.31765,0.05098,1",
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null
-                }
-              ],
-              "Children": []
-            },
-            {
-              "__guid": "6a901757-14eb-4be9-8965-1fcdce0c3315",
-              "__version": 1,
-              "Flags": 0,
-              "Name": "Player Spawn",
-              "Position": "0,-604.8,32",
-              "Rotation": "0,0,0,1",
-              "Scale": "1,1,1",
-              "Tags": "",
-              "Enabled": true,
-              "NetworkMode": 2,
-              "NetworkInterpolation": true,
-              "NetworkOrphaned": 0,
-              "NetworkTransmit": true,
-              "OwnerTransfer": 1,
-              "Components": [
-                {
-                  "__type": "Sandbox.SpawnPoint",
-                  "__guid": "79e7c735-2168-471a-bcec-bc9c48a52d98",
                   "__enabled": true,
                   "Flags": 0,
                   "Color": "0.8902,0.31765,0.05098,1",
