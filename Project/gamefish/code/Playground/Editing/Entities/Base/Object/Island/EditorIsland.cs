@@ -58,4 +58,13 @@ public partial class EditorIsland : EditorObject
 	{
 		TogglePhysics();
 	}
+
+	public virtual void OnObjectDestroyed( EditorObject ent )
+	{
+		if ( !this.InGame() || !GameObject.IsValid() )
+			return;
+
+		if ( !FindObjects().Any() )
+			GameObject.Destroy();
+	}
 }

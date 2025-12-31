@@ -48,10 +48,10 @@ partial class EditorObject
 		Island = parent?.Components?.Get<EditorIsland>( FindMode.Enabled | FindMode.InAncestors );
 
 		if ( Island.IsValid() )
-			DisablePhysics();
+			PreventMotion();
 	}
 
-	protected void DisablePhysics()
+	protected void PreventMotion()
 	{
 		if ( !GameObject.IsValid() )
 			return;

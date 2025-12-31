@@ -31,17 +31,10 @@ public partial class EditorObject : PhysicsObject
 	{
 		base.OnDestroy();
 
-		if ( !this.InGame() || !GameObject.IsValid() )
-			return;
+		if ( Island.IsValid() )
+			Island.OnObjectDestroyed( this );
 
-		// Auto-cleanup objects that don't have any other entities.
-		const FindMode findMode = FindMode.EnabledInSelfAndDescendants;
-
-		var comps = GameObject.Components.GetAll<ModuleEntity>( findMode )
-			.Where( comp => comp.IsValid() );
-
-		if ( !comps.Any() )
-			GameObject.Destroy();
+		AutoCleanup();
 	}
 
 	protected override void OnStart()
@@ -56,6 +49,25 @@ public partial class EditorObject : PhysicsObject
 		base.OnParentChanged( oldParent, newParent );
 
 		RefreshIsland( newParent );
+	}
+
+	/// <summary>
+	/// Destroys this object if this entity was removed
+	/// from an object with no other remaining entities.
+	/// </summary>
+	protected virtual void AutoCleanup()
+	{
+		if ( !this.InGame() || !GameObject.IsValid() )
+			return;
+
+		// Auto-cleanup objects that don't have any other entities.
+		const FindMode findMode = FindMode.EnabledInSelfAndDescendants;
+
+		var hasEnts = GameObject.Components.GetAll<ModuleEntity>( findMode )
+			.Any( comp => comp.IsValid() );
+
+		if ( !hasEnts )
+			GameObject.Destroy();
 	}
 
 	public virtual void RenderHelpers()
