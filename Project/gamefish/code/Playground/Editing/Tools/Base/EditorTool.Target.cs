@@ -71,13 +71,18 @@ partial class EditorTool
 		if ( !target.IsValid() )
 			return false;
 
-		HasTarget = true;
+		SetTarget( target?.GameObject, target, in tr );
+
+		return true;
+	}
+
+	protected virtual void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
+	{
+		HasTarget = obj.IsValid();
 
 		TargetTrace = tr;
 		TargetObject = target.GameObject;
 		TargetComponent = target;
-
-		return true;
 	}
 
 	public virtual bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )

@@ -58,20 +58,6 @@ partial class EditorTool
 			OriginWorldTransform = OriginObject.WorldTransform;
 	}
 
-	protected virtual bool TrySetOrigin( GameObject obj, Component c, Offset offset, bool allowReplace = true )
-	{
-		if ( !obj.IsValid() )
-			return false;
-
-		// respec'
-		if ( !allowReplace && HasOrigin )
-			return false;
-
-		SetOrigin( offset, obj, c );
-
-		return true;
-	}
-
 	protected virtual void SetOrigin( Offset offset, GameObject obj = null, Component c = null )
 	{
 		HasOrigin = true;

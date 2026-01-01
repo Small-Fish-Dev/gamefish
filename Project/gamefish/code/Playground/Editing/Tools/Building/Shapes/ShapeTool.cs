@@ -71,15 +71,10 @@ public abstract class ShapeTool : EditorTool
 		Points?.Clear();
 	}
 
-	public override bool TryRightClick()
+	protected override void OnSecondary( in SceneTraceResult tr )
 	{
 		if ( HasPoints )
-		{
 			Clear();
-			return true;
-		}
-
-		return false;
 	}
 
 	public override bool TryTrace( out SceneTraceResult tr )
@@ -101,23 +96,7 @@ public abstract class ShapeTool : EditorTool
 		if ( !TryGetPointer( in tr, out var tCursor ) )
 			return;
 
-		if ( !HasPoints )
-		{
-			if ( HasTarget && TargetObject.IsValid() )
-			{
-				var tWorld = TargetObject.WorldTransform;
-				var tLocal = tWorld.ToLocal( tCursor );
-
-				SetOrigin( tLocal, TargetObject, TargetComponent );
-			}
-			else
-			{
-				var vWorldAxis = Rotation.Identity.ClosestAxis( tr.Direction );
-				SetOrigin( new( tr.EndPosition, Rotation.LookAt( vWorldAxis ) ) );
-			}
-		}
-
-		TryAddWorldPoint( new( tCursor.Position, Rotation.Identity ) );
+		TryAddPoint( in tr, tCursor );
 	}
 
 	public override bool TryMouseWheel( in Vector2 dir )
@@ -175,6 +154,30 @@ public abstract class ShapeTool : EditorTool
 		this.DrawBox( box, ColorOutline, ColorFilled, tOrigin );
 	}
 
+	protected virtual bool TryAddPoint( in SceneTraceResult tr, Transform tPointer )
+	{
+		if ( !HasPoints )
+			SetShapeOrigin( in tr, tPointer );
+
+		return TryAddWorldPoint( new( tPointer.Position, Rotation.Identity ) );
+	}
+
+	protected virtual void SetShapeOrigin( in SceneTraceResult tr, Transform tPointer )
+	{
+		if ( HasTarget && TargetObject.IsValid() )
+		{
+			var tWorld = TargetObject.WorldTransform;
+			var tLocal = tWorld.ToLocal( tPointer );
+
+			SetOrigin( tLocal, TargetObject, TargetComponent );
+
+			return;
+		}
+
+		var vWorldAxis = Rotation.Identity.ClosestAxis( tr.Direction );
+		SetOrigin( new( tr.EndPosition, Rotation.LookAt( vWorldAxis ) ) );
+	}
+
 	protected virtual bool TryAddWorldPoint( Transform tWorld )
 	{
 		// Floating origin.
@@ -211,11 +214,11 @@ public abstract class ShapeTool : EditorTool
 
 	protected virtual void OnPointAdded( in Vector3 pos, in Rotation r )
 	{
-		if ( AtLimit )
-		{
-			TryCreateShape( out _ );
-			Clear();
-		}
+		if ( !AtLimit )
+			return;
+
+		TryCreateShape( out _ );
+		Clear();
 	}
 
 	public virtual Transform GetShapeOrigin( in Transform? tOverride = null )

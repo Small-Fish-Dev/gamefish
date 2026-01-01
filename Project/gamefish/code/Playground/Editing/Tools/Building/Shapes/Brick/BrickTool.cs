@@ -118,9 +118,7 @@ public partial class BrickTool : ShapeTool
 		if ( !Editor.TryFindIsland( brick.GameObject, out var island ) )
 			return;
 
-		if ( !TrySetOrigin( island.GameObject, island, brick.LocalTransform ) )
-			return;
-
+		SetOrigin( brick.LocalTransform, island.GameObject, island );
 		AddPoint( Vector3.Zero, brick.LocalRotation );
 
 		RpcDestroyBrick( brick );

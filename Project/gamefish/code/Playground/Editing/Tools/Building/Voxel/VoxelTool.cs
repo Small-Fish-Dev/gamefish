@@ -1,6 +1,5 @@
+using Boxfish;
 using Boxfish.Library;
-using Boxfish.Utility;
-using Microsoft.VisualBasic;
 
 namespace Playground;
 
@@ -10,15 +9,60 @@ public partial class VoxelTool : ShapeTool
 	[Feature( EDITOR ), Group( PREFABS ), Order( PREFABS_ORDER )]
 	public PrefabFile VoxelPrefab { get; set; }
 
-	public NetworkedVoxelVolume TargetVolume => Scene?.Get<NetworkedVoxelVolume>();
+	public Vector3Int TargetVoxel { get; protected set; }
+	public NetworkedVoxelVolume TargetVolume { get; protected set; }
+
+	public Vector3Int OriginVoxel { get; protected set; }
+	public NetworkedVoxelVolume OriginVolume { get; protected set; }
+
+	public override bool ShowPointerTransform => false;
 
 	public override int PointLimit => 2;
 
-	public override void OnExit()
+	protected override void ClearTarget()
 	{
-		base.OnExit();
+		base.ClearTarget();
 
-		ClearTarget();
+		TargetVolume = null;
+		TargetVoxel = default;
+	}
+
+	protected override void ClearOrigin()
+	{
+		base.ClearOrigin();
+
+		OriginVolume = null;
+		TargetVoxel = default;
+	}
+
+	protected override void OnSecondary( in SceneTraceResult tr )
+	{
+		if ( TryBreakVoxel( in tr ) )
+		{
+			Clear();
+			return;
+		}
+
+		base.OnSecondary( tr );
+	}
+
+	protected VoxelBounds GetVoxelBounds()
+	{
+		if ( Points is null )
+			return default;
+
+		var iMins = OriginVoxel.ComponentMin( TargetVoxel );
+		var iMaxs = TargetVoxel.ComponentMax( OriginVoxel );
+
+		return new( iMins, iMaxs + 1 );
+	}
+
+	protected override void RenderBoxShape()
+	{
+		if ( !HasPoints || !HasOrigin )
+			return;
+
+		RenderVoxelBox( OriginVolume, GetVoxelBounds() );
 	}
 
 	protected override void RenderPointer()
@@ -28,112 +72,166 @@ public partial class VoxelTool : ShapeTool
 		if ( !TargetVolume.IsValid() )
 			return;
 
-		var placePos = GetPlaceWorldPosition( TargetTrace, TargetVolume.VoxelScale );
-		var mins = TargetVolume.WorldToVoxel( placePos );
-
-		DrawVoxelBox( TargetVolume, mins, mins + 1 );
+		RenderVoxelBox( TargetVolume, new( TargetVoxel, TargetVoxel + 1 ) );
 	}
 
-	protected void DrawVoxelBox( NetworkedVoxelVolume v, in Vector3Int mins, in Vector3Int maxs )
+	protected override void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
+	{
+		base.SetTarget( obj, target, tr );
+
+		TargetVolume = target as NetworkedVoxelVolume;
+
+		if ( !TryGetPointer( in tr, out var tPointer ) )
+		{
+			ClearTarget();
+			return;
+		}
+
+		TargetVoxel = TargetVolume.WorldToVoxel( tPointer.Position );
+	}
+
+	public override bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
+	{
+		target = null;
+
+		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
+
+		if ( tr.GameObject.IsValid() && tr.GameObject.Components.TryGet<NetworkedVoxelVolume>( out var v, findMode ) )
+		{
+			target = v;
+			return true;
+		}
+
+		if ( !tr.GameObject.IsValid() )
+		{
+			if ( TryGetVolume( out var vGlobal ) )
+			{
+				target = vGlobal;
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
+	{
+		if ( !base.TryGetPointer( tr, out tPointer ) )
+			return false;
+
+		var v = TargetVolume.AsValid() ?? OriginVolume;
+
+		if ( !v.IsValid() )
+			return false;
+
+		var point = tPointer.Position;
+		point += v.Scale * 0.5f;
+
+		if ( tr.Hit )
+			point -= tr.Normal * v.Scale * 0.5f;
+
+		tPointer.Position = v.VoxelToWorld( v.WorldToVoxel( point ) );
+		tPointer.Rotation = v.WorldRotation;
+
+		return true;
+	}
+
+	protected void RenderVoxelBox( NetworkedVoxelVolume v, in VoxelBounds iBounds )
 	{
 		if ( !v.IsValid() )
 			return;
 
 		var tVox = v.WorldTransform;
 
-		var bounds = new BBox( mins, maxs ) * v.VoxelScale;
+		var fMins = iBounds.Mins * v.Scale;
+		var fMaxs = iBounds.Maxs * v.Scale;
 
-		bounds = bounds.Translate( v.VoxelScale * -0.5f );
-		bounds = bounds.Grow( -0.01f );
+		var bounds = BBox.FromPoints( [fMins, fMaxs] )
+			.Translate( v.Scale * -0.5f )
+			.Grow( -0.01f );
 
 		this.DrawBox( bounds, ColorOutline, ColorFilled, tWorld: tVox );
 	}
 
-	protected override void OnPrimary( in SceneTraceResult tr )
+	protected override void SetShapeOrigin( in SceneTraceResult tr, Transform tPointer )
 	{
-		// base.OnPrimary( tr );
+		if ( !HasTarget || !TargetVolume.IsValid() )
+			return;
 
-		TryPlaceVoxel( in tr );
+		OriginVoxel = TargetVoxel;
+		OriginVolume = TargetVolume;
+
+		var tVolume = TargetVolume.WorldTransform;
+
+		var fVoxel = TargetVolume.VoxelToWorld( OriginVoxel );
+		var tLocal = tVolume.ToLocal( new( fVoxel, tVolume.Rotation ) );
+
+		SetOrigin( tLocal, TargetVolume.GameObject, TargetVolume );
 	}
 
-	protected override void OnSecondary( in SceneTraceResult tr )
+	protected override bool TryAddLocalPoint( Transform tLocal )
 	{
-		// base.OnSecondary( tr );
-
-		TryBreakVoxel( in tr );
-	}
-
-	protected override void FindTarget( bool clearPrevious = true )
-	{
-		base.FindTarget( clearPrevious );
-	}
-
-	public override bool TryGetTargetComponent( in SceneTraceResult tr, out Component target )
-	{
-		target = TargetVolume;
-
-		return target.IsValid();
-	}
-
-	public virtual Vector3 GetGridSnappedPosition( in Vector3 pos, in float voxelScale )
-	{
-		var x = (pos.x / voxelScale).Round() * voxelScale;
-		var y = (pos.y / voxelScale).Round() * voxelScale;
-		var z = (pos.z / voxelScale).Round() * voxelScale;
-
-		return new( x, y, z );
-	}
-
-	public virtual Vector3 GetPlaceWorldPosition( in SceneTraceResult tr, in float voxelScale )
-	{
-		var offset = tr.Normal * (voxelScale / 2f).Min( 1f );
-		var worldPos = tr.EndPosition + offset;
-
-		return GetGridSnappedPosition( worldPos, in voxelScale );
-	}
-
-	public virtual Vector3 GetBreakWorldPosition( in SceneTraceResult tr, in float voxelScale )
-	{
-		var offset = tr.Normal * (voxelScale / 2f).Min( 1f );
-		var worldPos = tr.EndPosition - offset;
-
-		return GetGridSnappedPosition( worldPos, in voxelScale );
-	}
-
-	protected virtual bool TryPlaceVoxel( in SceneTraceResult tr )
-	{
-		if ( !TryGetGrid( out var v ) )
-		{
-			RpcHostCreateGrid();
+		if ( !OriginVolume.IsValid() )
 			return false;
-		}
 
-		var placePos = GetPlaceWorldPosition( in tr, v.Scale );
-		var voxPos = v.WorldToVoxel( placePos );
+		var tVolume = OriginVolume.WorldTransform;
+		var tPoint = tVolume.PointToWorld( tLocal.Position );
+
+		tLocal.Position = OriginVolume.WorldToVoxel( tPoint );
+
+		return base.TryAddLocalPoint( tLocal );
+	}
+
+	protected override void OnPointAdded( in Vector3 pos, in Rotation r )
+	{
+		if ( !AtLimit )
+			return;
+
+		TryPlaceVoxels();
+		Clear();
+	}
+
+	protected bool TryPlaceVoxels()
+	{
+		if ( !OriginVolume.IsValid() )
+			return false;
+
+		if ( !HasPoints )
+			return false;
 
 		// Random color.
 		var hue = Random.Float( 0f, 360f );
 		var color = new ColorHsv( hue, 0.7f, 0.9f ).ToColor();
 
-		v.BroadcastSet( voxPos, new( color ) );
+		OriginVolume.BroadcastSetBounds( default, GetVoxelBounds(), new( color ) );
 
 		return true;
 	}
 
 	protected virtual bool TryBreakVoxel( in SceneTraceResult tr )
 	{
-		if ( !TryGetGrid( out var v ) )
-			return false;
+		if ( HasOrigin && OriginVolume.IsValid() )
+		{
+			OriginVolume.BroadcastSetBounds( default, GetVoxelBounds(), Voxel.Empty );
+			return true;
+		}
 
-		var breakPos = GetBreakWorldPosition( in tr, v.Scale );
-		var voxPos = v.WorldToVoxel( breakPos );
+		if ( HasTarget && TargetVolume.IsValid() )
+		{
+			this.Log( TargetVoxel );
+			TargetVolume.BroadcastSet( TargetVoxel, Voxel.Empty );
+			return true;
+		}
 
-		v.BroadcastSet( voxPos, Voxel.Empty );
-
-		return true;
+		return false;
 	}
 
-	protected virtual bool TryGetGrid( out NetworkedVoxelVolume v )
+	protected override bool TryCreateShape( out GameObject obj )
+		=> (obj = null).IsValid();
+
+	protected virtual bool TryGetVolume( out NetworkedVoxelVolume v )
 	{
 		v = Scene?.Get<NetworkedVoxelVolume>();
 		return v.IsValid();
@@ -148,7 +246,7 @@ public partial class VoxelTool : ShapeTool
 		if ( !TryUse( Rpc.Caller, out _ ) )
 			return;
 
-		if ( TryGetGrid( out _ ) )
+		if ( TryGetVolume( out _ ) )
 			return;
 
 		var gridOrigin = Vector3.Zero;
