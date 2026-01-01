@@ -34,7 +34,7 @@ partial class NetworkedVoxelVolume
 	[Rpc.Broadcast]
 	public void BroadcastSetBounds( Vector3Int position, VoxelBounds bounds, Voxel voxel )
 	{
-		for ( int x = bounds.Mins.x; x < bounds.Maxs.y; x++ )
+		for ( int x = bounds.Mins.x; x < bounds.Maxs.x; x++ )
 			for ( int y = bounds.Mins.y; y < bounds.Maxs.y; y++ )
 				for ( int z = bounds.Mins.z; z < bounds.Maxs.z; z++ )
 				{
