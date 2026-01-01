@@ -24,7 +24,7 @@ public partial class VoxelTool : ShapeTool
 		base.ClearTarget();
 
 		TargetVolume = null;
-		TargetVoxel = default;
+		// TargetVoxel = default;
 	}
 
 	protected override void ClearOrigin()
@@ -32,7 +32,7 @@ public partial class VoxelTool : ShapeTool
 		base.ClearOrigin();
 
 		OriginVolume = null;
-		TargetVoxel = default;
+		OriginVoxel = default;
 	}
 
 	protected override void OnSecondary( in SceneTraceResult tr )
