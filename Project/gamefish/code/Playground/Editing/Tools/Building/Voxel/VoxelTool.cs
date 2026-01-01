@@ -220,7 +220,6 @@ public partial class VoxelTool : ShapeTool
 
 		if ( HasTarget && TargetVolume.IsValid() )
 		{
-			this.Log( TargetVoxel );
 			TargetVolume.BroadcastSet( TargetVoxel, Voxel.Empty );
 			return true;
 		}

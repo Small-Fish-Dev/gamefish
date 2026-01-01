@@ -470,6 +470,11 @@
                 "Flags": 0,
                 "ClassId": null,
                 "ClassName": null,
+                "Distance": 512,
+                "DistanceRange": {
+                  "Min": 16,
+                  "Max": 2048
+                },
                 "Filter": null,
                 "FunctionHints": [
                   {
@@ -481,7 +486,7 @@
                   {
                     "Name": "Break",
                     "Description": null,
-                    "Action": "Attack1",
+                    "Action": "Attack2",
                     "Mode": "Pressed"
                   }
                 ],
@@ -500,6 +505,8 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
+                "ScrollSensitivity": 32,
+                "ShapePrefab": null,
                 "ToolDescription": "Place and break blocks on a grid.",
                 "ToolEmoji": "⛏",
                 "ToolName": "Voxel",
