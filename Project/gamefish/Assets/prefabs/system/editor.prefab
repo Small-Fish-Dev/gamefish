@@ -1181,12 +1181,13 @@
                     "DeviceSettings": {
                       "KeyForward": "KP_5",
                       "KeyReverse": "KP_0",
-                      "Speed": 40,
-                      "Limit": 40,
-                      "TorqueLift": 0.5,
+                      "SpinSpeed": 30,
+                      "SpinLimit": 40,
+                      "BaseLift": 300000,
+                      "MassLift": 6,
                       "Friction": {
-                        "Value": 0.05,
-                        "StopSpeed": 2
+                        "Value": 0.5,
+                        "StopSpeed": 5
                       }
                     },
                     "Filter": null,
@@ -1231,12 +1232,13 @@
                     "DeviceSettings": {
                       "KeyForward": "KP_8",
                       "KeyReverse": "KP_2",
-                      "Speed": 40,
-                      "Limit": 40,
-                      "TorqueLift": 0.5,
+                      "SpinSpeed": 30,
+                      "SpinLimit": 40,
+                      "BaseLift": 300000,
+                      "MassLift": 6,
                       "Friction": {
-                        "Value": 0.05,
-                        "StopSpeed": 2
+                        "Value": 0.5,
+                        "StopSpeed": 5
                       }
                     },
                     "Filter": null,

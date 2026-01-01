@@ -8,17 +8,24 @@ public partial struct PropellerSettings
 	[Title( "Reverse" )]
 	public string KeyReverse { get; set; } = "KP_2";
 
-	[Title( "Speed" )]
-	public float Speed { get; set; } = 40f;
+	[Title( "Spin Speed" )]
+	public float SpinSpeed { get; set; } = 30f;
 
-	[Title( "Speed Limit" )]
-	public float Limit { get; set; } = 40f;
+	[Title( "Torque Limit" )]
+	public float SpinLimit { get; set; } = 40f;
 
-	[Title( "Lift" )]
-	public float TorqueLift { get; set; } = 0.5f;
+	/// <summary>
+	/// The lift always added by current torque.
+	/// </summary>
+	public float BaseLift { get; set; } = 300000f;
+
+	/// <summary>
+	/// Applies extra lift by factoring mass with torque.
+	/// </summary>
+	public float MassLift { get; set; } = 6f;
 
 	[Title( "Friction" )]
-	public Friction Friction { get; set; } = new( 0.05f, 2f );
+	public Friction Friction { get; set; } = new( 0.5f, 2f );
 
 	public PropellerSettings() { }
 }

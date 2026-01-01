@@ -8,11 +8,6 @@ public partial class Propeller : Device
 {
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Rigidbody Rigidbody => _rb.GetCached( GameObject, FindMode.EnabledInSelf | FindMode.InAncestors );
-	protected Rigidbody _rb;
-
-	[Property, JsonIgnore, ReadOnly]
-	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public Rigidbody TargetRigidbody => _rbTarget.GetCached( ParentPoint.Object, FindMode.EnabledInSelf | FindMode.InAncestors );
 	protected Rigidbody _rbTarget;
 
@@ -105,41 +100,49 @@ public partial class Propeller : Device
 
 	public void Simulate( in float deltaTime )
 	{
-		if ( !Joint.IsValid() || !Rigidbody.IsValid() )
+		if ( !Joint.IsValid() || Joint.IsBroken )
+			return;
+
+		if ( !Rigidbody.IsValid() )
 			return;
 
 		var tBody = Rigidbody.WorldTransform;
-		var torque = Rigidbody.AngularVelocity * tBody.Up;
 
-		var angVel = Rigidbody.AngularVelocity;
-		angVel -= torque;
+		// Fetch Torque
+		var torque = Rigidbody.AngularVelocity;
+		var spinSpeed = tBody.Up.Dot( torque );
+
+		torque = tBody.Up * spinSpeed;
 
 		// Friction
 		torque = torque.WithFriction( Settings.Friction, deltaTime );
 
 		// Acceleration
-		var accel = Throttle * Settings.Speed;
-		torque += accel * deltaTime;
+		var accel = Throttle * Settings.SpinSpeed;
+		torque += tBody.Up * accel * deltaTime;
+		torque = torque.ClampLength( 0, Settings.SpinLimit.Positive() );
 
-		// Limit
-		var limit = Settings.Limit.Positive();
-		torque = torque.ClampLength( 0, limit );
+		// Apply Torque
+		spinSpeed = tBody.Up.Dot( torque );
+		Rigidbody.AngularVelocity = torque;
 
-		// Apply
-		angVel += torque;
-		Rigidbody.AngularVelocity = angVel;
+		if ( !TargetRigidbody.IsValid() )
+			return;
 
 		// Lift
-		var lift = tBody.Up * torque;
-		lift *= Settings.TorqueLift;
+		var massValue = TargetRigidbody.Mass;
+		var massCenter = tBody.PointToWorld( Rigidbody.MassCenter );
 
-		if ( TargetRigidbody.IsValid() )
-			TargetRigidbody.Velocity += lift;
+		var torqueLift = spinSpeed * Settings.BaseLift;
+		var massLift = spinSpeed * (massValue.Max( 1 ) * Settings.MassLift);
 
-		// var vLocalCenter = TargetRigidbody.MassCenter;
-		// var vWorldCenter = TargetRigidbody.WorldTransform.PointToWorld( vLocalCenter );
+		var liftForce = tBody.Up * (torqueLift + massLift);
 
-		// TargetRigidbody.ApplyForceAt( vWorldCenter, lift );
+		TargetRigidbody.ApplyForceAt( massCenter, liftForce );
+
+		// Debug
+		// var liftDelta = liftForce * deltaTime;
+		// this.DrawArrow( massCenter, massCenter + liftDelta, Color.White, tWorld: global::Transform.Zero );
 	}
 
 	public bool TryAttachTo( in DeviceAttachPoint point )
