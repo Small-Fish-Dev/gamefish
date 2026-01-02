@@ -20,7 +20,7 @@ partial class EditorTool
 
 	protected bool IsPointerSnapping => AllowPointerSnapping && HoldingShift;
 	protected virtual bool AllowPointerSnapping => true;
-	protected virtual float PointerGrid => 4f;
+	protected virtual float PointerSnapGrid => 4f;
 
 	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
@@ -41,7 +41,7 @@ partial class EditorTool
 			{
 				var tNormal = new Transform( tr.GameObject.WorldPosition, rNormal );
 
-				var vLocal = tNormal.PointToLocal( tPointer.Position ).SnapToGrid( PointerGrid );
+				var vLocal = tNormal.PointToLocal( tPointer.Position ).SnapToGrid( PointerSnapGrid );
 				var vWorld = tNormal.PointToWorld( vLocal );
 
 				var trPlane = new Plane( tr.HitPosition, tr.Normal );
@@ -53,7 +53,7 @@ partial class EditorTool
 			tPointer = new( tr.EndPosition );
 
 			if ( IsPointerSnapping )
-				tPointer.Position = tPointer.Position.SnapToGrid( PointerGrid );
+				tPointer.Position = tPointer.Position.SnapToGrid( PointerSnapGrid );
 		}
 
 		return true;

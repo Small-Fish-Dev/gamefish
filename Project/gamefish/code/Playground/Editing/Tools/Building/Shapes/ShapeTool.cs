@@ -86,7 +86,7 @@ public abstract class ShapeTool : EditorTool
 			return false;
 
 		if ( !tr.Hit && IsPointerSnapping )
-			tCursor.Position = tCursor.Position.SnapToGrid( 16f );
+			tCursor.Position = tCursor.Position.SnapToGrid( PointerSnapGrid );
 
 		return true;
 	}
