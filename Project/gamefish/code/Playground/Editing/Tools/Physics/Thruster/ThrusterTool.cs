@@ -1,6 +1,6 @@
 namespace Playground;
 
-public partial class ThrusterTool : EditorTool
+public partial class ThrusterTool : JointTool
 {
 	[Property]
 	[Title( "Thruster" )]
@@ -16,105 +16,65 @@ public partial class ThrusterTool : EditorTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual ThrusterSettings ThrusterSettings { get; set; }
 
-	public Rigidbody Target { get; set; }
-
-	public Vector3 HitPosition { get; set; }
-	public Vector3 HitNormal { get; set; }
-
-	public override void OnExit()
+	public override bool ValidTarget( Client cl, in SceneTraceResult tr )
 	{
-		base.OnExit();
-
-		Target = null;
+		return base.ValidTarget( cl, tr );
 	}
 
-	public override bool TryLeftClick()
+	protected override bool TryAddPoint( in DeviceAttachPoint point )
 	{
-		if ( TryAttachThruster( Target, HitPosition, HitNormal ) )
-			if ( AttachingSound.IsValid() )
-				Sound.Play( AttachingSound, HitPosition );
+		if ( !point.Object.IsValid() )
+			return false;
+
+		if ( point.Offset is not Offset offset )
+			return false;
+
+		return TryAttachThruster( point.Object, offset );
+	}
+
+	protected override bool TryGetAttachPoint( GameObject obj, Component target, in SceneTraceResult tr, out DeviceAttachPoint point )
+	{
+		if ( !base.TryGetAttachPoint( obj, target, tr, out point ) )
+			return false;
+
+		if ( point.Offset is not Offset offset )
+			return false;
+
+		point.Offset = offset with { Rotation = offset.Rotation * Rotation.FromYaw( 180f ) };
 
 		return true;
 	}
 
-	public override void FrameSimulate( in float deltaTime )
+	protected virtual bool TryAttachThruster( GameObject objTarget, Offset offset )
 	{
-		Target = null;
-
-		if ( !IsClientAllowed( Client.Local ) )
-			return;
-
-		if ( !TryTrace( out var tr ) )
-			return;
-
-		if ( !tr.Hit || !tr.GameObject.IsValid() )
-			return;
-
-		// Clear Thrusters
-		if ( PressedReload )
-			TryClearThrusters( tr.GameObject );
-
-		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
-
-		if ( !tr.GameObject.Components.TryGet<Rigidbody>( out var rb, findMode ) )
-			return;
-
-		Target = rb;
-
-		HitPosition = tr.HitPosition;
-		HitNormal = tr.Normal;
-
-		// Placement Preview
-		if ( CanTarget( Client.Local, rb, HitPosition, HitNormal ) )
-			DrawThrusterGizmo( HitPosition, HitNormal );
-	}
-
-	protected virtual void DrawThrusterGizmo( in Vector3 hitPos, in Vector3 hitNormal )
-	{
-		var c = Color.Orange.WithAlpha( 0.3f );
-
-		this.DrawArrow(
-			from: hitPos + (hitNormal * 64f),
-			to: hitPos,
-			c: c, len: 8f, w: 3f,
-			tWorld: global::Transform.Zero
-		);
-	}
-
-	protected virtual bool TryAttachThruster( Rigidbody rb, in Vector3 hitPos, in Vector3 hitNormal )
-	{
-		if ( !rb.IsValid() )
-			return false;
-
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
 
-		if ( !CanTarget( Client.Local, rb, in hitPos, in hitNormal ) )
+		if ( !objTarget.IsValid() )
 			return false;
 
-		var rAim = Rotation.LookAt( -hitNormal );
-		var tWorld = new Transform( hitPos, rAim );
+		var tWorld = objTarget.WorldTransform.ToLocal( offset );
 
-		if ( !TrySpawnObject( ThrusterPrefab, tWorld: tWorld, out var e ) )
+		if ( !TrySpawnObject( ThrusterPrefab, tWorld: tWorld, out var e, withIsland: false ) )
 			return false;
 
-		var obj = e.GameObject;
-		obj.NetworkInterpolation = false;
+		var eObj = e.GameObject;
+		eObj.NetworkInterpolation = false;
 
-		if ( !obj.Components.TryGet<Thruster>( out var thruster ) )
+		if ( !eObj.Components.TryGet<Thruster>( out var thruster ) )
 		{
-			this.Warn( $"No {typeof( Thruster )} on obj:[{obj}]!" );
-			obj.Destroy();
+			this.Warn( $"No {typeof( Thruster )} on obj:[{eObj}]!" );
+			eObj.Destroy();
 			return false;
 		}
 
 		thruster.Settings = ThrusterSettings;
-		thruster.Offset = rb.WorldTransform.ToLocal( tWorld );
+		thruster.Offset = offset;
 
-		if ( !thruster.TryAttachTo( rb, thruster.Offset ) )
+		if ( !thruster.TryAttachTo( objTarget, thruster.Offset ) )
 		{
-			this.Warn( $"Couldn't attach thruster:[{thruster}] to rb:{rb}!" );
-			obj.Destroy();
+			this.Warn( $"Couldn't attach thruster:[{thruster}] to obj:{objTarget}!" );
+			eObj.Destroy();
 			return false;
 		}
 
@@ -131,23 +91,12 @@ public partial class ThrusterTool : EditorTool
 		if ( !thrusters.Any( th => th.IsValid() ) )
 			return false;
 
-		RpcRemoveThrusters( obj );
+		RpcRemoveJoints( obj );
 		return true;
 	}
 
-	public virtual bool CanTarget( Client cl, Rigidbody rb, in Vector3 hitPos, in Vector3 hitNormal )
-	{
-		if ( !rb.IsValid() )
-			return false;
-
-		if ( Pawn.TryGet( rb.GameObject, out _ ) )
-			return false;
-
-		return ITransform.IsValid( in hitPos ) && ITransform.IsValid( in hitNormal );
-	}
-
 	[Rpc.Host]
-	protected void RpcRemoveThrusters( GameObject obj )
+	protected override void RpcRemoveJoints( GameObject obj )
 	{
 		if ( !obj.IsValid() || !TryUse( Rpc.Caller, out _ ) )
 			return;
@@ -162,4 +111,12 @@ public partial class ThrusterTool : EditorTool
 		foreach ( var th in thrusters.ToArray() )
 			th.Destroy();
 	}
+
+	public override bool TryClear( GameObject obj )
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override bool TryAttach( in DeviceAttachPoint point1, in DeviceAttachPoint point2 )
+		=> false;
 }

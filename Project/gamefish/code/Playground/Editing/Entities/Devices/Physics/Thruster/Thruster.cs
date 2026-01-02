@@ -5,11 +5,6 @@ namespace Playground;
 [Icon( "rocket_launch" )]
 public partial class Thruster : Device
 {
-	[Property, JsonIgnore, ReadOnly]
-	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Rigidbody Rigidbody => _rb.GetCached( GameObject, FindMode.InAncestors );
-	protected Rigidbody _rb;
-
 	[Sync]
 	[Property, InlineEditor]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
@@ -31,7 +26,7 @@ public partial class Thruster : Device
 
 		// Snap to the offset without lag if we're the owner.
 		if ( Rigidbody.IsValid() && !Rigidbody.IsProxy )
-			TryAttachTo( Rigidbody, Offset );
+			TryAttachTo( Rigidbody.GameObject, Offset );
 	}
 
 	protected override void OnUpdate()
@@ -120,14 +115,14 @@ public partial class Thruster : Device
 	}
 
 
-	public virtual bool TryAttachTo( Rigidbody rb, in Offset offs )
+	public virtual bool TryAttachTo( GameObject obj, in Offset offs )
 	{
-		if ( !rb.IsValid() || !rb.GameObject.IsValid() )
+		if ( !obj.IsValid() )
 			return false;
 
-		WorldTransform = rb.WorldTransform.WithOffset( offs );
+		WorldTransform = obj.WorldTransform.WithOffset( offs );
 
-		GameObject.SetParent( rb.GameObject, keepWorldPosition: true );
+		GameObject.SetParent( obj, keepWorldPosition: true );
 
 		Transform.ClearInterpolation();
 

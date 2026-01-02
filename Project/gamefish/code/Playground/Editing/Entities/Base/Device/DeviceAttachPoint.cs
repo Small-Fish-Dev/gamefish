@@ -3,7 +3,7 @@ namespace Playground;
 public partial struct DeviceAttachPoint : IValid
 {
 	public readonly bool IsValid => Object.IsValid()
-		&& Position.HasValue && HitNormal.HasValue
+		&& Position.HasValue
 		&& Offset.HasValue;
 
 	public GameObject Object { get; set; }
@@ -57,18 +57,15 @@ public partial struct DeviceAttachPoint : IValid
 		}
 	}
 
-	public DeviceAttachPoint( GameObject obj, Collider c, in Vector3 hitNormal, in Offset offset )
+	public DeviceAttachPoint( GameObject obj, in Offset offset )
 	{
 		Object = obj;
-		Collider = c;
-
 		Offset = offset;
-		HitNormal = hitNormal;
 
 		if ( Object.IsValid() )
 		{
 			var tWorld = Object.WorldTransform;
-			Position = tWorld.WithOffset( offset ).Position;
+			Position = tWorld.PointToLocal( offset.Position );
 		}
 	}
 }

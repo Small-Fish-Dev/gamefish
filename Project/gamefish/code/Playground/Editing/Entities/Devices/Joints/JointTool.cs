@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace Playground;
 
@@ -22,6 +23,10 @@ public abstract class JointTool : EditorTool
 	[Feature( EDITOR ), Group( SOUNDS ), Order( SOUNDS_ORDER )]
 	public virtual SoundEvent AttachmentSound { get; set; }
 
+	[InlineEditor]
+	[Property, JsonIgnore, ReadOnly]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( EDITOR ), Group( DEBUG )]
 	public DeviceAttachPoint PointTarget { get; set; }
 
 	public DeviceAttachPoint Point1 { get; set; }
@@ -47,6 +52,12 @@ public abstract class JointTool : EditorTool
 		PointTarget = default;
 	}
 
+	protected override void OnPrimary( in SceneTraceResult tr )
+	{
+		base.OnPrimary( tr );
+
+		TryAddPointAtTarget();
+	}
 
 	protected override void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
 	{
@@ -64,16 +75,12 @@ public abstract class JointTool : EditorTool
 			return false;
 		}
 
-		point = new( tr, tPointer );
+		var tObj = obj.WorldTransform;
+		var tOffset = tObj.ToLocal( tPointer );
 
-		return PointTarget.IsValid;
-	}
+		point = new( obj, tOffset );
 
-	protected override void OnPrimary( in SceneTraceResult tr )
-	{
-		base.OnPrimary( tr );
-
-		TryAddPointAtTarget();
+		return point.IsValid;
 	}
 
 	protected override void RenderHelpers()
@@ -87,8 +94,6 @@ public abstract class JointTool : EditorTool
 	{
 		RenderJointPoint( Point1 );
 		RenderJointPoint( Point2 );
-
-		RenderJointPoint( PointTarget );
 	}
 
 	protected virtual void RenderJointPoint( in DeviceAttachPoint point )
@@ -113,9 +118,6 @@ public abstract class JointTool : EditorTool
 			tWorld: global::Transform.Zero
 		);
 	}
-
-	public override bool TryLeftClick()
-		=> true;
 
 	public virtual bool TryAddPointAtTarget()
 		=> TryAddPoint( PointTarget );
@@ -170,6 +172,11 @@ public abstract class JointTool : EditorTool
 			return false;
 
 		if ( Pawn.TryGet( tr.GameObject, out _ ) )
+			return false;
+
+		const FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors;
+
+		if ( !tr.GameObject.Components.TryGet<Rigidbody>( out var _, findMode ) )
 			return false;
 
 		return true;

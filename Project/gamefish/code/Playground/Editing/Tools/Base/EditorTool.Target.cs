@@ -49,8 +49,8 @@ partial class EditorTool
 			// Using only the normal vector for rotation is buggy.
 			// This weird nerd shit gets a stable relative up axis.
 			var vNormalUp = tr.Normal.RotateAround( default, Rotation.FromPitch( 90f ) );
-			var rNormalUp = Rotation.LookAt( tObj.Rotation.ClosestAxis( vNormalUp ) );
-			var rNormal = Rotation.LookAt( tr.Normal, rNormalUp.Forward );
+			var rNormalUpClosest = Rotation.LookAt( tObj.Rotation.ClosestAxis( vNormalUp ) );
+			var rNormal = Rotation.LookAt( tr.Normal, rNormalUpClosest.Forward );
 
 			tPointer = new( tr.HitPosition, rNormal );
 
@@ -110,7 +110,7 @@ partial class EditorTool
 	/// <summary>
 	/// Figure out what we're looking at right now.
 	/// </summary>
-	protected virtual void FindTarget( bool clearPrevious = true )
+	protected virtual void UpdateTarget( bool clearPrevious = true )
 	{
 		if ( clearPrevious )
 			ClearTarget();
