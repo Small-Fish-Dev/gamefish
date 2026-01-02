@@ -6,30 +6,8 @@ public partial class PropellerTool : JointTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual PropellerSettings DeviceSettings { get; set; }
 
-	protected bool TryGetTargetWheel( out Propeller w )
-	{
-		w = null;
-
-		if ( !TryTrace( out var tr ) || !tr.Hit )
-			return false;
-
-		if ( !tr.GameObject.IsValid() )
-			return false;
-
-		return tr.GameObject.Components.TryGet<Propeller>( out w );
-	}
-
 	public override bool TryAddPointAtTarget()
 		=> TryAttach( PointTarget );
-
-	protected override DeviceAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
-	{
-		// Pull it out a bit.
-		var vPos = tr.EndPosition;
-		vPos += tr.Normal * 1f;
-
-		return new DeviceAttachPoint( tr, vPos );
-	}
 
 	public override bool TryAttach( in DeviceAttachPoint hitPoint, in DeviceAttachPoint _ )
 		=> false;
@@ -39,9 +17,6 @@ public partial class PropellerTool : JointTool
 
 	protected bool TryAttach( in DeviceAttachPoint hitPoint )
 	{
-		if ( !IsClientAllowed( Client.Local ) )
-			return false;
-
 		if ( !hitPoint.IsValid() || !ValidAttachment( hitPoint ) )
 			return false;
 
@@ -78,11 +53,11 @@ public partial class PropellerTool : JointTool
 		return true;
 	}
 
-	protected override void DrawJointGizmos()
+	protected override void RenderJointHelpers()
 	{
 	}
 
-	protected override void DrawPointGizmo( in DeviceAttachPoint point )
+	protected override void RenderJointPoint( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

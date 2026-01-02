@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Playground;
 
 public abstract class JointTool : EditorTool
@@ -25,37 +27,91 @@ public abstract class JointTool : EditorTool
 	public DeviceAttachPoint Point1 { get; set; }
 	public DeviceAttachPoint Point2 { get; set; }
 
-	protected override void OnUpdate()
+	protected override void Clear()
 	{
-		base.OnUpdate();
+		base.Clear();
 
-		if ( !IsSelected )
-			return;
-
-		DrawJointGizmos();
+		ClearPoints();
 	}
 
-	public override void FrameSimulate( in float deltaTime )
+	protected virtual void ClearPoints()
 	{
-		if ( !IsClientAllowed( Client.Local ) )
-			return;
+		Point1 = default;
+		Point2 = default;
+	}
 
-		if ( !TryTrace( out var tr ) )
-			return;
+	protected override void ClearTarget()
+	{
+		base.ClearTarget();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() )
-			return;
+		PointTarget = default;
+	}
 
-		if ( PressedReload )
+
+	protected override void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
+	{
+		base.SetTarget( obj, target, tr );
+
+		if ( TryGetAttachPoint( obj, target, in tr, out var point ) )
+			PointTarget = point;
+	}
+
+	protected virtual bool TryGetAttachPoint( GameObject obj, Component target, in SceneTraceResult tr, out DeviceAttachPoint point )
+	{
+		if ( !obj.IsValid() || !TryGetPointer( in tr, out var tPointer ) )
 		{
-			if ( !TryClear( tr.GameObject ) )
-				ClearPoints();
+			point = default;
+			return false;
 		}
 
-		PointTarget = GetAttachmentPoint( in tr );
+		point = new( tr, tPointer );
 
-		if ( PressedPrimary )
-			TryAddPointAtTarget();
+		return PointTarget.IsValid;
+	}
+
+	protected override void OnPrimary( in SceneTraceResult tr )
+	{
+		base.OnPrimary( tr );
+
+		TryAddPointAtTarget();
+	}
+
+	protected override void RenderHelpers()
+	{
+		base.RenderHelpers();
+
+		RenderJointHelpers();
+	}
+
+	protected virtual void RenderJointHelpers()
+	{
+		RenderJointPoint( Point1 );
+		RenderJointPoint( Point2 );
+
+		RenderJointPoint( PointTarget );
+	}
+
+	protected virtual void RenderJointPoint( in DeviceAttachPoint point )
+	{
+		if ( !point.Object.IsValid() || !point.Offset.HasValue )
+			return;
+
+		if ( !ValidAttachment( point ) )
+			return;
+
+		var c = Color.Green.WithAlpha( 0.3f );
+
+		var tObj = point.Object.WorldTransform;
+		var tArrow = tObj.ToWorld( point.Offset.Value );
+
+		var dir = point.HitNormal ?? tArrow.Forward;
+
+		this.DrawArrow(
+			from: tArrow.Position,
+			to: tArrow.Position + (dir * 6f),
+			c: c, len: 0.1f, w: 5f, th: 4f,
+			tWorld: global::Transform.Zero
+		);
 	}
 
 	public override bool TryLeftClick()
@@ -83,12 +139,6 @@ public abstract class JointTool : EditorTool
 		Point1 = point;
 
 		return true;
-	}
-
-	protected virtual void ClearPoints()
-	{
-		Point1 = default;
-		Point2 = default;
 	}
 
 	protected abstract void RpcRemoveJoints( GameObject obj );
@@ -188,36 +238,5 @@ public abstract class JointTool : EditorTool
 	public virtual void ApplySettings<TJoint>( TJoint joint )
 		where TJoint : JointEntity
 	{
-	}
-
-	protected virtual void DrawJointGizmos()
-	{
-		DrawPointGizmo( Point1 );
-		DrawPointGizmo( Point2 );
-
-		DrawPointGizmo( PointTarget );
-	}
-
-	protected virtual void DrawPointGizmo( in DeviceAttachPoint point )
-	{
-		if ( !point.Object.IsValid() || !point.Offset.HasValue )
-			return;
-
-		if ( !ValidAttachment( point ) )
-			return;
-
-		var c = Color.Green.WithAlpha( 0.3f );
-
-		var tObj = point.Object.WorldTransform;
-		var tArrow = tObj.ToWorld( point.Offset.Value );
-
-		var dir = point.HitNormal ?? tArrow.Forward;
-
-		this.DrawArrow(
-			from: tArrow.Position,
-			to: tArrow.Position + (dir * 6f),
-			c: c, len: 0.1f, w: 5f, th: 4f,
-			tWorld: global::Transform.Zero
-		);
 	}
 }

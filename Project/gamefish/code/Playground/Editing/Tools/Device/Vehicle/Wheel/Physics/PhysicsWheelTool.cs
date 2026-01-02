@@ -102,11 +102,11 @@ public partial class PhysicsWheelTool : JointTool
 		return true;
 	}
 
-	protected override void DrawJointGizmos()
+	protected override void RenderJointHelpers()
 	{
 	}
 
-	protected override void DrawPointGizmo( in DeviceAttachPoint point )
+	protected override void RenderJointPoint( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

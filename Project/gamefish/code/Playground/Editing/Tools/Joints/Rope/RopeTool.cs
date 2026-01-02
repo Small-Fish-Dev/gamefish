@@ -9,9 +9,9 @@ public partial class RopeTool : JointTool
 	public override bool TryAttach( in DeviceAttachPoint point1, in DeviceAttachPoint point2 )
 		=> TryAttach<RopeJoint>( in point1, in point2 );
 
-	protected override void DrawJointGizmos()
+	protected override void RenderJointHelpers()
 	{
-		base.DrawJointGizmos();
+		base.RenderJointHelpers();
 
 		var a = Point1;
 		var b = PointTarget;
@@ -32,7 +32,7 @@ public partial class RopeTool : JointTool
 		);
 	}
 
-	protected override void DrawPointGizmo( in DeviceAttachPoint point )
+	protected override void RenderJointPoint( in DeviceAttachPoint point )
 	{
 		if ( !point.Object.IsValid() || !point.Offset.HasValue )
 			return;

@@ -68,10 +68,12 @@ public abstract partial class EditorTool : PlaygroundModule
 
 	public virtual void OnEnter()
 	{
-		ClearTarget();
 	}
 
-	public virtual void OnExit() { }
+	public virtual void OnExit()
+	{
+		Clear();
+	}
 
 	public virtual void FrameSimulate( in float deltaTime )
 	{

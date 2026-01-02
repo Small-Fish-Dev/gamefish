@@ -56,4 +56,19 @@ public partial struct DeviceAttachPoint : IValid
 			Position = tr.EndPosition;
 		}
 	}
+
+	public DeviceAttachPoint( GameObject obj, Collider c, in Vector3 hitNormal, in Offset offset )
+	{
+		Object = obj;
+		Collider = c;
+
+		Offset = offset;
+		HitNormal = hitNormal;
+
+		if ( Object.IsValid() )
+		{
+			var tWorld = Object.WorldTransform;
+			Position = tWorld.WithOffset( offset ).Position;
+		}
+	}
 }

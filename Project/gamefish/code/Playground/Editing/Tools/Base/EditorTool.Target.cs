@@ -18,16 +18,43 @@ partial class EditorTool
 	public GameObject TargetObject { get; protected set; }
 	public Component TargetComponent { get; protected set; }
 
+	protected bool IsPointerSnapping => AllowPointerSnapping && HoldingShift;
+	protected virtual bool AllowPointerSnapping => true;
+	protected virtual float PointerGrid => 4f;
+
 	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
-		if ( tr.Hit )
+		if ( tr.Hit && tr.GameObject.IsValid() )
 		{
-			var rNormal = Rotation.LookAt( tr.Normal );
-			tPointer = new( tr.EndPosition, rNormal );
-			return true;
-		}
+			var hitObj = tr.GameObject;
+			var tObj = hitObj.WorldTransform;
 
-		tPointer = new( tr.EndPosition );
+			// Using only the normal vector for rotation is buggy.
+			// This weird nerd shit gets a stable relative up axis.
+			var vNormalPitched = tr.Normal.RotateAround( default, Rotation.FromPitch( 90f ) );
+			var vNormalUp = tObj.Rotation.ClosestAxis( vNormalPitched );
+			var rNormal = Rotation.LookAt( tr.Normal, vNormalUp );
+
+			tPointer = new( tr.HitPosition, rNormal );
+
+			if ( IsPointerSnapping )
+			{
+				var tNormal = new Transform( tr.GameObject.WorldPosition, rNormal );
+
+				var vLocal = tNormal.PointToLocal( tPointer.Position ).SnapToGrid( PointerGrid );
+				var vWorld = tNormal.PointToWorld( vLocal );
+
+				var trPlane = new Plane( tr.HitPosition, tr.Normal );
+				tPointer.Position = trPlane.SnapToPlane( vWorld );
+			}
+		}
+		else
+		{
+			tPointer = new( tr.EndPosition );
+
+			if ( IsPointerSnapping )
+				tPointer.Position = tPointer.Position.SnapToGrid( PointerGrid );
+		}
 
 		return true;
 	}
