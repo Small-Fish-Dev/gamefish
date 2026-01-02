@@ -101,6 +101,9 @@ public abstract class ShapeTool : EditorTool
 
 	public override bool TryMouseWheel( in Vector2 dir )
 	{
+		if ( !Mouse.Active )
+			return false;
+
 		var scroll = dir.y != 0f ? -dir.y : dir.x;
 		scroll *= ScrollSensitivity;
 
@@ -111,10 +114,12 @@ public abstract class ShapeTool : EditorTool
 
 	protected virtual void OnScroll( in float scroll )
 	{
-		if ( !Mouse.Active )
-			return;
+		var scrollScaled = scroll;
 
-		Distance = (Distance + scroll).Clamp( DistanceRange );
+		if ( IsPointerSnapping )
+			scrollScaled = scroll.Sign() * PointerSnapGrid;
+
+		Distance = (Distance + scrollScaled).Clamp( DistanceRange );
 	}
 
 	protected override void OnReload( in SceneTraceResult tr )
