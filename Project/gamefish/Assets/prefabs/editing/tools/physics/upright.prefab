@@ -1,0 +1,84 @@
+{
+  "RootObject": {
+    "__guid": "1bab51ce-6af7-4603-8f7e-e3cb4dc26f5d",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "upright",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 3,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Playground.UprightDevice",
+        "__guid": "0ee2bce4-4bf7-4d99-b375-da4f844d1400",
+        "__enabled": true,
+        "Flags": 0,
+        "ClassId": "upright",
+        "ClassName": null,
+        "DebugDamage": 25,
+        "Direction": 0,
+        "Health": 100,
+        "IsAlive": true,
+        "IsClass": false,
+        "IsDestructible": true,
+        "Island": null,
+        "IsNetworkingForced": true,
+        "MaxHealth": 100,
+        "NetworkAutomatically": true,
+        "NetworkId": "0ee2bce4-4bf7-4d99-b375-da4f844d1400",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "Offset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,0"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Settings": {
+          "Force": 20,
+          "Damping": 1000
+        }
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

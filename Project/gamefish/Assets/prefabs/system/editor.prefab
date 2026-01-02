@@ -630,6 +630,7 @@
                 "__enabled": true,
                 "Flags": 0,
                 "AttachingSound": null,
+                "AttachmentSound": null,
                 "ClassId": null,
                 "ClassName": null,
                 "Filter": null,
@@ -650,6 +651,7 @@
                 "IsAdminOnly": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
+                "JointPrefab": null,
                 "NetworkAutomatically": true,
                 "NetworkId": "4f699cc6-9d66-4be8-9c8e-2e60ee501e39",
                 "NetworkingMode": "Object",
@@ -662,6 +664,7 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
+                "PointSnapping": false,
                 "ThrusterPrefab": "prefabs/editing/tools/physics/thruster.prefab",
                 "ThrusterSettings": {
                   "Force": 1000,
@@ -672,6 +675,50 @@
                 "ToolEmoji": "\uD83D\uDE80",
                 "ToolName": "Thruster",
                 "ToolType": "Physics"
+              },
+              {
+                "__type": "Playground.UprightTool",
+                "__guid": "91ca9194-c84b-4fda-9f31-174062d5f4df",
+                "__enabled": true,
+                "Flags": 0,
+                "AttachingSound": null,
+                "AttachmentSound": null,
+                "ClassId": null,
+                "ClassName": null,
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Attach",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "JointPrefab": "prefabs/editing/tools/physics/upright.prefab",
+                "NetworkAutomatically": true,
+                "NetworkId": "91ca9194-c84b-4fda-9f31-174062d5f4df",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "PointSnapping": false,
+                "ToolDescription": "Tries to keep stuff standing up.",
+                "ToolEmoji": "☝",
+                "ToolName": "Upright",
+                "ToolType": "Physics",
+                "UprightSettings": {
+                  "Force": 500,
+                  "Damping": 10
+                }
               }
             ],
             "Children": []
