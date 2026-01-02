@@ -88,7 +88,6 @@ public partial class SceneSettings : Singleton<SceneSettings>
 	/// </summary>
 	[Property]
 	[Title( "Level" )]
-	[Range( -99999f, 0f, clamped: false )]
 	[ShowIf( nameof( EnableDepth ), true )]
 	[Feature( BOUNDS ), Group( DEPTH ), Order( DEPTH_ORDER )]
 	public virtual float DepthLevel { get; set; } = -9001f;
