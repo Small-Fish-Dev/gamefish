@@ -120,6 +120,17 @@ public abstract partial class EditorTool : PlaygroundModule
 	/// </summary>
 	protected virtual void UpdateActions( in float deltaTime )
 	{
+		// Fuck off?
+		if ( !IsClientAllowed( Client.Local ) )
+		{
+			Clear();
+
+			if ( Editor.TryGetInstance( out var e ) )
+				e.TrySetTool( null );
+
+			return;
+		}
+
 		// Panel sends left/right click events.
 		// TODO: Not this. Something less stupid.
 		if ( !Mouse.Active )
