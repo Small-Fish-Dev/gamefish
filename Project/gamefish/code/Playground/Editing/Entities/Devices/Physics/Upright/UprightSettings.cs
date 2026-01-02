@@ -2,11 +2,11 @@ namespace Playground;
 
 public partial struct UprightSettings
 {
-	[Range( 1f, 50f )]
-	public float Force { get; set; } = 200f;
+	[Range( 1f, 5000f )]
+	public float Force { get; set; } = 5000f;
 
-	[Range( 0f, 99f )]
-	public float Damping { get; set; } = 10f;
+	[Range( 0f, 30f )]
+	public float Damping { get; set; } = 30f;
 
 	// public bool  { get; set; } = 5f;
 

@@ -716,8 +716,8 @@
                 "ToolName": "Upright",
                 "ToolType": "Physics",
                 "UprightSettings": {
-                  "Force": 500,
-                  "Damping": 10
+                  "Force": 5000,
+                  "Damping": 30
                 }
               }
             ],
