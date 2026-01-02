@@ -82,11 +82,11 @@ public abstract class ShapeTool : EditorTool
 
 	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tCursor )
 	{
+		if ( !tr.Hit && !HasOrigin && IsPointerSnapping )
+			tCursor.Position = tr.EndPosition.SnapToGrid( PointerSnapGrid );
+
 		if ( !base.TryGetPointer( in tr, out tCursor ) )
 			return false;
-
-		if ( !tr.Hit && IsPointerSnapping )
-			tCursor.Position = tCursor.Position.SnapToGrid( PointerSnapGrid );
 
 		return true;
 	}

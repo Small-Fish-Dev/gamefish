@@ -99,24 +99,6 @@ public abstract partial class EditorTool : PlaygroundModule
 		ClearOrigin();
 	}
 
-	protected virtual bool TryGetOffsetFromTrace( in SceneTraceResult tr, out Offset offset )
-	{
-		if ( !tr.Hit || !tr.GameObject.IsValid() )
-		{
-			offset = default;
-			return false;
-		}
-
-		var tOrigin = tr.GameObject.WorldTransform;
-
-		var pos = tOrigin.PointToLocal( tr.EndPosition );
-		var r = tOrigin.RotationToLocal( Rotation.LookAt( tr.Normal ) );
-
-		offset = new( pos, r );
-
-		return true;
-	}
-
 	/// <summary>
 	/// Do stuff directly from action buttons being pressed.
 	/// </summary>

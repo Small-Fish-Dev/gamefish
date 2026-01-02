@@ -66,4 +66,19 @@ partial class EditorTool
 		OriginComponent = c;
 		OriginOffset = offset;
 	}
+
+	public virtual bool TryGetOrigin( out Transform tOrigin )
+	{
+		if ( !HasOrigin )
+		{
+			tOrigin = global::Transform.Zero;
+			return false;
+		}
+
+		UpdateOrigin( deltaTime: 0f );
+
+		tOrigin = OriginWorldTransform.WithOffset( OriginOffset );
+
+		return true;
+	}
 }

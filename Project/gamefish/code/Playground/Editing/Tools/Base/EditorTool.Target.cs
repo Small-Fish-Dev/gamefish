@@ -24,9 +24,26 @@ partial class EditorTool
 
 	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
-		if ( tr.Hit && tr.GameObject.IsValid() )
+		var hitObj = tr.GameObject;
+
+		if ( IsPointerSnapping && TryGetOrigin( out var tOrigin ) )
 		{
-			var hitObj = tr.GameObject;
+			var vPointer = tr.Hit ? tr.HitPosition : tr.EndPosition;
+			var vLocal = tOrigin.PointToLocal( vPointer ).SnapToGrid( PointerSnapGrid );
+			var vSnap = tOrigin.PointToWorld( vLocal );
+
+			var vPlaneDir = Rotation.LookAt( tOrigin.Forward, tOrigin.Up )
+				.ClosestAxis( tr.Direction );
+
+			var trPlane = new Plane( vSnap, vPlaneDir );
+			vPointer = trPlane.SnapToPlane( vPointer );
+			vLocal = tOrigin.PointToLocal( vPointer ).SnapToGrid( PointerSnapGrid );
+			vSnap = tOrigin.PointToWorld( vLocal );
+
+			tPointer = new( vSnap, tOrigin.Rotation );
+		}
+		else if ( tr.Hit && hitObj.IsValid() )
+		{
 			var tObj = hitObj.WorldTransform;
 
 			// Using only the normal vector for rotation is buggy.
@@ -39,12 +56,13 @@ partial class EditorTool
 
 			if ( IsPointerSnapping )
 			{
-				var tNormal = new Transform( tr.GameObject.WorldPosition, rNormal );
+				var tSnap = new Transform( hitObj.WorldPosition, rNormal );
 
-				var vLocal = tNormal.PointToLocal( tPointer.Position ).SnapToGrid( PointerSnapGrid );
-				var vWorld = tNormal.PointToWorld( vLocal );
+				var vLocal = tSnap.PointToLocal( tPointer.Position ).SnapToGrid( PointerSnapGrid );
+				var vWorld = tSnap.PointToWorld( vLocal );
 
-				var trPlane = new Plane( tr.HitPosition, tr.Normal );
+				var trPlane = new Plane( tr.HitPosition, tSnap.Forward );
+
 				tPointer.Position = trPlane.SnapToPlane( vWorld );
 			}
 		}
@@ -55,6 +73,24 @@ partial class EditorTool
 			if ( IsPointerSnapping )
 				tPointer.Position = tPointer.Position.SnapToGrid( PointerSnapGrid );
 		}
+
+		return true;
+	}
+
+	protected virtual bool TryGetOffsetFromTrace( in SceneTraceResult tr, out Offset offset )
+	{
+		if ( !tr.Hit || !tr.GameObject.IsValid() )
+		{
+			offset = default;
+			return false;
+		}
+
+		var tOrigin = tr.GameObject.WorldTransform;
+
+		var pos = tOrigin.PointToLocal( tr.EndPosition );
+		var r = tOrigin.RotationToLocal( Rotation.LookAt( tr.Normal ) );
+
+		offset = new( pos, r );
 
 		return true;
 	}
