@@ -44,6 +44,9 @@ partial class Editor
 			newTool.OnEnter();
 	}
 
+	public virtual bool IsToolAllowed( EditorTool tool )
+		=> tool.IsValid() && tool.IsClientAllowed( Client.Local );
+
 	protected virtual void SimulateTool( in float deltaTime, bool isFixedUpdate )
 	{
 		if ( !Tool.IsValid() )
@@ -60,8 +63,10 @@ partial class Editor
 	{
 		// this.Log( "Left clicked." );
 
-		if ( Tool.IsValid() && Tool.TryLeftClick() )
+		if ( !IsToolAllowed( Tool ) )
 			return;
+
+		Tool.TryLeftClick();
 	}
 
 	/// <returns> If the default editor behavior should be prevented. </returns>
@@ -69,8 +74,10 @@ partial class Editor
 	{
 		// this.Log( "Right clicked." );
 
-		if ( Tool.IsValid() && Tool.TryRightClick() )
+		if ( !IsToolAllowed( Tool ) )
 			return;
+
+		Tool.TryRightClick();
 	}
 
 	/// <returns> If the default editor behavior should be prevented. </returns>
@@ -78,8 +85,10 @@ partial class Editor
 	{
 		// this.Log( "Middle clicked." );
 
-		if ( Tool.IsValid() && Tool.TryMiddleClick() )
+		if ( !IsToolAllowed( Tool ) )
 			return;
+
+		Tool.TryMiddleClick();
 	}
 
 	/// <returns> If the default editor behavior should be prevented. </returns>
@@ -87,15 +96,19 @@ partial class Editor
 	{
 		// this.Log( $"Mouse wheel:[{dir}]" );
 
-		if ( Tool.IsValid() && Tool.TryMouseWheel( in dir ) )
+		if ( !IsToolAllowed( Tool ) )
 			return;
+
+		Tool.TryMouseWheel( in dir );
 	}
 
 	public virtual void OnMouseUp( in MouseButtons mb )
 	{
 		// this.Log( $"Mouse up:[{mb}]" );
 
-		if ( Tool.IsValid() )
-			Tool.OnMouseUp( in mb );
+		if ( !IsToolAllowed( Tool ) )
+			return;
+
+		Tool.OnMouseUp( in mb );
 	}
 }
