@@ -615,7 +615,7 @@
                 "OnComponentUpdate": null,
                 "SpinnerPrefab": "prefabs/editing/tools/physics/spinner.prefab",
                 "SpinnerSettings": {
-                  "Speed": 30,
+                  "Speed": 7,
                   "KeyForward": "KP_6",
                   "KeyReverse": "KP_4"
                 },
@@ -716,8 +716,8 @@
                 "ToolName": "Upright",
                 "ToolType": "Physics",
                 "UprightSettings": {
-                  "Force": 5000,
-                  "Damping": 30
+                  "Force": 2000,
+                  "Damping": 12
                 }
               }
             ],
