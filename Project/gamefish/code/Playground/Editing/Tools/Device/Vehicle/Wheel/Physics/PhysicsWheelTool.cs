@@ -24,8 +24,12 @@ public partial class PhysicsWheelTool : JointTool
 			return false;
 		}
 
-		var vNearestUp = tPointer.Rotation.ClosestAxis( Vector3.Up );
-		tPointer.Rotation = Rotation.LookAt( tr.Normal, vNearestUp );
+		if ( tr.GameObject.IsValid() )
+		{
+			var rObj = tr.GameObject.WorldRotation;
+			var vNearestUp = rObj.ClosestAxis( Vector3.Up );
+			tPointer.Rotation = Rotation.LookAt( tr.Normal, vNearestUp );
+		}
 
 		return true;
 	}
