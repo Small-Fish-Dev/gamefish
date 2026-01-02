@@ -21,7 +21,7 @@ public abstract class JointTool : EditorTool
 	[Property]
 	[Title( "Attach" )]
 	[Feature( EDITOR ), Group( SOUNDS ), Order( SOUNDS_ORDER )]
-	public virtual SoundEvent AttachmentSound { get; set; }
+	public SoundEvent AttachmentSound { get; set; }
 
 	[InlineEditor]
 	[Property, JsonIgnore, ReadOnly]
@@ -121,9 +121,6 @@ public abstract class JointTool : EditorTool
 
 	public virtual bool TryAddPointAtTarget()
 		=> TryAddPoint( PointTarget );
-
-	protected virtual DeviceAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
-		=> new( tr );
 
 	protected virtual bool TryAddPoint( in DeviceAttachPoint point )
 	{

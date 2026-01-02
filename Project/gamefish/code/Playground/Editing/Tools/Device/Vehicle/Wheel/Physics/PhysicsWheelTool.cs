@@ -6,28 +6,38 @@ public partial class PhysicsWheelTool : JointTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public virtual PhysicsWheelSettings JointSettings { get; set; }
 
-	public override void FrameSimulate( in float deltaTime )
+	protected override void OnUse( in SceneTraceResult tr )
 	{
-		base.FrameSimulate( deltaTime );
+		TryToggleSteering();
+	}
 
-		if ( PressedUse )
-			TryToggleSteering();
+	protected override void OnReload( in SceneTraceResult tr )
+	{
+		TryToggleReverse();
+	}
 
-		if ( PressedReload )
-			TryToggleReverse();
+	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
+	{
+		if ( !tr.Hit || !base.TryGetPointer( tr, out tPointer ) )
+		{
+			tPointer = default;
+			return false;
+		}
+
+		var vNearestUp = tPointer.Rotation.ClosestAxis( Vector3.Up );
+		tPointer.Rotation = Rotation.LookAt( tr.Normal, vNearestUp );
+
+		return true;
 	}
 
 	protected bool TryGetTargetWheel( out PhysicsWheel w )
 	{
 		w = null;
 
-		if ( !TryTrace( out var tr ) || !tr.Hit )
+		if ( !HasTarget || !TargetTrace.GameObject.IsValid() )
 			return false;
 
-		if ( !tr.GameObject.IsValid() )
-			return false;
-
-		return tr.GameObject.Components.TryGet<PhysicsWheel>( out w );
+		return TargetTrace.GameObject.Components.TryGet( out w );
 	}
 
 	protected void TryToggleSteering()
@@ -45,14 +55,8 @@ public partial class PhysicsWheelTool : JointTool
 	public override bool TryAddPointAtTarget()
 		=> TryAttach( PointTarget );
 
-	protected override DeviceAttachPoint GetAttachmentPoint( in SceneTraceResult tr )
-	{
-		// Pull it out a bit.
-		var vPos = tr.EndPosition;
-		vPos += tr.Normal * 1f;
-
-		return new DeviceAttachPoint( tr, vPos );
-	}
+	protected override bool TryAddPoint( in DeviceAttachPoint point )
+		=> false;
 
 	public override bool TryAttach( in DeviceAttachPoint hitPoint, in DeviceAttachPoint _ )
 		=> false;
@@ -60,15 +64,18 @@ public partial class PhysicsWheelTool : JointTool
 	protected override bool TryAttach<TJoint>( in DeviceAttachPoint hitPoint, in DeviceAttachPoint _ )
 		=> false;
 
-	protected bool TryAttach( in DeviceAttachPoint hitPoint )
+	protected bool TryAttach( DeviceAttachPoint point )
 	{
 		if ( !IsClientAllowed( Client.Local ) )
 			return false;
 
-		if ( !hitPoint.IsValid() || !ValidAttachment( hitPoint ) )
+		if ( !point.IsValid() || !ValidAttachment( point ) )
 			return false;
 
-		var tHit = hitPoint.Object.WorldTransform.WithOffset( hitPoint.Offset.Value );
+		if ( point.Offset is not Offset offset )
+			return false;
+
+		var tHit = point.Object.WorldTransform.WithOffset( offset );
 
 		if ( !TrySpawnObject( JointPrefab, tHit, out var e ) )
 		{
@@ -86,11 +93,11 @@ public partial class PhysicsWheelTool : JointTool
 			return false;
 		}
 
-		joint.ParentPoint = hitPoint;
+		joint.ParentPoint = point;
 
 		joint.TrySetNetworkOwner( Connection.Local, allowProxy: true );
 
-		if ( !joint.TryAttachTo( hitPoint ) )
+		if ( !joint.TryAttachTo( point ) )
 		{
 			this.Warn( $"Couldn't attach joint:[{joint}]!" );
 			jointObj.Destroy();
@@ -104,29 +111,6 @@ public partial class PhysicsWheelTool : JointTool
 
 	protected override void RenderJointHelpers()
 	{
-	}
-
-	protected override void RenderJointPoint( in DeviceAttachPoint point )
-	{
-		if ( !point.Object.IsValid() || !point.Offset.HasValue )
-			return;
-
-		if ( !ValidAttachment( point ) )
-			return;
-
-		var c = Color.White.Desaturate( 0.4f ).WithAlpha( 0.3f );
-
-		var tObj = point.Object.WorldTransform;
-		var tArrow = tObj.ToWorld( point.Offset.Value );
-
-		var dir = point.HitNormal ?? tArrow.Forward;
-
-		this.DrawArrow(
-			from: tArrow.Position + (dir * 7f),
-			to: tArrow.Position,
-			c: c, len: 7f, w: 2f, th: 3f,
-			tWorld: global::Transform.Zero
-		);
 	}
 
 	public override void ApplySettings<TJoint>( TJoint joint )
