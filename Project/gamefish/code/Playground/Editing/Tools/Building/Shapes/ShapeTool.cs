@@ -85,7 +85,7 @@ public abstract class ShapeTool : EditorTool
 		if ( !base.TryGetPointer( in tr, out tCursor ) )
 			return false;
 
-		if ( HoldingShift )
+		if ( !tr.Hit && IsPointerSnapping )
 			tCursor.Position = tCursor.Position.SnapToGrid( 16f );
 
 		return true;
@@ -175,7 +175,7 @@ public abstract class ShapeTool : EditorTool
 		}
 
 		var vWorldAxis = Rotation.Identity.ClosestAxis( tr.Direction );
-		SetOrigin( new( tr.EndPosition, Rotation.LookAt( vWorldAxis ) ) );
+		SetOrigin( new( tPointer.Position, Rotation.LookAt( vWorldAxis ) ) );
 	}
 
 	protected virtual bool TryAddWorldPoint( Transform tWorld )
