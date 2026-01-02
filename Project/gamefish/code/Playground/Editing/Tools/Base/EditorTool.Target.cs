@@ -35,8 +35,8 @@ partial class EditorTool
 			var vPlaneDir = Rotation.LookAt( tOrigin.Forward, tOrigin.Up )
 				.ClosestAxis( tr.Direction );
 
-			var trPlane = new Plane( vSnap, vPlaneDir );
-			vPointer = trPlane.SnapToPlane( vPointer );
+			var oPlane = new Plane( vSnap, vPlaneDir );
+			vPointer = oPlane.SnapToPlane( vPointer );
 			vLocal = tOrigin.PointToLocal( vPointer ).SnapToGrid( PointerSnapGrid );
 			vSnap = tOrigin.PointToWorld( vLocal );
 
@@ -48,9 +48,9 @@ partial class EditorTool
 
 			// Using only the normal vector for rotation is buggy.
 			// This weird nerd shit gets a stable relative up axis.
-			var vNormalPitched = tr.Normal.RotateAround( default, Rotation.FromPitch( 90f ) );
-			var vNormalUp = tObj.Rotation.ClosestAxis( vNormalPitched );
-			var rNormal = Rotation.LookAt( tr.Normal, vNormalUp );
+			var vNormalUp = tr.Normal.RotateAround( default, Rotation.FromPitch( 90f ) );
+			var rNormalUp = Rotation.LookAt( tObj.Rotation.ClosestAxis( vNormalUp ) );
+			var rNormal = Rotation.LookAt( tr.Normal, rNormalUp.Forward );
 
 			tPointer = new( tr.HitPosition, rNormal );
 
