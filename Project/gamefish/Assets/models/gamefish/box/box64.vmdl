@@ -11,14 +11,14 @@
 				[
 					{
 						_class = "RenderPrimitiveBox"
-						name = "bricked_up"
+						name = "box"
 						parent_bone = ""
 						material_name = "materials/dev/primary_white.vmat"
-						origin = [ 8.0, 8.0, 8.0 ]
+						origin = [ 0.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
 						max_u = 1.0
 						max_v = 1.0
-						dimensions = [ 16.0, 16.0, 16.0 ]
+						dimensions = [ 64.0, 64.0, 64.0 ]
 						segments_x = 1
 						segments_y = 1
 						segments_z = 1
@@ -33,11 +33,11 @@
 					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
-						surface_prop = "plastic.sheet"
-						collision_tags = "solid brick"
-						origin = [ 8.0, 8.0, 8.0 ]
+						surface_prop = "default"
+						collision_tags = "solid"
+						origin = [ 0.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 16.0, 16.0, 16.0 ]
+						dimensions = [ 64.0, 64.0, 64.0 ]
 					},
 				]
 			},
