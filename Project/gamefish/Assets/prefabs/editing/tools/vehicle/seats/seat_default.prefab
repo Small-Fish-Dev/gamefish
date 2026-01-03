@@ -16,7 +16,7 @@
     "OwnerTransfer": 0,
     "Components": [
       {
-        "__type": "Playground.EditorObject",
+        "__type": "Playground.AttachDevice",
         "__guid": "3489377d-d1f0-411a-aabc-7ac322eae5bb",
         "__enabled": true,
         "Flags": 0,
@@ -33,9 +33,9 @@
         "NetworkAutomatically": true,
         "NetworkId": "3489377d-d1f0-411a-aabc-7ac322eae5bb",
         "NetworkingMode": "Object",
-        "NetworkOrphanedMode": "Host",
+        "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
-        "NetworkTransferMode": "Takeover",
+        "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -136,15 +136,15 @@
                 "Tint": "0.10233,0.08805,0.07853,1"
               },
               {
-                "__type": "Sandbox.BoxCollider",
+                "__type": "Sandbox.ModelCollider",
                 "__guid": "651f65b9-f0a2-41a0-b622-95c835232187",
                 "__enabled": true,
                 "Flags": 0,
-                "Center": "0,0,0",
                 "ColliderFlags": 0,
                 "Elasticity": null,
                 "Friction": null,
                 "IsTrigger": false,
+                "Model": "models/dev/box.vmdl",
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
@@ -156,7 +156,6 @@
                 "OnTriggerEnter": null,
                 "OnTriggerExit": null,
                 "RollingResistance": null,
-                "Scale": "50,50,50",
                 "Static": false,
                 "Surface": "physics/surfaces/cloth.surface",
                 "SurfaceVelocity": "0,0,0"
@@ -208,15 +207,15 @@
                 "Tint": "0.10233,0.08805,0.07853,1"
               },
               {
-                "__type": "Sandbox.BoxCollider",
+                "__type": "Sandbox.ModelCollider",
                 "__guid": "2b05966e-a418-4441-8e43-eff57bcee7d6",
                 "__enabled": true,
                 "Flags": 0,
-                "Center": "0,0,0",
                 "ColliderFlags": 0,
                 "Elasticity": null,
                 "Friction": null,
                 "IsTrigger": false,
+                "Model": "models/dev/box.vmdl",
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
@@ -228,7 +227,6 @@
                 "OnTriggerEnter": null,
                 "OnTriggerExit": null,
                 "RollingResistance": null,
-                "Scale": "50,50,50",
                 "Static": false,
                 "Surface": "physics/surfaces/cloth.surface",
                 "SurfaceVelocity": "0,0,0"
