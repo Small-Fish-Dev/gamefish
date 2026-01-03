@@ -13,6 +13,25 @@ partial class Editor
 	public HighlightOutline Outline => _outline ??= _outline.GetCached( GameObject );
 	protected HighlightOutline _outline;
 
+	protected void RenderNearbyHelpers()
+	{
+		if ( !(IsOpen || ShowCursor) )
+			return;
+
+		if ( !Scene.IsValid() || !Scene.Camera.IsValid() )
+			return;
+
+		var origin = Scene.Camera.WorldPosition;
+		var radius = DrawNearbyHelperRadius;
+
+		if ( !ITransform.IsValid( origin ) || !ITransform.IsValid( radius ) )
+			return;
+
+		foreach ( var ent in Scene.GetAll<EditorObject>() )
+			if ( origin.Distance( ent.Center ) < radius )
+				ent.RenderHelpers();
+	}
+
 	protected void UpdateTargetOutline()
 	{
 		if ( !Tool.IsValid() || !Tool.HasTarget )
@@ -43,24 +62,5 @@ partial class Editor
 			.GetAll<Renderer>( FindMode.EnabledInSelfAndDescendants );
 
 		Outline.Targets = [.. renderers];
-	}
-
-	protected void RenderNearbyHelpers()
-	{
-		if ( !IsOpen )
-			return;
-
-		if ( !Scene.IsValid() || !Scene.Camera.IsValid() )
-			return;
-
-		var origin = Scene.Camera.WorldPosition;
-		var radius = DrawNearbyHelperRadius;
-
-		if ( !ITransform.IsValid( origin ) || !ITransform.IsValid( radius ) )
-			return;
-
-		foreach ( var ent in Scene.GetAll<EditorObject>() )
-			if ( origin.Distance( ent.Center ) < radius )
-				ent.RenderHelpers();
 	}
 }
