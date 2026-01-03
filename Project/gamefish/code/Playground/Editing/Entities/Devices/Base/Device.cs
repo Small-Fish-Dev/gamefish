@@ -129,7 +129,7 @@ public abstract partial class Device : EditorObject, IWire
 	}
 
 	[Rpc.Host( NetFlags.Reliable | NetFlags.SendImmediate )]
-	public virtual void RpcRequestWire( Entity to, Vector3 localPos )
+	public void RpcRequestWire( Entity to, Vector3 localPos )
 	{
 		if ( !to.IsValid() )
 			return;

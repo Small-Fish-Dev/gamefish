@@ -1098,49 +1098,6 @@
                 "ToolName": "Seat",
                 "ToolType": "Vehicle",
                 "Yaw": 0
-              },
-              {
-                "__type": "Playground.PrefabTool",
-                "__guid": "81ed0894-3e58-4f0d-908c-58b2f780724c",
-                "__enabled": true,
-                "Flags": 0,
-                "ClassId": null,
-                "ClassName": null,
-                "Distance": 512,
-                "DistanceRange": {
-                  "Min": 16,
-                  "Max": 2048
-                },
-                "Filter": null,
-                "FunctionHints": [
-                  {
-                    "Name": "Spawn",
-                    "Description": null,
-                    "Action": "Attack1",
-                    "Mode": "Pressed"
-                  }
-                ],
-                "IsAdminOnly": false,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "81ed0894-3e58-4f0d-908c-58b2f780724c",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "Host",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "Prefab": "prefabs/editing/tools/prefab/vehicles/ae86.prefab",
-                "ScrollSensitivity": 20,
-                "ToolDescription": "Spawns a car with physics wheels.",
-                "ToolEmoji": "\uD83D\uDE98",
-                "ToolName": "Physics Car",
-                "ToolType": "Vehicle"
               }
             ],
             "Children": [
@@ -1160,6 +1117,49 @@
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
                 "Components": [
+                  {
+                    "__type": "Playground.PrefabTool",
+                    "__guid": "2c6d000a-ddd7-43ea-b0d2-e34527dc3025",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "ClassId": null,
+                    "ClassName": null,
+                    "Distance": 512,
+                    "DistanceRange": {
+                      "Min": 16,
+                      "Max": 2048
+                    },
+                    "Filter": null,
+                    "FunctionHints": [
+                      {
+                        "Name": "Spawn",
+                        "Description": null,
+                        "Action": "Attack1",
+                        "Mode": "Pressed"
+                      }
+                    ],
+                    "IsAdminOnly": false,
+                    "IsClass": false,
+                    "IsNetworkingForced": true,
+                    "NetworkAutomatically": true,
+                    "NetworkId": "2c6d000a-ddd7-43ea-b0d2-e34527dc3025",
+                    "NetworkingMode": "Object",
+                    "NetworkOrphanedMode": "Host",
+                    "NetworkOwner": null,
+                    "NetworkTransferMode": "Fixed",
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Prefab": "prefabs/editing/tools/prefab/vehicles/ae86.prefab",
+                    "ScrollSensitivity": 20,
+                    "ToolDescription": "Spawns a car with physics wheels.",
+                    "ToolEmoji": "\uD83D\uDE98",
+                    "ToolName": "Physics Car",
+                    "ToolType": "Vehicle"
+                  },
                   {
                     "__type": "Playground.PhysicsWheelTool",
                     "__guid": "e54bcbda-292b-4639-8d63-a26e352cf39d",
@@ -1214,7 +1214,7 @@
                     "PointSnapping": false,
                     "ToolDescription": "Places a bouncy, wobbly wheel.",
                     "ToolEmoji": "\uD83C\uDFA1",
-                    "ToolName": "Physics Wheel",
+                    "ToolName": "Wheel (physics)",
                     "ToolType": "Vehicle"
                   },
                   {
