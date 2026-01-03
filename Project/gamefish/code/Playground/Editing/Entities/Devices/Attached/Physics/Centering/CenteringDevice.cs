@@ -27,16 +27,11 @@ public partial class CenteringDevice : AttachedDevice
 
 	protected override void OnDestroy()
 	{
+		if ( Rigidbody.IsValid() )
+			if ( Rigidbody.PhysicsBody.IsValid() )
+				Rigidbody.OverrideMassCenter = false;
+
 		base.OnDestroy();
-
-		if ( !this.InGame() || !GameObject.IsValid() )
-			return;
-
-		var comps = GameObject.Components.GetAll( FindMode.EverythingInSelf )
-			.Where( comp => comp.IsValid() );
-
-		if ( !comps.Any() )
-			GameObject.Destroy();
 	}
 
 	protected virtual void RenderUprightHelper()
