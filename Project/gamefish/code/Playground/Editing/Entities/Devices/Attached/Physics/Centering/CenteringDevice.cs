@@ -49,8 +49,20 @@ public partial class CenteringDevice : AttachedDevice
 			.Desaturate( 0.4f )
 			.WithAlpha( 0.3f );
 
+		/*
+		// This lags a lot??
+
 		this.DrawSphere(
 			r: 7f, center: default,
+			cLines: c, cSolid: c,
+			tWorld: new( WorldPosition )
+		);
+		*/
+
+		var bounds = BBox.FromPositionAndSize( default, 12f );
+
+		this.DrawBox(
+			bounds,
 			cLines: c, cSolid: c,
 			tWorld: new( WorldPosition )
 		);
