@@ -27,6 +27,12 @@ public partial class EditorObject : PhysicsObject
 	[Sync( SyncFlags.FromHost )]
 	public SteamId? Owner { get; protected set; }
 
+	/// <summary>
+	/// Should this use hacks to fix physics bugs once added to an island?
+	/// This unfortunately breaks joints for now, so don't if you can help it.
+	/// </summary>
+	public virtual bool RefreshPhysicsBody => true;
+
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();

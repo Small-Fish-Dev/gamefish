@@ -132,12 +132,6 @@ public partial class BrickTool : ShapeTool
 			return;
 		}
 
-		// if ( HoldingShift )
-		// {
-		// BrickSize += scroll.Round().CeilToInt();
-		// return;
-		// }
-
 		base.OnScroll( scroll );
 	}
 
@@ -201,12 +195,6 @@ public partial class BrickTool : ShapeTool
 		localPos = SnapToBrickGrid( localPos );
 
 		return tBrick.PointToWorld( localPos );
-	}
-
-	protected override bool TryGetOffsetFromTrace( in SceneTraceResult tr, out Offset offset )
-	{
-		offset = default;
-		return false;
 	}
 
 	protected override void SetOrigin( Offset offset, GameObject obj = null, Component c = null )

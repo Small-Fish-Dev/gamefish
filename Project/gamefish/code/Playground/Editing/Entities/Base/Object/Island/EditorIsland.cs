@@ -56,7 +56,8 @@ public partial class EditorIsland : EditorObject
 
 	public virtual void OnObjectAdded( EditorObject ent )
 	{
-		TogglePhysics();
+		if ( ent.IsValid() && ent.RefreshPhysicsBody )
+			TogglePhysics();
 	}
 
 	public virtual void OnObjectDestroyed( EditorObject ent )
