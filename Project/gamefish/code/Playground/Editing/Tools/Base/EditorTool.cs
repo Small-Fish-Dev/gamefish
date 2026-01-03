@@ -22,7 +22,14 @@ public abstract partial class EditorTool : PlaygroundModule
 
 	public Editor Editor => Parent as Editor;
 
-	public static Client Client => Client.Local;
+	public static Client LocalClient => Client.Local;
+	public static Pawn LocalPawn => LocalClient?.Pawn;
+
+	/// <summary>
+	/// The directly upward orientation we should use.
+	/// This is important in case we're on a planet, a wall etc.
+	/// </summary>
+	public static Vector3 LocalUp => LocalPawn.IsValid() ? LocalPawn.WorldRotation.Up : Vector3.Up;
 
 	public bool IsMenuOpen => Editor.IsValid() && Editor.IsOpen;
 	public bool ShowCursor => Editor.IsValid() && Editor.ShowCursor;
