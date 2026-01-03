@@ -43,17 +43,15 @@ public partial class PrefabTool : EditorTool
 	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
 	public BBox InspectorPrefabBounds => PrefabBounds ?? default;
 
+	/// <summary>
+	/// The size of the prefab that will be spawned.
+	/// </summary>
 	public BBox? PrefabBounds { get; protected set; }
 
-	public Transform TargetTransform { get; protected set; }
+	public Transform TargetPrefabTransform { get; protected set; }
 
-	public override void FrameSimulate( in float deltaTime )
-	{
-		UpdateTarget();
-
-		if ( PressedPrimary )
-			TrySpawnAtTarget( out _ );
-	}
+	protected override void OnPrimary( in SceneTraceResult tr )
+		=> TrySpawnAtTarget( out _ );
 
 	public override bool TryMouseWheel( in Vector2 dir )
 	{
@@ -67,6 +65,24 @@ public partial class PrefabTool : EditorTool
 
 	protected virtual void OnScroll( in float scroll )
 		=> Distance = (Distance + scroll).Clamp( DistanceRange );
+
+	protected override void RenderHelpers()
+	{
+		base.RenderHelpers();
+
+		var c1 = Color.Black.WithAlpha( 0.5f );
+		var c2 = Color.White.WithAlpha( 0.04f );
+
+		if ( !HasTarget )
+		{
+			c1 = c1.WithAlphaMultiplied( 0.3f );
+			c2 = c2.WithAlphaMultiplied( 0.3f );
+		}
+
+		var bounds = PrefabBounds.Value;
+
+		this.DrawBox( bounds, c1, c2, tWorld: TargetPrefabTransform );
+	}
 
 	public virtual Rotation GetPrefabRotation()
 	{
@@ -87,20 +103,27 @@ public partial class PrefabTool : EditorTool
 	public override bool TryTrace( out SceneTraceResult tr )
 	{
 		if ( !PrefabBounds.HasValue )
-			return base.TryTrace( out tr );
+		{
+			tr = default;
+			return false;
+		}
 
-		if ( !Editor.TryGetAimRay( Scene, out var ray ) )
-			return base.TryTrace( out tr );
+		return base.TryTrace( out tr );
+	}
+
+	protected override SceneTraceResult RunTrace( in Ray ray )
+	{
+		if ( !PrefabBounds.HasValue )
+			return default;
 
 		var bounds = PrefabBounds.Value;
-		// var extents = bounds.Extents;
 
-		tr = Scene.Trace.Box( bounds, ray, Editor.TRACE_DISTANCE_DEFAULT )
+		var tr = Scene.Trace.Box( bounds, ray, Editor.TRACE_DISTANCE_DEFAULT )
 			.IgnoreGameObjectHierarchy( Client.Local?.Pawn?.GameObject )
 			.Rotated( GetPrefabRotation() )
 			.Run();
 
-		return true;
+		return tr;
 	}
 
 	protected override void UpdateTarget( bool clearPrevious = true )
@@ -112,41 +135,47 @@ public partial class PrefabTool : EditorTool
 		}
 
 		base.UpdateTarget( clearPrevious );
-
-		var c1 = Color.Black.WithAlpha( 0.5f );
-		var c2 = Color.White.WithAlpha( 0.04f );
-
-		if ( !TargetObject.IsValid() )
-		{
-			c1 = c1.WithAlphaMultiplied( 0.3f );
-			c2 = c2.WithAlphaMultiplied( 0.3f );
-		}
-
-		var bounds = PrefabBounds.Value;
-
-		this.DrawBox( bounds, c1, c2, tWorld: TargetTransform );
 	}
 
-	public override bool TrySetTarget( in SceneTraceResult tr, Component target )
+	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
-		if ( !base.TrySetTarget( in tr, target ) )
+		if ( !base.TryGetPointer( tr, out tPointer ) )
 			return false;
 
-		var pointDist = tr.Distance.Min( Distance );
-		var hitPoint = tr.StartPosition + (tr.Direction * pointDist);
+		var up = tPointer.Forward;
+		var fwd = tPointer.Up;
 
-		TargetTransform = new Transform( hitPoint, GetPrefabRotation() );
+		tPointer.Rotation = Rotation.LookAt( fwd, up );
 
 		return true;
 	}
 
-	protected virtual bool TrySpawnAtTarget( out EditorObject e )
+	protected override void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
 	{
+		base.SetTarget( obj, target, in tr );
+
+		if ( !TryGetPointer( in tr, out var tPointer ) )
+		{
+			HasTarget = false;
+			return;
+		}
+
+		TargetPrefabTransform = tPointer;
+	}
+
+	protected virtual bool TrySpawnAtTarget( out EditorObject e, in bool withParent = true )
+	{
+		if ( !HasTarget )
+		{
+			e = null;
+			return false;
+		}
+
 		var parent = Editor.FindIsland( TargetObject );
 
 		if ( parent.IsValid() )
-			return TrySpawnObject( Prefab, TargetTransform, parent, out e );
+			return TrySpawnObject( Prefab, TargetPrefabTransform, parent, out e );
 
-		return TrySpawnObject( Prefab, TargetTransform, out e );
+		return TrySpawnObject( Prefab, TargetPrefabTransform, out e );
 	}
 }

@@ -139,14 +139,14 @@ partial class Editor
 		return true;
 	}
 
-	public static SceneTraceResult Trace( Scene sc, in Vector3 start, in Vector3 dir, in float? dist = null )
+	public static SceneTraceResult Trace( Scene sc, in Ray ray, in float? dist = null )
 	{
 		if ( !sc.IsValid() )
 			return default;
 
-		var to = start + dir * (dist ?? TRACE_DISTANCE_DEFAULT);
+		var to = ray.Project( dist ?? TRACE_DISTANCE_DEFAULT );
 
-		var tr = sc.Trace.Ray( start, to );
+		var tr = sc.Trace.Ray( ray.Position, to );
 
 		var objPawn = Client.Local?.Pawn?.GameObject;
 
@@ -164,7 +164,7 @@ partial class Editor
 			return false;
 		}
 
-		tr = Trace( sc, ray.Position, ray.Forward, dist: dist );
+		tr = Trace( sc, ray, dist: dist );
 
 		return true;
 	}

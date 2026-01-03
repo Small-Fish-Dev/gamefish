@@ -34,15 +34,6 @@ partial class EditorTool
 	[Feature( EDITOR ), Group( INPUT ), Order( INPUT_ORDER )]
 	public List<ToolFunction> FunctionHints { get; set; }
 
-	[Property]
-	[ToolSetting]
-	[Title( "Trace Filter" )]
-	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
-	public TraceFilter Filter { get; set; }
-
-	public virtual bool TryTrace( out SceneTraceResult tr )
-		=> Editor.TryTrace( Scene, out tr );
-
 	/// <returns> If this action/key is being pressed. </returns>
 	protected static bool IsDown( string code, bool isKeyboard )
 	{

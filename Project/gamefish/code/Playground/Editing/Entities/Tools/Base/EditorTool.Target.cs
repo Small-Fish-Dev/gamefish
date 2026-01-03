@@ -2,6 +2,12 @@ namespace Playground;
 
 partial class EditorTool
 {
+	[Property]
+	[ToolSetting]
+	[Title( "Trace Filter" )]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public TraceFilter Filter { get; set; }
+
 	/// <summary>
 	/// Was our target considered valid?
 	/// </summary>
@@ -21,6 +27,37 @@ partial class EditorTool
 	protected bool IsPointerSnapping => AllowPointerSnapping && HoldingShift;
 	protected virtual bool AllowPointerSnapping => true;
 	protected virtual float PointerSnapGrid => Editor?.GridSize ?? 4f;
+
+	/// <summary>
+	/// Runs the primary trace for this tool.
+	/// </summary>
+	protected virtual SceneTraceResult RunTrace( in Ray ray )
+		=> RunDefaultTrace( in ray );
+
+	/// <summary>
+	/// Runs a simple ray trace(the default).
+	/// </summary>
+	protected SceneTraceResult RunDefaultTrace( in Ray ray )
+	{
+		if ( !ITransform.IsValid( ray.Position )
+		  || !ITransform.IsValid( ray.Forward ) )
+			return default;
+
+		return Editor.Trace( Scene, ray );
+	}
+
+	public virtual bool TryTrace( out SceneTraceResult tr )
+	{
+		if ( !Editor.TryGetAimRay( Scene, out var ray ) )
+		{
+			tr = default;
+			return false;
+		}
+
+		tr = RunTrace( ray );
+
+		return true;
+	}
 
 	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
