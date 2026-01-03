@@ -31,5 +31,5 @@ public partial class DeviceTool : PrefabTool
 	}
 
 	protected override SceneTraceResult RunTrace( in Ray ray )
-		=> RunDefaultTrace( in ray );
+		=> RunRayTrace( in ray );
 }

@@ -32,12 +32,12 @@ partial class EditorTool
 	/// Runs the primary trace for this tool.
 	/// </summary>
 	protected virtual SceneTraceResult RunTrace( in Ray ray )
-		=> RunDefaultTrace( in ray );
+		=> RunRayTrace( in ray );
 
 	/// <summary>
-	/// Runs a simple ray trace(the default).
+	/// Runs a simple ray trace.
 	/// </summary>
-	protected SceneTraceResult RunDefaultTrace( in Ray ray )
+	protected SceneTraceResult RunRayTrace( in Ray ray )
 	{
 		if ( !ITransform.IsValid( ray.Position )
 		  || !ITransform.IsValid( ray.Forward ) )

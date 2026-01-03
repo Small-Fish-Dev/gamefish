@@ -70,6 +70,9 @@ public partial class PrefabTool : EditorTool
 	{
 		base.RenderHelpers();
 
+		if ( !PrefabBounds.HasValue )
+			return;
+
 		var c1 = Color.Black.WithAlpha( 0.5f );
 		var c2 = Color.White.WithAlpha( 0.04f );
 
@@ -116,12 +119,16 @@ public partial class PrefabTool : EditorTool
 		if ( !PrefabBounds.HasValue )
 			return default;
 
+		var tr = RunRayTrace( in ray );
+
+		/*
 		var bounds = PrefabBounds.Value;
 
 		var tr = Scene.Trace.Box( bounds, ray, Editor.TRACE_DISTANCE_DEFAULT )
 			.IgnoreGameObjectHierarchy( Client.Local?.Pawn?.GameObject )
 			.Rotated( GetPrefabRotation() )
 			.Run();
+		*/
 
 		return tr;
 	}
@@ -152,13 +159,18 @@ public partial class PrefabTool : EditorTool
 
 	protected override void SetTarget( GameObject obj = null, Component target = null, in SceneTraceResult tr = default )
 	{
-		base.SetTarget( obj, target, in tr );
-
-		if ( !TryGetPointer( in tr, out var tPointer ) )
+		if ( !TryGetPointer( in tr, out var tPointer )
+			|| PrefabBounds is not BBox bounds )
 		{
 			HasTarget = false;
 			return;
 		}
+
+		base.SetTarget( obj, target, in tr );
+
+		// TODO: Trace in various directions to pop it out.
+		var vRaise = tPointer.Up * bounds.Mins.z.Abs();
+		tPointer.Position += vRaise;
 
 		TargetPrefabTransform = tPointer;
 	}
