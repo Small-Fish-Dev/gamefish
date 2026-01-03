@@ -65,7 +65,11 @@ public partial class EditorIsland : EditorObject
 		if ( !this.InGame() || !GameObject.IsValid() )
 			return;
 
-		if ( !FindObjects().Any() )
-			GameObject.Destroy();
+		// my babies
+		var anyReasonsToLive = FindObjects()
+			.Any( e => e.IsValid() && e.IsWorthwhile );
+
+		if ( !anyReasonsToLive )
+			GameObject.Destroy(); // die
 	}
 }

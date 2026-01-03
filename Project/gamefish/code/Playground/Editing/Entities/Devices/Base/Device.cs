@@ -7,6 +7,7 @@ public abstract partial class Device : EditorObject, IWire
 {
 	public const int WIRE_LIMIT = 16;
 
+	public override bool IsWorthwhile => false;
 	public override bool RefreshPhysicsBody => false;
 
 	/// <summary>

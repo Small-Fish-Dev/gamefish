@@ -33,6 +33,12 @@ public partial class EditorObject : PhysicsObject
 	/// </summary>
 	public virtual bool RefreshPhysicsBody => true;
 
+	/// <summary>
+	/// Should the fact this exists as a member prevent the object
+	/// from vanishing when it looks for reasons not to kill itself?
+	/// </summary>
+	public virtual bool IsWorthwhile => true;
+
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
@@ -66,13 +72,13 @@ public partial class EditorObject : PhysicsObject
 		if ( !this.InGame() || !GameObject.IsValid() )
 			return;
 
-		// Auto-cleanup objects that don't have any other entities.
+		// Auto-cleanup islands that don't have any other objects.
 		const FindMode findMode = FindMode.EnabledInSelfAndDescendants;
 
-		var hasEnts = GameObject.Components.GetAll<ModuleEntity>( findMode )
-			.Any( comp => comp.IsValid() );
+		var reasonsToLive = GameObject.Components.GetAll<EditorObject>( findMode )
+			.Any( e => e.IsValid() && e.IsWorthwhile );
 
-		if ( !hasEnts )
+		if ( !reasonsToLive )
 			GameObject.Destroy();
 	}
 
