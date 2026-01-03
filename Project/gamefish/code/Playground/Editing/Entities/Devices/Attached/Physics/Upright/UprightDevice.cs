@@ -5,7 +5,7 @@ using GameFish;
 namespace Playground;
 
 [Icon( "rocket_launch" )]
-public partial class UprightDevice : AttachDevice
+public partial class UprightDevice : AttachedDevice
 {
 	[Sync]
 	[Property, InlineEditor]

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Playground;
 
 [Icon( "rocket_launch" )]
-public partial class Thruster : AttachDevice
+public partial class Thruster : AttachedDevice
 {
 	[Sync]
 	[Property, InlineEditor]

@@ -1,7 +1,7 @@
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public partial class PhysicsWheel : AttachDevice, IPilot
+public partial class PhysicsWheel : AttachedDevice, IPilot
 {
 	[Property]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]

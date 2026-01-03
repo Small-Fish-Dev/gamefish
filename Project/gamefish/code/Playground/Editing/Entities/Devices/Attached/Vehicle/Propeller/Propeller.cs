@@ -4,7 +4,7 @@ using GameFish;
 namespace Playground;
 
 [Icon( "wind_power" )]
-public partial class Propeller : AttachDevice
+public partial class Propeller : AttachedDevice
 {
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]

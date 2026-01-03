@@ -1,5 +1,5 @@
 namespace Playground;
 
-public abstract class PhysicsDevice : AttachDevice
+public abstract class PhysicsDevice : AttachedDevice
 {
 }

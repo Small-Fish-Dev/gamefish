@@ -3,7 +3,7 @@ using Playground.Razor;
 namespace Playground;
 
 [Icon( "precision_manufacturing" )]
-public abstract class JointDevice : AttachDevice
+public abstract class JointDevice : AttachedDevice
 {
 	[Sync]
 	public DeviceAttachPoint LocalPoint { get; set; }

@@ -1,6 +1,6 @@
 namespace Playground;
 
-partial class AttachDevice
+partial class AttachedDevice
 {
 	protected override bool? IsNetworkedOverride => true;
 	protected override bool IsNetworkedAutomatically => true;
