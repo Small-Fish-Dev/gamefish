@@ -4,9 +4,8 @@ namespace GameFish;
 
 partial class DynamicEntity : IPhysics
 {
+	public Rigidbody Rigidbody => _rb ??= _rb.GetCached( GameObject, FindMode.EverythingInSelf | FindMode.InAncestors );
 	protected Rigidbody _rb;
-	public Rigidbody Rigidbody => _rb.IsValid() ? _rb
-		: Components?.Get<Rigidbody>( FindMode.EverythingInSelf | FindMode.InAncestors );
 
 	public PhysicsBody PhysicsBody => Rigidbody?.PhysicsBody;
 	public Vector3 MassCenter => PhysicsBody?.MassCenter ?? WorldPosition;
