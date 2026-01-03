@@ -23,13 +23,13 @@ public partial class EditorIsland : EditorObject
 	{
 		base.OnStart();
 
-		TogglePhysics();
+		RefreshPhysics();
 	}
 
 	/// <summary>
 	/// Dunno why exactly but this fixes shit and is a clean enough hack.
 	/// </summary>
-	public virtual void TogglePhysics()
+	public virtual void RefreshPhysics()
 	{
 		if ( !Rigidbody.IsValid() || !Rigidbody.Enabled )
 			return;
@@ -56,8 +56,8 @@ public partial class EditorIsland : EditorObject
 
 	public virtual void OnObjectAdded( EditorObject ent )
 	{
-		if ( ent.IsValid() && ent.RefreshPhysicsBody )
-			TogglePhysics();
+		if ( ent.IsValid() && ent.RefreshPhysicsUponJoin )
+			RefreshPhysics();
 	}
 
 	public virtual void OnObjectDestroyed( EditorObject ent )

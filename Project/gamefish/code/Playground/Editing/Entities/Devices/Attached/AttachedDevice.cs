@@ -10,5 +10,5 @@ public partial class AttachedDevice : Device
 	protected const int SETTINGS_ORDER = EDITOR_ORDER + 50;
 
 	public override bool IsWorthwhile => false;
-	public override bool RefreshPhysicsBody => false;
+	public override bool RefreshPhysicsUponJoin => false;
 }

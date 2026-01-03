@@ -1,15 +1,8 @@
-using System.Text.Json.Serialization;
-
 namespace Playground;
 
 [Icon( "rocket_launch" )]
 public partial class Spinner : Device
 {
-	[Property, JsonIgnore, ReadOnly]
-	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Rigidbody Rigidbody => _rb.GetCached( GameObject, FindMode.InAncestors );
-	protected Rigidbody _rb;
-
 	/// <summary>
 	/// The local transform of spin origin.
 	/// </summary>
@@ -40,8 +33,6 @@ public partial class Spinner : Device
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
-
-		DrawPhysicsGizmo();
 
 		if ( IsProxy )
 			return;
@@ -82,7 +73,7 @@ public partial class Spinner : Device
 			GameObject.Destroy();
 	}
 
-	protected virtual void DrawPhysicsGizmo()
+	protected override void RenderDeviceHelpers()
 	{
 		var tOrigin = GetPhysicsOrigin( Rigidbody );
 

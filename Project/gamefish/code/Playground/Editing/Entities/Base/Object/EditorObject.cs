@@ -31,7 +31,7 @@ public partial class EditorObject : PhysicsObject
 	/// Should this use hacks to fix physics bugs once added to an island?
 	/// This unfortunately breaks joints for now, so don't if you can help it.
 	/// </summary>
-	public virtual bool RefreshPhysicsBody => true;
+	public virtual bool RefreshPhysicsUponJoin => true;
 
 	/// <summary>
 	/// Should the fact this exists as a member prevent the object
@@ -69,7 +69,7 @@ public partial class EditorObject : PhysicsObject
 	/// </summary>
 	protected virtual void AutoCleanup()
 	{
-		if ( !this.InGame() || !GameObject.IsValid() )
+		if ( !Scene.InGame() || !GameObject.IsValid() )
 			return;
 
 		// Auto-cleanup islands that don't have any other objects.

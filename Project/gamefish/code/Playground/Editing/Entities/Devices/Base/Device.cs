@@ -8,7 +8,7 @@ public abstract partial class Device : EditorObject, IWire
 	public const int WIRE_LIMIT = 16;
 
 	public override bool IsWorthwhile => false;
-	public override bool RefreshPhysicsBody => false;
+	public override bool RefreshPhysicsUponJoin => false;
 
 	/// <summary>
 	/// Wires connecting this to other entities.
@@ -63,6 +63,8 @@ public abstract partial class Device : EditorObject, IWire
 		base.RenderHelpers();
 
 		RenderWires();
+
+		RenderDeviceHelpers();
 	}
 
 	/// <summary>
@@ -89,6 +91,10 @@ public abstract partial class Device : EditorObject, IWire
 				tWorld: global::Transform.Zero
 			);
 		}
+	}
+
+	protected virtual void RenderDeviceHelpers()
+	{
 	}
 
 	public virtual bool CanWire( IWire wire )

@@ -9,14 +9,7 @@ namespace Playground;
 // [Icon( "flip_camera_android" )]
 public partial class CenteringDevice : AttachedDevice
 {
-	public override bool RefreshPhysicsBody => false;
-
-	public override void RenderHelpers()
-	{
-		base.RenderHelpers();
-
-		RenderUprightHelper();
-	}
+	public override bool RefreshPhysicsUponJoin => false;
 
 	protected override void OnFixedUpdate()
 	{
@@ -28,13 +21,12 @@ public partial class CenteringDevice : AttachedDevice
 	protected override void OnDestroy()
 	{
 		if ( Rigidbody.IsValid() )
-			if ( Rigidbody.PhysicsBody.IsValid() )
-				Rigidbody.OverrideMassCenter = false;
+			Rigidbody.OverrideMassCenter = false;
 
 		base.OnDestroy();
 	}
 
-	protected virtual void RenderUprightHelper()
+	protected override void RenderDeviceHelpers()
 	{
 		if ( !Rigidbody.IsValid() )
 			return;

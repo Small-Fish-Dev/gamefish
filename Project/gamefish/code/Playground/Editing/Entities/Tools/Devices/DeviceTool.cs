@@ -13,6 +13,24 @@ public partial class DeviceTool : PrefabTool
 
 	public override float Distance => 4096f;
 
+	protected override void OnObjectSpawned( EditorObject e, EditorIsland parent )
+	{
+		base.OnObjectSpawned( e, parent );
+
+		if ( !parent.IsValid() )
+			return;
+
+		var toDestroy = parent.FindObjects()
+			.Where( d => d is CenteringDevice && d != e );
+
+		if ( !toDestroy.Any() )
+			return;
+
+		// TODO: Have the host do this so it always works.
+		foreach ( var cd in toDestroy.ToArray() )
+			cd.Destroy();
+	}
+
 	protected override bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{
 		if ( !base.TryGetPointer( tr, out tPointer ) )

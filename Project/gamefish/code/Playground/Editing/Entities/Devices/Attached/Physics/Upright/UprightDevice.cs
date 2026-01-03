@@ -24,13 +24,6 @@ public partial class UprightDevice : AttachedDevice
 			TryAttachTo( Rigidbody.GameObject, Offset );
 	}
 
-	public override void RenderHelpers()
-	{
-		base.RenderHelpers();
-
-		RenderUprightHelper();
-	}
-
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
@@ -52,7 +45,7 @@ public partial class UprightDevice : AttachedDevice
 			GameObject.Destroy();
 	}
 
-	protected virtual void RenderUprightHelper()
+	protected override void RenderDeviceHelpers()
 	{
 		var tOrigin = GetPhysicsOrigin( Rigidbody );
 
