@@ -300,10 +300,10 @@
             "CollideOwned": false,
             "Collision": true,
             "CollisionHitTags": "solid",
-            "CollisionIgnoreTags": "pawn",
+            "CollisionIgnoreTags": "pawn,seat",
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
-            "DefaultCollisionRadius": 8,
+            "DefaultCollisionRadius": 10,
             "FirstPersonMode": {
               "_type": "component",
               "component_id": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
@@ -528,7 +528,7 @@
                     "ClassName": null,
                     "DistanceRange": {
                       "Min": 0,
-                      "Max": 300
+                      "Max": 500
                     },
                     "InitialDistance": 0,
                     "IsClass": false,
@@ -545,8 +545,8 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
-                    "ScrollSensitivity": 24,
-                    "ScrollSpeed": 6,
+                    "ScrollSensitivity": 26,
+                    "ScrollSpeed": 4,
                     "ShowViewRenderer": true
                   }
                 ],
@@ -841,19 +841,14 @@
             "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
             "__enabled": true,
             "Flags": 0,
-            "AutoGiveLoadout": true,
+            "AutoGiveLoadout": false,
             "ClassId": null,
             "ClassName": null,
             "DebugLogging": false,
             "InputPrefix": "Slot",
             "IsClass": false,
             "IsNetworkingForced": true,
-            "Loadout": [
-              {
-                "Prefab": "prefabs/equips/fps/magnum.prefab",
-                "Slot": "Primary"
-              }
-            ],
+            "Loadout": [],
             "NetworkAutomatically": true,
             "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
             "NetworkingMode": "Object",
