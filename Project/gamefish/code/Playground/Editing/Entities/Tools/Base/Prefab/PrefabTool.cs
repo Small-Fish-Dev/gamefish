@@ -5,6 +5,14 @@ namespace Playground;
 
 public partial class PrefabTool : EditorTool
 {
+	/// <summary>
+	/// Should the prefab be placed outside of targets?
+	/// </summary>
+	[Property]
+	[ToolSetting]
+	[Feature( EDITOR ), Group( SETTINGS ), Order( SETTINGS_ORDER )]
+	public virtual bool Outset { get; set; } = true;
+
 	[Property]
 	[ToolSetting]
 	[Range( 0f, 4096f )]
@@ -168,9 +176,12 @@ public partial class PrefabTool : EditorTool
 
 		base.SetTarget( obj, target, in tr );
 
-		// TODO: Trace in various directions to pop it out.
-		var vRaise = tPointer.Up * bounds.Mins.z.Abs();
-		tPointer.Position += vRaise;
+		if ( Outset )
+		{
+			// TODO: Trace in various directions to pop it out.
+			var vRaise = tPointer.Up * bounds.Mins.z.Abs();
+			tPointer.Position += vRaise;
+		}
 
 		TargetPrefabTransform = tPointer;
 	}

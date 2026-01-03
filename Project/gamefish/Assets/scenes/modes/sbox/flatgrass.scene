@@ -294,7 +294,7 @@
       "__guid": "457f9da8-6873-4f61-a12c-2273317879f8",
       "__version": 1,
       "Flags": 0,
-      "Name": "Flatgrass",
+      "Name": "Level",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -330,24 +330,6 @@
             "2d0ddc99-76b3-4bc1-881a-109a9bd26b02": "f41c08b4-31c5-4dfa-a2cb-28b6a1e9e2e6",
             "a96e820a-e828-4478-9dea-97964fde0e5d": "a2505e10-48a5-4738-a90f-3bd1a392fe95"
           }
-        },
-        {
-          "__guid": "fef0f4a9-371d-45f9-9592-9423136be9af",
-          "__version": 1,
-          "Flags": 0,
-          "Name": "World Collision",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [],
-          "Children": []
         },
         {
           "__guid": "54747f2c-9b14-4b2d-9d10-5521f3c1e427",

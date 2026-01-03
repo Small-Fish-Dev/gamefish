@@ -1,0 +1,88 @@
+using GameFish;
+
+namespace Playground;
+
+/// <summary>
+/// Overrides the mass center to its position.
+/// </summary>
+[Icon( "filter_tilt_shift" )]
+// [Icon( "flip_camera_android" )]
+public partial class CenteringDevice : AttachedDevice
+{
+	public override bool RefreshPhysicsBody => false;
+
+	public override void RenderHelpers()
+	{
+		base.RenderHelpers();
+
+		RenderUprightHelper();
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		Apply( Time.Delta );
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		if ( !this.InGame() || !GameObject.IsValid() )
+			return;
+
+		var comps = GameObject.Components.GetAll( FindMode.EverythingInSelf )
+			.Where( comp => comp.IsValid() );
+
+		if ( !comps.Any() )
+			GameObject.Destroy();
+	}
+
+	protected virtual void RenderUprightHelper()
+	{
+		if ( !Rigidbody.IsValid() )
+			return;
+
+		var c = Color.Magenta
+			.Darken( 0.3f )
+			.Desaturate( 0.4f )
+			.WithAlpha( 0.3f );
+
+		this.DrawSphere(
+			r: 7f, center: default,
+			cLines: c, cSolid: c,
+			tWorld: new( WorldPosition )
+		);
+	}
+
+	public virtual void Apply( in float deltaTime )
+	{
+		if ( !Rigidbody.IsValid() )
+			return;
+
+		var pb = Rigidbody.PhysicsBody;
+
+		if ( !pb.IsValid() )
+			return;
+
+		var tBody = pb.Transform;
+
+		pb.OverrideMassCenter = true;
+		pb.LocalMassCenter = tBody.PointToLocal( WorldPosition );
+	}
+
+	public virtual bool TryAttachTo( GameObject obj, in Offset offs )
+	{
+		if ( !obj.IsValid() )
+			return false;
+
+		WorldTransform = obj.WorldTransform.WithOffset( offs );
+
+		GameObject.SetParent( obj, keepWorldPosition: true );
+
+		Transform.ClearInterpolation();
+
+		return true;
+	}
+}

@@ -720,6 +720,50 @@
                   "Force": 2000,
                   "Damping": 12
                 }
+              },
+              {
+                "__type": "Playground.PrefabTool",
+                "__guid": "0e8d0d82-9730-45e0-92b9-ba1cfe678881",
+                "__enabled": true,
+                "Flags": 0,
+                "ClassId": null,
+                "ClassName": null,
+                "Distance": 512,
+                "DistanceRange": {
+                  "Min": 16,
+                  "Max": 1024
+                },
+                "Filter": null,
+                "FunctionHints": [
+                  {
+                    "Name": "Attach",
+                    "Description": null,
+                    "Action": "Attack1",
+                    "Mode": "Pressed"
+                  }
+                ],
+                "IsAdminOnly": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "0e8d0d82-9730-45e0-92b9-ba1cfe678881",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "Host",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Outset": false,
+                "Prefab": "prefabs/editing/tools/physics/centering.prefab",
+                "ScrollSensitivity": 20,
+                "ToolDescription": "Overrides an object's center of mass.",
+                "ToolEmoji": "\uD83D\uDCAB",
+                "ToolName": "Centering",
+                "ToolType": "Physics"
               }
             ],
             "Children": []
@@ -1092,6 +1136,7 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
+                "Outset": true,
                 "Prefab": "prefabs/editing/tools/vehicle/seats/seat_default.prefab",
                 "ScrollSensitivity": 5,
                 "ToolDescription": "Lets you sit and control devices.",
@@ -1154,6 +1199,7 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
+                    "Outset": true,
                     "Prefab": "prefabs/editing/tools/prefab/vehicles/ae86.prefab",
                     "ScrollSensitivity": 20,
                     "ToolDescription": "Spawns a car with physics wheels.",
