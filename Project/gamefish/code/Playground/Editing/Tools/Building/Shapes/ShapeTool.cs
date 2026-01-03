@@ -101,7 +101,7 @@ public abstract class ShapeTool : EditorTool
 
 	public override bool TryMouseWheel( in Vector2 dir )
 	{
-		if ( !Mouse.Active )
+		if ( !HasScrollFocus )
 			return false;
 
 		var scroll = dir.y != 0f ? -dir.y : dir.x;
