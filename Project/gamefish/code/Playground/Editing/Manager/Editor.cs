@@ -32,11 +32,13 @@ public partial class Editor : Singleton<Editor>
 
 		UpdateUI();
 
+		UpdateGrid( Time.Delta );
+
 		SimulateTool( Time.Delta, isFixedUpdate: false );
 
 		UpdateTargetOutline();
 
-		DrawNearbyHelpers();
+		RenderNearbyHelpers();
 	}
 
 	protected override void OnFixedUpdate()

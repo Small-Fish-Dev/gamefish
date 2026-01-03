@@ -2,6 +2,9 @@ namespace Playground;
 
 partial class Editor
 {
+	public const float GRID_SIZE_MIN = 0.01f;
+	public const float GRID_SIZE_MAX = 1024;
+
 	[Property]
 	[Title( "Active" )]
 	[Feature( EDITOR ), Group( MODE ), Order( TOOL_ORDER )]

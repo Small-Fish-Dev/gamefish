@@ -20,7 +20,7 @@ partial class EditorTool
 
 	protected bool IsPointerSnapping => AllowPointerSnapping && HoldingShift;
 	protected virtual bool AllowPointerSnapping => true;
-	protected virtual float PointerSnapGrid => 4f;
+	protected virtual float PointerSnapGrid => Editor?.GridSize ?? 4f;
 
 	protected virtual bool TryGetPointer( in SceneTraceResult tr, out Transform tPointer )
 	{

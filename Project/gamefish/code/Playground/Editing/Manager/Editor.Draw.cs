@@ -45,7 +45,7 @@ partial class Editor
 		Outline.Targets = [.. renderers];
 	}
 
-	protected void DrawNearbyHelpers()
+	protected void RenderNearbyHelpers()
 	{
 		if ( !IsOpen )
 			return;
