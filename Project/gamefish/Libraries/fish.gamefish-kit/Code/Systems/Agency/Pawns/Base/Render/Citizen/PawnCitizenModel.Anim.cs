@@ -53,12 +53,13 @@ partial class PawnCitizenModel
 	[Feature( MODEL )]
 	[Property, Group( "Inverse kinematics" ), Title( "Right Foot" )] public GameObject IkRightFoot { get; set; }
 
+
 	protected override void OnUpdate()
 	{
+		base.OnUpdate();
+
 		if ( !SkinRenderer.IsValid() )
 			return;
-
-		UpdateOpacity();
 
 		if ( LookAt.IsValid() && LookAtEnabled )
 		{

@@ -25,7 +25,7 @@ public abstract partial class PawnBody : Module
 		set
 		{
 			_opacity = value.Clamp( 0f, 1f );
-			SetOpacity( _opacity );
+			OnSetOpacity( _opacity );
 		}
 	}
 
@@ -41,9 +41,8 @@ public abstract partial class PawnBody : Module
 	protected virtual Model GetModel() => null;
 	protected virtual void SetModel( Model mdl ) { }
 
-	public virtual void SetOpacity( in float a )
+	protected virtual void OnSetOpacity( in float a )
 	{
-		Opacity = a;
 	}
 
 	protected virtual void UpdateOpacity()
@@ -60,7 +59,7 @@ public abstract partial class PawnBody : Module
 	public virtual void OnViewUpdate( PawnView view )
 	{
 		if ( view.IsValid() )
-			SetOpacity( OpacityFromDistance( view.DistanceFromEye ) );
+			Opacity = OpacityFromDistance( view.DistanceFromEye );
 	}
 
 	// Hardcoded for consistency but you can easily override this.

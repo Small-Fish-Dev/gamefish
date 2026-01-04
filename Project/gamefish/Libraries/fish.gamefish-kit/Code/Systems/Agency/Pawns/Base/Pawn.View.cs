@@ -34,7 +34,7 @@ partial class Pawn
 	[Feature( PAWN ), Group( BODY )]
 	public virtual PawnBody Body
 	{
-		get => _body.GetCached( this );
+		get => _body.IsValid() ? _body : _body = _body.GetCached( this );
 		set => _body = value;
 	}
 

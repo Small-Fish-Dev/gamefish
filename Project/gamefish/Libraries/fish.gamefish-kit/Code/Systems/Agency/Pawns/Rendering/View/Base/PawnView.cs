@@ -80,6 +80,13 @@ public partial class PawnView : Module, ISimulate
 		EnsureValidHierarchy();
 	}
 
+	protected override void OnPreRender()
+	{
+		base.OnPreRender();
+
+		UpdatePawn();
+	}
+
 	public virtual void FrameSimulate( in float deltaTime )
 	{
 		HandleInput();
@@ -87,8 +94,6 @@ public partial class PawnView : Module, ISimulate
 		UpdateTransition( deltaTime );
 
 		UpdateViewMode( deltaTime );
-
-		UpdatePawn();
 	}
 
 	/// <summary>
