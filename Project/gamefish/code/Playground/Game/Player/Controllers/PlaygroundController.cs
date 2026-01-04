@@ -6,7 +6,9 @@ namespace Playground;
 
 public partial class PlaygroundController : ShooterController
 {
-	public const int DEFAULTS_ORDER = 1000;
+	public const int PLAYER_ORDER = DEFAULT_ORDER - 1997;
+
+	public const int DEFAULTS_ORDER = PLAYER_ORDER + 100;
 
 	public const string SLIDING = "🏄 Sliding";
 	public const int SLIDING_ORDER = 4000;

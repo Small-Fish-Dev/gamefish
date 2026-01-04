@@ -194,15 +194,26 @@ public static partial class Strings
 	public const string MOVEMENT = "🏃 Movement";
 	public const string EVASION = "🐱‍👤 Evasion";
 	public const string FLYING = "🦅 Flying";
+	public const string FLIGHT = "🦅 Flight";
 
 	public const string AIM = "👓 Aim";
-	public const string AIMING = AIM + "ing";
+	public const string AIMING = "👓 Aiming";
 	public const string COMBAT = "⚔ Combat";
 
 	public const string SEAT = "💺 Seat";
 	public const string SEATS = "💺 Seats";
 	public const string VEHICLE = "🚙 Vehicle";
 	public const string VEHICLES = "🚙 Vehicles";
+
+	public const string EYE = "👁 Eye";
+	public const string EYES = "👁 Eyes";
+	public const string EYE_POS = "👁 Eye Position";
+	public const string SPRINT = "💨 Sprint";
+	public const string SPRINTING = "💨 Sprinting";
+	public const string DUCK = "🦆 Duck";
+	public const string DUCKING = "🦆 Ducking";
+	public const string JUMP = "🦘 Jump";
+	public const string JUMPING = "🦘 Jumping";
 
 	public const string CONSTRAINT = "🧲 Constraint";
 	public const string CONSTRAINTS = "🧲 Constraints";
@@ -303,28 +314,28 @@ public static partial class Strings
 	public const string RELOADING = "♻ Reloading";
 
 	public const string PROJECTILE = "⚾ Projectile";
-	public const string PROJECTILES = PROJECTILE + "s";
+	public const string PROJECTILES = "⚾ Projectiles";
 	public const string IMPACT = "🎯 Impact";
 	public const string HOMING = "🏹 Homing";
 
 	public const string EXPLOSION = "💥 Explosion";
 	public const string EXPLOSIVE = "💥 Explosive";
 	public const string BULLET = "🚅 Bullet";
-	public const string BULLETS = BULLET + "s";
+	public const string BULLETS = "🚅 Bullets";
 	public const string SPREAD = "🎉 Spread";
 	public const string MELEE = "🥊 Melee";
 	public const string MAGIC = "✨ Magic";
-	public const string MAGICAL = MAGIC + "al";
+	public const string MAGICAL = "✨ Magical";
 	public const string GORE = "🍖 Gore";
 
 	public const string SPAWN = "✨ Spawn";
-	public const string SPAWNS = SPAWN + "s";
-	public const string SPAWNING = SPAWN + "ing";
-	public const string SPAWNER = SPAWN + "er";
-	public const string SPAWNERS = SPAWNER + "s";
+	public const string SPAWNS = "✨ Spawns";
+	public const string SPAWNING = "✨ Spawning";
+	public const string SPAWNER = "✨ Spawner";
+	public const string SPAWNERS = "✨ Spawners";
 	public const string WAVE = "🌊 Wave";
-	public const string WAVES = WAVE + "s";
-	public const string WAVEING = WAVE + "ing";
+	public const string WAVES = "🌊 Waves";
+	public const string WAVING = "🌊 Waving";
 
 	public const string LOCK = "🔒 Lock";
 	public const string LOCKS = "🔒 Locks";
