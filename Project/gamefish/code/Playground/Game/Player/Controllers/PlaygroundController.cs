@@ -31,6 +31,16 @@ public partial class PlaygroundController : ShooterController
 
 	protected SCC _c;
 
+	public override Vector3 Velocity
+	{
+		get => ShrimpleController?.Velocity ?? default;
+		set
+		{
+			if ( ShrimpleController.IsValid() )
+				ShrimpleController.Velocity = value;
+		}
+	}
+
 	[Property]
 	[Feature( PLAYER ), Group( PHYSICS )]
 	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
