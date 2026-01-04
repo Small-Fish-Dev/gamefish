@@ -180,7 +180,7 @@
         },
         "SprintButton": "run",
         "SprintDefault": false,
-        "SprintMultiplier": 1.5
+        "SprintMultiplier": 1.75
       },
       {
         "__type": "ShrimpleCharacterController.ShrimpleCharacterController",
