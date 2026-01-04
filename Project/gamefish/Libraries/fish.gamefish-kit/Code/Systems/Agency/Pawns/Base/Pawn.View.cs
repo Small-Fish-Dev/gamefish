@@ -48,7 +48,7 @@ partial class Pawn
 		get
 		{
 			if ( Controller.IsValid() )
-				return WorldTransform.PointToWorld( Controller.GetLocalEyePosition() );
+				return WorldTransform.PointToWorld( Controller.LocalEyePosition );
 
 			return WorldPosition;
 		}
@@ -67,7 +67,7 @@ partial class Pawn
 		get
 		{
 			if ( Controller.IsValid() )
-				return WorldTransform.RotationToWorld( Controller.GetLocalEyeRotation() );
+				return WorldTransform.RotationToWorld( Controller.LocalEyeRotation );
 
 			return WorldRotation;
 		}

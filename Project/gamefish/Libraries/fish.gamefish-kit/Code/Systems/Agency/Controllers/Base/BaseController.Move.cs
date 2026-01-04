@@ -163,7 +163,7 @@ partial class BaseController
 	/// Creates your default collision trace and sets the start and end points.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public SceneTrace Trace( in Vector3 from, in Vector3 to )
+	public virtual SceneTrace Trace( Vector3 from, Vector3 to )
 		=> Trace().FromTo( from, to );
 
 	/// <summary>

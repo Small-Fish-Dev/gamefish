@@ -52,21 +52,6 @@ public partial class FacepunchController : BaseController
 			PlayerController.EyeAngles = r;
 	}
 
-	public override Rotation GetLocalEyeRotation()
-	{
-		if ( PlayerController.IsValid() )
-			return PlayerController.EyeAngles;
-
-		return base.GetLocalEyeRotation();
-	}
-
-	public override Vector3 GetLocalEyePosition()
-	{
-		if ( PlayerController.IsValid() )
-			return WorldTransform.PointToLocal( PlayerController.EyePosition );
-
-		return base.GetLocalEyePosition();
-	}
 
 	// The engine's controller handles this stuff.
 	public override bool TryMove( in float deltaTime, in bool isFixedUpdate, in Vector3 wishVel = default )

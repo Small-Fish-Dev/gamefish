@@ -69,10 +69,10 @@ partial class BaseController
 	protected Rotation _viewRotation = Rotation.Identity;
 
 	[Sync( SyncFlags.Interpolate )]
-	protected Vector3 LocalEyePosition
+	public Vector3 LocalEyePosition
 	{
 		get => _localEyePos;
-		set
+		protected set
 		{
 			if ( !ITransform.IsValid( in value ) )
 				return;
@@ -85,10 +85,10 @@ partial class BaseController
 	protected Vector3 _localEyePos;
 
 	[Sync( SyncFlags.Interpolate )]
-	protected Rotation LocalEyeRotation
+	public Rotation LocalEyeRotation
 	{
 		get => _localEyeRotation;
-		set
+		protected set
 		{
 			if ( !ITransform.IsValid( in value ) )
 				return;
@@ -104,17 +104,11 @@ partial class BaseController
 		?? WorldTransform.RotationToWorld( LocalEyeRotation ).Forward.Normal;
 
 
-	public virtual Vector3 GetLocalEyePosition()
-		=> LocalEyePosition;
-
 	public virtual void SetLocalEyePosition( Vector3 pos )
 		=> LocalEyePosition = pos;
 
 	protected virtual void OnSetLocalEyePosition( in Vector3 pos ) { }
 
-
-	public virtual Rotation GetLocalEyeRotation()
-		=> LocalEyeRotation;
 
 	public virtual void SetLocalEyeRotation( Rotation value )
 		=> LocalEyeRotation = value;
@@ -127,7 +121,7 @@ partial class BaseController
 	/// </summary>
 	public virtual float EyeHeight
 	{
-		get => GetLocalEyePosition().z;
+		get => LocalEyePosition.z;
 		set => SetLocalEyePosition( LocalEyePosition.WithZ( value ) );
 	}
 
