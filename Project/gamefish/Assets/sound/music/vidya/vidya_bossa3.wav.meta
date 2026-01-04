@@ -1,0 +1,27 @@
+{
+  "loop": true,
+  "start": 0,
+  "end": 0,
+  "rate": 44100,
+  "compress": true,
+  "bitrate": 256,
+  "publish": {
+    "Enabled": true,
+    "ProjectConfig": {
+      "Title": "Vidya Bossa",
+      "Type": "vsnd",
+      "Org": "vidya",
+      "Ident": "music-bossa3",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "sound/music/vidya/vidya_bossa3.wav"
+      }
+    }
+  }
+}

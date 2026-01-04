@@ -1,0 +1,52 @@
+{
+  "UI": false,
+  "Volume": "0.4",
+  "Pitch": "1",
+  "Decibels": 70,
+  "SelectionMode": "RandomExclusive",
+  "Sounds": [
+    "sound/music/vidya/vidya_bossa3.vsnd"
+  ],
+  "Occlusion": true,
+  "AirAbsorption": false,
+  "Transmission": true,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "Distance": 2000,
+  "Falloff": [
+    {
+      "x": 0,
+      "y": 1,
+      "in": 12.000001,
+      "out": -12.000001,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.0398773,
+      "y": 0.60491896,
+      "in": 5.272168,
+      "out": -5.272168,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.21472393,
+      "y": 0.19947231,
+      "in": 0.7170408,
+      "out": -0.7170408,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "in": 0.059701525,
+      "out": -0.059701525,
+      "mode": "Mirrored"
+    }
+  ],
+  "DefaultMixer": {
+    "Name": "unknown",
+    "Id": "00000000-0000-0000-0000-000000000000"
+  },
+  "__references": [],
+  "__version": 1
+}
