@@ -45,7 +45,7 @@ partial class BaseController
 	[Property]
 	[ToggleGroup( nameof( AllowMovement ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
-	public virtual Friction Friction { get; set; }
+	public virtual Friction Friction { get; set; } = new();
 
 	public virtual Vector3 Velocity
 	{
