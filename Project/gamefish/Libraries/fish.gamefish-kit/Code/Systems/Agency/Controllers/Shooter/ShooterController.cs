@@ -61,9 +61,6 @@ public partial class ShooterController : BaseController
 	[ToggleGroup( nameof( AllowSprinting ), Label = SPRINTING )]
 	public virtual bool SprintDefault { get; set; } = false;
 
-	[Sync]
-	public bool IsSprinting { get; set; }
-
 	[Property]
 	[ToggleGroup( nameof( AllowSprinting ) )]
 	[Feature( PAWN ), Order( SPRINT_ORDER )]
@@ -84,9 +81,6 @@ public partial class ShooterController : BaseController
 	[ToggleGroup( nameof( AllowDucking ) )]
 	[Feature( PAWN ), Order( DUCKING_ORDER )]
 	public virtual float MoveSpeedDucked { get; set; } = 120f;
-
-	[Sync]
-	public bool IsDucking { get; set; }
 
 	/// <summary>
 	/// Should the owner be able to jump?
@@ -114,6 +108,12 @@ public partial class ShooterController : BaseController
 	[Title( "Ducked Height" )]
 	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
 	public virtual float EyeHeightDuck { get; set; } = 32f;
+
+	[Sync]
+	public bool IsDucking { get; set; }
+
+	[Sync]
+	public bool IsSprinting { get; set; }
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
