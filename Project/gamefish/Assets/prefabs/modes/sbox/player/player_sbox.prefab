@@ -77,7 +77,7 @@
         }
       },
       {
-        "__type": "Playground.PlaygroundController",
+        "__type": "Playground.FishboxController",
         "__guid": "699b454a-735f-4c86-baba-c1b0878a5d32",
         "__enabled": true,
         "Flags": 0,

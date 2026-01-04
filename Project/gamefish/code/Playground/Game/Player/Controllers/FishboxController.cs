@@ -4,23 +4,24 @@ using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Playground;
 
-public partial class PlaygroundController : ShooterController
+public partial class FishboxController : ShooterController
 {
 	public const int PLAYER_ORDER = DEFAULT_ORDER - 1997;
 
 	public const int DEFAULTS_ORDER = PLAYER_ORDER + 100;
 
 	public const string SLIDING = "🏄 Sliding";
-	public const int SLIDING_ORDER = 4000;
+	public const int SLIDING_ORDER = 5000;
 
-	public const string SURFACE_WATER = "water";
-	public const string TAG_SLIPPERY = "slippery";
+	public const string WALLRUNNING = "🧗 Wall Running";
+	public const int WALLRUNNING_ORDER = 6000;
 
 	/// <summary>
 	/// Small Fish's character controller.
 	/// </summary>
 	[Property]
 	[Feature( PAWN )]
+	[Title( "Controller" )]
 	public SCC ShrimpleController
 	{
 		get => _c.IsValid() ? _c
@@ -55,14 +56,6 @@ public partial class PlaygroundController : ShooterController
 	public float GravitySinking { get; set; } = 2f;
 
 	/// <summary>
-	/// The angle where a surface is a slope(when not sliding).
-	/// </summary>
-	[Property]
-	[Feature( PLAYER ), Group( DEFAULTS ), Order( DEFAULTS_ORDER )]
-	[Range( 0f, 90f, clamped: false ), Step( 1f )]
-	public float SlopeAngle { get; set; } = 35f;
-
-	/// <summary>
 	/// How fast the player moves in the air(capped by movement speed).
 	/// </summary>
 	[Property]
@@ -70,83 +63,9 @@ public partial class PlaygroundController : ShooterController
 	[Range( 0f, 10000f, clamped: false ), Step( 1f )]
 	public float AirAcceleration { get; set; } = 6000f;
 
-	[Property]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	[ToggleGroup( nameof( AllowSliding ), Label = SLIDING )]
-	public bool AllowSliding { get; set; } = true;
-
-	/// <summary>
-	/// Move speed while sliding. Can't accelerate beyond the current velocity.
-	/// </summary>
-	[Property]
-	[Title( "Acceleration (Sliding)" )]
-	[Range( 0f, 2000f, clamped: false )]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideAcceleration { get; set; } = 1200f;
-
-	/// <summary>
-	/// Must be going this speed to start sliding while ducked on the ground.
-	/// </summary>
-	[Property]
-	[Title( "Minimum Speed" )]
-	[Range( 0f, 1000f, clamped: false )]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideMinSpeed { get; set; } = 400f;
-
-	/// <summary>
-	/// Stop an active slide while under this speed.
-	/// </summary>
-	[Property]
-	[Title( "Stop Speed" )]
-	[Range( 0f, 500f, clamped: false )]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideStopSpeed { get; set; } = 200f;
-
-	/// <summary>
-	/// Limit of friction while on a tall slope or slippery surface.
-	/// </summary>
-	[Property]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
-	public float SlippingFriction { get; set; } = 0.15f;
-
-	[Property]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public Curve SlopeSpeed { get; set; } = new( new( 0f, 0f ), new( 1f, 1f ) )
-	{
-		TimeRange = new( 0f, 90f ),
-		ValueRange = new( 0f, 5000f )
-	};
-
-	[Property]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public Curve SlopeFriction { get; set; } = new( new( 0f, 1f ), new( 1f, 0f ) )
-	{
-		TimeRange = new( 0f, 90f ),
-		ValueRange = new( 0f, 900f )
-	};
-
-	[Sync]
-	[Property]
-	[ShowIf( nameof( InGame ), true )]
-	[ToggleGroup( nameof( AllowSliding ) )]
-	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public bool IsSliding { get; set; }
-
 	// Jump while held on the ground but only if pressed while airborne.
 	public override bool ShouldJump => AllowJumping && HasJumpButton && ShrimpleController.IsValid()
 		&& (ShrimpleController.IsOnGround ? Input.Down( JumpButton ) : Input.Pressed( JumpButton ));
-
-	/// <summary>
-	/// Is the player on too steep a slope?
-	/// </summary>
-	[Sync] public bool IsSlipping { get; set; }
 
 	protected override void OnStart()
 	{
