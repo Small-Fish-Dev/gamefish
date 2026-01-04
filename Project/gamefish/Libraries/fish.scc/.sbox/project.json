@@ -1,0 +1,202 @@
+{
+  "AssetBrowser.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\\\\scenes\u0022]",
+    "Timeout": 1758810279,
+    "DeleteAt": 1760541748
+  },
+  "AssetBrowser.HistoryIdx": {
+    "Value": "1",
+    "Timeout": 1758810279,
+    "DeleteAt": 1760541748
+  },
+  "scene.lastopened": {
+    "Value": "[\u0022scenes/walker_example.scene\u0022]",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "SceneView.Viewport0.Settings": {
+    "Value": "{\u0022CameraPosition\u0022:\u0022-42.94617,-111.5065,100.5631\u0022,\u0022CameraRotation\u0022:\u00220.1382213,0.00475462,-0.9898045,0.03404789\u0022,\u0022View\u0022:0,\u0022RenderMode\u0022:0,\u0022WireframeMode\u0022:false,\u0022EnablePostProcessing\u0022:true,\u0022EnablePrefabLighting\u0022:true,\u0022ShowSkyIn2D\u0022:true,\u0022ShowGrid\u0022:true,\u0022GridOpacity\u0022:0.2,\u0022GridAxis\u0022:0,\u0022CameraOrthoHeight\u0022:1000}",
+    "Timeout": 1763047697,
+    "DeleteAt": 0
+  },
+  "Window.SboxSceneEditor.Dock": {
+    "Value": "{\u0022floatingWindows\u0022:[],\u0022mainWrapper\u0022:{\u0022geometry\u0022:\u0022AdnQywADAAAAAAAAAAAAAAAACfcAAAUzAAAAAAAAAAAAAAn3AAAFMwAAAAAAAAAACgAAAAAAAAAAAAAACfcAAAUz\u0022,\u0022splitter\u0022:{\u0022items\u0022:[{\u0022currentIndex\u0022:0,\u0022objects\u0022:[{\u0022data\u0022:null,\u0022managedType\u0022:\u0022SceneTreeWidget\u0022,\u0022name\u0022:\u0022Hierarchy\u0022},{\u0022data\u0022:null,\u0022managedType\u0022:\u0022PanelInspectorWidget\u0022,\u0022name\u0022:\u0022UI Panels\u0022}],\u0022type\u0022:\u0022area\u0022},{\u0022items\u0022:[{\u0022items\u0022:[{\u0022currentIndex\u0022:0,\u0022objects\u0022:[{\u0022data\u0022:null,\u0022managedType\u0022:\u0022SceneDock\u0022,\u0022name\u0022:\u0022SceneDock:scenes/walker_example.scene\u0022}],\u0022type\u0022:\u0022area\u0022},{\u0022currentIndex\u0022:0,\u0022objects\u0022:[{\u0022data\u0022:null,\u0022managedType\u0022:\u0022MainAssetBrowser\u0022,\u0022name\u0022:\u0022Asset Browser\u0022},{\u0022data\u0022:null,\u0022managedType\u0022:\u0022ConsoleWidget\u0022,\u0022name\u0022:\u0022Console\u0022},{\u0022data\u0022:null,\u0022managedType\u0022:\u0022MixerDock\u0022,\u0022name\u0022:\u0022Mixer\u0022},{\u0022data\u0022:null,\u0022managedType\u0022:\u0022LibraryManagerDock\u0022,\u0022name\u0022:\u0022Library Manager\u0022}],\u0022type\u0022:\u0022area\u0022}],\u0022state\u0022:\u0022AAAA/wAAAAEAAAACAAAD0wAAAjMA/////wEAAAACAA==\u0022,\u0022type\u0022:\u0022splitter\u0022},{\u0022currentIndex\u0022:0,\u0022objects\u0022:[{\u0022data\u0022:null,\u0022managedType\u0022:\u0022Inspector\u0022,\u0022name\u0022:\u0022Inspector\u0022}],\u0022type\u0022:\u0022area\u0022}],\u0022state\u0022:\u0022AAAA/wAAAAEAAAACAAAGIgAAAnQA/////wEAAAABAA==\u0022,\u0022type\u0022:\u0022splitter\u0022}],\u0022state\u0022:\u0022AAAA/wAAAAEAAAACAAABmwAACjQA/////wEAAAABAA==\u0022,\u0022type\u0022:\u0022splitter\u0022}},\u0022toolWindowManagerStateFormat\u0022:1}",
+    "Timeout": 1763047687,
+    "DeleteAt": 0
+  },
+  "scenes/walker_example.scene.Viewport0": {
+    "Value": "{\u0022CameraPosition\u0022:\u0022-42.94617,-111.5065,100.5631\u0022,\u0022CameraRotation\u0022:\u00220.1382213,0.00475462,-0.9898045,0.03404789\u0022,\u0022CameraOrthoHeight\u0022:1000}",
+    "Timeout": 1763047697,
+    "DeleteAt": 0
+  },
+  "SceneView.Layout": {
+    "Value": "{\u0022Layout\u0022:0,\u0022SplitterState\u0022:[]}",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  ".Viewport0": {
+    "Value": "{\u0022CameraPosition\u0022:\u0022-131.1955,-17.77211,65.15997\u0022,\u0022CameraRotation\u0022:\u00220.06597762,0.02423562,-0.9363531,0.3439515\u0022,\u0022CameraOrthoHeight\u0022:1000}",
+    "Timeout": 1763047536,
+    "DeleteAt": 0
+  },
+  "gizmo.settings": {
+    "Value": "{\u0022EditMode\u0022:\u0022position\u0022,\u0022Selection\u0022:true,\u0022ViewMode\u0022:\u00223d\u0022,\u0022GizmosEnabled\u0022:true,\u0022GizmoScale\u0022:1,\u0022GridSpacing\u0022:32,\u0022SnapToGrid\u0022:false,\u0022SnapToAngles\u0022:true,\u0022AngleSpacing\u0022:15,\u0022GlobalSpace\u0022:false,\u0022DebugActionGraphs\u0022:false}",
+    "Timeout": 1763047658,
+    "DeleteAt": 0
+  },
+  "expand.26da65fb-5171-4fa6-8d2a-5584aa12b630.MeshComponent": {
+    "Value": "false",
+    "Timeout": 1758669610,
+    "DeleteAt": 1760541748
+  },
+  "AssetLocations.ShowBaseContent": {
+    "Value": "true",
+    "Timeout": 1758810621,
+    "DeleteAt": 1760541748
+  },
+  "expand.f1ffb352-4f52-4dee-adc0-5886258173a5.ModelRenderer": {
+    "Value": "false",
+    "Timeout": 1758640463,
+    "DeleteAt": 1760541748
+  },
+  "expand.f1ffb352-4f52-4dee-adc0-5886258173a5.BoxCollider": {
+    "Value": "false",
+    "Timeout": 1758640463,
+    "DeleteAt": 1760541748
+  },
+  "AssetBrowser.Surface Description.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022c:\\\\program files (x86)\\\\steam\\\\steamapps\\\\common\\\\sbox\\\\addons\\\\base\\\\assets\\\\surfaces\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022]",
+    "Timeout": 1758320638,
+    "DeleteAt": 1760541748
+  },
+  "AssetBrowser.Surface Description.HistoryIdx": {
+    "Value": "2",
+    "Timeout": 1758320638,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\\\\scenes\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\program files (x86)\\\\steam\\\\steamapps\\\\common\\\\sbox\\\\addons\\\\citizen\\\\assets\u0022,\u0022C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\sbox\\\\editor\\\\ActionGraph\u0022,\u0022C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\sbox\\\\editor\\\\ActionGraph\\\\Code\u0022]",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.HistoryIdx": {
+    "Value": "5",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.Material.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\\\\materials\u0022]",
+    "Timeout": 1758640541,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Material.HistoryIdx": {
+    "Value": "3",
+    "Timeout": 1758640541,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Material.ViewMode": {
+    "Value": "0",
+    "Timeout": 1758640525,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Material.ShowJunkFiles": {
+    "Value": "false",
+    "Timeout": 1758640525,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Material.HideNonAssets": {
+    "Value": "false",
+    "Timeout": 1758640525,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Material.ShowRecursiveFiles": {
+    "Value": "false",
+    "Timeout": 1758640525,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022c:\\\\program files (x86)\\\\steam\\\\steamapps\\\\common\\\\sbox\\\\core\\\\materials\\\\default\u0022]",
+    "Timeout": 1758640561,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.HistoryIdx": {
+    "Value": "1",
+    "Timeout": 1758640561,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.ViewMode": {
+    "Value": "3",
+    "Timeout": 1758640573,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.ShowJunkFiles": {
+    "Value": "false",
+    "Timeout": 1758640573,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.HideNonAssets": {
+    "Value": "false",
+    "Timeout": 1758640573,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Image,Sheetfile.ShowRecursiveFiles": {
+    "Value": "false",
+    "Timeout": 1758640573,
+    "DeleteAt": 1760541748
+  },
+  "expand.855144db-c225-4460-a4db-346068ab47e0.PlatformTest": {
+    "Value": "false",
+    "Timeout": 1758640665,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Model.History": {
+    "Value": "[\u0022C:\\\\Users\\\\uberm\\\\Desktop\\\\Projects\\\\shrimple_character_controller\\\\Assets\u0022,\u0022c:\\\\program files (x86)\\\\steam\\\\steamapps\\\\common\\\\sbox\\\\core\\\\models\\\\dev\u0022]",
+    "Timeout": 1758813085,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.Model.HistoryIdx": {
+    "Value": "1",
+    "Timeout": 1758813085,
+    "DeleteAt": 1760541748
+  },
+  "LocalAssetBrowser.ViewMode": {
+    "Value": "2",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.ShowJunkFiles": {
+    "Value": "false",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.HideNonAssets": {
+    "Value": "false",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.ShowRecursiveFiles": {
+    "Value": "false",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.Search": {
+    "Value": "\u0022\u0022",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.ActiveTags": {
+    "Value": "\u0022\u0022",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "LocalAssetBrowser.ExcludedTags": {
+    "Value": "\u0022\u0022",
+    "Timeout": 1763047659,
+    "DeleteAt": 0
+  },
+  "expand.dad296d6-935e-4779-b5ae-67a3a0d28ab6.ShrimpleCharacterController": {
+    "Value": "false",
+    "Timeout": 1763047537,
+    "DeleteAt": 0
+  }
+}
