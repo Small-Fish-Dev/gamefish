@@ -31,9 +31,9 @@
         "ClassName": null,
         "Controller": {
           "_type": "component",
-          "component_id": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
+          "component_id": "699b454a-735f-4c86-baba-c1b0878a5d32",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "FacepunchController"
+          "component_type": "PlaygroundController"
         },
         "DebugDamage": 25,
         "DebugLogging": false,
@@ -77,26 +77,40 @@
         }
       },
       {
-        "__type": "GameFish.FacepunchController",
-        "__guid": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
+        "__type": "Playground.PlaygroundController",
+        "__guid": "699b454a-735f-4c86-baba-c1b0878a5d32",
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
+        "AirAcceleration": 6000,
         "AllowAiming": true,
+        "AllowDucking": true,
+        "AllowJumping": true,
         "AllowMovement": true,
-        "ClassId": "player_fps",
+        "AllowSliding": true,
+        "AllowSprinting": true,
+        "ClassId": "player_sbox",
         "ClassName": null,
+        "DuckButton": "duck",
+        "EyeHeightDuck": 32,
+        "EyeHeightStand": 64,
         "EyeMoveSmoothing": 0.15,
         "EyeMoveSpeed": 1,
         "Friction": {
-          "Value": 0,
-          "StopSpeed": 0
+          "Value": 5,
+          "StopSpeed": 80
         },
+        "GravityFloating": 0.5,
+        "GravitySinking": 2,
         "IsClass": false,
         "IsNetworkingForced": false,
+        "IsSliding": false,
+        "JumpButton": "jump",
+        "JumpSpeed": 400,
         "MoveSpeed": 250,
+        "MoveSpeedDucked": 120,
         "NetworkAutomatically": true,
-        "NetworkId": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
+        "NetworkId": "699b454a-735f-4c86-baba-c1b0878a5d32",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
@@ -112,164 +126,171 @@
           "Min": -89.9,
           "Max": 89.9
         },
-        "PlayerController": {
+        "ShrimpleController": {
           "_type": "component",
-          "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",
+          "component_id": "3653909d-831f-462c-bd83-8318ab2d1a0a",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "PlayerController"
+          "component_type": "ShrimpleCharacterController"
         },
-        "SkinWidth": 0.2
+        "SkinWidth": 0.2,
+        "SlideMinSpeed": 400,
+        "SlideMoveSpeed": 700,
+        "SlideStopSpeed": 50,
+        "SlippingFriction": 0.15,
+        "SlopeAngle": 35,
+        "SlopeFriction": {
+          "rangex": "0,90",
+          "rangey": "0,350",
+          "frames": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
+        },
+        "SlopeSpeed": {
+          "rangex": "0,90",
+          "rangey": "0,5000",
+          "frames": [
+            {
+              "x": 0,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
+        },
+        "SprintButton": "run",
+        "SprintDefault": false,
+        "SprintMultiplier": 1.5
       },
       {
-        "__type": "Sandbox.PlayerController",
-        "__guid": "edc765a1-6ab4-4b78-a07d-58125b29947f",
+        "__type": "ShrimpleCharacterController.ShrimpleCharacterController",
+        "__guid": "3653909d-831f-462c-bd83-8318ab2d1a0a",
         "__enabled": true,
         "Flags": 0,
-        "AccelerationTime": 0,
-        "AimStrengthBody": 1,
-        "AimStrengthEyes": 1,
-        "AimStrengthHead": 1,
-        "AirFriction": 0.1,
-        "AltMoveButton": "run",
-        "Body": {
-          "_type": "component",
-          "component_id": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329",
-          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
-          "component_type": "Rigidbody"
+        "__version": 3,
+        "AccelerationCurve": {
+          "rangex": "0,500",
+          "frames": [
+            {
+              "x": 0,
+              "y": 0.2,
+              "in": 0,
+              "out": 1.5,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
         },
-        "BodyCollisionTags": null,
-        "BodyHeight": 72,
-        "BodyMass": 500,
-        "BodyRadius": 16,
-        "BrakePower": 1,
-        "CameraOffset": "256,0,12",
-        "ColliderObject": {
-          "_type": "gameobject",
-          "go": "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8"
+        "AccelerationEnabled": true,
+        "AirAcceleration": 300,
+        "AirDeceleration": 0,
+        "ApplySurfaceVelocity": true,
+        "Body": null,
+        "BodyMassOverride": 0,
+        "BodyObject": null,
+        "BodyRigidbodyFlags": 0,
+        "BouncingEnabled": false,
+        "Collider": null,
+        "ColliderElasticity": null,
+        "ColliderSurface": null,
+        "DecelerationCurve": {
+          "rangex": "0,500",
+          "frames": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 0,
+              "out": -2.5,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0.2,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
         },
-        "DeaccelerationTime": 0,
-        "DuckedHeight": 36,
-        "DuckedSpeed": 70,
-        "EnableFootstepSounds": true,
-        "EnablePressing": true,
-        "EyeDistanceFromTop": 8,
-        "FootstepMixer": {
-          "Name": "game",
-          "Id": "1a7d8844-f32a-42ab-bb25-ba44b0c78865"
-        },
-        "FootstepVolume": 1,
-        "HideBodyInFirstPerson": true,
-        "JumpSpeed": 300,
-        "LookSensitivity": 1,
+        "ElasticityThreshold": 30,
+        "FixedAcceleration": true,
+        "FixedDeceleration": true,
+        "Gravity": -850,
+        "GravityEnabled": true,
+        "GripFactorReduction": 1,
+        "GroundAcceleration": 1000,
+        "GroundDeceleration": 1500,
+        "GroundStickDistance": 12,
+        "GroundStickEnabled": true,
+        "HidePhysicalComponents": true,
+        "HorizontalElasticity": 0,
+        "IgnoreGroundSurface": false,
+        "IgnoreTags": "",
+        "IgnoreZ": true,
+        "IgnoreZWhenZero": true,
+        "IncludeGroundElasticity": false,
+        "ManuallyUpdate": false,
+        "MaxBounces": 5,
+        "MaxGroundAngle": 60,
+        "MaxUnstuckTries": 40,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "PitchClamp": 90,
-        "ReachLength": 130,
-        "Renderer": {
-          "_type": "component",
-          "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
-          "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
-          "component_type": "SkinnedModelRenderer"
+        "PhysicallySimulated": false,
+        "PseudoStepsEnabled": true,
+        "PushEnabled": false,
+        "PushTagsWeight": {
+          "player": 1
         },
-        "RotateWithGround": false,
-        "RotationAngleLimit": 45,
-        "RotationSpeed": 1,
-        "RunByDefault": false,
-        "RunSpeed": 320,
-        "ShowColliderComponents": true,
-        "ShowRigidbodyComponent": true,
-        "ThirdPerson": false,
-        "ToggleCameraModeButton": "view",
-        "UseAnimatorControls": true,
-        "UseButton": "use",
-        "UseCameraControls": false,
-        "UseFovFromPreferences": true,
-        "UseInputControls": false,
-        "UseLookControls": false,
-        "WalkSpeed": 110
-      },
-      {
-        "__type": "Sandbox.Rigidbody",
-        "__guid": "a0b2aa34-5b07-492c-9275-4dc2e9ff9329",
-        "__enabled": true,
-        "Flags": 0,
-        "AngularDamping": 1,
-        "EnableImpactDamage": false,
-        "EnhancedCcd": false,
-        "Gravity": true,
-        "GravityScale": 1,
-        "ImpactDamage": 0,
-        "LinearDamping": 0.1,
-        "Locking": {
-          "X": false,
-          "Y": false,
-          "Z": false,
-          "Pitch": true,
-          "Yaw": true,
-          "Roll": true
+        "RotateWithGameObject": true,
+        "ScaleAgainstWalls": true,
+        "StepDepth": 2,
+        "StepHeight": 12,
+        "StepsEnabled": true,
+        "StepTolerance": 1,
+        "StickToPlatforms": true,
+        "TraceBounds": {
+          "Mins": "0,0,0",
+          "Maxs": "0,0,0"
         },
-        "MassCenterOverride": "0,0,36",
-        "MassOverride": 500,
-        "MinImpactDamageSpeed": 500,
-        "MotionEnabled": true,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "OverrideMassCenter": true,
-        "RigidbodyFlags": "DisableCollisionSounds",
-        "StartAsleep": false
-      },
-      {
-        "__type": "Sandbox.Movement.MoveModeWalk",
-        "__guid": "7b4174e2-7366-459d-90ab-ad4ba7fb1f07",
-        "__enabled": true,
-        "Flags": 0,
-        "GroundAngle": 45,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "Priority": 0,
-        "StepDownHeight": 18,
-        "StepUpHeight": 18
-      },
-      {
-        "__type": "Sandbox.Movement.MoveModeSwim",
-        "__guid": "423f50c7-f31c-476e-af51-c6378bfba339",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "Priority": 10,
-        "SwimLevel": 0.7
-      },
-      {
-        "__type": "Sandbox.Movement.MoveModeLadder",
-        "__guid": "b2db92f3-8a05-4396-9a94-f0fb59931069",
-        "__enabled": true,
-        "Flags": 0,
-        "ClimbableTags": "ladder",
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "Priority": 5,
-        "Speed": 1
+        "TraceHeight": 72,
+        "TraceShape": "Box",
+        "TraceWidth": 16,
+        "UnstuckEnabled": true,
+        "UseSceneGravity": true,
+        "UseVectorGravity": false,
+        "VectorGravity": "0,0,-850",
+        "VerticalElasticity": 0,
+        "WallTolerance": 1
       }
     ],
     "Children": [
@@ -747,78 +768,6 @@
             "Children": []
           }
         ]
-      },
-      {
-        "__guid": "dd6611a6-d65b-4e4e-8839-ab3e5afae1f8",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "Colliders",
-        "Position": "0,0,0",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "player_collider",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "Sandbox.CapsuleCollider",
-            "__guid": "cdf9082a-6a58-4902-ad04-5706a69ec252",
-            "__enabled": true,
-            "Flags": 0,
-            "ColliderFlags": 0,
-            "Elasticity": null,
-            "End": "0,0,36",
-            "Friction": 0,
-            "IsTrigger": false,
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "OnObjectTriggerEnter": null,
-            "OnObjectTriggerExit": null,
-            "OnTriggerEnter": null,
-            "OnTriggerExit": null,
-            "Radius": 11.313708,
-            "RollingResistance": null,
-            "Start": "0,0,60.68629",
-            "Static": false,
-            "Surface": null,
-            "SurfaceVelocity": "0,0,0"
-          },
-          {
-            "__type": "Sandbox.BoxCollider",
-            "__guid": "ecaf68d2-3205-4636-ac23-a3076c510e85",
-            "__enabled": true,
-            "Flags": 0,
-            "Center": "0,0,18",
-            "ColliderFlags": 0,
-            "Elasticity": null,
-            "Friction": 0,
-            "IsTrigger": false,
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "OnObjectTriggerEnter": null,
-            "OnObjectTriggerExit": null,
-            "OnTriggerEnter": null,
-            "OnTriggerExit": null,
-            "RollingResistance": null,
-            "Scale": "16,16,36",
-            "Static": false,
-            "Surface": null,
-            "SurfaceVelocity": "0,0,0"
-          }
-        ],
-        "Children": []
       },
       {
         "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
