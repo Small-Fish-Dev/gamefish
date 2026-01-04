@@ -80,10 +80,10 @@ public partial class PlaygroundController : ShooterController
 	/// </summary>
 	[Property]
 	[Title( "Acceleration (Sliding)" )]
-	[Range( 0f, 1000f, clamped: false )]
+	[Range( 0f, 2000f, clamped: false )]
 	[ToggleGroup( nameof( AllowSliding ) )]
 	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideAcceleration { get; set; } = 600f;
+	public float SlideAcceleration { get; set; } = 1200f;
 
 	/// <summary>
 	/// Must be going this speed to start sliding while ducked on the ground.
@@ -103,7 +103,7 @@ public partial class PlaygroundController : ShooterController
 	[Range( 0f, 500f, clamped: false )]
 	[ToggleGroup( nameof( AllowSliding ) )]
 	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideStopSpeed { get; set; } = 120f;
+	public float SlideStopSpeed { get; set; } = 200f;
 
 	/// <summary>
 	/// Limit of friction while on a tall slope or slippery surface.
@@ -129,7 +129,7 @@ public partial class PlaygroundController : ShooterController
 	public Curve SlopeFriction { get; set; } = new( new( 0f, 1f ), new( 1f, 0f ) )
 	{
 		TimeRange = new( 0f, 90f ),
-		ValueRange = new( 0f, 350f )
+		ValueRange = new( 0f, 900f )
 	};
 
 	[Sync]
@@ -408,7 +408,7 @@ public partial class PlaygroundController : ShooterController
 			}
 			else if ( _c.IsOnGround )
 			{
-				if ( IsDucking && _c.Velocity.Length > SlideMinSpeed )
+				if ( IsDucking && _c.Velocity.Length >= SlideMinSpeed )
 				{
 					// Start a slide with enough ground speed while crouching.
 					IsSliding = true;
@@ -427,32 +427,20 @@ public partial class PlaygroundController : ShooterController
 
 			if ( _c.IsOnGround && _c.GroundNormal != Vector3.Zero )
 			{
+				// Slope Sliding
 				var slideSpeed = SlopeSpeed.Evaluate( slopeAngle );
 				var slideDir = Vector3.VectorPlaneProject( -up, _c.GroundNormal );
 
 				_c.Velocity += slideDir * slideSpeed * deltaTime;
 
-				// Apply friction(mainly for low slopes) if not slipping.
-				var frictionScale = SurfaceFriction;
+				// Slide Movement
+				var maxSlide = _c.Velocity.Length;
+				var slideMove = WishVelocity.ProjectAndScale( _c.GroundNormal );
 
-				if ( IsSlipping )
-					frictionScale = frictionScale.Min( SlippingFriction );
-
-				var slideFriction = SlopeFriction.Evaluate( slopeAngle ) * frictionScale;
-
-				_c.Velocity -= (_c.Velocity.Normal * slideFriction * deltaTime)
-					.ClampLength( _c.Velocity.Length );
-
-				var velLen = _c.Velocity.Length;
-
-				// Stop sliding if going too slow.
-				if ( !IsSlipping && slopeAngle <= SlopeAngle )
-					if ( velLen <= SlideStopSpeed )
-						goto NotSliding;
-
-				// Slower slide movement.
-				var slideMove = WishVelocity.ProjectAndScale( _c.GroundNormal ) * deltaTime;
-				var maxSlide = velLen;
+				// Mitigate sliding in circles.
+				var slideDot = slideMove.Normal.Dot( _c.Velocity.Normal ).Abs();
+				slideDot = slideDot.Remap( 0f, 0.5f, 0.6f, 1f ); // a bit over 45 degrees
+				slideMove *= slideDot;
 
 				if ( slopeAngle < SlopeAngle )
 				{
@@ -463,8 +451,26 @@ public partial class PlaygroundController : ShooterController
 					maxSlide = maxSlide.Max( slopeMoveSpeed );
 				}
 
-				_c.Velocity = (_c.Velocity + slideMove)
+				_c.Velocity = (_c.Velocity + (slideMove * deltaTime))
 					.ClampLength( maxSlide );
+
+				// Slope Friction
+				var frictionScale = SurfaceFriction;
+
+				if ( IsSlipping )
+					frictionScale = frictionScale.Min( SlippingFriction );
+
+				var slideFriction = SlopeFriction.Evaluate( slopeAngle ) * frictionScale;
+
+				var finalSpeed = _c.Velocity.Length;
+				finalSpeed -= (slideFriction * deltaTime).Positive();
+
+				_c.Velocity = _c.Velocity.Normal * finalSpeed.Positive();
+
+				// Stop sliding if going too slow.
+				if ( !IsSlipping && slopeAngle <= SlopeAngle )
+					if ( _c.Velocity.Length <= SlideStopSpeed )
+						goto NotSliding;
 			}
 
 			return;

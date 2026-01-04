@@ -133,20 +133,34 @@
           "component_type": "ShrimpleCharacterController"
         },
         "SkinWidth": 0.2,
-        "SlideAcceleration": 600,
+        "SlideAcceleration": 1500,
         "SlideMinSpeed": 400,
-        "SlideStopSpeed": 150,
+        "SlideStopSpeed": 250,
         "SlippingFriction": 0.15,
         "SlopeAngle": 35,
         "SlopeFriction": {
           "rangex": "0,90",
-          "rangey": "0,350",
+          "rangey": "0,1000",
           "frames": [
             {
               "x": 0,
               "y": 1,
               "in": 0,
               "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 0.11111112,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 0.5555556,
+              "y": 0.39999995,
+              "in": 1.584,
+              "out": -1.584,
               "mode": "Mirrored"
             },
             {
