@@ -81,8 +81,8 @@
         "__guid": "699b454a-735f-4c86-baba-c1b0878a5d32",
         "__enabled": true,
         "Flags": 0,
-        "Acceleration": 10,
-        "AirAcceleration": 6000,
+        "Acceleration": 15,
+        "AirAcceleration": 3000,
         "AllowAiming": true,
         "AllowDucking": true,
         "AllowJumping": true,
@@ -279,8 +279,8 @@
         "StepTolerance": 1,
         "StickToPlatforms": true,
         "TraceBounds": {
-          "Mins": "0,0,0",
-          "Maxs": "0,0,0"
+          "Mins": "-8,-8,-36",
+          "Maxs": "8,8,36"
         },
         "TraceHeight": 72,
         "TraceShape": "Box",

@@ -91,7 +91,7 @@ public partial class PlaygroundController : ShooterController
 	[Range( 0f, 500f, clamped: false )]
 	[ToggleGroup( nameof( AllowSliding ) )]
 	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideStopSpeed { get; set; } = 50f;
+	public float SlideStopSpeed { get; set; } = 100f;
 
 	/// <summary>
 	/// Limit of friction while on a tall slope or slippery surface.
@@ -182,7 +182,7 @@ public partial class PlaygroundController : ShooterController
 			DoGravity( in deltaTime );
 
 			DoAirMovement( in deltaTime );
-			DoStrafing( in deltaTime );
+			// DoStrafing( in deltaTime );
 		}
 
 		PostMove( in deltaTime );
@@ -235,13 +235,16 @@ public partial class PlaygroundController : ShooterController
 
 	protected virtual void DoAirMovement( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() || _c.IsOnGround )
+		if ( !ShrimpleController.IsValid() )
+			return;
+
+		if ( _c.IsOnGround )
 			return;
 
 		_c.AirAcceleration = 0f;
 		_c.AirDeceleration = 0f;
 
-		var wishDir = GetWishDirection();
+		var wishDir = WishVelocity.Normal;
 
 		if ( wishDir.AlmostEqual( 0f ) )
 			return;
@@ -270,7 +273,7 @@ public partial class PlaygroundController : ShooterController
 		if ( _c.IsOnGround && !IsSliding )
 			return;
 
-		var wishDir = GetWishDirection();
+		var wishDir = WishVelocity.Normal;
 
 		if ( wishDir.AlmostEqual( 0f ) )
 			return;
@@ -464,7 +467,7 @@ public partial class PlaygroundController : ShooterController
 		_c.StickToPlatforms = true;
 		_c.GroundStickEnabled = true;
 
-		_c.GroundAcceleration = MoveSpeed * 10f;
-		_c.GroundDeceleration = Friction.Value * 500f;
+		_c.GroundAcceleration = Acceleration * 420f;
+		_c.GroundDeceleration = Friction.Value * 420f;
 	}
 }

@@ -33,7 +33,7 @@ public partial class ShooterController : BaseController
 	public virtual string SprintButton { get; set; } = "run";
 	public virtual bool HasSprintButton => !string.IsNullOrWhiteSpace( SprintButton );
 
-	public virtual bool ShouldSprint => AllowSprinting && HasSprintButton
+	protected virtual bool ShouldSprint => AllowSprinting && HasSprintButton
 		&& (Input.Down( SprintButton ) == !SprintDefault);
 
 	[Sync]
