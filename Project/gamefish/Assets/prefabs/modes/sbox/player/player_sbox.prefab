@@ -106,7 +106,7 @@
         "IsNetworkingForced": false,
         "IsSliding": false,
         "JumpButton": "jump",
-        "JumpSpeed": 400,
+        "JumpSpeed": 420,
         "MoveSpeed": 250,
         "MoveSpeedDucked": 120,
         "NetworkAutomatically": true,
@@ -133,9 +133,9 @@
           "component_type": "ShrimpleCharacterController"
         },
         "SkinWidth": 0.2,
+        "SlideAcceleration": 600,
         "SlideMinSpeed": 400,
-        "SlideMoveSpeed": 700,
-        "SlideStopSpeed": 50,
+        "SlideStopSpeed": 150,
         "SlippingFriction": 0.15,
         "SlopeAngle": 35,
         "SlopeFriction": {
@@ -180,7 +180,7 @@
         },
         "SprintButton": "run",
         "SprintDefault": false,
-        "SprintMultiplier": 1.75
+        "SprintMultiplier": 1.7
       },
       {
         "__type": "ShrimpleCharacterController.ShrimpleCharacterController",

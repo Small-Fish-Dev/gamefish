@@ -66,14 +66,14 @@ public partial class PlaygroundController : ShooterController
 	public bool AllowSliding { get; set; } = true;
 
 	/// <summary>
-	/// Movement speed while sliding. Can't accelerate beyond the current velocity.
+	/// Move speed while sliding. Can't accelerate beyond the current velocity.
 	/// </summary>
 	[Property]
-	[Title( "Move Speed (Sliding)" )]
+	[Title( "Acceleration (Sliding)" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[ToggleGroup( nameof( AllowSliding ) )]
 	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideMoveSpeed { get; set; } = 700f;
+	public float SlideAcceleration { get; set; } = 600f;
 
 	/// <summary>
 	/// Must be going this speed to start sliding while ducked on the ground.
@@ -93,7 +93,7 @@ public partial class PlaygroundController : ShooterController
 	[Range( 0f, 500f, clamped: false )]
 	[ToggleGroup( nameof( AllowSliding ) )]
 	[Feature( PLAYER ), Order( SLIDING_ORDER )]
-	public float SlideStopSpeed { get; set; } = 100f;
+	public float SlideStopSpeed { get; set; } = 120f;
 
 	/// <summary>
 	/// Limit of friction while on a tall slope or slippery surface.
@@ -213,7 +213,7 @@ public partial class PlaygroundController : ShooterController
 	public override float GetWishSpeed()
 	{
 		if ( IsSliding )
-			return SlideMoveSpeed;
+			return SlideAcceleration;
 
 		var speed = base.GetWishSpeed();
 
@@ -447,7 +447,7 @@ public partial class PlaygroundController : ShooterController
 				if ( slopeAngle < SlopeAngle )
 				{
 					// Don't move faster than we can walk while slipping.
-					var slopeMoveSpeed = (SlideMoveSpeed * slopeAngle.Remap( SlopeAngle, 0f ))
+					var slopeMoveSpeed = (SlideAcceleration * slopeAngle.Remap( SlopeAngle, 0f ))
 						.Min( MoveSpeed );
 
 					maxSlide = maxSlide.Max( slopeMoveSpeed );
