@@ -45,11 +45,27 @@ partial class FishboxController
 
 	public override SceneTrace Trace( Vector3 from, Vector3 to )
 	{
-		var vCenter = Up * LocalEyePosition.z * 0.5f;
+		var vCenter = GetCenterOffset();
 
 		from += vCenter;
 		to += vCenter;
 
 		return base.Trace( from, to );
+	}
+
+	protected virtual Vector3 GetCenterOffset()
+	{
+		return Up * LocalEyePosition.z * 0.5f;
+	}
+
+	public virtual bool TryUnstuck( out Vector3 result )
+	{
+		if ( !ShrimpleController.IsValid() )
+		{
+			result = default;
+			return false;
+		}
+
+		return _c.TryUnstuck( WorldPosition + GetCenterOffset(), out result );
 	}
 }

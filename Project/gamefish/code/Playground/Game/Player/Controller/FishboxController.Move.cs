@@ -99,9 +99,10 @@ partial class FishboxController
 		if ( !ShrimpleController.IsValid() )
 			return;
 
-		var result = _c.Move( deltaTime, manualUpdate: false );
+		_c.Move( deltaTime, manualUpdate: false );
 
-		// _c.WorldPosition = result.Position;
+		if ( _c.IsStuck && TryUnstuck( out var result ) )
+			WorldPosition = result;
 	}
 
 	public override float GetWishSpeed()

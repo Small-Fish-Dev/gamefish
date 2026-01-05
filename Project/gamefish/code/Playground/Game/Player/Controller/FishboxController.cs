@@ -23,6 +23,10 @@ public partial class FishboxController : ShooterController
 	protected bool HoldingJump => Input.Down( JumpButton );
 	protected bool PressedJump => Input.Pressed( JumpButton );
 
+	[Property]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public HullCollider Cylinder { get; set; }
+
 	protected override void OnStart()
 	{
 		base.OnStart();
@@ -66,7 +70,7 @@ public partial class FishboxController : ShooterController
 
 	public override Vector3 GetLocalEyeTargetPosition()
 	{
-		var target = base.GetLocalEyeTargetPosition(); ;
+		var target = base.GetLocalEyeTargetPosition();
 
 		if ( IsSliding )
 			target *= .75f;
@@ -74,5 +78,27 @@ public partial class FishboxController : ShooterController
 			target += WallRunNormal * 8f;
 
 		return target;
+	}
+
+	protected virtual void UpdateCollision()
+	{
+		var vCenter = GetCenterOffset();
+		var height = (vCenter.z * 2f) - float.Epsilon;
+
+		if ( Cylinder.IsValid() )
+		{
+			Cylinder.LocalPosition = vCenter;
+			Cylinder.Height = height;
+		}
+
+		if ( ShrimpleController.IsValid() )
+			_c.TraceHeight = height;
+	}
+
+	protected override void OnSetLocalEyePosition( in Vector3 pos )
+	{
+		base.OnSetLocalEyePosition( pos );
+
+		UpdateCollision();
 	}
 }

@@ -92,6 +92,12 @@
         "AllowWallRunning": true,
         "ClassId": "player_sbox",
         "ClassName": null,
+        "Cylinder": {
+          "_type": "component",
+          "component_id": "7017452f-aa63-4a19-b2e8-fe2900ce1cdb",
+          "go": "ab1c453b-c49b-4391-b35a-6dd13d354419",
+          "component_type": "HullCollider"
+        },
         "DuckButton": "duck",
         "EyeHeightDuck": 32,
         "EyeHeightStand": 64,
@@ -275,14 +281,14 @@
         "GroundDeceleration": 1500,
         "GroundStickDistance": 12,
         "GroundStickEnabled": true,
-        "HidePhysicalComponents": true,
+        "HidePhysicalComponents": false,
         "HorizontalElasticity": 0,
         "IgnoreGroundSurface": false,
         "IgnoreTags": "",
         "IgnoreZ": true,
         "IgnoreZWhenZero": true,
         "IncludeGroundElasticity": false,
-        "ManuallyUpdate": false,
+        "ManuallyUpdate": true,
         "MaxBounces": 5,
         "MaxGroundAngle": 60,
         "MaxUnstuckTries": 40,
@@ -317,7 +323,7 @@
         "UseVectorGravity": false,
         "VectorGravity": "0,0,-850",
         "VerticalElasticity": 0,
-        "WallTolerance": 1
+        "WallTolerance": 3
       }
     ],
     "Children": [
@@ -822,6 +828,57 @@
             "SlotCount": 10,
             "StrictSlots": false,
             "UniqueEquips": false
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "ab1c453b-c49b-4391-b35a-6dd13d354419",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Collider",
+        "Position": "0,0,32",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.HullCollider",
+            "__guid": "7017452f-aa63-4a19-b2e8-fe2900ce1cdb",
+            "__enabled": true,
+            "Flags": 0,
+            "BoxSize": "50,50,50",
+            "Center": "0,0,0",
+            "ColliderFlags": 0,
+            "Elasticity": null,
+            "Friction": null,
+            "Height": 64,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "Points": [],
+            "Radius": 8,
+            "Radius2": 0,
+            "RollingResistance": null,
+            "Slices": 16,
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0",
+            "Type": "Cylinder"
           }
         ],
         "Children": []
