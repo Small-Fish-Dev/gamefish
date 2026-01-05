@@ -82,7 +82,7 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 15,
-        "AirAcceleration": 2000,
+        "AirAcceleration": 2500,
         "AllowAiming": true,
         "AllowDucking": true,
         "AllowJumping": true,
@@ -209,7 +209,7 @@
         "SprintButton": "run",
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
-        "WallRunJumpSpeed": "600,300",
+        "WallRunJumpSpeed": "700,280",
         "WallRunPitchRange": {
           "Min": 70,
           "Max": 110
