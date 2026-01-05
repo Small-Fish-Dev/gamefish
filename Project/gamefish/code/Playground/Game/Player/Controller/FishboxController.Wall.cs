@@ -140,16 +140,15 @@ partial class FishboxController
 
 		const float minDot = 0.35f;
 
-		var hJumpDirDot = hJumpDir.Dot( WallRunNormal );
+		hVel += hJumpDir.Normal * JumpSpeed;
 
-		if ( hJumpDirDot < minDot )
+		var hVelDot = hVel.Normal.Dot( WallRunNormal );
+
+		if ( hVelDot < minDot )
 		{
-			var dotDelta = (minDot - hJumpDirDot).Clamp( 0f, minDot );
-			hJumpDir = hJumpDir.LerpTo( WallRunNormal, dotDelta );
+			hVel = Vector3.VectorPlaneProject( hVel, WallRunNormal );
+			hVel = hVel.Normal.LerpTo( WallRunNormal, minDot ) * hVel.Length;
 		}
-
-		var hVelLimit = hVel.Length.Max( JumpSpeed );
-		hVel = hJumpDir * (hVel.Length + JumpSpeed).Clamp( 0f, hVelLimit );
 
 		_c.Velocity = upVel + hVel;
 
