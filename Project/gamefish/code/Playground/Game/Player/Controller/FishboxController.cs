@@ -65,7 +65,6 @@ public partial class FishboxController : ShooterController
 		}
 
 		LocalEyeRotation = Rotation.SmoothDamp( LocalEyeRotation, rEyeDest, ref _rEyeVel, 2f, deltaTime * 4f );
-		// LocalEyeRotation.SlerpTo( rEyeDest, deltaTime * 1.5f );
 	}
 
 	public override Vector3 GetLocalEyeTargetPosition()
@@ -73,7 +72,7 @@ public partial class FishboxController : ShooterController
 		var target = base.GetLocalEyeTargetPosition();
 
 		if ( IsSliding )
-			target *= .75f;
+			target *= .7f;
 		else if ( IsWallRunning )
 			target += WallRunNormal * 8f;
 

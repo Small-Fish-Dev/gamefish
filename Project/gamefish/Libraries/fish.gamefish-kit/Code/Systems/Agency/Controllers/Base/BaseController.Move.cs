@@ -126,7 +126,7 @@ partial class BaseController
 	}
 
 	/// <summary>
-	/// Prepares your main movement logic for execution.
+	/// Prepares the main movement logic for execution.
 	/// A good place to apply your friction and wish velocity.
 	/// </summary>
 	protected virtual void PreMove( in float deltaTime )
@@ -145,7 +145,7 @@ partial class BaseController
 	}
 
 	/// <summary>
-	/// This is where your solid object filters and such go.
+	/// This is where solid object filters and such go.
 	/// </summary>
 	/// <returns> The basis of every collison trace. </returns>
 	public virtual SceneTrace Trace()
@@ -160,18 +160,18 @@ partial class BaseController
 	}
 
 	/// <summary>
-	/// Creates your default collision trace and sets the start and end points.
+	/// Creates the default collision trace and sets the start and end points.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace Trace( Vector3 from, Vector3 to )
-		=> Trace().FromTo( from, to );
+	public virtual SceneTrace Trace( Vector3 from, Vector3 to, in Vector3 offset = default )
+		=> Trace().FromTo( from + offset, to + offset );
 
 	/// <summary>
-	/// Creates your default collision trace sets the end point from our starting position.
+	/// Creates the default collision trace and sets the end point relative to our starting position.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace TraceDelta( Vector3 vectorFromOrigin )
-		=> Trace( WorldPosition, WorldPosition + vectorFromOrigin );
+	public virtual SceneTrace TraceDelta( Vector3 vectorFromOrigin, in Vector3 offset = default )
+		=> Trace( WorldPosition, WorldPosition + vectorFromOrigin, offset );
 
 	/// <summary>
 	/// Reduces velocity over time.

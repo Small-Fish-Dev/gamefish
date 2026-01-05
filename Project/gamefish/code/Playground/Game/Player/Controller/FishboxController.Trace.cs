@@ -10,6 +10,8 @@ partial class FishboxController
 	public Surface GroundSurface { get; set; }
 	public float SurfaceFriction { get; set; }
 
+	public virtual Vector3 TraceOffset => GetCenterOffset();
+
 	public virtual void DoGroundTrace()
 	{
 		if ( !ShrimpleController.IsValid() || !_c.IsOnGround )
@@ -18,7 +20,7 @@ partial class FishboxController
 		var startPos = WorldPosition;
 		var down = WorldRotation.Down;
 
-		GroundTrace = Trace( startPos, startPos + down * 2f ).Run();
+		GroundTrace = Trace( startPos, startPos + down * 2f, TraceOffset ).Run();
 		GroundSurface = GroundTrace.Surface;
 		SurfaceFriction = GroundTrace.Surface?.Friction ?? 1f;
 	}
@@ -37,20 +39,9 @@ partial class FishboxController
 			.WithoutTags( _c.IgnoreTags )
 			.Cylinder( height, radius ); // squadala
 
-		// if ( _c.RotateWithGameObject )
 		tr = tr.Rotated( WorldRotation );
 
 		return tr;
-	}
-
-	public override SceneTrace Trace( Vector3 from, Vector3 to )
-	{
-		var vCenter = GetCenterOffset();
-
-		from += vCenter;
-		to += vCenter;
-
-		return base.Trace( from, to );
 	}
 
 	protected virtual Vector3 GetCenterOffset()
