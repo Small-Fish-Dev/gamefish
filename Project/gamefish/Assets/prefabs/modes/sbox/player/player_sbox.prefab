@@ -89,6 +89,7 @@
         "AllowMovement": true,
         "AllowSliding": true,
         "AllowSprinting": true,
+        "AllowWallRunning": true,
         "ClassId": "player_sbox",
         "ClassName": null,
         "DuckButton": "duck",
@@ -194,7 +195,11 @@
         },
         "SprintButton": "run",
         "SprintDefault": false,
-        "SprintMultiplier": 1.7
+        "SprintMultiplier": 1.7,
+        "WallRunPitchRange": {
+          "Min": 55,
+          "Max": 125
+        }
       },
       {
         "__type": "ShrimpleCharacterController.ShrimpleCharacterController",
@@ -293,11 +298,11 @@
         "StepTolerance": 1,
         "StickToPlatforms": true,
         "TraceBounds": {
-          "Mins": "-8,-8,-36",
-          "Maxs": "8,8,36"
+          "Mins": "-8,-8,-32",
+          "Maxs": "8,8,32"
         },
-        "TraceHeight": 72,
-        "TraceShape": "Box",
+        "TraceHeight": 64,
+        "TraceShape": "Cylinder",
         "TraceWidth": 16,
         "UnstuckEnabled": true,
         "UseSceneGravity": true,
