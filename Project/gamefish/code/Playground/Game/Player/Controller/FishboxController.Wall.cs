@@ -193,8 +193,9 @@ partial class FishboxController
 
 			var trMove = Trace( WorldPosition, WorldPosition + traceVector ).Run();
 
-			if ( trMove.Hit && IsValidForWallRunning( trMove ) )
-				StartWallRunning( in trMove );
+			if ( !trMove.StartedSolid && trMove.Hit )
+				if ( IsValidForWallRunning( trMove ) )
+					StartWallRunning( in trMove );
 
 			// Debug Trace Visualizer
 			// DebugOverlay.Trace( trMove );
@@ -221,8 +222,7 @@ partial class FishboxController
 
 		WallRunNormal = trStick.Normal;
 
-		var velAlongWall = Vector3.VectorPlaneProject( Velocity, WallRunNormal );
-		Velocity = velAlongWall; //+ (WallRunNormal * -100f);
+		Velocity = Vector3.VectorPlaneProject( Velocity, WallRunNormal );
 
 		var wallDist = trStick.Distance;
 

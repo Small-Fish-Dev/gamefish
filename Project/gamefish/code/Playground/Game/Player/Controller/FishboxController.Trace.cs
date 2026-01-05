@@ -29,7 +29,7 @@ partial class FishboxController
 			return default;
 
 		var scale = WorldScale;
-		var height = (LocalEyePosition.z - SkinWidth).Max( 1f ) * scale.z.Abs();
+		var height = (LocalEyePosition.z - SkinWidth).Max( 1f ) * scale.z;
 		var radius = _c.TraceWidth.Max( 1f ) * scale.x.Abs();
 
 		var tr = Scene.Trace
