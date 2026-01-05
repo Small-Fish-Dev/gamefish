@@ -203,6 +203,7 @@
         "SprintButton": "run",
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
+        "WallRunJumpSpeed": "600,300",
         "WallRunPitchRange": {
           "Min": 70,
           "Max": 110

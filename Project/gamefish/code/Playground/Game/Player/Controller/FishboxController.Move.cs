@@ -124,9 +124,6 @@ partial class FishboxController
 		if ( !ShrimpleController.IsValid() )
 			return wishVel;
 
-		if ( IsWallRunning )
-			wishVel = wishVel.ProjectAndScale( WallRunNormal );
-
 		// Hack fix for SCC's air aim momentum cancel bug.
 		if ( wishVel.AlmostEqual( 0f ) )
 			return _c.Velocity.ClampLength( float.Epsilon );

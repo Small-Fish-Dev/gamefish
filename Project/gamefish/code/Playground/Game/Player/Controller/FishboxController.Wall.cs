@@ -12,6 +12,11 @@ partial class FishboxController
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
 	public bool AllowWallRunning { get; set; } = true;
 
+	[Property]
+	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
+	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
+	public Vector2 WallRunJumpSpeed { get; set; } = new( 600f, 200f );
+
 	/// <summary>
 	/// What are the angles we can start a wall run? <br />
 	/// <c>90</c> degrees = straight wall
@@ -105,6 +110,8 @@ partial class FishboxController
 		if ( !IsWallRunning )
 			return;
 
+		IsWallRunning = false;
+
 		if ( !ShrimpleController.IsValid() )
 			return;
 
@@ -114,10 +121,12 @@ partial class FishboxController
 
 		// Vertical Wall Jumping
 		var upSpeed = upVel.Dot( upWall ).Positive();
-		upSpeed += JumpSpeed;
+		upSpeed += WallRunJumpSpeed.y;
 		upVel = upWall * upSpeed;
 
 		// Horizontal Wall Jumping
+		hVel = hVel.ProjectAndScale( WallRunNormal );
+
 		var wishVel = WishVelocity;
 		Vector3 hJumpDir;
 
@@ -129,33 +138,32 @@ partial class FishboxController
 		else
 		{
 			// Jump where we're inputting movement towards.
-			var moveDir = WishVelocity.Normal.Horizontal( upWall );
-
-			if ( moveDir.Dot( WallRunNormal ) < 0f )
-				moveDir = Vector3.Reflect( moveDir, WallRunNormal ).Horizontal( upWall );
-
+			var moveDir = wishVel.Normal.Horizontal( upWall );
 			hJumpDir = moveDir;
 		}
 
-		// PerformWallJump:
+		const float minDot = 0.4f;
 
-		hJumpDir = hJumpDir.Normal;
+		// Horizontal Jump
+		hVel += hJumpDir.Normal * WallRunJumpSpeed.x;
 
-		const float minDot = 0.35f;
-
-		hVel += hJumpDir.Normal * JumpSpeed;
-
+		// Bounce the direction off if it would be into the wall.
 		var hVelDot = hVel.Normal.Dot( WallRunNormal );
 
+		if ( hVelDot < 0f )
+		{
+			hVel = Vector3.Reflect( hVel, WallRunNormal ).Horizontal( upWall );
+			hVelDot = hVel.Normal.Dot( WallRunNormal );
+		}
+
+		// Prevent jumping too close into the wall.
 		if ( hVelDot < minDot )
 		{
-			hVel = Vector3.VectorPlaneProject( hVel, WallRunNormal );
+			hVel = hVel.ProjectAndScale( WallRunNormal );
 			hVel = hVel.Normal.LerpTo( WallRunNormal, minDot ) * hVel.Length;
 		}
 
 		_c.Velocity = upVel + hVel;
-
-		IsWallRunning = false;
 	}
 
 	protected virtual void DoWallRunning( in float deltaTime )
