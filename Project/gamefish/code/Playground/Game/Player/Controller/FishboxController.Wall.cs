@@ -97,6 +97,62 @@ partial class FishboxController
 		return true;
 	}
 
+	protected virtual void DoWallRunJump()
+	{
+		if ( !ShrimpleController.IsValid() )
+			return;
+
+		_c.Velocity.Separate( out var upVel, out var hVel );
+
+		var upSpeed = upVel.Dot( Up ).Positive();
+		upSpeed += JumpSpeed;
+		upVel = Up * upSpeed;
+
+		var wishVel = WishVelocity;
+		Vector3 hJumpDir;
+
+		if ( wishVel.AlmostEqual( 0f ) )
+		{
+			hJumpDir = WallRunNormal;
+		}
+		else
+		{
+			hJumpDir = WishVelocity.Normal.Horizontal( Up );
+
+			var hJumpDot = hJumpDir.Dot( WallRunNormal );
+
+			if ( hJumpDot < 0f )
+				hJumpDir = Vector3.Reflect( hJumpDir, WallRunNormal ).Horizontal( Up );
+
+			if ( hJumpDir.AlmostEqual( 0f ) )
+			{
+				hJumpDir = WallRunNormal;
+				goto PerformWallJump;
+			}
+
+			// Don't jump too close to the wall.
+			var jumpDot = hJumpDir.Dot( WallRunNormal );
+
+			const float maxDotFromWallNormal = 40f;
+
+			if ( jumpDot < maxDotFromWallNormal )
+			{
+				var dotFrac = maxDotFromWallNormal - jumpDot;
+				hJumpDir = hJumpDir.SlerpTo( WallRunNormal, dotFrac );
+			}
+		}
+
+		PerformWallJump:
+
+		var hVelLimit = hVel.Length.Max( JumpSpeed );
+
+		hVel = (hVel + (hJumpDir * JumpSpeed)).ClampLength( hVelLimit );
+
+		_c.Velocity = upVel + hVel;
+
+		IsWallRunning = false;
+	}
+
 	protected virtual void DoWallRunning( in float deltaTime )
 	{
 		if ( !ShrimpleController.IsValid() )
@@ -168,10 +224,10 @@ partial class FishboxController
 		var velAlongWall = Vector3.VectorPlaneProject( Velocity, WallRunNormal );
 		Velocity = velAlongWall; //+ (WallRunNormal * -100f);
 
-		var wallDist = (trStick.Distance - SkinWidth).Positive();
+		var wallDist = trStick.Distance;
 
 		if ( wallDist > SkinWidth )
-			WorldPosition += trStick.Direction * wallDist;
+			WorldPosition += trStick.Direction * (wallDist + SkinWidth);
 	}
 
 	protected virtual void StopWallRunning()
@@ -185,7 +241,7 @@ partial class FishboxController
 		if ( IsWallRunning )
 			return;
 
-		this.Log( $"Started wall running. Hit object:[{trWall.GameObject}]" );
+		// this.Log( $"Started wall running. Hit object:[{trWall.GameObject}]" );
 
 		IsWallRunning = true;
 		WallRunNormal = trWall.Normal;

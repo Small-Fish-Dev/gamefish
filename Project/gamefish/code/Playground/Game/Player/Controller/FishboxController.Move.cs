@@ -202,15 +202,7 @@ partial class FishboxController
 		if ( IsWallRunning )
 		{
 			if ( PressedJump )
-			{
-				_c.Velocity.Separate( out var upVel, out var hVel );
-
-				upVel = Up * (upVel.Dot( Up ).Positive() + (JumpSpeed * 0.5f));
-				hVel += WallRunNormal * JumpSpeed;
-
-				IsWallRunning = false;
-				_c.Velocity = upVel + hVel;
-			}
+				DoWallRunJump();
 
 			return;
 		}
