@@ -38,24 +38,30 @@ public partial class FishboxController : ShooterController
 		UpdateView( in deltaTime );
 	}
 
+	protected Vector3 _rEyeVel = Vector3.Zero;
+
 	public override void UpdateView( in float deltaTime )
 	{
 		base.UpdateView( deltaTime );
 
 		Rotation rEyeDest;
 
-		if ( IsWallRunning )
+		var localUp = Vector3.Up;
+
+		if ( IsWallRunning && !WallRunNormal.AlmostEqual( 0f ) )
 		{
-			var rWall = Rotation.LookAt( LocalEyeRotation.Forward, WallRunNormal );
-			rEyeDest = LocalEyeRotation.SlerpTo( rWall, 0.25f );
+			var localWall = WorldTransform.NormalToLocal( WallRunNormal ).Normal;
+			var upDir = localUp.SlerpTo( localWall, 0.3f );
+
+			rEyeDest = Rotation.LookAt( LocalEyeRotation.Forward, upDir );
 		}
 		else
 		{
-			rEyeDest = Rotation.LookAt( LocalEyeRotation.Forward, Up );
+			rEyeDest = Rotation.LookAt( LocalEyeRotation.Forward, localUp );
 		}
 
-		LocalEyeRotation = LocalEyeRotation
-			.SlerpTo( rEyeDest, deltaTime * 5f );
+		LocalEyeRotation = Rotation.SmoothDamp( LocalEyeRotation, rEyeDest, ref _rEyeVel, 2f, deltaTime * 4f );
+		// LocalEyeRotation.SlerpTo( rEyeDest, deltaTime * 1.5f );
 	}
 
 	public override Vector3 GetLocalEyeTargetPosition()
