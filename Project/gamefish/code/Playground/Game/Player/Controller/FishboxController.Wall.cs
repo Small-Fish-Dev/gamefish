@@ -1,0 +1,193 @@
+using System.Text.Json.Serialization;
+using GameFish;
+using ShrimpleCharacterController;
+using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
+
+namespace Playground;
+
+partial class FishboxController
+{
+	[Property]
+	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
+	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
+	public bool AllowWallRunning { get; set; } = true;
+
+	/// <summary>
+	/// Angle from the player's upward orientation that they can start a wall run.
+	/// </summary>
+	[Property]
+	[Feature( PLAYER )]
+	[Range( 0f, 180f, clamped: false )]
+	public FloatRange WallRunPitchRange { get; set; } = new( 55f, 125f );
+
+	[Property]
+	[Feature( PLAYER )]
+	[ReadOnly, JsonIgnore]
+	[Title( "Is Wall Running" )]
+	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
+	protected bool InspectorIsWallRunning
+	{
+		get => IsWallRunning;
+		set => IsWallRunning = value;
+	}
+
+	[Sync]
+	public bool IsWallRunning
+	{
+		get => _isWallRunning;
+		set
+		{
+			_isWallRunning = value;
+			OnSetIsWallRunning( in _isWallRunning );
+		}
+	}
+
+	protected bool _isWallRunning;
+
+	[Sync]
+	[Normal]
+	public Vector3 WallRunNormal
+	{
+		get => _wallRunNormal;
+		set
+		{
+			_wallRunNormal = value.Normal;
+			OnSetWallRunDirection( in _wallRunNormal );
+		}
+	}
+
+	protected Vector3 _wallRunNormal;
+
+	/// <summary>
+	/// What's up?
+	/// </summary>
+	public virtual Vector3 Up => WorldRotation.Up;
+
+	protected virtual void OnSetIsWallRunning( in bool isEnabled )
+	{
+		if ( isEnabled )
+			IsSlipping = false;
+	}
+
+	protected virtual void OnSetWallRunDirection( in Vector3 _wallRunDir )
+	{
+	}
+
+	public virtual bool IsValidForWallRunning( in SceneTraceResult tr )
+	{
+		if ( !tr.Hit )
+			return false;
+
+		if ( !IsValidWallAngle( in tr.Normal, WishVelocity.Normal ) )
+			return false;
+
+		if ( IsSlippery( tr ) )
+			return false;
+
+		return true;
+	}
+
+	public virtual bool IsValidWallAngle( in Vector3 wallNormal, in Vector3 moveDir )
+	{
+		var pitch = Up.Angle( wallNormal );
+
+		if ( !WallRunPitchRange.Within( in pitch ) )
+			return false;
+
+		return true;
+	}
+
+	protected virtual void DoWallRunning( in float deltaTime )
+	{
+		if ( !ShrimpleController.IsValid() )
+			return;
+
+		if ( _c.IsOnGround )
+		{
+			if ( IsWallRunning )
+			{
+				// this.Log( "Stopped wall running. Reason: \"Grounded.\"" );
+				StopWallRunning();
+			}
+
+			return;
+		}
+
+		if ( !IsWallRunning )
+		{
+			if ( !HoldingJump )
+				return;
+
+			// Where are we trying to move to?
+			Velocity.Separate( Up, out var upVel, out var hVel );
+
+			upVel = Up * upVel.Dot( Up ).Positive();
+
+			if ( hVel.AlmostEqual( 0f ) )
+				hVel = WishVelocity.Horizontal( Up );
+
+			var velMove = upVel + hVel;
+
+			if ( velMove.AlmostEqual( 0f ) )
+				return;
+
+			// Not wall running and trying to run.
+			var traceDist = (velMove.Length * deltaTime).Max( 1f );
+			var traceVector = velMove.Normal * traceDist;
+
+			var trMove = Trace( WorldPosition, WorldPosition + traceVector ).Run();
+
+			if ( trMove.Hit && IsValidForWallRunning( trMove ) )
+				StartWallRunning( in trMove );
+
+			// Debug Trace Visualizer
+			// DebugOverlay.Trace( trMove );
+		}
+
+		if ( !IsWallRunning )
+			return;
+
+		if ( WallRunNormal.AlmostEqual( 0f ) )
+		{
+			this.Log( "Stopped wall running. Reason: \"Weird/no wall.\"" );
+			StopWallRunning();
+			return;
+		}
+
+		var trStick = Trace( WorldPosition, WorldPosition + WallRunNormal * -10f ).Run();
+
+		if ( !trStick.Hit || !IsValidForWallRunning( trStick )
+			|| trStick.Normal.Angle( WallRunNormal ) > 45f )
+		{
+			StopWallRunning();
+			return;
+		}
+
+		WallRunNormal = trStick.Normal;
+
+		var velAlongWall = Vector3.VectorPlaneProject( Velocity, WallRunNormal );
+		Velocity = velAlongWall; //+ (WallRunNormal * -100f);
+
+		var wallDist = (trStick.Distance - SkinWidth).Positive();
+
+		if ( wallDist > SkinWidth )
+			WorldPosition += trStick.Direction * wallDist;
+	}
+
+	protected virtual void StopWallRunning()
+	{
+		IsWallRunning = false;
+		WallRunNormal = default;
+	}
+
+	protected virtual void StartWallRunning( in SceneTraceResult trWall )
+	{
+		if ( IsWallRunning )
+			return;
+
+		this.Log( $"Started wall running. Hit object:[{trWall.GameObject}]" );
+
+		IsWallRunning = true;
+		WallRunNormal = trWall.Normal;
+	}
+}
