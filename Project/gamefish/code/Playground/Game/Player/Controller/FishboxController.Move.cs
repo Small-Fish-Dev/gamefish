@@ -51,7 +51,7 @@ partial class FishboxController
 	[Property]
 	[Feature( PLAYER ), Group( MOVEMENT ), Order( DEFAULTS_ORDER )]
 	[Range( 0f, 10000f, clamped: false ), Step( 1f )]
-	public float AirAcceleration { get; set; } = 6000f;
+	public float AirAcceleration { get; set; } = 2000f;
 
 	protected override void OnSetWishVelocity( in Vector3 wishVel )
 	{

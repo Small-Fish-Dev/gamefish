@@ -82,7 +82,7 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 15,
-        "AirAcceleration": 3000,
+        "AirAcceleration": 2000,
         "AllowAiming": true,
         "AllowDucking": true,
         "AllowJumping": true,

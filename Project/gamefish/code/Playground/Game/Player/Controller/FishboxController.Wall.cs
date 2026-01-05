@@ -13,17 +13,20 @@ partial class FishboxController
 	public bool AllowWallRunning { get; set; } = true;
 
 	/// <summary>
-	/// Angle from the player's upward orientation that they can start a wall run.
+	/// What are the angles we can start a wall run? <br />
+	/// <c>90</c> degrees = straight wall
 	/// </summary>
 	[Property]
 	[Feature( PLAYER )]
+	[Title( "Wall Pitch" )]
 	[Range( 0f, 180f, clamped: false )]
-	public FloatRange WallRunPitchRange { get; set; } = new( 55f, 125f );
+	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
+	public FloatRange WallRunPitchRange { get; set; } = new( 70f, 110f );
 
-	[Property]
 	[Feature( PLAYER )]
-	[ReadOnly, JsonIgnore]
 	[Title( "Is Wall Running" )]
+	[Property, ReadOnly, JsonIgnore]
+	[ShowIf( nameof( InGame ), true )]
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
 	protected bool InspectorIsWallRunning
 	{
