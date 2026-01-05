@@ -99,54 +99,57 @@ partial class FishboxController
 
 	protected virtual void DoWallRunJump()
 	{
+		if ( !IsWallRunning )
+			return;
+
 		if ( !ShrimpleController.IsValid() )
 			return;
 
-		_c.Velocity.Separate( out var upVel, out var hVel );
+		var upWall = Vector3.VectorPlaneProject( Up, WallRunNormal );
 
-		var upSpeed = upVel.Dot( Up ).Positive();
+		_c.Velocity.Separate( upWall, out var upVel, out var hVel );
+
+		// Vertical Wall Jumping
+		var upSpeed = upVel.Dot( upWall ).Positive();
 		upSpeed += JumpSpeed;
-		upVel = Up * upSpeed;
+		upVel = upWall * upSpeed;
 
+		// Horizontal Wall Jumping
 		var wishVel = WishVelocity;
 		Vector3 hJumpDir;
 
 		if ( wishVel.AlmostEqual( 0f ) )
 		{
-			hJumpDir = WallRunNormal;
+			// Jump where we're aiming.
+			hJumpDir = EyeForward.Horizontal( upWall );
 		}
 		else
 		{
-			hJumpDir = WishVelocity.Normal.Horizontal( Up );
+			// Jump where we're inputting movement towards.
+			var moveDir = WishVelocity.Normal.Horizontal( upWall );
 
-			var hJumpDot = hJumpDir.Dot( WallRunNormal );
+			if ( moveDir.Dot( WallRunNormal ) < 0f )
+				moveDir = Vector3.Reflect( moveDir, WallRunNormal ).Horizontal( upWall );
 
-			if ( hJumpDot < 0f )
-				hJumpDir = Vector3.Reflect( hJumpDir, WallRunNormal ).Horizontal( Up );
-
-			if ( hJumpDir.AlmostEqual( 0f ) )
-			{
-				hJumpDir = WallRunNormal;
-				goto PerformWallJump;
-			}
-
-			// Don't jump too close to the wall.
-			var jumpDot = hJumpDir.Dot( WallRunNormal );
-
-			const float maxDotFromWallNormal = 40f;
-
-			if ( jumpDot < maxDotFromWallNormal )
-			{
-				var dotFrac = maxDotFromWallNormal - jumpDot;
-				hJumpDir = hJumpDir.SlerpTo( WallRunNormal, dotFrac );
-			}
+			hJumpDir = moveDir;
 		}
 
-		PerformWallJump:
+		// PerformWallJump:
+
+		hJumpDir = hJumpDir.Normal;
+
+		const float minDot = 0.35f;
+
+		var hJumpDirDot = hJumpDir.Dot( WallRunNormal );
+
+		if ( hJumpDirDot < minDot )
+		{
+			var dotDelta = (minDot - hJumpDirDot).Clamp( 0f, minDot );
+			hJumpDir = hJumpDir.LerpTo( WallRunNormal, dotDelta );
+		}
 
 		var hVelLimit = hVel.Length.Max( JumpSpeed );
-
-		hVel = (hVel + (hJumpDir * JumpSpeed)).ClampLength( hVelLimit );
+		hVel = hJumpDir * (hVel.Length + JumpSpeed).Clamp( 0f, hVelLimit );
 
 		_c.Velocity = upVel + hVel;
 
