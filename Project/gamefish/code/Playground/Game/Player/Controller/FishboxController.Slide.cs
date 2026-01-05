@@ -67,7 +67,7 @@ partial class FishboxController
 	public Curve SlopeSpeed { get; set; } = new( new( 0f, 0f ), new( 1f, 1f ) )
 	{
 		TimeRange = new( 0f, 90f ),
-		ValueRange = new( 0f, 5000f )
+		ValueRange = new( 0f, 700f )
 	};
 
 	[Property]

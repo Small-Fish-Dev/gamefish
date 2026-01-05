@@ -141,7 +141,7 @@
         "SlopeAngle": 35,
         "SlopeFriction": {
           "rangex": "0,90",
-          "rangey": "0,1000",
+          "rangey": "0,700",
           "frames": [
             {
               "x": 0,
@@ -174,14 +174,21 @@
           ]
         },
         "SlopeSpeed": {
-          "rangex": "0,90",
-          "rangey": "0,5000",
+          "rangex": "0.00000001490116,0.9999997",
+          "rangey": "99.99988,700.0001",
           "frames": [
             {
               "x": 0,
               "y": 0,
-              "in": 0,
-              "out": 0,
+              "in": -1.5224999,
+              "out": 1.5224999,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 0.8000003,
+              "y": 1,
+              "in": -0.009066644,
+              "out": 0.009066644,
               "mode": "Mirrored"
             },
             {
@@ -197,8 +204,8 @@
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
         "WallRunPitchRange": {
-          "Min": 55,
-          "Max": 125
+          "Min": 70,
+          "Max": 110
         }
       },
       {
