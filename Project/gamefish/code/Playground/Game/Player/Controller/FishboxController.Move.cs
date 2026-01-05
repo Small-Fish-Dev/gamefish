@@ -121,12 +121,11 @@ partial class FishboxController
 	{
 		var wishVel = base.GetWishVelocity( inputDir );
 
-		// TEMP: Allow slowdown.
-		if ( IsWallRunning )
-			return Vector3.Zero;
-
 		if ( !ShrimpleController.IsValid() )
 			return wishVel;
+
+		if ( IsWallRunning )
+			wishVel = wishVel.ProjectAndScale( WallRunNormal );
 
 		// Hack fix for SCC's air aim momentum cancel bug.
 		if ( wishVel.AlmostEqual( 0f ) )
