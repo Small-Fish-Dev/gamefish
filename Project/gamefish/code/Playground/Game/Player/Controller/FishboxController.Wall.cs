@@ -12,6 +12,15 @@ partial class FishboxController
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
 	public bool AllowWallRunning { get; set; } = true;
 
+	/// <summary>
+	/// Multiply gravity by this amount while wall running.
+	/// </summary>
+	[Property]
+	[Title( "Gravity" )]
+	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
+	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
+	public float WallRunGravity { get; set; } = 0.9f;
+
 	[Property]
 	[Title( "Jump Speed" )]
 	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
@@ -35,13 +44,13 @@ partial class FishboxController
 	/// </summary>
 	[Property]
 	[Title( "Stick Distance" )]
-	[Range( 1f, 128f, clamped: false )]
+	[Range( 1f, 64f, clamped: false )]
 	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
 	public float WallRunStickDistance { get; set; } = 24f;
 
 	/// <summary>
-	/// The distance to stay away from a wall when running on it.
+	/// The distance to stay away from a wall while running on it.
 	/// </summary>
 	[Property]
 	[Title( "Wall Skin" )]

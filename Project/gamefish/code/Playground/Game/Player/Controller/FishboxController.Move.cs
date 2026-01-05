@@ -238,7 +238,11 @@ partial class FishboxController
 
 		var grav = Scene?.PhysicsWorld?.Gravity ?? default;
 
-		if ( !_c.IsOnGround )
+		if ( IsWallRunning )
+		{
+			grav *= WallRunGravity;	
+		}
+		else if ( !_c.IsOnGround )
 		{
 			if ( ShouldJump )
 				grav *= GravityFloating;
@@ -247,6 +251,8 @@ partial class FishboxController
 				grav *= GravitySinking;
 		}
 
+		_c.GravityEnabled = true;
+		_c.UseVectorGravity = true;
 		_c.VectorGravity = grav;
 	}
 }

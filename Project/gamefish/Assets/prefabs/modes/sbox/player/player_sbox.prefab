@@ -107,13 +107,13 @@
           "Value": 5,
           "StopSpeed": 80
         },
-        "GravityFloating": 0.5,
+        "GravityFloating": 0.7,
         "GravitySinking": 2,
         "IsClass": false,
         "IsNetworkingForced": false,
         "IsSliding": false,
         "JumpButton": "jump",
-        "JumpSpeed": 420,
+        "JumpSpeed": 320,
         "MoveSpeed": 250,
         "MoveSpeedDucked": 120,
         "NetworkAutomatically": true,
@@ -209,11 +209,14 @@
         "SprintButton": "run",
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
-        "WallRunJumpSpeed": "700,280",
+        "WallRunGravity": 0.5,
+        "WallRunJumpSpeed": "500,150",
         "WallRunPitchRange": {
           "Min": 70,
           "Max": 110
-        }
+        },
+        "WallRunStickDistance": 24,
+        "WallRunStickSkin": 3
       },
       {
         "__type": "ShrimpleCharacterController.ShrimpleCharacterController",
@@ -319,8 +322,8 @@
         "TraceShape": "Cylinder",
         "TraceWidth": 16,
         "UnstuckEnabled": true,
-        "UseSceneGravity": true,
-        "UseVectorGravity": false,
+        "UseSceneGravity": false,
+        "UseVectorGravity": true,
         "VectorGravity": "0,0,-850",
         "VerticalElasticity": 0,
         "WallTolerance": 3

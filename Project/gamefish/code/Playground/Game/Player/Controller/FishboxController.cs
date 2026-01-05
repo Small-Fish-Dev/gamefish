@@ -16,9 +16,7 @@ public partial class FishboxController : ShooterController
 	public const string WALLRUNNING = "🧗 Wall Running";
 	public const int WALLRUNNING_ORDER = 6000;
 
-	// Jump while held on the ground but only if pressed while airborne.
-	public override bool ShouldJump => AllowJumping && HasJumpButton && ShrimpleController.IsValid()
-		&& (ShrimpleController.IsOnGround ? HoldingJump : PressedJump);
+	public override bool ShouldJump => AllowJumping && HasJumpButton && HoldingJump;
 
 	protected bool HoldingJump => Input.Down( JumpButton );
 	protected bool PressedJump => Input.Pressed( JumpButton );
