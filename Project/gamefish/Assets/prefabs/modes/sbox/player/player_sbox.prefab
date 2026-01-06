@@ -208,12 +208,12 @@
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
         "WallRunGravity": 0.5,
-        "WallRunJumpSpeed": "700,250",
+        "WallRunJumpSpeed": "750,300",
         "WallRunPitchRange": {
           "Min": 70,
           "Max": 110
         },
-        "WallRunStickDistance": 24,
+        "WallRunStickDistance": 20,
         "WallRunStickSkin": 3
       },
       {

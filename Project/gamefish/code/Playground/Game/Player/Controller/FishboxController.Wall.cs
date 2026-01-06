@@ -47,7 +47,7 @@ partial class FishboxController
 	[Range( 1f, 64f, clamped: false )]
 	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
-	public float WallRunStickDistance { get; set; } = 24f;
+	public float WallRunStickDistance { get; set; } = 20f;
 
 	/// <summary>
 	/// The distance to stay away from a wall while running on it.
