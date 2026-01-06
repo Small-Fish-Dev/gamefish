@@ -32,19 +32,6 @@ partial class FishboxController
 		}
 	}
 
-	[Property]
-	[Feature( PLAYER ), Group( PHYSICS )]
-	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
-	public float GravityFloating { get; set; } = 0.5f;
-
-	/// <summary>
-	/// Multiplies airborne gravity while duck is held.
-	/// </summary>
-	[Property]
-	[Feature( PLAYER ), Group( PHYSICS )]
-	[Range( 0f, 5f, clamped: false ), Step( 0.01f )]
-	public float GravitySinking { get; set; } = 2f;
-
 	/// <summary>
 	/// How fast the player moves in the air(capped by movement speed).
 	/// </summary>
@@ -229,30 +216,5 @@ partial class FishboxController
 		// Cancel previous vertical velocity.
 		_c.Velocity = _c.Velocity.Horizontal( Up );
 		_c.Punch( jumpVel );
-	}
-
-	protected virtual void DoGravity( in float deltaTime )
-	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
-		var grav = WorldRotation * (Scene?.PhysicsWorld?.Gravity ?? default);
-
-		if ( IsWallRunning )
-		{
-			grav *= WallRunGravity;	
-		}
-		else if ( !_c.IsOnGround )
-		{
-			if ( ShouldJump )
-				grav *= GravityFloating;
-
-			if ( !IsSliding && ShouldDuck )
-				grav *= GravitySinking;
-		}
-
-		_c.GravityEnabled = true;
-		_c.UseVectorGravity = true;
-		_c.VectorGravity = grav;
 	}
 }
