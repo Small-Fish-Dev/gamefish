@@ -208,7 +208,7 @@
         "SprintDefault": false,
         "SprintMultiplier": 1.7,
         "WallRunGravity": 0.5,
-        "WallRunJumpSpeed": "700,200",
+        "WallRunJumpSpeed": "700,250",
         "WallRunPitchRange": {
           "Min": 70,
           "Max": 110
