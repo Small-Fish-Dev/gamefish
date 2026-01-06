@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Overrides the mass center to its position.

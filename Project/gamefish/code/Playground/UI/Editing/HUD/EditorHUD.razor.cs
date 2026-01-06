@@ -1,7 +1,7 @@
 using System;
 using GameFish;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 /// <summary>
 /// The HUD that shows when you don't have the menu open.

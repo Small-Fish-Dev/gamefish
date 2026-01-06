@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Categories for sandbox/editor tools.

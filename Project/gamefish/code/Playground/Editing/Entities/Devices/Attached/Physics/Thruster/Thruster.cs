@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "rocket_launch" )]
 public partial class Thruster : AttachedDevice

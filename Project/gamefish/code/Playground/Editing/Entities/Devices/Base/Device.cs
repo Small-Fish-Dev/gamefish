@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Something that can be controlled and wired.

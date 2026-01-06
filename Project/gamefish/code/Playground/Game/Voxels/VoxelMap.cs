@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Boxfish.Library;
 
-namespace Playground;
+namespace Fishbox;
 
 public partial class VoxelMap : NetworkedVoxelVolume, Component.ExecuteInEditor
 {

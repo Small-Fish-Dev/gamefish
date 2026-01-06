@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Allows for the editing of what's around you.

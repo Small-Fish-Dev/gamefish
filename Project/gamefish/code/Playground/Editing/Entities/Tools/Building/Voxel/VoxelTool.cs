@@ -1,7 +1,7 @@
 using Boxfish;
 using Boxfish.Library;
 
-namespace Playground;
+namespace Fishbox;
 
 public partial class VoxelTool : ShapeTool
 {

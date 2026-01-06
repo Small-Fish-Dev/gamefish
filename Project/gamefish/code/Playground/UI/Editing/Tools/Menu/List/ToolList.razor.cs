@@ -1,7 +1,7 @@
 using System;
 using GameFish;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 /// <summary>
 /// Lists tools in groups you can collapse.

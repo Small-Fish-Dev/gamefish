@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "wind_power" )]
 public partial class Propeller : AttachedDevice

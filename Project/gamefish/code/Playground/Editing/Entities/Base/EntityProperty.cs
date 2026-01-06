@@ -1,6 +1,6 @@
 using System;
 
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Lets players inspect and change the value of a property in the editor.

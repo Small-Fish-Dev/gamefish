@@ -1,6 +1,6 @@
-using Playground.Razor;
+using Fishbox.Razor;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "precision_manufacturing" )]
 public abstract class JointDevice : AttachedDevice

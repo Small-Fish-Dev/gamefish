@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Data for trying to spawn something with a tool.

@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "import_export" )]
 public partial class SpringJoint : JointDevice

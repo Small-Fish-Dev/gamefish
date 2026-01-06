@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 [Group( NAME )]
-public abstract partial class PlaygroundModule : Module;
+public abstract partial class FishboxModule : Module;

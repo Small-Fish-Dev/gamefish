@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "sentiment_very_dissatisfied" )]
 public partial class DeathmatchMode : Gamemode

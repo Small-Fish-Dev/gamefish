@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "import_export" )]
 public partial class RopeJoint : JointDevice

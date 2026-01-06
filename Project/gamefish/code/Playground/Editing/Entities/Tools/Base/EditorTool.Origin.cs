@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Playground;
+namespace Fishbox;
 
 partial class EditorTool
 {

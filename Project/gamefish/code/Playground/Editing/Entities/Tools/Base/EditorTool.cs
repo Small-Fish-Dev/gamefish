@@ -2,10 +2,10 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using Microsoft.VisualBasic;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "build" )]
-public abstract partial class EditorTool : PlaygroundModule
+public abstract partial class EditorTool : FishboxModule
 {
 	protected const int EDITOR_ORDER = DEFAULT_ORDER - 1000;
 	protected const int EDITOR_DEBUG_ORDER = EDITOR_ORDER - 100;

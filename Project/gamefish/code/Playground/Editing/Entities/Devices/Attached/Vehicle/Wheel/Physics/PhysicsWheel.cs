@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "precision_manufacturing" )]
 public partial class PhysicsWheel : AttachedDevice, IPilot

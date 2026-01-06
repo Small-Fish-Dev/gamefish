@@ -2,7 +2,7 @@ using System;
 using GameFish;
 using Sandbox.UI;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 partial class EditorPicker
 {

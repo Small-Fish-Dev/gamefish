@@ -3,7 +3,7 @@ using GameFish;
 using ShrimpleCharacterController;
 using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
-namespace Playground;
+namespace Fishbox;
 
 partial class FishboxController
 {

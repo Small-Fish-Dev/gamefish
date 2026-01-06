@@ -182,7 +182,7 @@
                   "ZIndex": 100
                 },
                 {
-                  "__type": "Playground.Razor.UI",
+                  "__type": "Fishbox.Razor.UI",
                   "__guid": "6806b084-bf19-4f9c-89fc-bb40828d6ef9",
                   "__enabled": true,
                   "Flags": 0,

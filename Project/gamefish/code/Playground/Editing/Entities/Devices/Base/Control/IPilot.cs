@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Provides an analogue input reference.

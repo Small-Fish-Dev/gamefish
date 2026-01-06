@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Allows wiring this up to devices.

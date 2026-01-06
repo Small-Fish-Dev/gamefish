@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 public partial struct UprightSettings
 {

@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 public struct ToolFunction
 {

@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Places something as a child(shrimply all for now).

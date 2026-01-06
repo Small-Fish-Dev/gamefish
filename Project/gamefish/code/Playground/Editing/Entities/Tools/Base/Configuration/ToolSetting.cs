@@ -1,6 +1,6 @@
 using System;
 
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// Tells the UI to show a property as a tool option.

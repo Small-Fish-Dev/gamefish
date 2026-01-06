@@ -1,7 +1,7 @@
 using System;
 using GameFish;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 partial class EditorHints
 {

@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "dataset" )] // haha
 public partial class BrickBlock : EditorObject

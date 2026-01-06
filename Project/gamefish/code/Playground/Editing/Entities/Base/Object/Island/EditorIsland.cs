@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 /// <summary>
 /// A parent entity for <see cref="EditorObject"/>s.

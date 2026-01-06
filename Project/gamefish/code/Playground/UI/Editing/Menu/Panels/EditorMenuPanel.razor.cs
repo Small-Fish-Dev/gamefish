@@ -1,7 +1,7 @@
 using System;
 using GameFish;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 /// <summary>
 /// Has a header you can click on to toggle its contents.

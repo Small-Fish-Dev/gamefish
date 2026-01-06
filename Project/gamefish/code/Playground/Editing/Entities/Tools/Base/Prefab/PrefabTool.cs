@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Playground;
+namespace Fishbox;
 
 public partial class PrefabTool : EditorTool
 {

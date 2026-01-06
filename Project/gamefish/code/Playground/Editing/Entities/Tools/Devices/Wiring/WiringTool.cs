@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Playground;
+namespace Fishbox;
 
 public partial class WiringTool : EditorTool
 {

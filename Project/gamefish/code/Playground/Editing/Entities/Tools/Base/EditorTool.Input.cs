@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 partial class EditorTool
 {

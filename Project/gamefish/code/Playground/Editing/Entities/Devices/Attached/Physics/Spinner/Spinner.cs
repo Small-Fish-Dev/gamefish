@@ -1,4 +1,4 @@
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "rocket_launch" )]
 public partial class Spinner : Device

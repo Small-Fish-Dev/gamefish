@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "explore" )]
 public partial class AdventureMode : Gamemode

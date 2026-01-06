@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "rocket_launch" )]
 public partial class UprightDevice : AttachedDevice

@@ -1,5 +1,5 @@
 
-namespace Playground;
+namespace Fishbox;
 
 public partial class BoxTool : ShapeTool
 {

@@ -1,6 +1,6 @@
 using GameFish;
 
-namespace Playground;
+namespace Fishbox;
 
 [Icon( "handyman" )]
 public partial class SandboxMode : Gamemode

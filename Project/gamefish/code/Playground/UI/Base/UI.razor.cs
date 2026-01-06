@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using GameFish;
 
-namespace Playground.Razor;
+namespace Fishbox.Razor;
 
 /// <summary>
 /// This demo's main user interface.
