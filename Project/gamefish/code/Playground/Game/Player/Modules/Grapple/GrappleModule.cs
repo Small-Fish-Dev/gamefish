@@ -21,6 +21,11 @@ public partial class PlayerGrappleModule : PlayerModule
 	public float RetractSpeed { get; set; } = 500f;
 
 	[Property]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	[Range( 0f, 1000f, clamped: false )]
+	public float ExtendSpeed { get; set; } = 500f;
+
+	[Property]
 	[Range( 0f, 2f, clamped: false )]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
 	public float SwingSpeed { get; set; } = 0.5f;
@@ -38,6 +43,11 @@ public partial class PlayerGrappleModule : PlayerModule
 	[InputAction]
 	[Feature( HOOK ), Group( INPUT )]
 	public string RetractButton { get; set; } = "Jump";
+
+	[Property]
+	[InputAction]
+	[Feature( HOOK ), Group( INPUT )]
+	public string ExtendButton { get; set; } = "Duck";
 
 	[Property]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
@@ -84,6 +94,22 @@ public partial class PlayerGrappleModule : PlayerModule
 			Color.Black, th: 4f, tWorld: global::Transform.Zero );
 	}
 
+	public virtual bool TryGetHook( out Vector3 origin, out Vector3 worldPoint )
+	{
+		if ( !HitObject.IsValid() )
+		{
+			origin = default;
+			worldPoint = default;
+			return false;
+		}
+
+		origin = HookOrigin;
+		var tWorld = HitObject.WorldTransform;
+		worldPoint = tWorld.PointToWorld( LocalPoint );
+
+		return true;
+	}
+
 	public override void UpdateInput( in float deltaTime )
 	{
 		base.UpdateInput( deltaTime );
@@ -95,14 +121,23 @@ public partial class PlayerGrappleModule : PlayerModule
 
 		if ( IsHooking )
 		{
-			if ( Input.Down( RetractButton ) )
-			{
-				var origin = HookOrigin;
-				var tWorld = HitObject.WorldTransform;
-				var worldPoint = tWorld.PointToWorld( LocalPoint );
+			var isRetracting = Input.Down( RetractButton );
+			var isExtending = Input.Down( ExtendButton );
 
+			if ( !isRetracting && !isExtending )
+				return;
+
+			if ( !TryGetHook( out var origin, out var worldPoint ) )
+				return;
+
+			if ( isRetracting && !isExtending )
+			{
 				Length = (Length - RetractSpeed * deltaTime)
 					.Min( origin.Distance( worldPoint ) );
+			}
+			else if ( isExtending && !isRetracting )
+			{
+				Length += ExtendSpeed * deltaTime;
 			}
 		}
 	}

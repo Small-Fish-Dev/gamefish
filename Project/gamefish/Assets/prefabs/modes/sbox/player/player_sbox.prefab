@@ -923,7 +923,7 @@
             "RetractButton": "Jump",
             "RetractSpeed": 300,
             "SlackLimit": 50,
-            "SwingSpeed": 0.5
+            "SwingSpeed": 0.3
           },
           {
             "__type": "Sandbox.LineRenderer",
