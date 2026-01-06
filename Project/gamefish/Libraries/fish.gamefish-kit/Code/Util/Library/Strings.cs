@@ -297,6 +297,7 @@ public static partial class Strings
 	public const string OUTFITS = "👗 Outfits";
 
 	public const string AMMO = "🍟 Ammo";
+	public const string HOOK = "🦇 Hook";
 	public const string EQUIP = "🛠 Equip";
 	public const string EQUIPMENT = "🛠 Equipment";
 	public const string WEAPON = "🔫 Weapon";
