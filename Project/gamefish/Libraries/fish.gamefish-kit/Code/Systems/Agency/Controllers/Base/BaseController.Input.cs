@@ -34,7 +34,7 @@ partial class BaseController
 	{
 		var wishSpeed = GetWishSpeed();
 
-		if ( wishSpeed == 0f )
+		if ( wishSpeed.AlmostEqual( 0f ) )
 			return Vector3.Zero;
 
 		return GetWishDirection( in inputDir ) * wishSpeed;

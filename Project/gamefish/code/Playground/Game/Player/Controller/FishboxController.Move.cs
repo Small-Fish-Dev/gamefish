@@ -105,6 +105,19 @@ partial class FishboxController
 		return speed;
 	}
 
+	public override Vector3 GetWishDirection( in Vector3? inputDir = null )
+	{
+		if ( inputDir is not Vector3 moveInput )
+			return default;
+
+		var up = -GravityDirection;
+
+		var flatAim = Vector3.VectorPlaneProject( EyeForward, up );
+		var rMove = Rotation.LookAt( flatAim, up );
+
+		return rMove * moveInput;
+	}
+
 	public override Vector3 GetWishVelocity( in Vector3? inputDir = null )
 	{
 		var wishVel = base.GetWishVelocity( inputDir );
