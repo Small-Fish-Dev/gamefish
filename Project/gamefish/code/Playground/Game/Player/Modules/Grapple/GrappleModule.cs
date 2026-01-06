@@ -18,7 +18,12 @@ public partial class PlayerGrappleModule : PlayerModule
 	[Property]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
 	[Range( 0f, 1000f, clamped: false )]
-	public float RetractSpeed { get; set; } = 250f;
+	public float RetractSpeed { get; set; } = 500f;
+
+	[Property]
+	[Range( 0f, 2f, clamped: false )]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	public float SwingSpeed { get; set; } = 0.5f;
 
 	[Property]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
@@ -158,12 +163,13 @@ public partial class PlayerGrappleModule : PlayerModule
 		var cross = Vector3.Cross( fwdVel.Normal, vRight );
 
 		var swing = cross * fwdVel.Length * deltaTime;
-		hVel += swing;
+		hVel += swing * SwingSpeed;
 
 		// Elasticity towards the point.
 		var slack = (pointDist - Length).Positive();
 		fwdVel += dirToPoint * slack * Elasticity * deltaTime;
 
+		// Negate all exiting velocity past the limit.
 		if ( slack > SlackLimit )
 			fwdVel *= fwdVel.Dot( dirToPoint ).Direction().Positive();
 

@@ -894,7 +894,7 @@
             "__enabled": true,
             "ClassId": null,
             "ClassName": null,
-            "Elasticity": 30,
+            "Elasticity": 20,
             "HookButton": "Hook",
             "IsClass": false,
             "IsNetworkingForced": true,
@@ -921,8 +921,9 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "RetractButton": "Jump",
-            "RetractSpeed": 250,
-            "SlackLimit": 64
+            "RetractSpeed": 300,
+            "SlackLimit": 50,
+            "SwingSpeed": 0.5
           },
           {
             "__type": "Sandbox.LineRenderer",
