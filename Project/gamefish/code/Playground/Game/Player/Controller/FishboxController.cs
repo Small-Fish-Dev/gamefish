@@ -77,21 +77,6 @@ public partial class FishboxController : ShooterController
 		return target;
 	}
 
-	protected virtual void UpdateCollision()
-	{
-		var vCenter = GetLocalCenter();
-		var height = (vCenter.z * 2f) - float.Epsilon;
-
-		if ( Cylinder.IsValid() )
-		{
-			Cylinder.LocalPosition = vCenter;
-			Cylinder.Height = height;
-		}
-
-		if ( ShrimpleController.IsValid() )
-			_c.TraceHeight = height;
-	}
-
 	protected override void OnSetLocalEyePosition( in Vector3 pos )
 	{
 		base.OnSetLocalEyePosition( pos );

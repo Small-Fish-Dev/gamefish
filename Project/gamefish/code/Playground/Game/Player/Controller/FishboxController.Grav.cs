@@ -46,6 +46,9 @@ partial class FishboxController
 
 		Pawn.EyePosition = tEye.Position;
 		Pawn.EyeRotation = tEye.Rotation;
+
+		if ( ShrimpleController.IsValid() )
+			ShrimpleController.MaxGroundAngle = 360f;
 	}
 
 	protected virtual void DoGravity( in float deltaTime )

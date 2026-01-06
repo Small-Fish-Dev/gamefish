@@ -59,4 +59,19 @@ partial class FishboxController
 
 		return _c.TryUnstuck( WorldPosition + GetLocalCenter(), out result );
 	}
+
+	protected virtual void UpdateCollision()
+	{
+		var vCenter = GetLocalCenter();
+		var height = (vCenter.z * 2f) - (2f * WorldScale.z);
+
+		if ( Cylinder.IsValid() )
+		{
+			Cylinder.LocalPosition = vCenter;
+			Cylinder.Height = height;
+		}
+
+		if ( ShrimpleController.IsValid() )
+			_c.TraceHeight = height;
+	}
 }
