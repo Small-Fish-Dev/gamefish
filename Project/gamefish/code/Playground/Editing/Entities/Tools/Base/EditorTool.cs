@@ -82,6 +82,14 @@ public abstract partial class EditorTool : FishboxModule
 		Clear();
 	}
 
+	protected override void OnPreRender()
+	{
+		base.OnPreRender();
+
+		if ( Editor?.Tool == this )
+			RenderHelpers();
+	}
+
 	public virtual void FrameSimulate( in float deltaTime )
 	{
 		UpdateTarget();
@@ -89,8 +97,6 @@ public abstract partial class EditorTool : FishboxModule
 		UpdateActions( in deltaTime );
 
 		UpdateOrigin( in deltaTime );
-
-		RenderHelpers();
 	}
 
 	public virtual void FixedSimulate( in float deltaTime )

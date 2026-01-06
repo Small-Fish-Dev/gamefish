@@ -15,7 +15,7 @@ partial class EditorTool
 
 	protected virtual void RenderPointer()
 	{
-		if ( !TryGetPointer( TargetTrace, out var tPointer ) )
+		if ( !TryTrace( out var tr ) || !TryGetPointer( tr, out var tPointer ) )
 			return;
 
 		RenderPointerSphere( tPointer );
