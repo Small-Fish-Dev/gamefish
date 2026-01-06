@@ -2,6 +2,16 @@ namespace GameFish;
 
 partial class Pawn
 {
+	public override Vector3 Velocity
+	{
+		get => Controller?.Velocity ?? Vector3.Zero;
+		set
+		{
+			if ( Controller.IsValid() )
+				Controller.Velocity = value;
+		}
+	}
+
 	/// <summary>
 	/// The component responsible for using input to aim and move.
 	/// </summary>

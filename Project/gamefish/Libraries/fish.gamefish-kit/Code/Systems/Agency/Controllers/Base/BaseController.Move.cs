@@ -4,6 +4,21 @@ partial class BaseController
 {
 	protected const int MOVEMENT_ORDER = PAWN_ORDER + 1000;
 
+	public Rigidbody Rigidbody => _rb.IsValid() ? _rb
+		: _rb = _rb.GetCached( GameObject, FindMode.EverythingInSelf | FindMode.InAncestors );
+
+	protected Rigidbody _rb;
+
+	public virtual Vector3 Velocity
+	{
+		get => Rigidbody?.Velocity ?? Vector3.Zero;
+		set
+		{
+			if ( Rigidbody.IsValid() )
+				Rigidbody.Velocity = value;
+		}
+	}
+
 	/// <summary>
 	/// Movement/collision logic tries to stay this far away
 	/// from surfaces to prevent getting stuck in them.
@@ -46,16 +61,6 @@ partial class BaseController
 	[ToggleGroup( nameof( AllowMovement ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual Friction Friction { get; set; } = new();
-
-	public virtual Vector3 Velocity
-	{
-		get => Pawn?.Velocity ?? Vector3.Zero;
-		set
-		{
-			if ( Pawn.IsValid() )
-				Pawn.Velocity = value;
-		}
-	}
 
 	[Sync]
 	public Vector3 WishVelocity
