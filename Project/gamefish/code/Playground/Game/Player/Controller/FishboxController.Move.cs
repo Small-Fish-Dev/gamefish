@@ -236,7 +236,7 @@ partial class FishboxController
 		if ( !ShrimpleController.IsValid() )
 			return;
 
-		var grav = Scene?.PhysicsWorld?.Gravity ?? default;
+		var grav = WorldRotation * (Scene?.PhysicsWorld?.Gravity ?? default);
 
 		if ( IsWallRunning )
 		{

@@ -10,7 +10,7 @@ partial class FishboxController
 	public Surface GroundSurface { get; set; }
 	public float SurfaceFriction { get; set; }
 
-	public virtual Vector3 TraceOffset => GetCenterOffset();
+	public virtual Vector3 TraceOffset => GetLocalCenter();
 
 	public virtual void DoGroundTrace()
 	{
@@ -44,9 +44,9 @@ partial class FishboxController
 		return tr;
 	}
 
-	protected virtual Vector3 GetCenterOffset()
+	protected virtual Vector3 GetLocalCenter()
 	{
-		return Up * LocalEyePosition.z * 0.5f;
+		return Vector3.Up * LocalEyePosition.z * 0.5f;
 	}
 
 	public virtual bool TryUnstuck( out Vector3 result )
@@ -57,6 +57,6 @@ partial class FishboxController
 			return false;
 		}
 
-		return _c.TryUnstuck( WorldPosition + GetCenterOffset(), out result );
+		return _c.TryUnstuck( WorldPosition + GetLocalCenter(), out result );
 	}
 }

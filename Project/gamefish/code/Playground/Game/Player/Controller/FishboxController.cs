@@ -79,7 +79,7 @@ public partial class FishboxController : ShooterController
 
 	protected virtual void UpdateCollision()
 	{
-		var vCenter = GetCenterOffset();
+		var vCenter = GetLocalCenter();
 		var height = (vCenter.z * 2f) - float.Epsilon;
 
 		if ( Cylinder.IsValid() )
