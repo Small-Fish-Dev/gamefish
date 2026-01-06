@@ -38,14 +38,24 @@ partial class FishboxController
 		if ( !Pawn.IsValid() )
 			return;
 
+		var localCenter = GetLocalCenter();
+		var oldCenter = WorldTransform.PointToWorld( localCenter );
+
 		var tEye = Pawn.EyeTransform;
 		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, dir );
 
+		// Perform the rotation.
 		WorldRotation = Rotation.LookAt( flatDir, -dir );
-		Transform.ClearInterpolation();
 
+		// Recenter us on our previous position.
+		var newCenter = WorldTransform.PointToWorld( localCenter );
+		WorldPosition += oldCenter - newCenter;
+
+		// Set and correct our eye aim/origin.
 		Pawn.EyePosition = tEye.Position;
 		Pawn.EyeRotation = tEye.Rotation;
+
+		Transform.ClearInterpolation();
 
 		if ( ShrimpleController.IsValid() )
 			ShrimpleController.MaxGroundAngle = 360f;
