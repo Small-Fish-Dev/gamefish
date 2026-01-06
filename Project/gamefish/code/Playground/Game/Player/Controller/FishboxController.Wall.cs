@@ -116,8 +116,15 @@ partial class FishboxController
 		if ( IsProxy )
 			return;
 
-		if ( IsWallRunning )
-			Velocity = Velocity.ProjectAndScale( WallRunNormal );
+		if ( !IsWallRunning )
+			return;
+
+		var upDir = Up;
+
+		Velocity.Separate( upDir, out var upVel, out var hVel );
+		hVel = hVel.ProjectAndScale( WallRunNormal ).Horizontal( upDir );
+
+		Velocity = hVel + upVel;
 	}
 
 	protected virtual void StopWallRunning()
