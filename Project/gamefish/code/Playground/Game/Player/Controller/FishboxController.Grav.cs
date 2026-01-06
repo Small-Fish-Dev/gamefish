@@ -64,7 +64,7 @@ partial class FishboxController
 	protected virtual void DoGravity( in float deltaTime )
 	{
 		// TODO: Make this a module.
-		if ( Pawn.IsValid() && Input.Down( "Item" ) )
+		if ( Pawn.IsValid() && Input.Pressed( "Item" ) )
 		{
 			var trEye = Pawn.GetEyeTrace( dir: EyeForward, distance: 8192f ).Run();
 
