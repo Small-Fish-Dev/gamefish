@@ -16,7 +16,7 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "GameFish.Player",
+        "__type": "Fishbox.FishboxPlayer",
         "__guid": "00a167f2-9393-469a-879d-63a09e408188",
         "__enabled": true,
         "AllowSpectators": true,
@@ -76,7 +76,7 @@
         }
       },
       {
-        "__type": "Playground.FishboxController",
+        "__type": "Fishbox.FishboxController",
         "__guid": "699b454a-735f-4c86-baba-c1b0878a5d32",
         "__enabled": true,
         "Acceleration": 15,
@@ -312,10 +312,10 @@
         "StepTolerance": 1,
         "StickToPlatforms": true,
         "TraceBounds": {
-          "Mins": "-8,-8,-32",
-          "Maxs": "8,8,32"
+          "Mins": "-8,-8,-31",
+          "Maxs": "8,8,31"
         },
-        "TraceHeight": 64,
+        "TraceHeight": 62,
         "TraceShape": "Cylinder",
         "TraceWidth": 16,
         "UnstuckEnabled": true,
@@ -775,6 +775,56 @@
         ]
       },
       {
+        "__guid": "ab1c453b-c49b-4391-b35a-6dd13d354419",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Collider",
+        "Position": "0,0,32",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.HullCollider",
+            "__guid": "7017452f-aa63-4a19-b2e8-fe2900ce1cdb",
+            "__enabled": true,
+            "BoxSize": "50,50,50",
+            "Center": "0,0,0",
+            "ColliderFlags": 0,
+            "Elasticity": null,
+            "Friction": null,
+            "Height": 62,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "Points": [],
+            "Radius": 8,
+            "Radius2": 0,
+            "RollingResistance": null,
+            "Slices": 16,
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0",
+            "Type": "Cylinder"
+          }
+        ],
+        "Children": []
+      },
+      {
         "__guid": "4392db66-be79-4a96-9f50-66fb797af589",
         "__version": 1,
         "Flags": 0,
@@ -823,51 +873,124 @@
         "Children": []
       },
       {
-        "__guid": "ab1c453b-c49b-4391-b35a-6dd13d354419",
+        "__guid": "29adc2e9-c9c7-4085-8763-e191501cab3a",
         "__version": 1,
         "Flags": 0,
-        "Name": "Collider",
-        "Position": "0,0,32",
+        "Name": "Grappling Hook",
+        "Position": "0,0,48",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
-        "NetworkMode": 2,
+        "NetworkMode": 1,
         "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
+        "NetworkOrphaned": 3,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Sandbox.HullCollider",
-            "__guid": "7017452f-aa63-4a19-b2e8-fe2900ce1cdb",
+            "__type": "Fishbox.PlayerGrappleModule",
+            "__guid": "125a674f-3cb8-4ad8-b996-f296cdfa4691",
             "__enabled": true,
-            "BoxSize": "50,50,50",
-            "Center": "0,0,0",
-            "ColliderFlags": 0,
-            "Elasticity": null,
-            "Friction": null,
-            "Height": 64,
-            "IsTrigger": false,
+            "ClassId": null,
+            "ClassName": null,
+            "Elasticity": 30,
+            "HookButton": "Hook",
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "LengthRange": {
+              "Min": 16,
+              "Max": 4096
+            },
+            "Line": {
+              "_type": "component",
+              "component_id": "2741d832-044d-47ca-a87f-fb5e0bde148f",
+              "go": "29adc2e9-c9c7-4085-8763-e191501cab3a",
+              "component_type": "LineRenderer"
+            },
+            "NetworkAutomatically": true,
+            "NetworkId": "125a674f-3cb8-4ad8-b996-f296cdfa4691",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "OnObjectTriggerEnter": null,
-            "OnObjectTriggerExit": null,
-            "OnTriggerEnter": null,
-            "OnTriggerExit": null,
+            "RetractButton": "Jump",
+            "RetractSpeed": 250,
+            "SlackLimit": 64
+          },
+          {
+            "__type": "Sandbox.LineRenderer",
+            "__guid": "2741d832-044d-47ca-a87f-fb5e0bde148f",
+            "__enabled": true,
+            "Additive": false,
+            "AutoCalculateNormals": true,
+            "CastShadows": true,
+            "Color": {
+              "blend": "Linear",
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "0.19418,0.4093,0.37345,1"
+                }
+              ],
+              "alpha": []
+            },
+            "CylinderSegments": 12,
+            "DepthFeather": 0,
+            "EndCap": "None",
+            "Face": "Cylinder",
+            "FogStrength": 0.7,
+            "Lighting": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Opaque": false,
             "Points": [],
-            "Radius": 8,
-            "Radius2": 0,
-            "RollingResistance": null,
-            "Slices": 16,
-            "Static": false,
-            "Surface": null,
-            "SurfaceVelocity": "0,0,0",
-            "Type": "Cylinder"
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "SplineBias": 0,
+            "SplineContinuity": 0,
+            "SplineInterpolation": 0,
+            "SplineTension": 0,
+            "StartCap": "None",
+            "Texturing": {
+              "Texture": null,
+              "Material": null,
+              "WorldSpace": true,
+              "UnitsPerTexture": 10,
+              "Scale": 1,
+              "Offset": 0,
+              "Scroll": 0,
+              "Clamp": false
+            },
+            "UseVectorPoints": true,
+            "VectorPoints": [],
+            "Width": {
+              "rangey": "0,12",
+              "frames": [
+                {
+                  "x": 0.5,
+                  "y": 5,
+                  "in": 0,
+                  "out": 0,
+                  "mode": "Mirrored"
+                }
+              ]
+            },
+            "Wireframe": false
           }
         ],
         "Children": []
