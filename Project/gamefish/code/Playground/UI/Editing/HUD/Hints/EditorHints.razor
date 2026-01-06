@@ -14,4 +14,10 @@
 
 	<Keybind Action="Noclip" Text="@(IsSpectator ? "Play" : "Noclip")" />
 
+	@if (!IsSpectator)
+	{
+		<Keybind Action="Hook" Text="Hook" />
+		<Keybind Action="Item" Text="Gravity" />
+	}
+
 </root>
