@@ -47,14 +47,14 @@ partial class FishboxController
 		if ( !Pawn.IsValid() && !Pawn.IsAlive )
 			return;
 
-		DoSliding( in deltaTime );
-
 		DoJumping( in deltaTime );
 		DoGravity( in deltaTime );
 
 		DoGroundMovement( in deltaTime );
 		DoAirMovement( in deltaTime );
 		// DoStrafing( in deltaTime );
+
+		// DoSliding( in deltaTime );
 
 		DoWallRunning( in deltaTime );
 	}
