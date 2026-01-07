@@ -18,7 +18,7 @@ partial class Library
 
 	/// <returns> A sign that's never zero(will be 1 instead). </returns>
 	public static int Direction( this in int n )
-		=> n.Sign() == 1 ? 1 : -1;
+		=> n.Sign() == -1 ? -1 : 1;
 
 	/// <returns> If the number was within the range. </returns>
 	public static bool Within( this in int n, in int min, in int max )
