@@ -1,34 +1,21 @@
+using Boxfish.Utility;
 using GameFish;
 using ShrimpleCharacterController;
-using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Fishbox;
 
 partial class FishboxController
 {
-	/// <summary>
-	/// Small Fish's character controller.
-	/// </summary>
-	[Property]
-	[Feature( PAWN )]
-	[Title( "Controller" )]
-	public SCC ShrimpleController
-	{
-		get => _c.IsValid() ? _c
-			: _c = _c.GetCached( GameObject, FindMode.EverythingInSelf );
-
-		set { _c = value; }
-	}
-
-	protected SCC _c;
-
+	[Sync]
 	public override Vector3 Velocity
 	{
-		get => ShrimpleController?.Velocity ?? default;
+		get => Rigidbody?.Velocity ?? default;
 		set
 		{
-			if ( ShrimpleController.IsValid() )
-				ShrimpleController.Velocity = value;
+			if ( Rigidbody.IsValid() )
+				Rigidbody.Velocity = value;
+
+			OnSetVelocity( in value );
 		}
 	}
 
@@ -40,35 +27,36 @@ partial class FishboxController
 	[Range( 0f, 10000f, clamped: false ), Step( 1f )]
 	public float AirAcceleration { get; set; } = 2000f;
 
-	protected override void OnSetWishVelocity( in Vector3 wishVel )
+	public MoveHelper MoveHelper { get; set; }
+
+	protected virtual void OnSetVelocity( in Vector3 vel )
 	{
-		base.OnSetWishVelocity( wishVel );
-
-		if ( !ShrimpleController.IsValid() )
-			return;
-
-		_c.ManuallyUpdate = true;
-		_c.WishVelocity = WishVelocity;
 	}
 
 	protected override void Move( in float deltaTime )
 	{
 		PreMove( in deltaTime );
 
-		if ( Pawn.IsValid() && Pawn.IsAlive )
-		{
-			DoSliding( in deltaTime );
-
-			DoJumping( in deltaTime );
-			DoGravity( in deltaTime );
-
-			DoAirMovement( in deltaTime );
-			// DoStrafing( in deltaTime );
-
-			DoWallRunning( in deltaTime );
-		}
+		DoAbilities( in deltaTime );
 
 		PostMove( in deltaTime );
+	}
+
+	protected virtual void DoAbilities( in float deltaTime )
+	{
+		if ( !Pawn.IsValid() && !Pawn.IsAlive )
+			return;
+
+		DoSliding( in deltaTime );
+
+		DoJumping( in deltaTime );
+		DoGravity( in deltaTime );
+
+		DoGroundMovement( in deltaTime );
+		DoAirMovement( in deltaTime );
+		// DoStrafing( in deltaTime );
+
+		DoWallRunning( in deltaTime );
 	}
 
 	protected override void PreMove( in float deltaTime )
@@ -79,17 +67,18 @@ partial class FishboxController
 		IsSprinting = isAlive && ShouldSprint;
 
 		DoGroundTrace();
+
+		if ( IsGrounded && !GroundNormal.AlmostEqual( 0f ) )
+		{
+			// var upSpeed = Velocity.Forward( GroundNormal ).Dot( GroundNormal );
+
+			// if ( upSpeed <= 0f )
+			// StickToSurface( GroundTrace, SkinWidth.Max( 2f ) );
+		}
 	}
 
 	protected override void PostMove( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
-		_c.Move( deltaTime, manualUpdate: false );
-
-		if ( _c.IsStuck && TryUnstuck( out var result ) )
-			WorldPosition = result;
 	}
 
 	public override float GetWishSpeed()
@@ -122,26 +111,38 @@ partial class FishboxController
 	{
 		var wishVel = base.GetWishVelocity( inputDir );
 
-		if ( !ShrimpleController.IsValid() )
-			return wishVel;
-
-		// Hack fix for SCC's air aim momentum cancel bug.
-		if ( wishVel.AlmostEqual( 0f ) )
-			return _c.Velocity.ClampLength( float.Epsilon );
-
 		return wishVel;
+	}
+
+	protected virtual void DoGroundMovement( in float deltaTime )
+	{
+		if ( !IsGrounded )
+			return;
+
+		ApplyFriction( in deltaTime );
+
+		var wishDir = WishVelocity.Normal;
+
+		if ( wishDir.AlmostEqual( 0f ) )
+			return;
+
+		Velocity.Separate( Up, out var upVel, out var sideVel );
+
+		var wishSpeed = GetWishSpeed();
+		var speedLimit = sideVel.Length.Max( wishSpeed );
+
+		var speed = Acceleration * wishSpeed;
+		var vMove = wishDir * speed * deltaTime;
+
+		sideVel = (sideVel + vMove).ClampLength( speedLimit );
+
+		Velocity = sideVel + upVel;
 	}
 
 	protected virtual void DoAirMovement( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
+		if ( IsGrounded )
 			return;
-
-		if ( _c.IsOnGround )
-			return;
-
-		_c.AirAcceleration = 0f;
-		_c.AirDeceleration = 0f;
 
 		var wishDir = WishVelocity.Normal;
 
@@ -149,7 +150,7 @@ partial class FishboxController
 			return;
 
 		// Split the horizontal and vertical speeds.
-		_c.Velocity.Separate( WorldRotation.Up, out var upVel, out var sideVel );
+		Velocity.Separate( Up, out var upVel, out var sideVel );
 
 		// Respect their existing speed relative to the direction we're trying to move.
 		var speedLimit = sideVel.Length.Max( MoveSpeed );
@@ -157,7 +158,7 @@ partial class FishboxController
 		var airMove = wishDir * AirAcceleration * deltaTime;
 		sideVel = (sideVel + airMove).ClampLength( speedLimit );
 
-		_c.Velocity = sideVel + upVel;
+		Velocity = sideVel + upVel;
 	}
 
 	/// <summary>
@@ -165,11 +166,8 @@ partial class FishboxController
 	/// </summary>
 	protected virtual void DoStrafing( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
 		// If you're on the ground you don't need this.
-		if ( _c.IsOnGround && !IsSliding )
+		if ( IsGrounded && !IsSliding )
 			return;
 
 		var wishDir = WishVelocity.Normal;
@@ -178,27 +176,27 @@ partial class FishboxController
 			return;
 
 		// Split the horizontal and vertical speeds.
-		_c.Velocity.Separate( WorldRotation.Up, out var vVel, out var hVel );
+		Velocity.Separate( Up, out var vVel, out var hVel );
 
 		// Poor man's air strafe.
 		var velDir = hVel.Normal;
 
 		// var speed = hVel.Length;
-		// var curve = _c.IsOnGround && IsSliding ? SlideStrafing : AirStrafing;
+		// var curve = IsOnGround && IsSliding ? SlideStrafing : AirStrafing;
 		// var turnDot = velDir.Dot( wishDir ).Positive().Remap( 1f, 0f );
 
 		var turn = (velDir + wishDir).Normal;
 
 		hVel = (hVel + turn * deltaTime).Normal * hVel.Length;
 
-		_c.Velocity = hVel + vVel;
+		Velocity = hVel + vVel;
 	}
+
+	public override Vector3 GetJumpVelocity()
+		=> GroundNormal * JumpSpeed;
 
 	protected virtual void DoJumping( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
 		if ( !AllowJumping || !ShouldJump )
 			return;
 
@@ -210,24 +208,27 @@ partial class FishboxController
 			return;
 		}
 
-		if ( !_c.IsOnGround )
+		if ( !IsGrounded || GroundNormal.AlmostEqual( 0f ) )
 			return;
 
-		if ( IsSlipping && Up.Angle( _c.GroundNormal ) >= SlopeAngle )
+		if ( IsSlipping && Up.Angle( GroundNormal ) >= SlopeAngle )
 			return;
 
 		IsSliding = false;
+		IsGrounded = false;
 
-		// Jump relative to the ground/slope.
-		// var rForward = Vector3.VectorPlaneProject( EyeForward, _c.GroundNormal );
-		// var jumpDir = Rotation.LookAt( rForward, _c.GroundNormal ).Forward;
+		// Negate downwards velocity.
+		var jumpVel = GetJumpVelocity();
+		var jumpDir = jumpVel.Normal;
 
-		// Maintain jump height.
-		_c.GroundNormal.Separate( Up, out var _, out var jumpSide );
-		var jumpVel = (jumpSide + Up) * JumpSpeed;
+		Velocity.Separate( jumpDir, out var upVel, out var hVel );
 
-		// Cancel previous vertical velocity.
-		_c.Velocity = _c.Velocity.Horizontal( Up );
-		_c.Punch( jumpVel );
+		var vSpeed = jumpDir.Dot( upVel )
+			.Max( jumpVel.Length )
+			.Positive();
+
+		upVel = jumpDir * vSpeed;
+
+		Velocity = hVel + upVel;
 	}
 }

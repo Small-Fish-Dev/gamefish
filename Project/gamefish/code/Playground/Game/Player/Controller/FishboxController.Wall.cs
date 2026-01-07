@@ -1,7 +1,7 @@
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 using GameFish;
 using ShrimpleCharacterController;
-using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Fishbox;
 
@@ -54,10 +54,10 @@ partial class FishboxController
 	/// </summary>
 	[Property]
 	[Title( "Wall Skin" )]
-	[Range( 0.5f, 16f, clamped: false )]
+	[Range( 0.2f, 3f, clamped: false )]
 	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
-	public float WallRunStickSkin { get; set; } = 3f;
+	public float WallRunStickSkin { get; set; } = 2f;
 
 	[Feature( PLAYER )]
 	[Title( "Is Wall Running" )]
@@ -97,11 +97,6 @@ partial class FishboxController
 
 	protected Vector3 _wallRunNormal;
 
-	/// <summary>
-	/// What's up?
-	/// </summary>
-	public virtual Vector3 Up => WorldRotation.Up;
-
 	protected virtual void OnSetIsWallRunning( in bool isEnabled )
 	{
 		if ( IsProxy )
@@ -113,18 +108,6 @@ partial class FishboxController
 
 	protected virtual void OnSetWallRunNormal( in Vector3 wallNormal )
 	{
-		if ( IsProxy )
-			return;
-
-		if ( !IsWallRunning )
-			return;
-
-		var upDir = Up;
-
-		Velocity.Separate( upDir, out var upVel, out var hVel );
-		hVel = hVel.ProjectAndScale( WallRunNormal ).Horizontal( upDir );
-
-		Velocity = hVel + upVel;
 	}
 
 	protected virtual void StopWallRunning()
@@ -171,47 +154,6 @@ partial class FishboxController
 		return true;
 	}
 
-	protected virtual void StickToWall( in SceneTraceResult trWall )
-	{
-		if ( trWall.StartedSolid || !trWall.Hit )
-			return;
-
-		if ( trWall.Normal.AlmostEqual( 0f ) || !ITransform.IsValid( trWall.Normal ) )
-			return;
-
-		WallRunNormal = trWall.Normal;
-
-		// The actual distance from the wall.
-		var wallDist = trWall.Distance;
-
-		// The distance to actually move.
-		var moveDist = wallDist - SkinWidth.Max( WallRunStickSkin );
-
-		if ( moveDist.AlmostEqual( 0f ) )
-			return;
-
-		// Are we moving away from the wall?
-		var moveDelta = trWall.Direction * moveDist;
-
-		if ( moveDist < 0f )
-		{
-			var trSkin = TraceDelta( moveDelta ).Run();
-
-			if ( trSkin.StartedSolid )
-				return;
-
-			// What distance should we move backwards?
-			var backDist = trSkin.Distance - SkinWidth;
-
-			if ( backDist <= 0.01f )
-				return;
-
-			moveDelta = trSkin.Direction * backDist;
-		}
-
-		WorldPosition += moveDelta;
-	}
-
 	protected virtual void DoWallRunJump()
 	{
 		if ( !IsWallRunning )
@@ -219,12 +161,9 @@ partial class FishboxController
 
 		IsWallRunning = false;
 
-		if ( !ShrimpleController.IsValid() )
-			return;
-
 		var upWall = Vector3.VectorPlaneProject( Up, WallRunNormal );
 
-		_c.Velocity.Separate( upWall, out var upVel, out var hVel );
+		Velocity.Separate( upWall, out var upVel, out var hVel );
 
 		// Vertical Wall Jumping
 		var upSpeed = upVel.Dot( upWall ).Positive();
@@ -270,15 +209,12 @@ partial class FishboxController
 			hVel = hVel.Normal.LerpTo( WallRunNormal, minDot ) * hVel.Length;
 		}
 
-		_c.Velocity = upVel + hVel;
+		Velocity = upVel + hVel;
 	}
 
 	protected virtual void DoWallRunning( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
-		if ( _c.IsOnGround )
+		if ( IsGrounded )
 		{
 			if ( IsWallRunning )
 			{
@@ -309,9 +245,11 @@ partial class FishboxController
 
 			// Not wall running and trying to run.
 			var traceDist = (velMove.Length * deltaTime).Max( 1f );
-			var traceVector = velMove.Normal * traceDist;
+			var vDelta = velMove.Normal * traceDist;
 
-			var trMove = Trace( WorldPosition, WorldPosition + traceVector, TraceOffset ).Run();
+			var trMove = TraceBody( WorldPosition, vDelta, WallRunStickSkin ).Run();
+
+			// DebugOverlay.Trace( trMove );
 
 			if ( !trMove.StartedSolid && trMove.Hit )
 				if ( IsValidForWallRunning( trMove ) )
@@ -333,7 +271,10 @@ partial class FishboxController
 		}
 
 		// Stick to the current wall.
-		var trStick = TraceDelta( WallRunNormal * -WallRunStickDistance, TraceOffset ).Run();
+		var worldPos = WorldPosition;
+		var trStick = TraceBody( worldPos, -WallRunNormal * WallRunStickDistance, SkinWidth ).Run();
+
+		DebugOverlay.Trace( trStick );
 
 		if ( !trStick.Hit || !IsValidForWallRunning( trStick )
 			|| trStick.Normal.Angle( WallRunNormal ) > 45f )
@@ -342,13 +283,21 @@ partial class FishboxController
 			return;
 		}
 
-		StickToWall( trStick );
+		WallRunNormal = trStick.Normal;
+		StickToSurface( trStick, WallRunStickSkin );
 
 		// Run onto the next wall.
+		worldPos = WorldPosition;
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
-		var trWall = TraceDelta( deltaAhead, TraceOffset ).Run();
+		var trWall = TraceBody( worldPos, deltaAhead, SkinWidth ).Run();
 
 		if ( IsValidForWallRunning( trWall ) )
-			StickToWall( in trWall );
+		{
+			WallRunNormal = trWall.Normal;
+			StickToSurface( in trWall, WallRunStickSkin );
+		}
+
+		// Negate into-wall velocity.
+		Velocity = Velocity.Horizontal( WallRunNormal );
 	}
 }

@@ -1,6 +1,5 @@
 using GameFish;
 using ShrimpleCharacterController;
-using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Fishbox;
 
@@ -21,16 +20,37 @@ public partial class FishboxController : ShooterController
 	protected bool HoldingJump => Input.Down( JumpButton );
 	protected bool PressedJump => Input.Pressed( JumpButton );
 
-	[Property]
-	[Feature( PLAYER ), Group( PHYSICS )]
-	public HullCollider Cylinder { get; set; }
-
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		if ( !ShrimpleController.IsValid() )
-			this.Warn( $"needs a {typeof( SCC )} to function!" );
+		if ( !Rigidbody.IsValid() )
+			this.Warn( $"needs a {typeof( Rigidbody )} to function!" );
+
+		UpdateCollision();
+	}
+
+	protected override void OnPreRender()
+	{
+		base.OnPreRender();
+
+		/*
+		var totalHeight = GetTotalHeight();
+		var tBody = new Transform( GetWorldBodyCenter( WorldTransform, totalHeight ), WorldRotation );
+		var tHead = new Transform( GetWorldHeadCenter( WorldTransform, totalHeight ), WorldRotation );
+
+		this.DrawCylinder(
+			Radius, GetBodyHeight( totalHeight ),
+			Color.Cyan, Color.Transparent,
+			tWorld: tBody
+		);
+
+		this.DrawSphere(
+			Radius, default,
+			Color.Cyan, Color.Transparent,
+			tWorld: tHead
+		);
+		*/
 	}
 
 	public override void Simulate( in float deltaTime, in bool isFixedUpdate )

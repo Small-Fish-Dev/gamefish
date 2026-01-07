@@ -1,6 +1,5 @@
 using GameFish;
 using ShrimpleCharacterController;
-using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Fishbox;
 
@@ -56,9 +55,6 @@ partial class FishboxController
 		Pawn.EyeRotation = tEye.Rotation;
 
 		Transform.ClearInterpolation();
-
-		if ( ShrimpleController.IsValid() )
-			ShrimpleController.MaxGroundAngle = 360f;
 	}
 
 	protected virtual void DoGravity( in float deltaTime )
@@ -72,6 +68,9 @@ partial class FishboxController
 				GravityDirection = -trEye.Normal;
 		}
 
+		if ( IsGrounded )
+			return;
+
 		// We'll be making this orbital/field-based later.
 		var gravSpeed = Scene?.PhysicsWorld?.Gravity.Length ?? 0f;
 		var grav = GravityDirection * gravSpeed;
@@ -81,7 +80,7 @@ partial class FishboxController
 		{
 			grav *= WallRunGravity;
 		}
-		else if ( !_c.IsOnGround )
+		else if ( !IsGrounded )
 		{
 			if ( ShouldJump )
 				grav *= GravityFloating;
@@ -90,15 +89,6 @@ partial class FishboxController
 				grav *= GravitySinking;
 		}
 
-		if ( ShrimpleController.IsValid() )
-		{
-			_c.GravityEnabled = true;
-			_c.UseVectorGravity = true;
-			_c.VectorGravity = grav;
-		}
-		else
-		{
-			Velocity += grav * deltaTime;
-		}
+		Velocity += grav * deltaTime;
 	}
 }

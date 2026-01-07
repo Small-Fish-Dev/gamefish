@@ -1,6 +1,5 @@
 using GameFish;
 using ShrimpleCharacterController;
-using SCC = ShrimpleCharacterController.ShrimpleCharacterController;
 
 namespace Fishbox;
 
@@ -93,6 +92,9 @@ partial class FishboxController
 
 	protected virtual bool IsSlippery( in SceneTraceResult tr )
 	{
+		if ( tr.StartedSolid )
+			return false;
+
 		if ( !tr.Hit || tr.Surface is not Surface surface )
 			return false;
 
@@ -105,16 +107,13 @@ partial class FishboxController
 
 	protected virtual void DoSliding( in float deltaTime )
 	{
-		if ( !ShrimpleController.IsValid() )
-			return;
-
 		if ( !AllowSliding )
 			goto NotSliding;
 
 		var up = WorldRotation.Up;
-		var slopeAngle = up.Angle( _c.GroundNormal );
+		var slopeAngle = up.Angle( GroundNormal );
 
-		IsSlipping = _c.IsOnGround && (slopeAngle > SlopeAngle || IsSlippery( GroundTrace ));
+		IsSlipping = IsGrounded && (slopeAngle > SlopeAngle || IsSlippery( GroundTrace ));
 
 		if ( !IsSliding )
 		{
@@ -123,9 +122,9 @@ partial class FishboxController
 				// Always slide when slipping on a slope.
 				IsSliding = true;
 			}
-			else if ( _c.IsOnGround )
+			else if ( IsGrounded )
 			{
-				if ( IsDucking && _c.Velocity.Length >= SlideMinSpeed )
+				if ( IsDucking && Velocity.Length >= SlideMinSpeed )
 				{
 					// Start a slide with enough ground speed while crouching.
 					IsSliding = true;
@@ -135,27 +134,20 @@ partial class FishboxController
 
 		if ( IsSliding )
 		{
-			_c.MaxGroundAngle = 180f;
-			_c.StickToPlatforms = false;
-			_c.GroundStickEnabled = false;
-
-			_c.GroundAcceleration = 0f;
-			_c.GroundDeceleration = 0f;
-
-			if ( _c.IsOnGround && _c.GroundNormal != Vector3.Zero )
+			if ( IsGrounded && GroundNormal != Vector3.Zero )
 			{
 				// Slope Sliding
 				var slideSpeed = SlopeSpeed.Evaluate( slopeAngle );
-				var slideDir = Vector3.VectorPlaneProject( -up, _c.GroundNormal );
+				var slideDir = Vector3.VectorPlaneProject( -up, GroundNormal );
 
-				_c.Velocity += slideDir * slideSpeed * deltaTime;
+				Velocity += slideDir * slideSpeed * deltaTime;
 
 				// Slide Movement
-				var maxSlide = _c.Velocity.Length;
-				var slideMove = WishVelocity.ProjectAndScale( _c.GroundNormal );
+				var maxSlide = Velocity.Length;
+				var slideMove = WishVelocity.ProjectAndScale( GroundNormal );
 
 				// Mitigate sliding in circles.
-				var slideDot = slideMove.Normal.Dot( _c.Velocity.Normal ).Abs();
+				var slideDot = slideMove.Normal.Dot( Velocity.Normal ).Abs();
 				slideDot = slideDot.Remap( 0f, 0.5f, 0.6f, 1f ); // a bit over 45 degrees
 				slideMove *= slideDot;
 
@@ -168,25 +160,25 @@ partial class FishboxController
 					maxSlide = maxSlide.Max( slopeMoveSpeed );
 				}
 
-				_c.Velocity = (_c.Velocity + (slideMove * deltaTime))
+				Velocity = (Velocity + (slideMove * deltaTime))
 					.ClampLength( maxSlide );
 
 				// Slope Friction
-				var frictionScale = SurfaceFriction;
+				var frictionScale = GroundCollider?.Friction ?? 1f;
 
 				if ( IsSlipping )
 					frictionScale = frictionScale.Min( SlippingFriction );
 
 				var slideFriction = SlopeFriction.Evaluate( slopeAngle ) * frictionScale;
 
-				var finalSpeed = _c.Velocity.Length;
+				var finalSpeed = Velocity.Length;
 				finalSpeed -= (slideFriction * deltaTime).Positive();
 
-				_c.Velocity = _c.Velocity.Normal * finalSpeed.Positive();
+				Velocity = Velocity.Normal * finalSpeed.Positive();
 
 				// Stop sliding if going too slow.
 				if ( !IsSlipping && slopeAngle <= SlopeAngle )
-					if ( _c.Velocity.Length <= SlideStopSpeed )
+					if ( Velocity.Length <= SlideStopSpeed )
 						goto NotSliding;
 			}
 
@@ -198,11 +190,11 @@ partial class FishboxController
 		if ( IsSliding )
 			IsSliding = false;
 
-		_c.MaxGroundAngle = SlopeAngle;
-		_c.StickToPlatforms = true;
-		_c.GroundStickEnabled = true;
+		// MaxGroundAngle = SlopeAngle;
+		// StickToPlatforms = true;
+		// GroundStickEnabled = true;
 
-		_c.GroundAcceleration = Acceleration * 420f;
-		_c.GroundDeceleration = Friction.Value * 420f;
+		// GroundAcceleration = Acceleration * 420f;
+		// GroundDeceleration = Friction.Value * 420f;
 	}
 }

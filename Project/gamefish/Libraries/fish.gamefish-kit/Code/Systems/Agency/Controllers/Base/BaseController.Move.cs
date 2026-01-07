@@ -78,8 +78,35 @@ partial class BaseController
 
 	protected Vector3 _wishVel = Vector3.Zero;
 
-	public virtual bool IsGrounded { get; set; } = false;
-	public virtual Vector3 GroundNormal { get; set; } = Vector3.Up;
+	[Property]
+	[Title( "Is Grounded" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	protected bool InspectorIsGrounded => IsGrounded;
+
+	[Property, Normal]
+	[Title( "Ground Normal" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	protected Vector3 InspectorGroundNormal => GroundNormal;
+
+	[Sync]
+	public bool IsGrounded
+	{
+		get => _isGrounded;
+		set
+		{
+			if ( _isGrounded == value )
+				return;
+
+			_isGrounded = value;
+			OnSetIsGrounded( in value );
+		}
+	}
+
+	protected bool _isGrounded;
+
+	[Sync] public Vector3 GroundNormal { get; set; } = Vector3.Up;
+	[Sync] public Collider GroundCollider { get; set; }
+	[Sync] public GameObject GroundObject { get; set; }
 
 	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
@@ -96,6 +123,16 @@ partial class BaseController
 	protected MoveHelper _move;
 
 	public bool CanSimulate() => !IsProxy;
+
+	/// <summary>
+	/// Called when <see cref="IsGrounded"/> is changed to something else.
+	/// </summary>
+	protected virtual void OnSetIsGrounded( in bool isGrounded )
+	{
+		this.Log(isGrounded);
+		GroundCollider = null;
+		GroundObject = null;
+	}
 
 	/// <summary>
 	/// Called by the pawn's owner to run controller logic.
