@@ -45,6 +45,32 @@ partial class FishboxController : IScenePhysicsEvents
 
 	protected SceneTraceResult GroundTrace { get; set; }
 
+	void IScenePhysicsEvents.PrePhysicsStep()
+	{
+		if ( !Scene.IsValid() )
+			return;
+
+		var vMove = Velocity * Scene.FixedDelta;
+		var tr = TraceBody( WorldPosition, vMove, SkinWidth ).Run();
+
+		if ( !tr.Hit || tr.StartedSolid )
+			return;
+
+		// Move towards the surface we'll hit with some skin between.
+		StickToSurface( tr, vMove.Normal, skin: SkinWidth );
+
+		// Negative velocity towards this surface.
+		Velocity.Separate( tr.Normal, out var upVel, out var hVel );
+		upVel = upVel.Dot( tr.Normal ).Positive();
+
+		Velocity = upVel + hVel;
+	}
+
+	void IScenePhysicsEvents.PostPhysicsStep()
+	{
+
+	}
+
 	public override SceneTrace Trace()
 	{
 		if ( !Scene.IsValid() )
@@ -100,7 +126,7 @@ partial class FishboxController : IScenePhysicsEvents
 			destPos += trBody.Normal * skin;
 
 		if ( trBody.StartedSolid )
-			destPos = trBody.StartPosition + (dir * skin);
+			destPos = trBody.StartPosition - (dir * skin);
 		else
 			destPos -= dir * skin;
 
