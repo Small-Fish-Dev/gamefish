@@ -20,22 +20,25 @@ partial class FishboxController
 		public SceneTraceResult BodyTrace { get; set; }
 		public SceneTraceResult HeadTrace { get; set; }
 
-		/// <summary> Did the body or head hit? </summary>
-		public readonly bool Hit => BodyTrace.Hit || HeadTrace.Hit;
 		public readonly bool BothHit => BodyTrace.Hit && HeadTrace.Hit;
 
 		/// <summary> Did the body or head start solid? </summary>
 		public readonly bool StartedSolid => BodyTrace.StartedSolid || HeadTrace.StartedSolid;
 
-		/// <summary> Which trace hit, if either? </summary>
-		public readonly SceneTraceResult Trace => BodyTrace.Hit ? BodyTrace : (HeadTrace.Hit ? HeadTrace : default);
+		/// <summary> The main trace that we decided hit(if any). </summary>
+		public readonly SceneTraceResult HitTrace { get; }
 
-		public readonly Vector3 Normal { get; }
-		public readonly Vector3 HitPosition { get; }
+		/// <summary> The world position of where the physics body would be at. </summary>
+		public readonly Vector3? EndPosition { get; }
 
-		public readonly GameObject GameObject { get; }
-		public readonly Collider Collider { get; }
-		public readonly Surface Surface { get; }
+		public readonly bool Hit => HitTrace.Hit;
+
+		public readonly Vector3 Normal => HitTrace.Normal;
+		public readonly Vector3 HitPosition => HitTrace.HitPosition;
+
+		public readonly GameObject GameObject => HitTrace.GameObject;
+		public readonly Collider Collider => HitTrace.Collider;
+		public readonly Surface Surface => HitTrace.Surface;
 
 		public TraceResult() { }
 
@@ -53,31 +56,50 @@ partial class FishboxController
 			HeadTrace = trHead;
 
 			// Trace Result Cache
-			var tr = Trace;
-
-			Normal = tr.Normal;
-			HitPosition = tr.HitPosition;
-
-			GameObject = tr.GameObject;
-			Collider = tr.Collider;
-			Surface = tr.Surface;
+			if ( TryGetHitTrace( out var tr, out var endPos ) )
+			{
+				HitTrace = tr;
+				EndPosition = endPos;
+			}
 		}
 
-		public readonly bool TryGetEndPosition( out Vector3 endPos )
+		/// <summary> Which trace hit, if either? </summary>
+		private readonly bool TryGetHitTrace( out SceneTraceResult tr, out Vector3 endPos )
 		{
+			// If they both hit then choose the trace with less distance.
+			if ( BodyTrace.Hit && HeadTrace.Hit )
+			{
+				if ( BodyTrace.Distance <= HeadTrace.Distance )
+					goto BodyHit;
+				else
+					goto HeadHit;
+			}
+
+			// Prioritize the body(cylinder) trace.
+			BodyHit:
+
 			if ( BodyTrace.Hit )
 			{
-				endPos = BodyTrace.EndPosition - BodyWorldOffset;
+				tr = BodyTrace;
+				endPos = tr.EndPosition - BodyWorldOffset;
+
 				return true;
 			}
+
+			// Head(sphere) trace is second.
+			HeadHit:
 
 			if ( HeadTrace.Hit )
 			{
-				endPos = HeadTrace.EndPosition - HeadWorldOffset;
+				tr = HeadTrace;
+				endPos = tr.EndPosition - HeadWorldOffset;
+
 				return true;
 			}
 
-			endPos = StartPosition;
+			tr = default;
+			endPos = WorldStart.Position;
+
 			return false;
 		}
 	}

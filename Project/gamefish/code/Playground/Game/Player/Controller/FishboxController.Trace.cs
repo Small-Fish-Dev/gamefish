@@ -134,22 +134,20 @@ partial class FishboxController : IScenePhysicsEvents
 		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
 			return;
 
-		if ( !tr.TryGetEndPosition( out var destPos ) )
+		if ( tr.EndPosition is not Vector3 endPos )
+			return;
+
+		if ( !tr.Hit )
 			return;
 
 		var skin = withSkin ?? tr.Skin;
 
 		if ( IsValidGround( in tr ) )
-			destPos += Up * GroundSkinWidth;
-		else
-			destPos += tr.Normal * skin;
+			endPos += Up * GroundSkinWidth;
+		else if ( !tr.StartedSolid )
+			endPos += (tr.Normal - dir).Normal * skin;
 
-		if ( tr.StartedSolid )
-			destPos = tr.StartPosition - (dir * skin);
-		else
-			destPos -= dir * skin;
-
-		var tDest = WorldTransform.WithPosition( destPos );
+		var tDest = WorldTransform.WithPosition( endPos );
 
 		var vel = Velocity;
 		Rigidbody.PhysicsBody.Transform = tDest;
