@@ -90,7 +90,7 @@ partial class FishboxController
 	/// </summary>
 	[Sync] public bool IsSlipping { get; set; }
 
-	protected virtual bool IsSlippery( in SceneTraceResult tr )
+	protected virtual bool IsSlippery( in TraceResult tr )
 	{
 		if ( tr.StartedSolid )
 			return false;

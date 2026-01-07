@@ -119,23 +119,28 @@ partial class FishboxController
 		WallRunNormal = default;
 	}
 
-	protected virtual void StartWallRunning( in SceneTraceResult trWall )
+	protected virtual bool TryStartWallRunning( in TraceResult trWall )
 	{
 		if ( IsWallRunning )
-			return;
+			return false;
+
+		if ( !trWall.Hit )
+			return false;
 
 		// this.Log( $"Started wall running. Hit object:[{trWall.GameObject}]" );
 
 		IsWallRunning = true;
 		WallRunNormal = trWall.Normal;
+
+		return true;
 	}
 
-	public virtual bool IsValidForWallRunning( in SceneTraceResult tr )
+	protected virtual bool IsValidForWallRunning( in TraceResult tr )
 	{
 		if ( !tr.Hit )
 			return false;
 
-		if ( !IsValidWallAngle( in tr.Normal, WishVelocity.Normal ) )
+		if ( !IsValidWallAngle( tr.Normal, WishVelocity.Normal ) )
 			return false;
 
 		if ( IsSlippery( tr ) )
@@ -247,13 +252,13 @@ partial class FishboxController
 			var traceDist = (velMove.Length * deltaTime).Max( 1f );
 			var vDelta = velMove.Normal * traceDist;
 
-			var trMove = TraceBody( WorldPosition, vDelta, WallRunStickSkin ).Run();
+			var trMove = TraceColliders( WorldPosition, vDelta, WallRunStickSkin );
 
 			// DebugOverlay.Trace( trMove );
 
 			if ( !trMove.StartedSolid && trMove.Hit )
 				if ( IsValidForWallRunning( trMove ) )
-					StartWallRunning( in trMove );
+					TryStartWallRunning( in trMove );
 
 			// Debug Trace Visualizer
 			// DebugOverlay.Trace( trMove );
@@ -271,7 +276,7 @@ partial class FishboxController
 		}
 
 		// Stick to the current wall.
-		var trStick = TraceBody( WorldPosition, -WallRunNormal * WallRunStickDistance, SkinWidth ).Run();
+		var trStick = TraceColliders( WorldPosition, -WallRunNormal * WallRunStickDistance, SkinWidth );
 
 		// DebugOverlay.Trace( trStick );
 
@@ -287,7 +292,7 @@ partial class FishboxController
 
 		// Run onto the next wall.
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
-		var trWall = TraceBody( WorldPosition, deltaAhead, SkinWidth ).Run();
+		var trWall = TraceColliders( WorldPosition, deltaAhead, SkinWidth );
 
 		if ( IsValidForWallRunning( trWall ) )
 		{

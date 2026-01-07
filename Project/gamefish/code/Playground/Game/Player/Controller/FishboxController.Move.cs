@@ -78,7 +78,7 @@ partial class FishboxController
 		if ( IsGrounded )
 		{
 			var vDown = -Up;
-			var trStickToGround = TraceBody( WorldPosition, vDown * GroundStickDistance, 0f ).Run();
+			var trStickToGround = TraceColliders( WorldPosition, vDown * GroundStickDistance, 0f );
 			StickToSurface( trStickToGround, vDown, GroundSkinWidth );
 		}
 	}
@@ -166,7 +166,7 @@ partial class FishboxController
 		var vUp = Up;
 		var vDown = -vUp * WorldScale.z * GroundCheckDistance;
 
-		GroundTrace = TraceBody( origin, vDown, GroundSkinWidth ).Run();
+		GroundTrace = TraceColliders( origin, vDown, GroundSkinWidth );
 
 		// DebugOverlay.Trace( GroundTrace );
 
@@ -176,11 +176,9 @@ partial class FishboxController
 			return;
 		}
 
-		var vNormal = GroundTrace.Normal;
-
 		Velocity.Separate( GroundNormal, out var upVel, out var hVel );
 
-		var upSpeed = vNormal.Dot( upVel );
+		var upSpeed = GroundTrace.Normal.Dot( upVel );
 		var isRamping = upSpeed >= 300f;
 
 		IsGrounded = !isRamping && IsValidGround( GroundTrace );
@@ -188,7 +186,7 @@ partial class FishboxController
 		if ( !IsGrounded )
 			return;
 
-		GroundNormal = vNormal;
+		GroundNormal = GroundTrace.Normal;
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
 

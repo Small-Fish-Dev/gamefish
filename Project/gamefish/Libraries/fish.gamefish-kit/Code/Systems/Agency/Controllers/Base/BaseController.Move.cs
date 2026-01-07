@@ -190,7 +190,7 @@ partial class BaseController
 	/// This is where solid object filters and such go.
 	/// </summary>
 	/// <returns> The basis of every collison trace. </returns>
-	public virtual SceneTrace Trace()
+	public virtual SceneTrace BuildTrace()
 	{
 		if ( !Scene.IsValid() )
 			return default;
@@ -205,15 +205,15 @@ partial class BaseController
 	/// Creates the default collision trace and sets the start and end points.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace Trace( Vector3 from, Vector3 to, in Vector3 offset = default )
-		=> Trace().FromTo( from + offset, to + offset );
+	public virtual SceneTrace Trace( Vector3 from, Vector3 to )
+		=> BuildTrace().FromTo( from, to );
 
 	/// <summary>
 	/// Creates the default collision trace and sets the end point relative to our starting position.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace TraceDelta( Vector3 vectorFromOrigin, in Vector3 offset = default )
-		=> Trace( WorldPosition, WorldPosition + vectorFromOrigin, offset );
+	public virtual SceneTrace TraceDelta( Vector3 vectorFromOrigin )
+		=> Trace( WorldPosition, WorldPosition + vectorFromOrigin );
 
 	/// <summary>
 	/// Reduces velocity over time.
@@ -247,7 +247,7 @@ partial class BaseController
 
 		var move = Mover ??= new();
 
-		move.WithTrace( Trace() )
+		move.WithTrace( BuildTrace() )
 			.Move( from, to, Velocity );
 
 		WorldPosition = move.Position;

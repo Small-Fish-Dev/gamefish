@@ -38,12 +38,16 @@ partial class FishboxController : IScenePhysicsEvents
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public float GroundSkinWidth { get; set; } = 1f;
 
+	[Property]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public TagSet IgnoreTags { get; set; } = [];
+
 	public virtual Vector3 TraceOffset => GetLocalCenter();
 
 	/// <summary> What's up? </summary>
 	public virtual Vector3 Up => WorldRotation.Up;
 
-	protected SceneTraceResult GroundTrace { get; set; }
+	protected TraceResult GroundTrace { get; set; }
 
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
@@ -51,13 +55,13 @@ partial class FishboxController : IScenePhysicsEvents
 			return;
 
 		var vMove = Velocity * Scene.FixedDelta;
-		var tr = TraceBody( WorldPosition, vMove, SkinWidth ).Run();
+		var tr = TraceColliders( WorldPosition, vMove, SkinWidth );
 
 		if ( !tr.Hit || tr.StartedSolid )
 			return;
 
 		// Move towards the surface we'll hit with some skin between.
-		StickToSurface( tr, vMove.Normal, skin: SkinWidth );
+		StickToSurface( tr, vMove.Normal, SkinWidth );
 
 		// Negative velocity towards this surface.
 		Velocity.Separate( tr.Normal, out var upVel, out var hVel );
@@ -71,66 +75,80 @@ partial class FishboxController : IScenePhysicsEvents
 
 	}
 
-	public override SceneTrace Trace()
+	public override SceneTrace BuildTrace()
 	{
 		if ( !Scene.IsValid() )
 			return default;
 
 		var tr = Scene.Trace
-			.IgnoreGameObjectHierarchy( GameObject );
+			.IgnoreGameObjectHierarchy( GameObject )
+			.WithoutTags( IgnoreTags )
+			.Rotated( WorldRotation );
 
 		return tr;
 	}
 
-	public virtual SceneTrace TraceBody( in Vector3 startPos, in Vector3 vDelta, in float skin )
+	public virtual TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in float skin )
+		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta, in skin );
+
+	public virtual TraceResult TraceColliders( in Transform tWorld, in Vector3 vDelta, in float skin )
 	{
-		var scale = WorldScale;
-		var radius = Radius * scale.x.Abs();
+		var radius = Radius * tWorld.Scale.x.Abs();
 
-		var tWorld = WorldTransform;
 		var totalHeight = GetTotalHeight();
+		var bodyHeight = GetBodyHeight( totalHeight );
 
-		var offset = GetBodyWorldOffset( tWorld, in totalHeight );
+		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight );
+		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight );
 
-		var vSkin = vDelta.Normal * skin;
-		var endPos = startPos + vDelta + vSkin;
+		var dir = vDelta.Normal;
+		var endPos = tWorld.Position + vDelta + (dir * skin);
 
-		var tr = Trace( startPos, endPos, offset )
-			.Cylinder( GetBodyHeight( in totalHeight ), radius ); // squadala
+		var bodyStart = tWorld.Position + bodyOffset;
+		var bodyEnd = endPos + bodyOffset;
 
-		// .WithoutTags( IgnoreTags )
+		var headStart = tWorld.Position + headOffset;
+		var headEnd = endPos + headOffset;
 
-		tr = tr.Rotated( WorldRotation );
+		var trBase = BuildTrace();
 
-		return tr;
+		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
+		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
+
+		return new( in skin, in tWorld, in dir, in bodyOffset, in headOffset, in trBody, in trHead );
 	}
 
-	protected virtual bool IsValidGround( in SceneTraceResult tr )
+	protected virtual bool IsValidGround( in TraceResult tr )
 	{
 		if ( !tr.Hit || tr.StartedSolid )
+			return false;
+
+		if ( tr.Normal.AlmostEqual( 0f ) )
 			return false;
 
 		return Up.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	protected virtual void StickToSurface( in SceneTraceResult trBody, in Vector3 dir, in float skin = 1f )
+	protected virtual void StickToSurface( in TraceResult tr, in Vector3 dir, in float? withSkin = null )
 	{
 		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
 			return;
 
-		Vector3 destPos = trBody.EndPosition;
+		if ( !tr.TryGetEndPosition( out var destPos ) )
+			return;
 
-		if ( IsValidGround( in trBody ) )
+		var skin = withSkin ?? tr.Skin;
+
+		if ( IsValidGround( in tr ) )
 			destPos += Up * GroundSkinWidth;
 		else
-			destPos += trBody.Normal * skin;
+			destPos += tr.Normal * skin;
 
-		if ( trBody.StartedSolid )
-			destPos = trBody.StartPosition - (dir * skin);
+		if ( tr.StartedSolid )
+			destPos = tr.StartPosition - (dir * skin);
 		else
 			destPos -= dir * skin;
 
-		destPos -= BodyWorldOffset;
 		var tDest = WorldTransform.WithPosition( destPos );
 
 		var vel = Velocity;
@@ -144,10 +162,6 @@ partial class FishboxController : IScenePhysicsEvents
 	protected virtual float GetTotalHeight()
 		=> ((GetLocalCenter().z * 2f) + Radius.Positive().Min( 8f )).Max( Radius );
 
-	protected virtual float GetBodyHeight( in float totalHeight )
-		=> totalHeight - Radius;
-
-	public Vector3 BodyWorldOffset => GetBodyWorldOffset( WorldTransform, GetTotalHeight() );
 
 	protected Vector3 GetBodyWorldOffset( in Transform tWorld, in float totalHeight )
 	{
@@ -158,14 +172,25 @@ partial class FishboxController : IScenePhysicsEvents
 	protected Vector3 GetWorldBodyCenter( in Transform tWorld, in float totalHeight )
 		=> tWorld.PointToWorld( GetLocalBodyCenter( in totalHeight ) );
 
-	protected Vector3 GetWorldHeadCenter( in Transform tWorld, in float totalHeight )
-		=> tWorld.PointToWorld( GetLocalHeadCenter( in totalHeight ) );
-
 	protected Vector3 GetLocalBodyCenter( in float totalHeight )
 		=> Vector3.Up * (GetBodyHeight( in totalHeight ) / 2f);
 
+
+	protected Vector3 GetHeadWorldOffset( in Transform tWorld, in float totalHeight )
+	{
+		var offset = GetLocalHeadCenter( totalHeight );
+		return tWorld.Rotation * offset * tWorld.Scale.z;
+	}
+
+	protected Vector3 GetWorldHeadCenter( in Transform tWorld, in float totalHeight )
+		=> tWorld.PointToWorld( GetLocalHeadCenter( in totalHeight ) );
+
 	protected Vector3 GetLocalHeadCenter( in float totalHeight )
 		=> Vector3.Up * (totalHeight - Radius);
+
+	protected virtual float GetBodyHeight( in float totalHeight )
+		=> totalHeight - Radius;
+
 
 	protected virtual void UpdateCollision()
 	{

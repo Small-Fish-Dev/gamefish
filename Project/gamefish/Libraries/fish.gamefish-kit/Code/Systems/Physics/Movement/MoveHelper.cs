@@ -73,7 +73,7 @@ public partial class MoveHelper
 	public MoveHelper( BaseController c )
 	{
 		// Controller = c;
-		Trace = c.Trace();
+		Trace = c.BuildTrace();
 	}
 
 	public MoveHelper( in SceneTrace tr, in Vector3 pos, in Vector3 dir, in float dist, in Vector3 vel )
@@ -90,7 +90,7 @@ public partial class MoveHelper
 	public MoveHelper WithController( BaseController c )
 	{
 		// Controller = c;
-		Trace = c?.Trace() ?? default;
+		Trace = c?.BuildTrace() ?? default;
 		return this;
 	}
 
