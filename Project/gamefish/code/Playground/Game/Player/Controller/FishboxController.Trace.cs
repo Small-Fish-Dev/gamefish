@@ -3,7 +3,7 @@ using ShrimpleCharacterController;
 
 namespace Fishbox;
 
-partial class FishboxController
+partial class FishboxController : IScenePhysicsEvents
 {
 	[Property]
 	[Feature( PLAYER ), Group( PHYSICS )]
@@ -17,6 +17,26 @@ partial class FishboxController
 	[Range( 1f, 32f, clamped: false )]
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public float Radius { get; set; } = 12f;
+
+	[Property]
+	[Range( 0f, 90f, clamped: false )]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public float GroundAngle { get; set; } = 50f;
+
+	[Property]
+	[Range( 1f, 10f, clamped: false )]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public float GroundCheckDistance { get; set; } = 4f;
+
+	[Property]
+	[Range( 1f, 32f, clamped: false )]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public float GroundStickDistance { get; set; } = 24f;
+
+	[Property]
+	[Range( 0.1f, 5f, clamped: false )]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public float GroundSkinWidth { get; set; } = 1f;
 
 	public virtual Vector3 TraceOffset => GetLocalCenter();
 
@@ -41,9 +61,10 @@ partial class FishboxController
 		var scale = WorldScale;
 		var radius = Radius * scale.x.Abs();
 
+		var tWorld = WorldTransform;
 		var totalHeight = GetTotalHeight();
-		var offset = GetLocalBodyCenter( totalHeight );
-		offset = WorldRotation * offset * scale.z;
+
+		var offset = GetBodyWorldOffset( tWorld, in totalHeight );
 
 		var vSkin = vDelta.Normal * skin;
 		var endPos = startPos + vDelta + vSkin;
@@ -58,29 +79,37 @@ partial class FishboxController
 		return tr;
 	}
 
-	public virtual void DoGroundTrace()
+	protected virtual bool IsValidGround( in SceneTraceResult tr )
 	{
-		var origin = WorldPosition;
-		var vDown = WorldRotation.Down * WorldScale.z * 5f;
+		if ( !tr.Hit || tr.StartedSolid )
+			return false;
 
-		GroundTrace = TraceBody( origin, vDown, SkinWidth ).Run();
+		return Up.Angle( tr.Normal ) <= GroundAngle;
+	}
 
-		// DebugOverlay.Trace( GroundTrace );
+	protected virtual void StickToSurface( in SceneTraceResult trBody, in Vector3 dir, in float skin = 1f )
+	{
+		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
+			return;
 
-		if ( GroundTrace.Hit )
-		{
-			GroundNormal = GroundTrace.Normal;
-			GroundCollider = GroundTrace.Collider;
-			GroundObject = GroundTrace.GameObject;
+		Vector3 destPos = trBody.EndPosition;
 
-			var upSpeed = Velocity.Forward( GroundNormal ).Dot( GroundNormal );
-
-			IsGrounded = upSpeed <= 10f && GroundNormal.Angle( Up ) < 45f; // TEMP
-		}
+		if ( IsValidGround( in trBody ) )
+			destPos += Up * GroundSkinWidth;
 		else
-		{
-			IsGrounded = false;
-		}
+			destPos += trBody.Normal * skin;
+
+		if ( trBody.StartedSolid )
+			destPos = trBody.StartPosition + (dir * skin);
+		else
+			destPos -= dir * skin;
+
+		destPos -= BodyWorldOffset;
+		var tDest = WorldTransform.WithPosition( destPos );
+
+		var vel = Velocity;
+		Rigidbody.PhysicsBody.Transform = tDest;
+		Velocity = vel;
 	}
 
 	protected virtual Vector3 GetLocalCenter()
@@ -91,6 +120,14 @@ partial class FishboxController
 
 	protected virtual float GetBodyHeight( in float totalHeight )
 		=> totalHeight - Radius;
+
+	public Vector3 BodyWorldOffset => GetBodyWorldOffset( WorldTransform, GetTotalHeight() );
+
+	protected Vector3 GetBodyWorldOffset( in Transform tWorld, in float totalHeight )
+	{
+		var offset = GetLocalBodyCenter( totalHeight );
+		return tWorld.Rotation * offset * tWorld.Scale.z;
+	}
 
 	protected Vector3 GetWorldBodyCenter( in Transform tWorld, in float totalHeight )
 		=> tWorld.PointToWorld( GetLocalBodyCenter( in totalHeight ) );
@@ -120,42 +157,5 @@ partial class FishboxController
 			HeadSphere.Radius = Radius;
 			HeadSphere.LocalPosition = Vector3.Up * (totalHeight - Radius);
 		}
-	}
-
-	protected virtual void StickToSurface( in SceneTraceResult trHit, in float skinWidth = 1f )
-	{
-		if ( trHit.StartedSolid || !trHit.Hit )
-			return;
-
-		if ( trHit.Normal.AlmostEqual( 0f ) || !ITransform.IsValid( trHit.Normal ) )
-			return;
-
-		// The actual distance from the wall.
-		var hitDist = trHit.Distance;
-
-		// The distance to actually move.
-		var moveDist = hitDist - SkinWidth.Max( skinWidth );
-
-		if ( moveDist.AlmostEqual( 0f ) )
-			return;
-
-		// Are we moving away from the wall?
-		var moveDelta = trHit.Direction * moveDist;
-
-		if ( moveDist < 0f )
-		{
-			var trSkin = TraceBody( WorldPosition, moveDelta, SkinWidth ).Run();
-
-			// DebugOverlay.Trace( trSkin );
-
-			if ( trSkin.StartedSolid )
-				return;
-
-			// What distance should we move backwards?
-			var backDist = (trSkin.Distance - SkinWidth).Positive();
-			moveDelta = trSkin.Direction * backDist;
-		}
-
-		WorldPosition += moveDelta;
 	}
 }

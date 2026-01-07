@@ -24,6 +24,7 @@ partial class BaseController
 	/// from surfaces to prevent getting stuck in them.
 	/// </summary>
 	[Property]
+	[Range( 0.01f, 5f, clamped: false )]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PAWN_ORDER )]
 	public float SkinWidth { get; set; } = 0.2f;
 
@@ -129,7 +130,6 @@ partial class BaseController
 	/// </summary>
 	protected virtual void OnSetIsGrounded( in bool isGrounded )
 	{
-		this.Log(isGrounded);
 		GroundCollider = null;
 		GroundObject = null;
 	}

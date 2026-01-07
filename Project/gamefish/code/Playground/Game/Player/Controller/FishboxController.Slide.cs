@@ -110,8 +110,8 @@ partial class FishboxController
 		if ( !AllowSliding )
 			goto NotSliding;
 
-		var up = WorldRotation.Up;
-		var slopeAngle = up.Angle( GroundNormal );
+		var vUp = Up;
+		var slopeAngle = vUp.Angle( GroundNormal );
 
 		IsSlipping = IsGrounded && (slopeAngle > SlopeAngle || IsSlippery( GroundTrace ));
 
@@ -134,11 +134,11 @@ partial class FishboxController
 
 		if ( IsSliding )
 		{
-			if ( IsGrounded && GroundNormal != Vector3.Zero )
+			if ( IsGrounded && !GroundNormal.AlmostEqual( 0f ) )
 			{
 				// Slope Sliding
 				var slideSpeed = SlopeSpeed.Evaluate( slopeAngle );
-				var slideDir = Vector3.VectorPlaneProject( -up, GroundNormal );
+				var slideDir = Vector3.VectorPlaneProject( -vUp, GroundNormal );
 
 				Velocity += slideDir * slideSpeed * deltaTime;
 

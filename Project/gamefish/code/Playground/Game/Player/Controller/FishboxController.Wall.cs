@@ -271,10 +271,9 @@ partial class FishboxController
 		}
 
 		// Stick to the current wall.
-		var worldPos = WorldPosition;
-		var trStick = TraceBody( worldPos, -WallRunNormal * WallRunStickDistance, SkinWidth ).Run();
+		var trStick = TraceBody( WorldPosition, -WallRunNormal * WallRunStickDistance, SkinWidth ).Run();
 
-		DebugOverlay.Trace( trStick );
+		// DebugOverlay.Trace( trStick );
 
 		if ( !trStick.Hit || !IsValidForWallRunning( trStick )
 			|| trStick.Normal.Angle( WallRunNormal ) > 45f )
@@ -284,17 +283,16 @@ partial class FishboxController
 		}
 
 		WallRunNormal = trStick.Normal;
-		StickToSurface( trStick, WallRunStickSkin );
+		StickToSurface( trStick, -WallRunNormal, WallRunStickSkin );
 
 		// Run onto the next wall.
-		worldPos = WorldPosition;
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
-		var trWall = TraceBody( worldPos, deltaAhead, SkinWidth ).Run();
+		var trWall = TraceBody( WorldPosition, deltaAhead, SkinWidth ).Run();
 
 		if ( IsValidForWallRunning( trWall ) )
 		{
 			WallRunNormal = trWall.Normal;
-			StickToSurface( in trWall, WallRunStickSkin );
+			StickToSurface( in trWall, -trWall.Normal, WallRunStickSkin );
 		}
 
 		// Negate into-wall velocity.

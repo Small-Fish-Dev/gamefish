@@ -29,6 +29,9 @@ partial class FishboxController
 
 	public MoveHelper MoveHelper { get; set; }
 
+	[Sync]
+	public TimeUntil NextGroundStick { get; set; }
+
 	protected virtual void OnSetVelocity( in Vector3 vel )
 	{
 	}
@@ -66,19 +69,18 @@ partial class FishboxController
 		IsDucking = isAlive && ShouldDuck;
 		IsSprinting = isAlive && ShouldSprint;
 
-		DoGroundTrace();
-
-		if ( IsGrounded && !GroundNormal.AlmostEqual( 0f ) )
-		{
-			// var upSpeed = Velocity.Forward( GroundNormal ).Dot( GroundNormal );
-
-			// if ( upSpeed <= 0f )
-			// StickToSurface( GroundTrace, SkinWidth.Max( 2f ) );
-		}
+		UpdateGround( in deltaTime );
 	}
 
 	protected override void PostMove( in float deltaTime )
 	{
+		// Stick to the ground.
+		if ( IsGrounded )
+		{
+			var vDown = -Up;
+			var trStickToGround = TraceBody( WorldPosition, vDown * GroundStickDistance, 0f ).Run();
+			StickToSurface( trStickToGround, vDown, GroundSkinWidth );
+		}
 	}
 
 	public override float GetWishSpeed()
@@ -112,6 +114,85 @@ partial class FishboxController
 		var wishVel = base.GetWishVelocity( inputDir );
 
 		return wishVel;
+	}
+
+	public override Vector3 GetJumpVelocity()
+		=> GroundNormal * JumpSpeed;
+
+	protected virtual void DoJumping( in float deltaTime )
+	{
+		if ( !AllowJumping || !ShouldJump )
+			return;
+
+		if ( IsWallRunning )
+		{
+			if ( PressedJump )
+				DoWallRunJump();
+
+			return;
+		}
+
+		if ( !IsGrounded || GroundNormal.AlmostEqual( 0f ) )
+			return;
+
+		if ( IsSlipping )
+			return;
+
+		IsSliding = false;
+		IsGrounded = false;
+
+		// Negate downwards velocity.
+		var jumpVel = GetJumpVelocity();
+		var jumpDir = jumpVel.Normal;
+
+		Velocity.Separate( jumpDir, out var upVel, out var hVel );
+
+		var vSpeed = jumpDir.Dot( upVel )
+			.Max( jumpVel.Length )
+			.Positive();
+
+		upVel = jumpDir * vSpeed;
+
+		Velocity = hVel + upVel;
+	}
+
+	public virtual void UpdateGround( in float deltaTime )
+	{
+		if ( !NextGroundStick )
+			return;
+
+		var origin = WorldPosition;
+
+		var vUp = Up;
+		var vDown = -vUp * WorldScale.z * GroundCheckDistance;
+
+		GroundTrace = TraceBody( origin, vDown, GroundSkinWidth ).Run();
+
+		// DebugOverlay.Trace( GroundTrace );
+
+		if ( !GroundTrace.Hit )
+		{
+			IsGrounded = false;
+			return;
+		}
+
+		var vNormal = GroundTrace.Normal;
+
+		Velocity.Separate( GroundNormal, out var upVel, out var hVel );
+
+		var upSpeed = vNormal.Dot( upVel );
+		var isRamping = upSpeed >= 300f;
+
+		IsGrounded = !isRamping && IsValidGround( GroundTrace );
+
+		if ( !IsGrounded )
+			return;
+
+		GroundNormal = vNormal;
+		GroundCollider = GroundTrace.Collider;
+		GroundObject = GroundTrace.GameObject;
+
+		Velocity = hVel;
 	}
 
 	protected virtual void DoGroundMovement( in float deltaTime )
@@ -190,45 +271,5 @@ partial class FishboxController
 		hVel = (hVel + turn * deltaTime).Normal * hVel.Length;
 
 		Velocity = hVel + vVel;
-	}
-
-	public override Vector3 GetJumpVelocity()
-		=> GroundNormal * JumpSpeed;
-
-	protected virtual void DoJumping( in float deltaTime )
-	{
-		if ( !AllowJumping || !ShouldJump )
-			return;
-
-		if ( IsWallRunning )
-		{
-			if ( PressedJump )
-				DoWallRunJump();
-
-			return;
-		}
-
-		if ( !IsGrounded || GroundNormal.AlmostEqual( 0f ) )
-			return;
-
-		if ( IsSlipping && Up.Angle( GroundNormal ) >= SlopeAngle )
-			return;
-
-		IsSliding = false;
-		IsGrounded = false;
-
-		// Negate downwards velocity.
-		var jumpVel = GetJumpVelocity();
-		var jumpDir = jumpVel.Normal;
-
-		Velocity.Separate( jumpDir, out var upVel, out var hVel );
-
-		var vSpeed = jumpDir.Dot( upVel )
-			.Max( jumpVel.Length )
-			.Positive();
-
-		upVel = jumpDir * vSpeed;
-
-		Velocity = hVel + upVel;
 	}
 }
