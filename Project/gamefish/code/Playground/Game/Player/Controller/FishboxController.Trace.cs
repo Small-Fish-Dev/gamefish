@@ -97,7 +97,7 @@ partial class FishboxController : IScenePhysicsEvents
 
 		var tr = Scene.Trace
 			.IgnoreGameObjectHierarchy( GameObject )
-			.WithoutTags( IgnoreTags )
+			.WithCollisionRules( Tags )
 			.Rotated( WorldRotation );
 
 		return tr;
