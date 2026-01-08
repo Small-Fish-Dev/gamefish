@@ -72,7 +72,22 @@ partial class FishboxController : IScenePhysicsEvents
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
+		if ( GroundTrace.StartedSolid )
+		{
+			this.Log( "Stuck in ground!" );
+			TryUnstuck( GroundTrace );
+			return;
+		}
 
+		var velDir = Velocity.Normal;
+		var vDeltaStart = velDir * SkinWidth;
+		var trVel = TraceColliders( WorldPosition, vDeltaStart, SkinWidth );
+
+		if ( trVel.StartedSolid )
+		{
+			this.Log( "Stuck!" );
+			TryUnstuck( in trVel );
+		}
 	}
 
 	public override SceneTrace BuildTrace()
@@ -101,8 +116,7 @@ partial class FishboxController : IScenePhysicsEvents
 		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight );
 		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight );
 
-		var dir = vDelta.Normal;
-		var endPos = tWorld.Position + vDelta + (dir * skin);
+		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin);
 
 		var bodyStart = tWorld.Position + bodyOffset;
 		var bodyEnd = endPos + bodyOffset;
@@ -115,7 +129,7 @@ partial class FishboxController : IScenePhysicsEvents
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
 
-		return new( in skin, in tWorld, in dir, in bodyOffset, in headOffset, in trBody, in trHead );
+		return new( in skin, in tWorld, in vDelta, in bodyOffset, in headOffset, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
@@ -129,30 +143,86 @@ partial class FishboxController : IScenePhysicsEvents
 		return Up.Angle( tr.Normal ) <= GroundAngle;
 	}
 
+	public void SetPhysicsPosition( Vector3 pos )
+		=> SetPhysicsTransform( new( pos ) );
+
+	public virtual void SetPhysicsTransform( Transform tWorld )
+	{
+		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
+			return;
+
+		var vel = Velocity;
+		Rigidbody.PhysicsBody.Transform = tWorld;
+		Velocity = vel;
+	}
+
+	public virtual bool TryUnstuck( in TraceResult trStuck, in int attemptsRemaining = 10, in int depth = 0 )
+	{
+		// Something's definitely gone wrong by now!
+		// If you really need to then just run this again.
+		if ( depth > 99 )
+			return false;
+
+		if ( trStuck.Hit && !trStuck.StartedSolid )
+		{
+			this.Log( "Unstuck! Trace was already free." );
+			return true;
+		}
+
+		// Try to get some kind of direction away from what we're stuck in.
+		Vector3 fudgeDir;
+
+		if ( trStuck.Hit )
+			fudgeDir = trStuck.Delta.Normal;
+		else
+			fudgeDir = Vector3.Random.Normal;
+
+		var endPos = WorldPosition - (fudgeDir * Random.Float( depth ) + 1);
+		var trAttempt = TraceColliders( endPos, fudgeDir, SkinWidth );
+
+		if ( !trAttempt.StartedSolid )
+		{
+			var trSkin = TraceColliders( endPos, fudgeDir * SkinWidth, SkinWidth );
+
+			if ( !trSkin.StartedSolid )
+			{
+				this.Log( "Unstuck!" );
+
+				SetPhysicsPosition( endPos );
+
+				if ( trSkin.Hit )
+					StickToSurface( trSkin, fudgeDir );
+
+				return true;
+			}
+		}
+
+		// TODO: Trace with escalating desparation depending on depth.
+		if ( attemptsRemaining <= 1 )
+			return false;
+
+		return TryUnstuck( trAttempt, attemptsRemaining - 1, depth.Positive() + 1 );
+	}
+
 	protected virtual void StickToSurface( in TraceResult tr, in Vector3 dir, in float? withSkin = null )
 	{
 		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
 			return;
 
-		if ( tr.EndPosition is not Vector3 endPos )
+		if ( !tr.Hit || tr.Normal.AlmostEqual( 0f ) )
 			return;
 
-		if ( !tr.Hit )
-			return;
-
-		var skin = withSkin ?? tr.Skin;
+		var skin = withSkin ?? tr.Skin.Max( SkinWidth );
+		var destPos = tr.EndPosition;
 
 		if ( IsValidGround( in tr ) )
-			endPos += Up * GroundSkinWidth;
+			destPos += Up * GroundSkinWidth;
 		else if ( !tr.StartedSolid )
-			endPos += (tr.Normal - dir).Normal * skin;
+			destPos += (tr.Normal - dir).Normal * skin;
 
-		var tDest = WorldTransform.WithPosition( endPos );
-
-		var vel = Velocity;
-		Rigidbody.PhysicsBody.Transform = tDest;
-		Velocity = vel;
+		SetPhysicsPosition( destPos );
 	}
+
 
 	protected virtual Vector3 GetLocalCenter()
 		=> Vector3.Up * LocalEyePosition.z * 0.5f;
@@ -161,11 +231,9 @@ partial class FishboxController : IScenePhysicsEvents
 		=> ((GetLocalCenter().z * 2f) + Radius.Positive().Min( 8f )).Max( Radius );
 
 
-	protected Vector3 GetBodyWorldOffset( in Transform tWorld, in float totalHeight )
-	{
-		var offset = GetLocalBodyCenter( totalHeight );
-		return tWorld.Rotation * offset * tWorld.Scale.z;
-	}
+	protected virtual float GetBodyHeight( in float totalHeight )
+		=> totalHeight - Radius;
+
 
 	protected Vector3 GetWorldBodyCenter( in Transform tWorld, in float totalHeight )
 		=> tWorld.PointToWorld( GetLocalBodyCenter( in totalHeight ) );
@@ -173,12 +241,12 @@ partial class FishboxController : IScenePhysicsEvents
 	protected Vector3 GetLocalBodyCenter( in float totalHeight )
 		=> Vector3.Up * (GetBodyHeight( in totalHeight ) / 2f);
 
-
-	protected Vector3 GetHeadWorldOffset( in Transform tWorld, in float totalHeight )
+	protected Vector3 GetBodyWorldOffset( in Transform tWorld, in float totalHeight )
 	{
-		var offset = GetLocalHeadCenter( totalHeight );
+		var offset = GetLocalBodyCenter( totalHeight );
 		return tWorld.Rotation * offset * tWorld.Scale.z;
 	}
+
 
 	protected Vector3 GetWorldHeadCenter( in Transform tWorld, in float totalHeight )
 		=> tWorld.PointToWorld( GetLocalHeadCenter( in totalHeight ) );
@@ -186,8 +254,11 @@ partial class FishboxController : IScenePhysicsEvents
 	protected Vector3 GetLocalHeadCenter( in float totalHeight )
 		=> Vector3.Up * (totalHeight - Radius);
 
-	protected virtual float GetBodyHeight( in float totalHeight )
-		=> totalHeight - Radius;
+	protected Vector3 GetHeadWorldOffset( in Transform tWorld, in float totalHeight )
+	{
+		var offset = GetLocalHeadCenter( totalHeight );
+		return tWorld.Rotation * offset * tWorld.Scale.z;
+	}
 
 
 	protected virtual void UpdateCollision()

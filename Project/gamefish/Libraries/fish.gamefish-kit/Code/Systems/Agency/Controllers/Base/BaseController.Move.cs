@@ -26,7 +26,7 @@ partial class BaseController
 	[Property]
 	[Range( 0.01f, 5f, clamped: false )]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PAWN_ORDER )]
-	public float SkinWidth { get; set; } = 0.2f;
+	public float SkinWidth { get; set; } = 0.5f;
 
 	/// <summary>
 	/// Should the owner be able to input their movement?

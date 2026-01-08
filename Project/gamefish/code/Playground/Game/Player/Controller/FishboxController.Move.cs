@@ -69,7 +69,7 @@ partial class FishboxController
 		IsDucking = isAlive && ShouldDuck;
 		IsSprinting = isAlive && ShouldSprint;
 
-		UpdateGround( in deltaTime );
+		UpdateGround();
 	}
 
 	protected override void PostMove( in float deltaTime )
@@ -156,7 +156,7 @@ partial class FishboxController
 		Velocity = hVel + upVel;
 	}
 
-	public virtual void UpdateGround( in float deltaTime )
+	public virtual void UpdateGround()
 	{
 		if ( !NextGroundStick )
 			return;
