@@ -29,9 +29,9 @@ partial class FishboxController : IScenePhysicsEvents
 	public float GroundCheckDistance { get; set; } = 4f;
 
 	[Property]
-	[Range( 1f, 32f, clamped: false )]
+	[Range( 1f, 64f, clamped: false )]
 	[Feature( PLAYER ), Group( PHYSICS )]
-	public float GroundStickDistance { get; set; } = 24f;
+	public float GroundStickDistance { get; set; } = 32f;
 
 	[Property]
 	[Range( 0.1f, 5f, clamped: false )]
