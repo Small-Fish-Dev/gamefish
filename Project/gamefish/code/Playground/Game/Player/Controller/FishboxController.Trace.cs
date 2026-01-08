@@ -68,10 +68,13 @@ partial class FishboxController : IScenePhysicsEvents
 		StickToSurface( tr, vMove.Normal, SkinWidth );
 
 		// Negative velocity towards this surface.
-		Velocity.Separate( tr.Normal, out var upVel, out var hVel );
-		upVel = upVel.Dot( tr.Normal ).Positive();
+		var awaySpeed = Velocity.Forward( tr.Normal ).Dot( tr.Normal );
 
-		Velocity = upVel + hVel;
+		if ( awaySpeed < 0f )
+			Velocity = Velocity.Horizontal( tr.Normal );
+
+		// Velocity.Separate( tr.Normal, out var upVel, out var hVel );
+		// Velocity = upVel + hVel;
 	}
 
 	void IScenePhysicsEvents.PostPhysicsStep()

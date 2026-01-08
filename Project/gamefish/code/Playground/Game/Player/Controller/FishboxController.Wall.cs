@@ -151,6 +151,9 @@ partial class FishboxController
 
 	public virtual bool IsValidWallAngle( in Vector3 wallNormal, in Vector3 moveDir )
 	{
+		if ( wallNormal.AlmostEqual( 0f ) )
+			return false;
+
 		var pitch = Up.Angle( wallNormal );
 
 		if ( !WallRunPitchRange.Within( in pitch ) )

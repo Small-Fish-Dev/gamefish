@@ -40,7 +40,7 @@ partial class FishboxController
 
 		public readonly Vector3 Normal => HitTrace.Normal;
 		public readonly Vector3 HitPosition => HitTrace.HitPosition;
-		public readonly float Distance => HitTrace.Distance;
+		public readonly float Distance => (HitTrace.Distance - Skin).Positive();
 
 		public readonly GameObject GameObject => HitTrace.GameObject;
 		public readonly Collider Collider => HitTrace.Collider;
@@ -76,6 +76,17 @@ partial class FishboxController
 			}
 		}
 
+		private readonly Vector3 GetHitEndPosition( in SceneTraceResult tr, in Vector3 offset )
+		{
+			var dist = tr.Distance;
+			dist = (dist - Skin).Positive();
+
+			var endPos = tr.StartPosition + Delta.Normal * dist;
+			endPos -= offset;
+
+			return endPos;
+		}
+
 		/// <summary> Which trace hit, if either? </summary>
 		private readonly bool TryGetHitTrace( out SceneTraceResult tr, out Vector3 endPos )
 		{
@@ -94,8 +105,7 @@ partial class FishboxController
 			if ( BodyTrace.Hit )
 			{
 				tr = BodyTrace;
-				endPos = tr.EndPosition - BodyWorldOffset;
-
+				endPos = GetHitEndPosition( in tr, BodyWorldOffset );
 				return true;
 			}
 
@@ -105,8 +115,7 @@ partial class FishboxController
 			if ( HeadTrace.Hit )
 			{
 				tr = HeadTrace;
-				endPos = tr.EndPosition - HeadWorldOffset;
-
+				endPos = GetHitEndPosition( in tr, HeadWorldOffset );
 				return true;
 			}
 
