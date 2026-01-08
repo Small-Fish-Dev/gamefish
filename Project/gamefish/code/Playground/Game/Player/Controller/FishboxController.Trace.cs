@@ -59,13 +59,13 @@ partial class FishboxController : IScenePhysicsEvents
 			return;
 
 		var vMove = Velocity * Scene.FixedDelta;
-		var tr = TraceColliders( WorldPosition, vMove, SkinWidth );
+		var tr = TraceColliders( WorldPosition, vMove );
 
 		if ( !tr.Hit || tr.StartedSolid )
 			return;
 
 		// Move towards the surface we'll hit with some skin between.
-		StickToSurface( tr, vMove.Normal, SkinWidth );
+		StickToSurface( tr, vMove.Normal );
 
 		// Negative velocity towards this surface.
 		var awaySpeed = Velocity.Forward( tr.Normal ).Dot( tr.Normal );
@@ -99,7 +99,7 @@ partial class FishboxController : IScenePhysicsEvents
 		// Prevent getting stuck in walls and such.
 		var velDir = Velocity.Normal;
 		var vDeltaStart = velDir * SkinWidth;
-		var trVel = TraceColliders( WorldPosition, vDeltaStart, SkinWidth );
+		var trVel = TraceColliders( WorldPosition, vDeltaStart );
 
 		if ( trVel.StartedSolid )
 		{
@@ -129,10 +129,10 @@ partial class FishboxController : IScenePhysicsEvents
 		return tr;
 	}
 
-	public virtual TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in float skin )
-		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta, in skin );
+	public virtual TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta )
+		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta );
 
-	public virtual TraceResult TraceColliders( in Transform tWorld, in Vector3 vDelta, in float skin )
+	public virtual TraceResult TraceColliders( in Transform tWorld, in Vector3 vDelta )
 	{
 		var radius = Radius * tWorld.Scale.x.Abs();
 
@@ -142,7 +142,7 @@ partial class FishboxController : IScenePhysicsEvents
 		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight );
 		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight );
 
-		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin);
+		var endPos = tWorld.Position + vDelta + (vDelta.Normal * SkinWidth);
 
 		var bodyStart = tWorld.Position + bodyOffset;
 		var bodyEnd = endPos + bodyOffset;
@@ -155,7 +155,7 @@ partial class FishboxController : IScenePhysicsEvents
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
 
-		return new( in skin, in tWorld, in vDelta, in bodyOffset, in headOffset, in trBody, in trHead );
+		return new( SkinWidth, in tWorld, in vDelta, in bodyOffset, in headOffset, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
@@ -201,11 +201,11 @@ partial class FishboxController : IScenePhysicsEvents
 			fudgeDir = Vector3.Random.Normal;
 
 		var endPos = WorldPosition - (fudgeDir * Random.Float( depth ) + 1);
-		var trAttempt = TraceColliders( endPos, fudgeDir, SkinWidth );
+		var trAttempt = TraceColliders( endPos, fudgeDir );
 
 		if ( !trAttempt.StartedSolid )
 		{
-			var trSkin = TraceColliders( endPos, fudgeDir * SkinWidth, SkinWidth );
+			var trSkin = TraceColliders( endPos, fudgeDir * SkinWidth );
 
 			if ( !trSkin.StartedSolid )
 			{

@@ -49,16 +49,6 @@ partial class FishboxController
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
 	public float WallRunStickDistance { get; set; } = 20f;
 
-	/// <summary>
-	/// The distance to stay away from a wall while running on it.
-	/// </summary>
-	[Property]
-	[Title( "Wall Skin" )]
-	[Range( 0.2f, 3f, clamped: false )]
-	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
-	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
-	public float WallRunStickSkin { get; set; } = 2f;
-
 	[Feature( PLAYER )]
 	[Title( "Is Wall Running" )]
 	[Property, ReadOnly, JsonIgnore]
@@ -255,7 +245,7 @@ partial class FishboxController
 			var traceDist = (velMove.Length * deltaTime).Max( 1f );
 			var vDelta = velMove.Normal * traceDist;
 
-			var trMove = TraceColliders( WorldPosition, vDelta, WallRunStickSkin );
+			var trMove = TraceColliders( WorldPosition, vDelta );
 
 			// DebugOverlay.Trace( trMove );
 
@@ -279,7 +269,7 @@ partial class FishboxController
 		}
 
 		// Stick to the current wall.
-		var trStick = TraceColliders( WorldPosition, -WallRunNormal * WallRunStickDistance, SkinWidth );
+		var trStick = TraceColliders( WorldPosition, -WallRunNormal * WallRunStickDistance );
 
 		// DebugOverlay.Trace( trStick );
 
@@ -291,16 +281,16 @@ partial class FishboxController
 		}
 
 		WallRunNormal = trStick.Normal;
-		StickToSurface( trStick, -WallRunNormal, WallRunStickSkin );
+		StickToSurface( trStick, -WallRunNormal );
 
 		// Run onto the next wall.
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
-		var trWall = TraceColliders( WorldPosition, deltaAhead, SkinWidth );
+		var trWall = TraceColliders( WorldPosition, deltaAhead );
 
 		if ( IsValidForWallRunning( trWall ) )
 		{
 			WallRunNormal = trWall.Normal;
-			StickToSurface( in trWall, -trWall.Normal, WallRunStickSkin );
+			StickToSurface( in trWall, -trWall.Normal );
 		}
 
 		// Negate into-wall velocity.

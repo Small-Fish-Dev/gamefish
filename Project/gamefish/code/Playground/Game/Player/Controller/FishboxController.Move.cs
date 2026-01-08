@@ -78,8 +78,8 @@ partial class FishboxController
 		if ( IsGrounded )
 		{
 			var vDown = -Up;
-			var trStickToGround = TraceColliders( WorldPosition, vDown * GroundStickDistance, 0f );
-			StickToSurface( trStickToGround, vDown, GroundSkinWidth );
+			var trStickToGround = TraceColliders( WorldPosition, vDown * GroundStickDistance );
+			StickToSurface( trStickToGround, vDown );
 		}
 	}
 
@@ -166,7 +166,7 @@ partial class FishboxController
 		var vUp = Up;
 		var vDown = -vUp * WorldScale.z * GroundCheckDistance;
 
-		GroundTrace = TraceColliders( origin, vDown, GroundSkinWidth );
+		GroundTrace = TraceColliders( origin, vDown );
 
 		// DebugOverlay.Trace( GroundTrace );
 
