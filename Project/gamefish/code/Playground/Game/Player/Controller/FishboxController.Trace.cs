@@ -38,9 +38,13 @@ partial class FishboxController : IScenePhysicsEvents
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public float GroundSkinWidth { get; set; } = 1f;
 
+	/// <summary>
+	/// Should (un)stuck events be debug logged?
+	/// </summary>
 	[Property]
+	[Title( "Log Unstuck" )]
 	[Feature( PLAYER ), Group( PHYSICS )]
-	public TagSet IgnoreTags { get; set; } = [];
+	public bool DebugLogUnstuck { get; set; } = false;
 
 	public virtual Vector3 TraceOffset => GetLocalCenter();
 
@@ -72,21 +76,40 @@ partial class FishboxController : IScenePhysicsEvents
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
+		// TODO: Test stuck by expanding the body/head traces smartly.
+
+		// Prevent getting stuck in the ground.
 		if ( GroundTrace.StartedSolid )
 		{
-			this.Log( "Stuck in ground!" );
-			TryUnstuck( GroundTrace );
-			return;
+			if ( DebugLogUnstuck )
+				this.Log( "Stuck in ground!" );
+
+			if ( TryUnstuck( GroundTrace, attemptsRemaining: 5 ) )
+			{
+				if ( DebugLogUnstuck )
+					this.Log( "Pulled out of ground." );
+
+				return;
+			}
 		}
 
+		// Prevent getting stuck in walls and such.
 		var velDir = Velocity.Normal;
 		var vDeltaStart = velDir * SkinWidth;
 		var trVel = TraceColliders( WorldPosition, vDeltaStart, SkinWidth );
 
 		if ( trVel.StartedSolid )
 		{
-			this.Log( "Stuck!" );
-			TryUnstuck( in trVel );
+			if ( DebugLogUnstuck )
+				this.Log( "Stuck in something!" );
+
+			if ( TryUnstuck( in trVel ) )
+			{
+				if ( DebugLogUnstuck )
+					this.Log( "Got unstuck." );
+
+				return;
+			}
 		}
 	}
 
@@ -164,10 +187,7 @@ partial class FishboxController : IScenePhysicsEvents
 			return false;
 
 		if ( trStuck.Hit && !trStuck.StartedSolid )
-		{
-			this.Log( "Unstuck! Trace was already free." );
 			return true;
-		}
 
 		// Try to get some kind of direction away from what we're stuck in.
 		Vector3 fudgeDir;
@@ -186,8 +206,6 @@ partial class FishboxController : IScenePhysicsEvents
 
 			if ( !trSkin.StartedSolid )
 			{
-				this.Log( "Unstuck!" );
-
 				SetPhysicsPosition( endPos );
 
 				if ( trSkin.Hit )
