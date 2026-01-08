@@ -170,7 +170,7 @@ partial class FishboxController : IScenePhysicsEvents
 	}
 
 	public void SetPhysicsPosition( Vector3 pos )
-		=> SetPhysicsTransform( new( pos ) );
+		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
 
 	public virtual void SetPhysicsTransform( Transform tWorld )
 	{
