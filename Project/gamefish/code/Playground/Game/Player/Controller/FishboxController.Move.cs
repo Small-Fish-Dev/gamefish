@@ -163,12 +163,9 @@ partial class FishboxController
 
 		var origin = WorldPosition;
 
-		var vUp = Up;
-		var vDown = -vUp * WorldScale.z * GroundCheckDistance;
+		var vGround = Down * WorldScale.z * GroundCheckDistance;
 
-		GroundTrace = TraceColliders( origin, vDown );
-
-		// DebugOverlay.Trace( GroundTrace );
+		GroundTrace = TraceColliders( origin, vGround );
 
 		if ( !GroundTrace.Hit )
 		{
@@ -176,8 +173,7 @@ partial class FishboxController
 			return;
 		}
 
-		Velocity.Separate( GroundNormal, out var upVel, out var hVel );
-
+		var upVel = Velocity.Forward( GroundNormal );
 		var upSpeed = GroundTrace.Normal.Dot( upVel );
 		var isRamping = upSpeed >= 300f;
 
@@ -190,7 +186,7 @@ partial class FishboxController
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
 
-		Velocity = hVel;
+		StickToSurface( GroundTrace, Down );
 	}
 
 	protected virtual void DoGroundMovement( in float deltaTime )

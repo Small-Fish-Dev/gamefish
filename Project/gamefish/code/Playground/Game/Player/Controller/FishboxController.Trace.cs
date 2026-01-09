@@ -49,7 +49,9 @@ partial class FishboxController : IScenePhysicsEvents
 	public virtual Vector3 TraceOffset => GetLocalCenter();
 
 	/// <summary> What's up? </summary>
-	public virtual Vector3 Up => WorldRotation.Up;
+	public Vector3 Up => WorldRotation.Up;
+	public Vector3 Down => WorldRotation.Down;
+	public Vector3 Right => WorldRotation.Right;
 
 	protected TraceResult GroundTrace { get; set; }
 
@@ -79,27 +81,10 @@ partial class FishboxController : IScenePhysicsEvents
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
-		// TODO: Test stuck by expanding the body/head traces smartly.
-
-		// Prevent getting stuck in the ground.
-		if ( GroundTrace.StartedSolid )
-		{
-			if ( DebugLogUnstuck )
-				this.Log( "Stuck in ground!" );
-
-			if ( TryUnstuck( GroundTrace, attemptsRemaining: 5 ) )
-			{
-				if ( DebugLogUnstuck )
-					this.Log( "Pulled out of ground." );
-
-				return;
-			}
-		}
-
 		// Prevent getting stuck in walls and such.
 		var velDir = Velocity.Normal;
 		var vDeltaStart = velDir * SkinWidth;
-		var trVel = TraceColliders( WorldPosition, vDeltaStart );
+		var trVel = TraceColliders( WorldPosition, vDeltaStart, SkinWidth );
 
 		if ( trVel.StartedSolid )
 		{
@@ -129,20 +114,23 @@ partial class FishboxController : IScenePhysicsEvents
 		return tr;
 	}
 
-	public virtual TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta )
-		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta );
+	public TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in float? fGrow = null )
+		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta, in fGrow );
 
-	public virtual TraceResult TraceColliders( in Transform tWorld, in Vector3 vDelta )
+	public virtual TraceResult TraceColliders( Transform tWorld, in Vector3 vDelta, in float? fGrow = null )
 	{
-		var radius = Radius * tWorld.Scale.x.Abs();
+		var grow = fGrow ?? 0f;
+		var skin = (SkinWidth - grow).Positive();
 
-		var totalHeight = GetTotalHeight();
+		var radius = (Radius * tWorld.Scale.x.Abs()) + grow;
+		var totalHeight = GetTotalHeight() + (grow * 2f);
 		var bodyHeight = GetBodyHeight( totalHeight );
 
+		tWorld.Position -= Up * grow;
 		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight );
 		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight );
 
-		var endPos = tWorld.Position + vDelta + (vDelta.Normal * SkinWidth);
+		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin);
 
 		var bodyStart = tWorld.Position + bodyOffset;
 		var bodyEnd = endPos + bodyOffset;
@@ -155,7 +143,10 @@ partial class FishboxController : IScenePhysicsEvents
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
 
-		return new( SkinWidth, in tWorld, in vDelta, in bodyOffset, in headOffset, in trBody, in trHead );
+		// DebugOverlay.Trace( trBody );
+		// DebugOverlay.Trace( trHead );
+
+		return new( skin, in tWorld, in vDelta, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
@@ -200,16 +191,17 @@ partial class FishboxController : IScenePhysicsEvents
 		else
 			fudgeDir = Vector3.Random.Normal;
 
-		var endPos = WorldPosition - (fudgeDir * Random.Float( depth ) + 1);
-		var trAttempt = TraceColliders( endPos, fudgeDir );
+		var freePos = WorldPosition - (fudgeDir * Random.Float( depth ) + 1);
+		var trAttempt = TraceColliders( freePos, fudgeDir, fGrow: 0f );
 
 		if ( !trAttempt.StartedSolid )
 		{
-			var trSkin = TraceColliders( endPos, fudgeDir * SkinWidth );
+			var skinDir = trAttempt.Hit ? trAttempt.Normal : fudgeDir;
+			var trSkin = TraceColliders( trAttempt.EndPosition, skinDir, fGrow: SkinWidth );
 
 			if ( !trSkin.StartedSolid )
 			{
-				SetPhysicsPosition( endPos );
+				SetPhysicsPosition( freePos );
 
 				if ( trSkin.Hit )
 					StickToSurface( trSkin, fudgeDir );
@@ -225,7 +217,7 @@ partial class FishboxController : IScenePhysicsEvents
 		return TryUnstuck( trAttempt, attemptsRemaining - 1, depth.Positive() + 1 );
 	}
 
-	protected virtual void StickToSurface( in TraceResult tr, in Vector3 dir, in float? withSkin = null )
+	protected virtual void StickToSurface( in TraceResult tr, in Vector3 dir )
 	{
 		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
 			return;
@@ -233,11 +225,11 @@ partial class FishboxController : IScenePhysicsEvents
 		if ( !tr.Hit || tr.Normal.AlmostEqual( 0f ) )
 			return;
 
-		var skin = withSkin ?? tr.Skin.Max( SkinWidth );
+		var skin = tr.Skin.Max( SkinWidth );
 		var destPos = tr.EndPosition;
 
 		if ( IsValidGround( in tr ) )
-			destPos += Up * GroundSkinWidth;
+			destPos += Up * skin.Max( GroundSkinWidth );
 		else if ( !tr.StartedSolid )
 			destPos += (tr.Normal - dir).Normal * skin;
 

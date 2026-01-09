@@ -13,9 +13,6 @@ partial class FishboxController
 		/// </summary>
 		public Vector3 Delta { get; set; }
 
-		public Vector3 BodyWorldOffset { get; set; }
-		public Vector3 HeadWorldOffset { get; set; }
-
 		public SceneTraceResult BodyTrace { get; set; }
 		public SceneTraceResult HeadTrace { get; set; }
 
@@ -48,15 +45,12 @@ partial class FishboxController
 
 		public TraceResult() { }
 
-		public TraceResult( in float skin, in Transform tStart, in Vector3 delta, in Vector3 bodyOffset, in Vector3 headOffset, in SceneTraceResult trBody, in SceneTraceResult trHead )
+		public TraceResult( in float skin, in Transform tStart, in Vector3 delta, in SceneTraceResult trBody, in SceneTraceResult trHead )
 		{
 			Skin = skin;
 
 			WorldStart = tStart;
 			Delta = delta;
-
-			BodyWorldOffset = bodyOffset;
-			HeadWorldOffset = headOffset;
 
 			BodyTrace = trBody;
 			HeadTrace = trHead;
@@ -76,15 +70,14 @@ partial class FishboxController
 			}
 		}
 
-		private readonly Vector3 GetHitEndPosition( in SceneTraceResult tr, in Vector3 offset )
+		private readonly Vector3 GetHitEndPosition( in SceneTraceResult tr )
 		{
-			var dist = tr.Distance;
-			dist = (dist - Skin).Positive();
+			if ( tr.StartedSolid )
+				return StartPosition;
 
-			var endPos = tr.StartPosition + Delta.Normal * dist;
-			endPos -= offset;
+			var dist = (tr.Distance - Skin).Positive();
 
-			return endPos;
+			return StartPosition + (Delta.Normal * dist);
 		}
 
 		/// <summary> Which trace hit, if either? </summary>
@@ -99,23 +92,21 @@ partial class FishboxController
 					goto HeadHit;
 			}
 
-			// Prioritize the body(cylinder) trace.
 			BodyHit:
 
 			if ( BodyTrace.Hit )
 			{
 				tr = BodyTrace;
-				endPos = GetHitEndPosition( in tr, BodyWorldOffset );
+				endPos = GetHitEndPosition( in tr );
 				return true;
 			}
 
-			// Head(sphere) trace is second.
 			HeadHit:
 
 			if ( HeadTrace.Hit )
 			{
 				tr = HeadTrace;
-				endPos = GetHitEndPosition( in tr, HeadWorldOffset );
+				endPos = GetHitEndPosition( in tr );
 				return true;
 			}
 

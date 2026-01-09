@@ -33,24 +33,6 @@ public partial class FishboxController : ShooterController
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
-
-		/*
-		var totalHeight = GetTotalHeight();
-		var tBody = new Transform( GetWorldBodyCenter( WorldTransform, totalHeight ), WorldRotation );
-		var tHead = new Transform( GetWorldHeadCenter( WorldTransform, totalHeight ), WorldRotation );
-
-		this.DrawCylinder(
-			Radius, GetBodyHeight( totalHeight ),
-			Color.Cyan, Color.Transparent,
-			tWorld: tBody
-		);
-
-		this.DrawSphere(
-			Radius, default,
-			Color.Cyan, Color.Transparent,
-			tWorld: tHead
-		);
-		*/
 	}
 
 	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
@@ -102,5 +84,26 @@ public partial class FishboxController : ShooterController
 		base.OnSetLocalEyePosition( pos );
 
 		UpdateCollision();
+	}
+
+	protected virtual void RenderColliders( in float? totalHeight = null, Transform? tWorld = null )
+	{
+		var height = totalHeight ?? GetTotalHeight();
+
+		var t = tWorld ?? WorldTransform;
+		var tBody = new Transform( GetWorldBodyCenter( t, height ), WorldRotation );
+		var tHead = new Transform( GetWorldHeadCenter( t, height ), WorldRotation );
+
+		this.DrawCylinder(
+			Radius, GetBodyHeight( height ),
+			Color.Cyan, Color.Transparent,
+			tWorld: tBody
+		);
+
+		this.DrawSphere(
+			Radius, default,
+			Color.Cyan, Color.Transparent,
+			tWorld: tHead
+		);
 	}
 }
