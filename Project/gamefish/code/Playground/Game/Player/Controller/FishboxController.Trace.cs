@@ -33,11 +33,6 @@ partial class FishboxController : IScenePhysicsEvents
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public float GroundStickDistance { get; set; } = 32f;
 
-	[Property]
-	[Range( 0.1f, 5f, clamped: false )]
-	[Feature( PLAYER ), Group( PHYSICS )]
-	public float GroundSkinWidth { get; set; } = 1f;
-
 	/// <summary>
 	/// Should (un)stuck events be debug logged?
 	/// </summary>
@@ -229,7 +224,7 @@ partial class FishboxController : IScenePhysicsEvents
 		var destPos = tr.EndPosition;
 
 		if ( IsValidGround( in tr ) )
-			destPos += Up * skin.Max( GroundSkinWidth );
+			destPos += Up * skin;
 		else if ( !tr.StartedSolid )
 			destPos += (tr.Normal - dir).Normal * skin;
 
