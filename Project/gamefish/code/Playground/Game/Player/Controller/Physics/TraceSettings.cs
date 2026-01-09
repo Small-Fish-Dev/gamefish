@@ -9,10 +9,10 @@ partial class FishboxController
 
 		public TraceSettings() { }
 
-		public TraceSettings( in float fGrow, in float fSkin )
+		public TraceSettings( in float grow, in float skin )
 		{
-			Grow = fGrow;
-			Skin = fSkin;
+			Grow = grow;
+			Skin = skin;
 		}
 	}
 }

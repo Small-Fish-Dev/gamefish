@@ -79,7 +79,7 @@ partial class FishboxController
 		{
 			var vDown = -Up;
 			var trStickToGround = TraceColliders( WorldPosition, vDown * GroundStickDistance );
-			TryStickToSurface( trStickToGround, vDown );
+			TryStickToSurface( trStickToGround );
 		}
 	}
 
@@ -186,7 +186,7 @@ partial class FishboxController
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
 
-		TryStickToSurface( GroundTrace, Down );
+		TryStickToSurface( GroundTrace );
 	}
 
 	protected virtual void DoGroundMovement( in float deltaTime )

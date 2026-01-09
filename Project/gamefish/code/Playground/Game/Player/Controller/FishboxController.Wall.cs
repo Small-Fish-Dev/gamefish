@@ -281,7 +281,7 @@ partial class FishboxController
 		}
 
 		WallRunNormal = trStick.Normal;
-		TryStickToSurface( trStick, -WallRunNormal );
+		TryStickToSurface( trStick );
 
 		// Run onto the next wall.
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
@@ -290,7 +290,7 @@ partial class FishboxController
 		if ( IsValidForWallRunning( trWall ) )
 		{
 			WallRunNormal = trWall.Normal;
-			TryStickToSurface( in trWall, -trWall.Normal );
+			TryStickToSurface( in trWall );
 		}
 
 		// Negate into-wall velocity.

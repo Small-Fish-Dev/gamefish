@@ -79,7 +79,7 @@ partial class FishboxController
 	/// Traces our colliders sized up to our skin at the given transform.
 	/// </summary>
 	public TraceResult TraceSkin( in Transform tWorld )
-		=> TraceColliders( tWorld, Vector3.Zero, new( fGrow: SkinWidth, fSkin: 0f ) );
+		=> TraceColliders( tWorld, Vector3.Zero, new( grow: SkinWidth, skin: 0f ) );
 
 	public TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
 		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta, s ?? new( 0f, SkinWidth ) );
@@ -129,15 +129,15 @@ partial class FishboxController
 
 	public virtual bool TryUnstuck()
 	{
-		var trSkin = TraceSkin( WorldTransform );
+		var trGrown = TraceSkin( WorldTransform );
 
-		if ( !trSkin.StartedSolid )
+		if ( !trGrown.StartedSolid )
 			return true;
 
 		if ( DebugLogUnstuck )
 			this.Log( "Stuck in something!" );
 
-		if ( !TryUnstuck( trSkin ) )
+		if ( !TryUnstuck( trGrown ) )
 			return false;
 
 		if ( DebugLogUnstuck )
@@ -163,40 +163,64 @@ partial class FishboxController
 
 		var startPos = trStuck.StartPosition;
 		var freePos = startPos - (fudgeDir * Random.Float( depth ) + 1);
-		var trFree = TraceSkin( freePos );
+		var freeDir = freePos.Direction( startPos );
 
-		if ( !trFree.StartedSolid )
+		var fat = Radius * 0.2f;
+		var trSlim = TraceColliders( freePos, startPos - freePos, new( -fat, SkinWidth + fat ) );
+
+		if ( !trSlim.StartedSolid )
 		{
-			var skinDir = freePos.Direction( startPos );
-			var radius = skinDir * Radius * WorldScale.x;
-			var trSkin = TraceColliders( trFree.EndPosition, radius, new( fGrow: SkinWidth, fSkin: 0f ) );
+			var radius = Radius * WorldScale.x;
+			var trSkin = TraceColliders( trSlim.EndPosition, freeDir * radius, new( grow: SkinWidth, skin: 0f ) );
 
-			if ( !trSkin.StartedSolid && trSkin.Hit )
-				if ( TryStickToSurface( trSkin, skinDir ) )
-					return true;
+			if ( TryStickToSurface( trSkin ) )
+				return true;
 		}
 
 		// TODO: Trace with escalating desparation depending on depth.
 		if ( attemptsRemaining <= 1 )
 			return false;
 
-		return TryUnstuck( trFree, attemptsRemaining - 1, depth.Positive() + 1 );
+		return TryUnstuck( trSlim, attemptsRemaining - 1, depth.Positive() + 1 );
 	}
 
-	public virtual bool TryStickToSurface( in TraceResult tr, in Vector3 dir )
+	public virtual bool TryStickToSurface( in TraceResult tr )
 	{
-		if ( !tr.Hit || tr.Normal.AlmostEqual( 0f ) )
+		if ( tr.StartedSolid || !tr.Hit )
 			return false;
 
-		var skin = tr.Skin.Max( SkinWidth );
+		if ( tr.Normal.AlmostEqual( 0f ) ) // idk man
+			return false;
+
+		var skin = tr.Skin;
 		var destPos = tr.EndPosition;
 
 		if ( IsValidGround( in tr ) )
 			destPos += Up * skin;
-		else if ( !tr.StartedSolid )
-			destPos += (tr.Normal - dir).Normal * skin;
+		else
+			destPos += tr.Normal * skin;
 
-		SetPhysicsPosition( destPos );
-		return true;
+		if ( TraceSkin( destPos ).StartedSolid )
+		{
+			var a = destPos;
+			var b = WorldPosition;
+
+			this.DrawArrow( a, b, Color.Cyan, tWorld: global::Transform.Zero );
+
+			var trSkin = TraceColliders( destPos, b - a, new( grow: 0f, skin: SkinWidth ) );
+
+			if ( !trSkin.StartedSolid )
+			{
+				SetPhysicsPosition( destPos );
+				return true;
+			}
+		}
+		else
+		{
+			SetPhysicsPosition( destPos );
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -17,7 +17,7 @@ partial class FishboxController : IScenePhysicsEvents
 			return;
 
 		// Move towards the surface we'll hit with some skin between.
-		TryStickToSurface( tr, vMove.Normal );
+		TryStickToSurface( tr );
 
 		// Negative velocity towards this surface.
 		var awaySpeed = Velocity.Forward( tr.Normal ).Dot( tr.Normal );
