@@ -3,7 +3,7 @@ using ShrimpleCharacterController;
 
 namespace Fishbox;
 
-partial class FishboxController : IScenePhysicsEvents
+partial class FishboxController
 {
 	[Property]
 	[Feature( PLAYER ), Group( PHYSICS )]
@@ -50,38 +50,6 @@ partial class FishboxController : IScenePhysicsEvents
 
 	protected TraceResult GroundTrace { get; set; }
 
-	void IScenePhysicsEvents.PrePhysicsStep()
-	{
-		if ( !Scene.IsValid() || IsProxy )
-			return;
-
-		var vMove = Velocity * Scene.FixedDelta;
-		var tr = TraceColliders( WorldPosition, vMove );
-
-		if ( !tr.Hit || tr.StartedSolid )
-			return;
-
-		// Move towards the surface we'll hit with some skin between.
-		TryStickToSurface( tr, vMove.Normal );
-
-		// Negative velocity towards this surface.
-		var awaySpeed = Velocity.Forward( tr.Normal ).Dot( tr.Normal );
-
-		if ( awaySpeed < 0f )
-			Velocity = Velocity.Horizontal( tr.Normal );
-
-		// Velocity.Separate( tr.Normal, out var upVel, out var hVel );
-		// Velocity = upVel + hVel;
-	}
-
-	void IScenePhysicsEvents.PostPhysicsStep()
-	{
-		if ( !Scene.IsValid() || IsProxy )
-			return;
-
-		TryUnstuck();
-	}
-
 	public override SceneTrace BuildTrace()
 	{
 		if ( !Scene.IsValid() )
@@ -102,9 +70,15 @@ partial class FishboxController : IScenePhysicsEvents
 		=> TraceSkin( WorldTransform );
 
 	/// <summary>
+	/// Traces our colliders sized up to our skin if we were at that position.
+	/// </summary>
+	public TraceResult TraceSkin( in Vector3 worldPos )
+		=> TraceSkin( WorldTransform.WithPosition( worldPos ) );
+
+	/// <summary>
 	/// Traces our colliders sized up to our skin at the given transform.
 	/// </summary>
-	public TraceResult TraceSkin( Transform tWorld )
+	public TraceResult TraceSkin( in Transform tWorld )
 		=> TraceColliders( tWorld, Vector3.Zero, new( fGrow: SkinWidth, fSkin: 0f ) );
 
 	public TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
@@ -153,19 +127,6 @@ partial class FishboxController : IScenePhysicsEvents
 		return Up.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	public void SetPhysicsPosition( Vector3 pos )
-		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
-
-	public virtual void SetPhysicsTransform( Transform tWorld )
-	{
-		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
-			return;
-
-		var vel = Velocity;
-		Rigidbody.PhysicsBody.Transform = tWorld;
-		Velocity = vel;
-	}
-
 	public virtual bool TryUnstuck()
 	{
 		var trSkin = TraceSkin( WorldTransform );
@@ -195,26 +156,24 @@ partial class FishboxController : IScenePhysicsEvents
 		// Try to get some kind of direction away from what we're stuck in.
 		Vector3 fudgeDir;
 
-		if ( trStuck.Hit && !trStuck.Delta.AlmostEqual( 0f ) )
-			fudgeDir = trStuck.Delta.Normal;
+		if ( trStuck.Hit )
+			fudgeDir = trStuck.HitPosition.Direction( trStuck.HitTrace.StartPosition );
 		else
-			fudgeDir = Vector3.Random.Normal;
+			fudgeDir = Rotation.Identity.ClosestAxis( Vector3.Random.Normal );
 
-		var freePos = WorldPosition - (fudgeDir * Random.Float( depth ) + 1);
-		var trFree = TraceColliders( freePos, fudgeDir, new( 0f, 0f ) );
+		var startPos = trStuck.StartPosition;
+		var freePos = startPos - (fudgeDir * Random.Float( depth ) + 1);
+		var trFree = TraceSkin( freePos );
 
 		if ( !trFree.StartedSolid )
 		{
-			var skinDir = trFree.Hit ? trFree.Normal : fudgeDir;
-			var trSkin = TraceColliders( trFree.EndPosition, skinDir, new( fGrow: SkinWidth, fSkin: 0f ) );
+			var skinDir = freePos.Direction( startPos );
+			var radius = skinDir * Radius * WorldScale.x;
+			var trSkin = TraceColliders( trFree.EndPosition, radius, new( fGrow: SkinWidth, fSkin: 0f ) );
 
-			if ( !trSkin.StartedSolid )
-			{
-				if ( trSkin.Hit )
-					TryStickToSurface( trSkin, fudgeDir );
-
-				return true;
-			}
+			if ( !trSkin.StartedSolid && trSkin.Hit )
+				if ( TryStickToSurface( trSkin, skinDir ) )
+					return true;
 		}
 
 		// TODO: Trace with escalating desparation depending on depth.
@@ -239,61 +198,5 @@ partial class FishboxController : IScenePhysicsEvents
 
 		SetPhysicsPosition( destPos );
 		return true;
-	}
-
-
-	protected virtual Vector3 GetLocalCenter()
-		=> Vector3.Up * LocalEyePosition.z * 0.5f;
-
-	protected virtual float GetTotalHeight()
-		=> ((GetLocalCenter().z * 2f) + Radius.Positive().Min( 8f )).Max( Radius );
-
-
-	protected virtual float GetBodyHeight( in float totalHeight )
-		=> totalHeight - Radius;
-
-
-	protected Vector3 GetWorldBodyCenter( in Transform tWorld, in float totalHeight )
-		=> tWorld.PointToWorld( GetLocalBodyCenter( in totalHeight ) );
-
-	protected Vector3 GetLocalBodyCenter( in float totalHeight )
-		=> Vector3.Up * (GetBodyHeight( in totalHeight ) / 2f);
-
-	protected Vector3 GetBodyWorldOffset( in Transform tWorld, in float totalHeight )
-	{
-		var offset = GetLocalBodyCenter( totalHeight );
-		return tWorld.Rotation * offset * tWorld.Scale.z;
-	}
-
-
-	protected Vector3 GetWorldHeadCenter( in Transform tWorld, in float totalHeight )
-		=> tWorld.PointToWorld( GetLocalHeadCenter( in totalHeight ) );
-
-	protected Vector3 GetLocalHeadCenter( in float totalHeight )
-		=> Vector3.Up * (totalHeight - Radius);
-
-	protected Vector3 GetHeadWorldOffset( in Transform tWorld, in float totalHeight )
-	{
-		var offset = GetLocalHeadCenter( totalHeight );
-		return tWorld.Rotation * offset * tWorld.Scale.z;
-	}
-
-
-	protected virtual void UpdateCollision()
-	{
-		var totalHeight = GetTotalHeight();
-
-		if ( BodyCylinder.IsValid() )
-		{
-			BodyCylinder.Radius = Radius;
-			BodyCylinder.Height = GetBodyHeight( in totalHeight );
-			BodyCylinder.LocalPosition = GetLocalBodyCenter( in totalHeight );
-		}
-
-		if ( HeadSphere.IsValid() )
-		{
-			HeadSphere.Radius = Radius;
-			HeadSphere.LocalPosition = Vector3.Up * (totalHeight - Radius);
-		}
 	}
 }
