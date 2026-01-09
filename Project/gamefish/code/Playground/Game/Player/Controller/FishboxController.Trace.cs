@@ -205,7 +205,13 @@ partial class FishboxController
 			var a = destPos;
 			var b = WorldPosition;
 
-			this.DrawArrow( a, b, Color.Cyan, tWorld: global::Transform.Zero );
+			/*
+			this.DrawArrow(
+				a, b, Color.Cyan,
+				len: 3f, w: 1f,
+				tWorld: global::Transform.Zero
+			);
+			*/
 
 			var trSkin = TraceColliders( destPos, b - a, new( grow: 0f, skin: SkinWidth ) );
 
