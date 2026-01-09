@@ -52,7 +52,7 @@ partial class FishboxController : IScenePhysicsEvents
 
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
-		if ( !Scene.IsValid() )
+		if ( !Scene.IsValid() || IsProxy )
 			return;
 
 		var vMove = Velocity * Scene.FixedDelta;
@@ -76,6 +76,9 @@ partial class FishboxController : IScenePhysicsEvents
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
+		if ( !Scene.IsValid() || IsProxy )
+			return;
+
 		TryUnstuck();
 	}
 
