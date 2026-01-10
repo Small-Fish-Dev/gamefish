@@ -4,7 +4,8 @@ partial class FishboxController
 {
 	public partial struct TraceResult
 	{
-		public float Skin { get; set; }
+		public readonly TraceSettings Settings { get; }
+		public readonly float Skin => Settings.Skin;
 
 		public Transform WorldStart { get; set; }
 
@@ -45,9 +46,9 @@ partial class FishboxController
 
 		public TraceResult() { }
 
-		public TraceResult( in float skin, in Transform tStart, in Vector3 delta, in SceneTraceResult trBody, in SceneTraceResult trHead )
+		public TraceResult( in TraceSettings s, in Transform tStart, in Vector3 delta, in SceneTraceResult trBody, in SceneTraceResult trHead )
 		{
-			Skin = skin;
+			Settings = s;
 
 			WorldStart = tStart;
 			Delta = delta;
@@ -70,14 +71,15 @@ partial class FishboxController
 			}
 		}
 
-		private readonly Vector3 GetHitEndPosition( in SceneTraceResult tr )
+		public readonly Vector3 GetHitEndPosition( in SceneTraceResult tr )
 		{
 			if ( tr.StartedSolid )
 				return StartPosition;
 
-			var dist = (tr.Distance - Skin).Positive();
+			var vDelta = tr.Direction * tr.Distance;
+			// vDelta -= (Delta * Skin).ClampLength( vDelta.Length );
 
-			return StartPosition + (Delta.Normal * dist);
+			return StartPosition + vDelta;
 		}
 
 		/// <summary> Which trace hit, if either? </summary>
@@ -111,7 +113,7 @@ partial class FishboxController
 			}
 
 			tr = default;
-			endPos = WorldStart.Position;
+			endPos = StartPosition;
 
 			return false;
 		}

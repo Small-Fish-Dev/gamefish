@@ -41,6 +41,14 @@ partial class FishboxController
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public bool DebugLogUnstuck { get; set; } = false;
 
+	/// <summary>
+	/// Should collision traces be visualized?
+	/// </summary>
+	[Property]
+	[Title( "Log Traces" )]
+	[Feature( PLAYER ), Group( PHYSICS )]
+	public bool DebugRenderTraces { get; set; } = false;
+
 	public virtual Vector3 TraceOffset => GetLocalCenter();
 
 	/// <summary> What's up? </summary>
@@ -64,38 +72,39 @@ partial class FishboxController
 	}
 
 	/// <summary>
-	/// Traces our colliders sized up to our skin at the current position.
+	/// Traces our colliders at the current position.
 	/// </summary>
-	public TraceResult TraceSkin()
-		=> TraceSkin( WorldTransform );
+	public TraceResult TraceAtPosition( in TraceSettings? s = null )
+		=> TraceTransform( WorldTransform, s );
 
 	/// <summary>
-	/// Traces our colliders sized up to our skin if we were at that position.
+	/// Traces our colliders if we were at that position.
 	/// </summary>
-	public TraceResult TraceSkin( in Vector3 worldPos )
-		=> TraceSkin( WorldTransform.WithPosition( worldPos ) );
+	public TraceResult TraceAtPosition( in Vector3 worldPos, in TraceSettings? s = null )
+		=> TraceTransform( WorldTransform.WithPosition( worldPos ), s );
 
 	/// <summary>
-	/// Traces our colliders sized up to our skin at the given transform.
+	/// Traces our colliders as they are at the given transform.
 	/// </summary>
-	public TraceResult TraceSkin( in Transform tWorld )
-		=> TraceColliders( tWorld, Vector3.Zero, new( grow: SkinWidth, skin: 0f ) );
+	public TraceResult TraceTransform( in Transform tWorld, in TraceSettings? s = null )
+		=> TraceDelta( tWorld, Vector3.Zero, s );
 
-	public TraceResult TraceColliders( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
-		=> TraceColliders( WorldTransform.WithPosition( startPos ), in vDelta, s ?? new( 0f, SkinWidth ) );
+	public TraceResult TraceDelta( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
+		=> TraceDelta( WorldTransform.WithPosition( startPos ), in vDelta, s );
 
-	public virtual TraceResult TraceColliders( Transform tWorld, in Vector3 vDelta, in TraceSettings s )
+	public virtual TraceResult TraceDelta( Transform tWorld, in Vector3 vDelta, in TraceSettings? settings = null )
 	{
-		var grow = s.Grow;
-		var skin = (s.Skin - grow).Positive();
+		var scale = WorldScale.z;
+		var s = settings ?? new( skin: SkinWidth * scale );
+		var skin = s.Skin;
 
-		var radius = (Radius * tWorld.Scale.x.Abs()) + grow;
-		var totalHeight = GetTotalHeight() + (grow * 2f);
+		var radius = (Radius * scale) - skin;
+		var totalHeight = (GetTotalHeight() * scale) - skin;
 		var bodyHeight = GetBodyHeight( totalHeight );
 
-		tWorld.Position -= Up * grow;
-		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight );
-		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight );
+		var vSkinOffset = Up * skin;
+		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight ) + vSkinOffset;
+		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight ) + vSkinOffset;
 
 		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin);
 
@@ -110,10 +119,13 @@ partial class FishboxController
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
 
-		// DebugOverlay.Trace( trBody );
-		// DebugOverlay.Trace( trHead );
+		if ( DebugRenderTraces )
+		{
+			DebugOverlay.Trace( trBody );
+			DebugOverlay.Trace( trHead );
+		}
 
-		return new( skin, in tWorld, in vDelta, in trBody, in trHead );
+		return new( in s, in tWorld, in vDelta, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
@@ -127,63 +139,6 @@ partial class FishboxController
 		return Up.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	public virtual bool TryUnstuck()
-	{
-		var trGrown = TraceSkin( WorldTransform );
-
-		if ( !trGrown.StartedSolid )
-			return true;
-
-		if ( DebugLogUnstuck )
-			this.Log( "Stuck in something!" );
-
-		if ( !TryUnstuck( trGrown ) )
-			return false;
-
-		if ( DebugLogUnstuck )
-			this.Log( "Got unstuck." );
-
-		return true;
-	}
-
-	protected virtual bool TryUnstuck( in TraceResult trStuck, in int attemptsRemaining = 10, in int depth = 0 )
-	{
-		// Something's definitely gone wrong by now!
-		// If you really need to then just run this again.
-		if ( depth > 99 )
-			return false;
-
-		// Try to get some kind of direction away from what we're stuck in.
-		Vector3 fudgeDir;
-
-		if ( trStuck.Hit )
-			fudgeDir = trStuck.HitPosition.Direction( trStuck.HitTrace.StartPosition );
-		else
-			fudgeDir = Rotation.Identity.ClosestAxis( Vector3.Random.Normal );
-
-		var startPos = trStuck.StartPosition;
-		var freePos = startPos - (fudgeDir * Random.Float( depth ) + 1);
-		var freeDir = freePos.Direction( startPos );
-
-		var fat = Radius * 0.2f;
-		var trSlim = TraceColliders( freePos, startPos - freePos, new( -fat, SkinWidth + fat ) );
-
-		if ( !trSlim.StartedSolid )
-		{
-			var radius = Radius * WorldScale.x;
-			var trSkin = TraceColliders( trSlim.EndPosition, freeDir * radius, new( grow: SkinWidth, skin: 0f ) );
-
-			if ( TryStickToSurface( trSkin ) )
-				return true;
-		}
-
-		// TODO: Trace with escalating desparation depending on depth.
-		if ( attemptsRemaining <= 1 )
-			return false;
-
-		return TryUnstuck( trSlim, attemptsRemaining - 1, depth.Positive() + 1 );
-	}
-
 	public virtual bool TryStickToSurface( in TraceResult tr )
 	{
 		if ( tr.StartedSolid || !tr.Hit )
@@ -192,41 +147,96 @@ partial class FishboxController
 		if ( tr.Normal.AlmostEqual( 0f ) ) // idk man
 			return false;
 
-		var skin = tr.Skin;
-		var destPos = tr.EndPosition;
+		Vector3 testDelta;
 
 		if ( IsValidGround( in tr ) )
-			destPos += Up * skin;
+			testDelta = Up * tr.Skin;
 		else
-			destPos += tr.Normal * skin;
+			testDelta = tr.Normal * tr.Skin;
 
-		if ( TraceSkin( destPos ).StartedSolid )
+		var destPos = tr.EndPosition + testDelta;
+
+		// Is the position we've decided on fully free?
+		var trSkin = TraceAtPosition( destPos, new( skin: 0f ) );
+
+		if ( !trSkin.StartedSolid )
 		{
-			var a = destPos;
-			var b = WorldPosition;
-
-			/*
-			this.DrawArrow(
-				a, b, Color.Cyan,
-				len: 3f, w: 1f,
-				tWorld: global::Transform.Zero
-			);
-			*/
-
-			var trSkin = TraceColliders( destPos, b - a, new( grow: 0f, skin: SkinWidth ) );
-
-			if ( !trSkin.StartedSolid )
-			{
-				SetPhysicsPosition( destPos );
-				return true;
-			}
-		}
-		else
-		{
-			SetPhysicsPosition( destPos );
+			SetPhysicsPosition( trSkin.EndPosition );
 			return true;
 		}
 
 		return false;
+	}
+
+	public virtual bool TryUnstuck()
+	{
+		var trGrown = TraceTransform( WorldTransform );
+
+		if ( !trGrown.StartedSolid )
+			return true;
+
+		if ( DebugLogUnstuck )
+			this.Log( "Stuck in something!" );
+
+		if ( TryUnstuck( attemptsRemaining: 12 ) )
+		{
+			if ( DebugLogUnstuck )
+				this.Log( "Got unstuck." );
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected virtual bool TryUnstuck( in int attemptsRemaining, in int depth = 0 )
+	{
+		// Something's definitely gone wrong by now!
+		// If you really need to then just run this again.
+		const int depthLimit = 99;
+
+		if ( depth >= depthLimit )
+		{
+			this.Log( $"Unstuck attempt reached the limit at #{depth}." );
+			return false;
+		}
+
+		var trStuck = TraceTransform( WorldTransform );
+
+		if ( !trStuck.Hit || !trStuck.StartedSolid )
+			return true;
+
+		var fudgeDir = trStuck.HitPosition.Direction( trStuck.HitTrace.StartPosition );
+
+		var radius = Radius * WorldScale.x;
+		var skin = radius * 0.25f;
+
+		var startPos = trStuck.StartPosition;
+		var freePos = startPos - (fudgeDir * skin * (depth + 1));
+
+		var toOriginDelta = startPos - freePos;
+		var trShrunk = TraceDelta( freePos, toOriginDelta, new( skin: skin ) );
+
+		if ( trShrunk.StartedSolid )
+			goto NextAttempt;
+
+		SetPhysicsPosition( freePos );
+
+		return true;
+
+		// var trTest = TraceColliders( freePos, toOriginDelta, new( grow: 0f, skin: fat ) );
+
+		// if ( !trTest.StartedSolid )
+		// SetPhysicsPosition( freePos );
+
+		// return true;
+
+		NextAttempt:
+
+		// TODO: Trace with escalating desparation depending on depth.
+		if ( attemptsRemaining <= 1 )
+			return false;
+
+		return TryUnstuck( attemptsRemaining - 1, depth.Positive() + 1 );
 	}
 }

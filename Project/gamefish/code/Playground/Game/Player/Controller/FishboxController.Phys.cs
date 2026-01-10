@@ -3,8 +3,41 @@ using ShrimpleCharacterController;
 
 namespace Fishbox;
 
-partial class FishboxController : IScenePhysicsEvents
+partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListener
 {
+	void ICollisionListener.OnCollisionStart( Collision c )
+	{
+		if ( !Scene.IsValid() || IsProxy )
+			return;
+
+		var tr = TraceDelta( WorldPosition, Velocity );
+
+		// Negative velocity towards this surface.
+		var vNormal = tr.Normal;
+		var awaySpeed = Velocity.Forward( vNormal ).Dot( vNormal );
+
+		if ( awaySpeed <= 0f )
+			Velocity = Velocity.Horizontal( vNormal );
+	}
+
+	/*
+	void ICollisionListener.OnCollisionUpdate( Collision c )
+	{
+		if ( !Scene.IsValid() || IsProxy )
+			return;
+
+		var tr = TraceDelta( WorldPosition, Velocity );
+
+		// Negative velocity towards this surface.
+		var vNormal = tr.Normal;
+		var awaySpeed = Velocity.Forward( vNormal ).Dot( vNormal );
+
+		if ( awaySpeed <= 0f )
+			Velocity = Velocity.Horizontal( vNormal );
+	}
+	*/
+
+	/*
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
 		if ( !Scene.IsValid() || IsProxy )
@@ -28,15 +61,15 @@ partial class FishboxController : IScenePhysicsEvents
 		// Velocity.Separate( tr.Normal, out var upVel, out var hVel );
 		// Velocity = upVel + hVel;
 	}
+	*/
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		TryUnstuck();
+		// TryUnstuck();
 	}
-
 
 	public void SetPhysicsPosition( Vector3 pos )
 		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
@@ -54,11 +87,15 @@ partial class FishboxController : IScenePhysicsEvents
 
 	protected virtual void UpdateCollision()
 	{
+		if ( Rigidbody.IsValid() )
+			Rigidbody.EnhancedCcd = true;
+
 		var totalHeight = GetTotalHeight();
 
 		if ( BodyCylinder.IsValid() )
 		{
 			BodyCylinder.Radius = Radius;
+			BodyCylinder.Radius2 = Radius;
 			BodyCylinder.Height = GetBodyHeight( in totalHeight );
 			BodyCylinder.LocalPosition = GetLocalBodyCenter( in totalHeight );
 		}

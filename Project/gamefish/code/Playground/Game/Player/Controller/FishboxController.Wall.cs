@@ -245,7 +245,7 @@ partial class FishboxController
 			var traceDist = (velMove.Length * deltaTime).Max( 1f );
 			var vDelta = velMove.Normal * traceDist;
 
-			var trMove = TraceColliders( WorldPosition, vDelta );
+			var trMove = TraceDelta( WorldPosition, vDelta );
 
 			// DebugOverlay.Trace( trMove );
 
@@ -269,7 +269,7 @@ partial class FishboxController
 		}
 
 		// Stick to the current wall.
-		var trStick = TraceColliders( WorldPosition, -WallRunNormal * WallRunStickDistance );
+		var trStick = TraceDelta( WorldPosition, -WallRunNormal * WallRunStickDistance );
 
 		// DebugOverlay.Trace( trStick );
 
@@ -285,13 +285,11 @@ partial class FishboxController
 
 		// Run onto the next wall.
 		var deltaAhead = Velocity * deltaTime.Min( 1f ) * 1.5f;
-		var trWall = TraceColliders( WorldPosition, deltaAhead );
+		var trWall = TraceDelta( WorldPosition, deltaAhead );
 
 		if ( IsValidForWallRunning( trWall ) )
-		{
-			WallRunNormal = trWall.Normal;
-			TryStickToSurface( in trWall );
-		}
+			if ( TryStickToSurface( in trWall ) )
+				WallRunNormal = trWall.Normal;
 
 		// Negate into-wall velocity.
 		Velocity = Velocity.Horizontal( WallRunNormal );
