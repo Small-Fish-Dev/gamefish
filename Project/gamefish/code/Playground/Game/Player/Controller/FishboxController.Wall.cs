@@ -154,8 +154,11 @@ partial class FishboxController
 
 	protected virtual void DoWallRunJump()
 	{
-		if ( !IsWallRunning )
+		if ( !IsWallRunning || !NextJump )
 			return;
+
+		NextJump = 0.1f;
+		NextGround = NextGround.Relative.Max( 0.5f );
 
 		IsWallRunning = false;
 
@@ -223,7 +226,7 @@ partial class FishboxController
 
 		if ( !IsWallRunning )
 		{
-			if ( !HoldingJump )
+			if ( !NextJump || !HoldingJump )
 				return;
 
 			// Where are we trying to move to?
