@@ -56,6 +56,8 @@ partial class FishboxController
 	public Vector3 Down => WorldRotation.Down;
 	public Vector3 Right => WorldRotation.Right;
 
+	public float Scale => WorldScale.z.Abs();
+
 	protected TraceResult GroundTrace { get; set; }
 
 	public override SceneTrace BuildTrace()
@@ -147,17 +149,15 @@ partial class FishboxController
 		if ( tr.Normal.AlmostEqual( 0f ) ) // idk man
 			return false;
 
-		Vector3 testDelta;
+		var skin = SkinWidth * Scale;
 
-		if ( IsValidGround( in tr ) )
-			testDelta = Up * tr.Skin;
-		else
-			testDelta = tr.Normal * tr.Skin;
+		var destPos = tr.EndPosition;
 
-		var destPos = tr.EndPosition + testDelta;
+		if ( !IsValidGround( in tr ) )
+			destPos += tr.Normal * skin * 10f;
 
-		// Is the position we've decided on fully free?
-		var trSkin = TraceAtPosition( destPos, new( skin: 0f ) );
+		// Is the position we've decided on free?
+		var trSkin = TraceAtPosition( destPos, new( skin: skin * 0.5f ) );
 
 		if ( !trSkin.StartedSolid )
 		{
