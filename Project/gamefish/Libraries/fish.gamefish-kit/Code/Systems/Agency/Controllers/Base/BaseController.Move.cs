@@ -205,15 +205,15 @@ partial class BaseController
 	/// Creates the default collision trace and sets the start and end points.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace Trace( Vector3 from, Vector3 to )
+	public virtual SceneTrace BuildTrace( Vector3 from, Vector3 to )
 		=> BuildTrace().FromTo( from, to );
 
 	/// <summary>
 	/// Creates the default collision trace and sets the end point relative to our starting position.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace TraceDelta( Vector3 vectorFromOrigin )
-		=> Trace( WorldPosition, WorldPosition + vectorFromOrigin );
+	public virtual SceneTrace BuildTraceDelta( Vector3 vectorFromOrigin )
+		=> BuildTrace( WorldPosition, WorldPosition + vectorFromOrigin );
 
 	/// <summary>
 	/// Reduces velocity over time.

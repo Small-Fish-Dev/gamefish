@@ -12,62 +12,19 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 
 		var tr = TraceDelta( WorldPosition, Velocity );
 
-		if ( !tr.Hit || tr.StartedSolid )
-			return;
-
-		// Negative velocity towards this surface.
-		var vNormal = tr.Normal;
-		var awaySpeed = Velocity.Forward( vNormal ).Dot( vNormal );
-
-		if ( awaySpeed <= 0f )
-			Velocity = Velocity.Horizontal( vNormal );
+		OnHitSurface( in tr );
 	}
 
-	/*
-	void ICollisionListener.OnCollisionUpdate( Collision c )
-	{
-		if ( !Scene.IsValid() || IsProxy )
-			return;
-
-		var tr = TraceDelta( WorldPosition, Velocity );
-
-		if ( !tr.Hit || tr.StartedSolid )
-			return;
-
-		// Negative velocity towards this surface.
-		var vNormal = tr.Normal;
-		var awaySpeed = Velocity.Forward( vNormal ).Dot( vNormal );
-
-		if ( awaySpeed <= 0f )
-			Velocity = Velocity.Horizontal( vNormal );
-	}
-	*/
-
-	/*
 	void IScenePhysicsEvents.PrePhysicsStep()
 	{
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		var vMove = Velocity * Scene.FixedDelta;
-		var tr = TraceColliders( WorldPosition, vMove );
+		var vMove = WishVelocity * Scene.FixedDelta;
+		var tr = TraceDelta( WorldPosition, vMove );
 
-		if ( !tr.Hit || tr.StartedSolid )
-			return;
-
-		// Move towards the surface we'll hit with some skin between.
-		TryStickToSurface( tr );
-
-		// Negative velocity towards this surface.
-		var awaySpeed = Velocity.Forward( tr.Normal ).Dot( tr.Normal );
-
-		if ( awaySpeed < 0f )
-			Velocity = Velocity.Horizontal( tr.Normal );
-
-		// Velocity.Separate( tr.Normal, out var upVel, out var hVel );
-		// Velocity = upVel + hVel;
+		OnHitSurface( in tr );
 	}
-	*/
 
 	void IScenePhysicsEvents.PostPhysicsStep()
 	{
@@ -75,6 +32,25 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 			return;
 
 		// TryUnstuck();
+	}
+
+	public virtual void OnHitSurface( in TraceResult tr )
+	{
+		if ( !tr.Hit || tr.StartedSolid )
+			return;
+
+		// Negate downward velocity along the ground.
+		if ( IsValidGround( in tr ) )
+		{
+			var vDown = GravityDirection;
+			var downSpeed = Velocity.Forward( vDown ).Dot( vDown );
+
+			if ( downSpeed > 0f )
+				Velocity = Velocity.Horizontal( vDown );
+		}
+
+		// Projecct velocity towards this surface.
+		Velocity = Vector3.VectorPlaneProject( Velocity, tr.Normal );
 	}
 
 	public void SetPhysicsPosition( Vector3 pos )
