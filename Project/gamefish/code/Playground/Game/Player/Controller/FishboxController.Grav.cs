@@ -35,6 +35,8 @@ partial class FishboxController
 	[Sync]
 	public TimeUntil NextGround { get; set; }
 
+	public override Vector3 Gravity => GravityDirection * base.Gravity.Length;
+
 	protected override void OnSetIsGrounded( in bool isGrounded )
 	{
 		base.OnSetIsGrounded( isGrounded );
@@ -103,8 +105,7 @@ partial class FishboxController
 		}
 
 		// We'll be making this orbital/field-based later.
-		var gravSpeed = Scene?.PhysicsWorld?.Gravity.Length ?? 0f;
-		var grav = GravityDirection * gravSpeed;
+		var grav = Gravity;
 
 		// Modify gravity depending on input/state.
 		if ( IsWallRunning )
