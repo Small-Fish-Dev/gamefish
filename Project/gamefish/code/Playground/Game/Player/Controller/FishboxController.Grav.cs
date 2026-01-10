@@ -32,6 +32,40 @@ partial class FishboxController
 
 	protected Vector3 _gravDir = Vector3.Down;
 
+	[Sync]
+	public TimeUntil NextGround { get; set; }
+
+	protected override void OnSetIsGrounded( in bool isGrounded )
+	{
+		base.OnSetIsGrounded( isGrounded );
+
+		if ( isGrounded && IsWallRunning )
+			IsWallRunning = false;
+	}
+
+	/// <summary>
+	/// Finds some kind of normal/up to walk along.
+	/// </summary>
+	protected bool TryGetGroundNormal( out Vector3 vNormal )
+	{
+		vNormal = default;
+
+		if ( IsGrounded && !GroundNormal.AlmostEqual( 0f ) )
+		{
+			vNormal = GroundNormal.Normal;
+		}
+		else if ( !GravityDirection.AlmostEqual( 0f ) )
+		{
+			vNormal = -GravityDirection.Normal;
+		}
+		else
+		{
+			vNormal = Up;
+		}
+
+		return !vNormal.AlmostEqual( 0f );
+	}
+
 	protected virtual void OnSetGravityDirection( in Vector3 dir )
 	{
 		if ( !Pawn.IsValid() )
@@ -68,9 +102,6 @@ partial class FishboxController
 				GravityDirection = -trEye.Normal;
 		}
 
-		if ( IsGrounded )
-			return;
-
 		// We'll be making this orbital/field-based later.
 		var gravSpeed = Scene?.PhysicsWorld?.Gravity.Length ?? 0f;
 		var grav = GravityDirection * gravSpeed;
@@ -90,5 +121,79 @@ partial class FishboxController
 		}
 
 		Velocity += grav * deltaTime;
+	}
+
+	public virtual void UpdateGround()
+	{
+		if ( !NextGround )
+			return;
+
+		if ( !TryGetGroundNormal( out var vNormal ) )
+			return;
+
+		var checkDist = IsGrounded
+			? GroundStickDistance
+			: GroundCheckDistance;
+
+		checkDist *= Scale;
+
+		GroundTrace = TraceDelta( WorldPosition, -vNormal * checkDist );
+
+		// DebugOverlay.Trace( GroundTrace.BodyTrace );
+
+		if ( !GroundTrace.Hit )
+		{
+			if ( IsGrounded )
+				IsGrounded = false;
+
+			return;
+		}
+
+		var upVel = Velocity.Forward( vNormal );
+		var upSpeed = GroundTrace.Normal.Dot( upVel );
+		var isRamping = upSpeed >= 300f;
+
+		IsGrounded = !isRamping && IsValidGround( GroundTrace );
+
+		if ( !IsGrounded )
+			return;
+
+		GroundNormal = GroundTrace.Normal;
+		GroundCollider = GroundTrace.Collider;
+		GroundObject = GroundTrace.GameObject;
+
+		// TryStickToSurface( GroundTrace );
+	}
+
+	protected virtual void DoGroundMovement( in float deltaTime )
+	{
+		if ( !IsGrounded )
+			return;
+
+		ApplyFriction( in deltaTime );
+
+		var wishDir = WishVelocity.Normal;
+
+		if ( wishDir.AlmostEqual( 0f ) )
+			return;
+
+		if ( !TryGetGroundNormal( out var vNormal ) )
+		{
+			DoAirMovement( in deltaTime );
+			return;
+		}
+
+		Velocity.Separate( vNormal, out var upVel, out var hVel );
+
+		var wishSpeed = GetWishSpeed();
+		var speedLimit = hVel.Length.Max( wishSpeed );
+
+		var speed = Acceleration * wishSpeed;
+		var vMove = wishDir * speed * deltaTime;
+
+		hVel = (hVel + vMove).ClampLength( speedLimit );
+		hVel = hVel.ProjectAndScale( vNormal );
+
+		Velocity = hVel + upVel;
 	}
 }

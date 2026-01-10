@@ -212,13 +212,11 @@ partial class FishboxController
 
 	protected virtual void DoWallRunning( in float deltaTime )
 	{
+		// Stop wall running if grounded somehow.
 		if ( IsGrounded )
 		{
 			if ( IsWallRunning )
-			{
-				// this.Log( "Stopped wall running. Reason: \"Grounded.\"" );
 				StopWallRunning();
-			}
 
 			return;
 		}

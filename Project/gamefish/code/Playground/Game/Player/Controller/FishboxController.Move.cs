@@ -30,7 +30,7 @@ partial class FishboxController
 	public MoveHelper MoveHelper { get; set; }
 
 	[Sync]
-	public TimeUntil NextGroundStick { get; set; }
+	public TimeUntil NextJump { get; set; }
 
 	protected virtual void OnSetVelocity( in Vector3 vel )
 	{
@@ -76,11 +76,7 @@ partial class FishboxController
 	{
 		// Stick to the ground.
 		if ( IsGrounded )
-		{
-			var vDown = -Up;
-			var trStickToGround = TraceDelta( WorldPosition, vDown * GroundStickDistance );
-			TryStickToSurface( trStickToGround );
-		}
+			UpdateGround();
 	}
 
 	public override float GetWishSpeed()
@@ -154,65 +150,6 @@ partial class FishboxController
 		upVel = jumpDir * vSpeed;
 
 		Velocity = hVel + upVel;
-	}
-
-	public virtual void UpdateGround()
-	{
-		if ( !NextGroundStick )
-			return;
-
-		var origin = WorldPosition;
-
-		var vGround = Down * WorldScale.z * GroundCheckDistance;
-
-		GroundTrace = TraceDelta( origin, vGround );
-		// DebugOverlay.Trace( GroundTrace.BodyTrace );
-
-		if ( !GroundTrace.Hit )
-		{
-			IsGrounded = false;
-			return;
-		}
-
-		var upVel = Velocity.Forward( GroundNormal );
-		var upSpeed = GroundTrace.Normal.Dot( upVel );
-		var isRamping = upSpeed >= 300f;
-
-		IsGrounded = !isRamping && IsValidGround( GroundTrace );
-
-		if ( !IsGrounded )
-			return;
-
-		GroundNormal = GroundTrace.Normal;
-		GroundCollider = GroundTrace.Collider;
-		GroundObject = GroundTrace.GameObject;
-
-		TryStickToSurface( GroundTrace );
-	}
-
-	protected virtual void DoGroundMovement( in float deltaTime )
-	{
-		if ( !IsGrounded )
-			return;
-
-		ApplyFriction( in deltaTime );
-
-		var wishDir = WishVelocity.Normal;
-
-		if ( wishDir.AlmostEqual( 0f ) )
-			return;
-
-		Velocity.Separate( Up, out var upVel, out var sideVel );
-
-		var wishSpeed = GetWishSpeed();
-		var speedLimit = sideVel.Length.Max( wishSpeed );
-
-		var speed = Acceleration * wishSpeed;
-		var vMove = wishDir * speed * deltaTime;
-
-		sideVel = (sideVel + vMove).ClampLength( speedLimit );
-
-		Velocity = sideVel + upVel;
 	}
 
 	protected virtual void DoAirMovement( in float deltaTime )

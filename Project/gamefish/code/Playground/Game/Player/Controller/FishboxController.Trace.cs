@@ -139,7 +139,10 @@ partial class FishboxController
 		if ( tr.Normal.AlmostEqual( 0f ) )
 			return false;
 
-		return Up.Angle( tr.Normal ) <= GroundAngle;
+		if ( !TryGetGroundNormal( out var vNormal ) )
+			return false;
+
+		return vNormal.Angle( tr.Normal ) <= GroundAngle;
 	}
 
 	public virtual bool TryStickToSurface( in TraceResult tr )
