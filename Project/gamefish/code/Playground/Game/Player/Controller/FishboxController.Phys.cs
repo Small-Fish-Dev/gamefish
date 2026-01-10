@@ -12,6 +12,9 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 
 		var tr = TraceDelta( WorldPosition, Velocity );
 
+		if ( !tr.Hit || tr.StartedSolid )
+			return;
+
 		// Negative velocity towards this surface.
 		var vNormal = tr.Normal;
 		var awaySpeed = Velocity.Forward( vNormal ).Dot( vNormal );
@@ -27,6 +30,9 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 			return;
 
 		var tr = TraceDelta( WorldPosition, Velocity );
+
+		if ( !tr.Hit || tr.StartedSolid )
+			return;
 
 		// Negative velocity towards this surface.
 		var vNormal = tr.Normal;
