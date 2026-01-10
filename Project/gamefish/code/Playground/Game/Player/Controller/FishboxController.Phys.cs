@@ -49,9 +49,14 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 				Velocity = Velocity.Horizontal( vDown );
 		}
 
-		// Projecct velocity towards this surface.
-		Velocity = Vector3.VectorPlaneProject( Velocity, tr.Normal );
+		// Project velocty that is pushing this wall along its surface.
+		var wallDir = -tr.Normal;
+		var wallPush = Velocity.Forward( wallDir ).Dot( wallDir );
+
+		if ( wallPush > 0f )
+			Velocity = Vector3.VectorPlaneProject( Velocity, tr.Normal );
 	}
+
 
 	public void SetPhysicsPosition( Vector3 pos )
 		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
