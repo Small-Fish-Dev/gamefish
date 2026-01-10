@@ -95,11 +95,11 @@ partial class FishboxController
 	public TraceResult TraceDelta( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
 		=> TraceDelta( WorldTransform.WithPosition( startPos ), in vDelta, s );
 
-	public virtual TraceResult TraceDelta( Transform tWorld, in Vector3 vDelta, in TraceSettings? settings = null )
+	public virtual TraceResult TraceDelta( Transform tWorld, in Vector3 vDelta, in TraceSettings? s = null )
 	{
 		var scale = WorldScale.z;
-		var s = settings ?? new( skin: SkinWidth * scale );
-		var skin = s.Skin;
+		var settings = s ?? new( skin: SkinWidth * scale );
+		var skin = settings.Skin;
 
 		var radius = (Radius * scale) - skin;
 		var totalHeight = (GetTotalHeight() * scale) - skin;
@@ -109,7 +109,7 @@ partial class FishboxController
 		var bodyOffset = GetBodyWorldOffset( tWorld, in totalHeight ) + vSkinOffset;
 		var headOffset = GetHeadWorldOffset( tWorld, in totalHeight ) + vSkinOffset;
 
-		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin);
+		var endPos = tWorld.Position + vDelta + (vDelta.Normal * skin * 2f);
 
 		var bodyStart = tWorld.Position + bodyOffset;
 		var bodyEnd = endPos + bodyOffset;
@@ -128,7 +128,7 @@ partial class FishboxController
 			DebugOverlay.Trace( trHead );
 		}
 
-		return new( in s, in tWorld, in vDelta, in trBody, in trHead );
+		return new( in settings, in tWorld, in vDelta, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
