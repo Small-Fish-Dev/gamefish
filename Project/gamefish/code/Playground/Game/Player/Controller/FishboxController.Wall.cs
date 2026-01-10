@@ -235,7 +235,7 @@ partial class FishboxController
 			var hVel = WishVelocity.Horizontal( vUp );
 
 			if ( hVel.AlmostEqual( 0f ) )
-				return;
+				hVel = Velocity.Horizontal( vUp );
 
 			var upVel = Velocity.Forward( vUp );
 			var velMove = upVel + hVel;
