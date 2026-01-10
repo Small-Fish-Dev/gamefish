@@ -130,7 +130,7 @@ partial class FishboxController
 		if ( !tr.Hit )
 			return false;
 
-		if ( !IsValidWallAngle( tr.Normal, WishVelocity.Normal ) )
+		if ( !IsValidWallAngle( tr.Normal ) )
 			return false;
 
 		if ( IsSlippery( tr ) )
@@ -139,7 +139,7 @@ partial class FishboxController
 		return true;
 	}
 
-	public virtual bool IsValidWallAngle( in Vector3 wallNormal, in Vector3 moveDir )
+	public virtual bool IsValidWallAngle( in Vector3 wallNormal )
 	{
 		if ( wallNormal.AlmostEqual( 0f ) )
 			return false;
@@ -229,32 +229,26 @@ partial class FishboxController
 				return;
 
 			// Where are we trying to move to?
-			Velocity.Separate( Up, out var upVel, out var hVel );
+			var vUp = Up;
 
-			upVel = Up * upVel.Dot( Up ).Positive();
+			var hVel = WishVelocity.Horizontal( vUp );
 
 			if ( hVel.AlmostEqual( 0f ) )
-				hVel = WishVelocity.Horizontal( Up );
-
-			var velMove = upVel + hVel;
-
-			if ( velMove.AlmostEqual( 0f ) )
 				return;
 
+			var upVel = Velocity.Forward( vUp );
+			var velMove = upVel + hVel;
+
 			// Not wall running and trying to run.
-			var traceDist = (velMove.Length * deltaTime).Max( 1f );
-			var vDelta = velMove.Normal * traceDist;
+			var hDist = velMove.Length * Scene.FixedDelta;
+			var trDist = hDist.Max( SkinWidth + 1f );
+			var vDelta = velMove.Normal * trDist;
 
 			var trMove = TraceDelta( WorldPosition, vDelta );
-
-			// DebugOverlay.Trace( trMove );
 
 			if ( !trMove.StartedSolid && trMove.Hit )
 				if ( IsValidForWallRunning( trMove ) )
 					TryStartWallRunning( in trMove );
-
-			// Debug Trace Visualizer
-			// DebugOverlay.Trace( trMove );
 		}
 
 		if ( !IsWallRunning )
