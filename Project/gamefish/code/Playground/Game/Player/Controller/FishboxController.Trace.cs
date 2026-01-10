@@ -1,4 +1,5 @@
 using GameFish;
+using Sandbox.UI;
 using ShrimpleCharacterController;
 
 namespace Fishbox;
@@ -45,7 +46,7 @@ partial class FishboxController
 	/// Should collision traces be visualized?
 	/// </summary>
 	[Property]
-	[Title( "Log Traces" )]
+	[Title( "Draw Traces" )]
 	[Feature( PLAYER ), Group( PHYSICS )]
 	public bool DebugRenderTraces { get; set; } = false;
 
@@ -154,7 +155,7 @@ partial class FishboxController
 		var destPos = tr.EndPosition;
 
 		if ( !IsValidGround( in tr ) )
-			destPos += tr.Normal * skin * 10f;
+			destPos += tr.Normal * skin;
 
 		// Is the position we've decided on free?
 		var trSkin = TraceAtPosition( destPos, new( skin: skin * 0.5f ) );
