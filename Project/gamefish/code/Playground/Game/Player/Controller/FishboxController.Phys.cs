@@ -5,54 +5,17 @@ namespace Fishbox;
 
 partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListener
 {
-	public virtual void SetUpDirection( Vector3 up )
-	{
-		if ( IsProxy || !Pawn.IsValid() || Pawn.Seat.IsValid() )
-			return;
-
-		up = up.Normal;
-
-		if ( up.AlmostEqual( 0f ) )
-			return;
-
-		var tWorld = WorldTransform;
-
-		var localCenter = GetLocalCenter();
-		var oldCenter = tWorld.PointToWorld( localCenter );
-
-		var tEye = Pawn.EyeTransform;
-
-		// Perform the rotation.
-		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, up );
-		tWorld.Rotation = Rotation.LookAt( flatDir, up );
-
-		// Recenter us on our previous position.
-		var newCenter = tWorld.PointToWorld( localCenter );
-		tWorld.Position += oldCenter - newCenter;
-
-		// Update transform afterwards.
-		WorldTransform = tWorld;
-
-		// Set and correct our eye aim/origin.
-		Pawn.EyePosition = tEye.Position;
-		Pawn.EyeRotation = tEye.Rotation;
-	}
-
 	void ICollisionListener.OnCollisionStart( Collision c )
 	{
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		var tr = TraceDelta( WorldPosition, -c.Contact.Speed );
+		var tr = TraceDelta( WorldPosition, -c.Contact.Speed * Scene.FixedDelta );
 
-		if ( tr.Hit )
+		if ( NextGround && TryStep( tr ) )
 		{
-			var len = (c.Contact.Speed.Length * Scene.FixedDelta).Max( SkinWidth );
-			if ( TryStep( tr.StartPosition, tr.Delta, c.Contact.Normal, 32f, len ) )
-			{
-				this.Log( "stepped" );
-				return;
-			}
+			Velocity += c.Contact.Speed;
+			return;
 		}
 
 		OnHitSurface( in tr );
@@ -63,7 +26,16 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
+		if ( !NextGround )
+			return;
+
 		UpdateGround();
+
+		var vMove = Velocity * Scene.FixedDelta;
+		var trMove = TraceDelta( WorldPosition, vMove, new( skin: 0f ) );
+
+		if ( !IsSlippery( trMove ) )
+			TryStep( trMove );
 	}
 
 	void IScenePhysicsEvents.PostPhysicsStep()
@@ -108,6 +80,39 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		// Transform.ClearInterpolation();
 
 		// Velocity = vel;
+	}
+
+	public virtual void SetUpDirection( Vector3 up )
+	{
+		if ( IsProxy || !Pawn.IsValid() || Pawn.Seat.IsValid() )
+			return;
+
+		up = up.Normal;
+
+		if ( up.AlmostEqual( 0f ) )
+			return;
+
+		var tWorld = WorldTransform;
+
+		var localCenter = GetLocalCenter();
+		var oldCenter = tWorld.PointToWorld( localCenter );
+
+		var tEye = Pawn.EyeTransform;
+
+		// Perform the rotation.
+		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, up );
+		tWorld.Rotation = Rotation.LookAt( flatDir, up );
+
+		// Recenter us on our previous position.
+		var newCenter = tWorld.PointToWorld( localCenter );
+		tWorld.Position += oldCenter - newCenter;
+
+		// Update transform afterwards.
+		WorldTransform = tWorld;
+
+		// Set and correct our eye aim/origin.
+		Pawn.EyePosition = tEye.Position;
+		Pawn.EyeRotation = tEye.Rotation;
 	}
 
 

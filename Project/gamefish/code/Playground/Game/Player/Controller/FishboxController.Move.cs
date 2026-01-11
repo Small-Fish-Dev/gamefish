@@ -67,8 +67,6 @@ partial class FishboxController
 		IsSprinting = isAlive && ShouldSprint;
 
 		DoAbilities( in deltaTime );
-
-		UpdateGround();
 	}
 
 	protected override void PostMove( in float deltaTime )

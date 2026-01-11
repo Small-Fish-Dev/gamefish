@@ -145,7 +145,7 @@ partial class FishboxController
 		return vNormal.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	public virtual bool TryStickToSurface( in TraceResult trSurface, float skin = 0f )
+	public virtual bool TryStickToSurface( in TraceResult trSurface, float skin = 0.5f, in bool slideVel = true )
 	{
 		if ( !Scene.IsValid() )
 			return false;
@@ -177,8 +177,11 @@ partial class FishboxController
 		{
 			var endPos = trSkin.StartPosition;
 
-			if ( trSkin.Hit && !trSkin.Normal.AlmostEqual( 0f ) )
-				Velocity = Velocity.ProjectAndScale( trSkin.Normal );
+			if ( slideVel )
+			{
+				if ( trSkin.Hit && !trSkin.Normal.AlmostEqual( 0f ) )
+					Velocity = Velocity.ProjectAndScale( trSkin.Normal );
+			}
 
 			SetPhysicsPosition( endPos );
 
@@ -193,7 +196,7 @@ partial class FishboxController
 		if ( !tr.Hit )
 			return false;
 
-		var vRemaining = tr.Delta - tr.Delta.ClampLength( tr.Distance );
+		var vRemaining = tr.Delta - (tr.Delta.Normal * tr.Distance);
 
 		return TryStep( tr.StartPosition, vRemaining, tr.Normal, 32f * Scale, vRemaining.Length );
 	}
@@ -206,11 +209,10 @@ partial class FishboxController
 		if ( vMove.AlmostEqual( 0f ) || vNormal.AlmostEqual( 0f ) )
 			return false;
 
-		this.Log( "aaa" );
-
 		// Align the movement axis along the hit normal.
 		var vForward = Vector3.VectorPlaneProject( vMove, Up ).Normal;
 		var vUpward = Vector3.VectorPlaneProject( Up, vForward ).Normal;
+		hDist = Vector3.VectorPlaneProject( vMove, vUpward ).Length;
 
 		var trUpward = TraceDelta( startPos, vUpward * stepHeight );
 
@@ -229,19 +231,18 @@ partial class FishboxController
 			return false;
 
 		var trDown = TraceDelta( vPos, vUpward * (stepHeight * -2f) );
-		vPos = trDown.EndPosition;
 
-		DebugOverlay.Trace( trDown.BodyTrace, duration: 3f );
+		// DebugOverlay.Trace( trDown.BodyTrace, duration: 3f );
 
 		if ( trDown.StartedSolid || !trDown.Hit )
 			return false;
 
-		SetPhysicsPosition( vPos );
+		if ( !TryStickToSurface( trDown ) )
+			return false;
+
 		Transform.ClearInterpolation();
 
 		return true;
-
-		// return TryStickToSurface( trDown );
 	}
 
 	public virtual bool TryUnstuck()
