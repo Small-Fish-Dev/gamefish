@@ -42,7 +42,7 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		var tr = TraceDelta( WorldPosition, Velocity );
+		var tr = TraceDelta( WorldPosition, Velocity * Scene.FixedDelta );
 
 		OnHitSurface( in tr );
 	}
