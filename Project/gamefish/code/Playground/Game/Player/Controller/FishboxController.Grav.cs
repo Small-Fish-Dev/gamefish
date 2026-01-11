@@ -43,6 +43,9 @@ partial class FishboxController
 
 		if ( isGrounded && IsWallRunning )
 			IsWallRunning = false;
+
+		if ( !isGrounded && FollowObject.IsValid() )
+			FollowObject = null;
 	}
 
 	/// <summary>
@@ -70,27 +73,7 @@ partial class FishboxController
 
 	protected virtual void OnSetGravityDirection( in Vector3 dir )
 	{
-		if ( !Pawn.IsValid() )
-			return;
-
-		var localCenter = GetLocalCenter();
-		var oldCenter = WorldTransform.PointToWorld( localCenter );
-
-		var tEye = Pawn.EyeTransform;
-		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, dir );
-
-		// Perform the rotation.
-		WorldRotation = Rotation.LookAt( flatDir, -dir );
-
-		// Recenter us on our previous position.
-		var newCenter = WorldTransform.PointToWorld( localCenter );
-		WorldPosition += oldCenter - newCenter;
-
-		// Set and correct our eye aim/origin.
-		Pawn.EyePosition = tEye.Position;
-		Pawn.EyeRotation = tEye.Rotation;
-
-		Transform.ClearInterpolation();
+		// SetUpDirection( -dir );
 	}
 
 	protected virtual void DoGravity( in float deltaTime )
@@ -101,7 +84,11 @@ partial class FishboxController
 			var trEye = Pawn.GetEyeTrace( dir: EyeForward, distance: 8192f ).Run();
 
 			if ( trEye.Hit )
+			{
+				IsGrounded = false;
 				GravityDirection = -trEye.Normal;
+				SetUpDirection( -GravityDirection );
+			}
 		}
 
 		// We'll be making this orbital/field-based later.
@@ -162,6 +149,9 @@ partial class FishboxController
 		GroundNormal = GroundTrace.Normal;
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
+
+		if ( GroundObject.IsValid() )
+			FollowObject = GroundObject;
 
 		// TryStickToSurface( GroundTrace );
 	}

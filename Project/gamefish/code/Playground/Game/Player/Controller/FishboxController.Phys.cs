@@ -5,6 +5,38 @@ namespace Fishbox;
 
 partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListener
 {
+	public virtual void SetUpDirection( Vector3 up )
+	{
+		if ( IsProxy || !Pawn.IsValid() || Pawn.Seat.IsValid() )
+			return;
+
+		up = up.Normal;
+
+		if ( up.AlmostEqual( 0f ) )
+			return;
+
+		var localCenter = GetLocalCenter();
+		var oldCenter = WorldTransform.PointToWorld( localCenter );
+
+		var tEye = Pawn.EyeTransform;
+		var tWorld = WorldTransform;
+
+		// Perform the rotation.
+		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, up );
+		tWorld.Rotation = Rotation.LookAt( flatDir, up );
+
+		// Recenter us on our previous position.
+		var newCenter = tWorld.PointToWorld( localCenter );
+		tWorld.Position += oldCenter - newCenter;
+
+		// Update transform afterwards.
+		SetPhysicsTransform( tWorld );
+
+		// Set and correct our eye aim/origin.
+		Pawn.EyePosition = tEye.Position;
+		Pawn.EyeRotation = tEye.Rotation;
+	}
+
 	void ICollisionListener.OnCollisionStart( Collision c )
 	{
 		if ( !Scene.IsValid() || IsProxy )
@@ -40,7 +72,7 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 			return;
 
 		// Negate downward velocity along the ground.
-		if ( IsValidGround( in tr ) )
+		if ( tr.Hit && IsValidGround( in tr ) )
 		{
 			var vDown = GravityDirection;
 			var downSpeed = Velocity.Forward( vDown ).Dot( vDown );
@@ -58,17 +90,25 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 	}
 
 
-	public void SetPhysicsPosition( Vector3 pos )
+	public void SetPhysicsPosition( Vector3 pos, in bool updateParent = true )
 		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
 
-	public virtual void SetPhysicsTransform( Transform tWorld )
+	public virtual void SetPhysicsTransform( Transform tWorld, in bool updateParent = true )
 	{
-		if ( !Rigidbody.IsValid() || !Rigidbody.PhysicsBody.IsValid() )
+		// Don't set transform while seated.
+		if ( Pawn.IsValid() && Pawn.Seat.IsValid() )
 			return;
 
-		var vel = Velocity;
-		Rigidbody.PhysicsBody.Transform = tWorld;
-		Velocity = vel;
+		// var vel = Velocity;
+
+		WorldTransform = tWorld;
+
+		// var phys = Rigidbody?.PhysicsBody;
+
+		// if ( phys.IsValid() )
+		// phys.Position = tWorld.Position;
+
+		// Velocity = vel;
 	}
 
 

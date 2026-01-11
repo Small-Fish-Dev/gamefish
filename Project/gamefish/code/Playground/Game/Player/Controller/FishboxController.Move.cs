@@ -74,9 +74,33 @@ partial class FishboxController
 
 	protected override void PostMove( in float deltaTime )
 	{
+		FollowParent();
+
+		UpdateUpDirection( in deltaTime );
+
 		// Stick to the ground.
-		if ( IsGrounded )
-			UpdateGround();
+		UpdateGround();
+	}
+
+	protected virtual void UpdateUpDirection( in float deltaTime )
+	{
+		// Ya gotta get up.
+		var vUp = Up;
+		var upDirDest = -GravityDirection.Normal;
+
+		if ( upDirDest.AlmostEqual( 0f ) )
+			return;
+
+		if ( vUp.AlmostEqual( upDirDest ) )
+		{
+			if ( vUp != upDirDest )
+				SetUpDirection( upDirDest );
+
+			return;
+		}
+
+		// SetUpDirection( vUp.SlerpTo( upDirDest, deltaTime ) );
+		SetUpDirection( upDirDest );
 	}
 
 	public override float GetWishSpeed()
