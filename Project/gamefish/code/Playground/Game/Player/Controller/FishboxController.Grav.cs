@@ -51,24 +51,22 @@ partial class FishboxController
 	/// <summary>
 	/// Finds some kind of normal/up to walk along.
 	/// </summary>
-	protected bool TryGetGroundNormal( out Vector3 vNormal )
+	protected bool TryGetGroundNormal( out Vector3 vUp )
 	{
-		vNormal = default;
-
 		if ( IsGrounded && !GroundNormal.AlmostEqual( 0f ) )
 		{
-			vNormal = GroundNormal.Normal;
+			vUp = GroundNormal.Normal;
 		}
 		else if ( !GravityDirection.AlmostEqual( 0f ) )
 		{
-			vNormal = -GravityDirection.Normal;
+			vUp = -GravityDirection.Normal;
 		}
 		else
 		{
-			vNormal = Up;
+			vUp = Up;
 		}
 
-		return !vNormal.AlmostEqual( 0f );
+		return !vUp.AlmostEqual( 0f );
 	}
 
 	protected virtual void OnSetGravityDirection( in Vector3 dir )
@@ -149,6 +147,9 @@ partial class FishboxController
 		GroundNormal = GroundTrace.Normal;
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
+
+		if ( upSpeed <= 0f )
+			TryStickToSurface( GroundTrace );
 
 		if ( GroundObject.IsValid() )
 			FollowObject = GroundObject;
