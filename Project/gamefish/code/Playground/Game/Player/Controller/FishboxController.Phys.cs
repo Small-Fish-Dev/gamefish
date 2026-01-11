@@ -53,10 +53,7 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		var vMove = WishVelocity * Scene.FixedDelta;
-		var tr = TraceDelta( WorldPosition, vMove );
-
-		OnHitSurface( in tr );
+		UpdateGround();
 	}
 
 	void IScenePhysicsEvents.PostPhysicsStep()
@@ -69,18 +66,12 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 
 	public virtual void OnHitSurface( in TraceResult tr )
 	{
-		if ( !tr.Hit || tr.StartedSolid )
-			return;
-
-		// Pull us out of the surface a bit.
-		TryStickToSurface( in tr );
-
 		// Project velocty that is pushing this wall along its surface.
 		var wallDir = -tr.Normal;
 		var wallPush = Velocity.Forward( wallDir ).Dot( wallDir );
 
-		if ( wallPush > 0f )
-			Velocity = Vector3.VectorPlaneProject( Velocity, tr.Normal );
+		if ( wallPush >= 0f )
+			TryStickToSurface( in tr );
 	}
 
 

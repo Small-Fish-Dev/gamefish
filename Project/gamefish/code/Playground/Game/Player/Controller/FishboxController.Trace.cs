@@ -178,10 +178,7 @@ partial class FishboxController
 			var endPos = trSkin.StartPosition;
 
 			if ( trSkin.Hit && !trSkin.Normal.AlmostEqual( 0f ) )
-			{
-				var slideVel = Vector3.VectorPlaneProject( Velocity, trSkin.Normal );
-				Velocity = slideVel;
-			}
+				Velocity = Velocity.ProjectAndScale( trSkin.Normal );
 
 			SetPhysicsPosition( endPos );
 

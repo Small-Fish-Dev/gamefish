@@ -39,9 +39,6 @@ partial class FishboxController
 	protected override void Move( in float deltaTime )
 	{
 		PreMove( in deltaTime );
-
-		DoAbilities( in deltaTime );
-
 		PostMove( in deltaTime );
 	}
 
@@ -68,6 +65,8 @@ partial class FishboxController
 
 		IsDucking = isAlive && ShouldDuck;
 		IsSprinting = isAlive && ShouldSprint;
+
+		DoAbilities( in deltaTime );
 
 		UpdateGround();
 	}
