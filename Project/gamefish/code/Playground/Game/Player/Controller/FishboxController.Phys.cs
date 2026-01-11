@@ -15,11 +15,12 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( up.AlmostEqual( 0f ) )
 			return;
 
+		var tWorld = WorldTransform;
+
 		var localCenter = GetLocalCenter();
-		var oldCenter = WorldTransform.PointToWorld( localCenter );
+		var oldCenter = tWorld.PointToWorld( localCenter );
 
 		var tEye = Pawn.EyeTransform;
-		var tWorld = WorldTransform;
 
 		// Perform the rotation.
 		var flatDir = Vector3.VectorPlaneProject( tEye.Forward, up );
@@ -30,7 +31,7 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		tWorld.Position += oldCenter - newCenter;
 
 		// Update transform afterwards.
-		SetPhysicsTransform( tWorld );
+		WorldTransform = tWorld;
 
 		// Set and correct our eye aim/origin.
 		Pawn.EyePosition = tEye.Position;
@@ -71,15 +72,8 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( !tr.Hit || tr.StartedSolid )
 			return;
 
-		// Negate downward velocity along the ground.
-		if ( tr.Hit && IsValidGround( in tr ) )
-		{
-			var vDown = GravityDirection;
-			var downSpeed = Velocity.Forward( vDown ).Dot( vDown );
-
-			if ( downSpeed > 0f )
-				Velocity = Velocity.Horizontal( vDown );
-		}
+		// Pull us out of the surface a bit.
+		TryStickToSurface( in tr );
 
 		// Project velocty that is pushing this wall along its surface.
 		var wallDir = -tr.Normal;
@@ -106,7 +100,10 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		// var phys = Rigidbody?.PhysicsBody;
 
 		// if ( phys.IsValid() )
-		// phys.Position = tWorld.Position;
+		// phys.Transform = tWorld;
+
+		WorldTransform = tWorld;
+		// Transform.ClearInterpolation();
 
 		// Velocity = vel;
 	}

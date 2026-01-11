@@ -44,10 +44,10 @@ partial class FishboxController
 	/// </summary>
 	[Property]
 	[Title( "Stick Distance" )]
-	[Range( 1f, 64f, clamped: false )]
+	[Range( 0.5f, 10f, clamped: false )]
 	[Feature( PLAYER ), Order( WALLRUNNING_ORDER )]
 	[ToggleGroup( nameof( AllowWallRunning ), Label = WALLRUNNING )]
-	public float WallRunStickDistance { get; set; } = 20f;
+	public float WallRunStickDistance { get; set; } = 5f;
 
 	[Feature( PLAYER )]
 	[Title( "Is Wall Running" )]

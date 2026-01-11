@@ -145,27 +145,46 @@ partial class FishboxController
 		return vNormal.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	public virtual bool TryStickToSurface( in TraceResult tr )
+	public virtual bool TryStickToSurface( in TraceResult trSurface, float skin = 1f )
 	{
-		if ( tr.StartedSolid || !tr.Hit )
+		if ( !Scene.IsValid() )
 			return false;
 
-		if ( tr.Normal.AlmostEqual( 0f ) ) // idk man
+		if ( trSurface.StartedSolid || !trSurface.Hit )
 			return false;
 
-		var skin = SkinWidth * Scale;
+		Vector3 vDelta;
 
-		var destPos = tr.EndPosition;
+		if ( IsValidGround( in trSurface ) && TryGetGroundNormal( out var vUp ) )
+		{
+			vDelta = vUp * skin;
+		}
+		else
+		{
+			if ( trSurface.Normal.AlmostEqual( 0f ) ) // idk man
+				return false;
 
-		if ( !IsValidGround( in tr ) )
-			destPos += tr.Normal * skin;
+			if ( IsWallRunning && IsValidForWallRunning( trSurface ) )
+				vDelta = trSurface.Normal * (WallRunStickDistance * Scale).Max( skin );
+			else
+				vDelta = trSurface.Normal * skin;
+		}
 
 		// Is the position we've decided on free?
-		var trSkin = TraceAtPosition( destPos, new( skin: skin * 0.5f ) );
+		var trSkin = TraceDelta( trSurface.EndPosition + vDelta, -vDelta );
 
 		if ( !trSkin.StartedSolid )
 		{
-			SetPhysicsPosition( trSkin.EndPosition );
+			var endPos = trSkin.StartPosition;
+
+			if ( trSkin.Hit && !trSkin.Normal.AlmostEqual( 0f ) )
+			{
+				var slideVel = Vector3.VectorPlaneProject( Velocity, trSkin.Normal );
+				Velocity = slideVel;
+			}
+
+			SetPhysicsPosition( endPos );
+
 			return true;
 		}
 

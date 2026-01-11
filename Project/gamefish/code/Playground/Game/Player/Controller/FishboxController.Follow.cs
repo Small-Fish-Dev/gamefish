@@ -97,7 +97,9 @@ partial class FishboxController
 		FollowLastWorldTransform = tParent;
 		FollowLastOffset = tParent.ToLocal( tDest );
 
-		if ( Rigidbody.IsValid() && Rigidbody.PhysicsBody.IsValid() )
-			SetPhysicsTransform( tDest );
+		SetPhysicsTransform( tDest );
+
+		// var trUnder = TraceDelta( tDest.Position + (Up * 16 * Scale), tDest.Position + (Up * 1f) );
+		// TryStickToSurface( trUnder );
 	}
 }
