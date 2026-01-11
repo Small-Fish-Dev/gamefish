@@ -223,7 +223,7 @@
           "Min": 70,
           "Max": 110
         },
-        "WallRunStickDistance": 20
+        "WallRunStickDistance": 5
       },
       {
         "__type": "Sandbox.Rigidbody",
@@ -759,7 +759,7 @@
                 "Center": "0,0,0",
                 "ColliderFlags": 0,
                 "Elasticity": 0,
-                "Friction": null,
+                "Friction": 0,
                 "Height": 60,
                 "IsTrigger": false,
                 "OnComponentDestroy": null,
@@ -774,7 +774,7 @@
                 "OnTriggerExit": null,
                 "Points": [],
                 "Radius": 12,
-                "Radius2": 0,
+                "Radius2": 12,
                 "RollingResistance": null,
                 "Slices": 32,
                 "Static": false,
@@ -809,7 +809,7 @@
                 "Center": "0,0,0",
                 "ColliderFlags": 0,
                 "Elasticity": 0,
-                "Friction": null,
+                "Friction": 0,
                 "IsTrigger": false,
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
