@@ -43,7 +43,17 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		if ( !Scene.IsValid() || IsProxy )
 			return;
 
-		var tr = TraceDelta( WorldPosition, Velocity * Scene.FixedDelta );
+		var tr = TraceDelta( WorldPosition, -c.Contact.Speed );
+
+		if ( tr.Hit )
+		{
+			var len = (c.Contact.Speed.Length * Scene.FixedDelta).Max( SkinWidth );
+			if ( TryStep( tr.StartPosition, tr.Delta, c.Contact.Normal, 32f, len ) )
+			{
+				this.Log( "stepped" );
+				return;
+			}
+		}
 
 		OnHitSurface( in tr );
 	}
@@ -66,7 +76,8 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 
 	public virtual void OnHitSurface( in TraceResult tr )
 	{
-		// Project velocty that is pushing this wall along its surface.
+		// this.Log( "hitsurf. hit:" + tr.Hit );
+
 		var wallDir = -tr.Normal;
 		var wallPush = Velocity.Forward( wallDir ).Dot( wallDir );
 
@@ -75,10 +86,10 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 	}
 
 
-	public void SetPhysicsPosition( Vector3 pos, in bool updateParent = true )
+	public void SetPhysicsPosition( Vector3 pos )
 		=> SetPhysicsTransform( WorldTransform.WithPosition( pos ) );
 
-	public virtual void SetPhysicsTransform( Transform tWorld, in bool updateParent = true )
+	public virtual void SetPhysicsTransform( Transform tWorld )
 	{
 		// Don't set transform while seated.
 		if ( Pawn.IsValid() && Pawn.Seat.IsValid() )

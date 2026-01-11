@@ -145,7 +145,7 @@ partial class FishboxController
 		return vNormal.Angle( tr.Normal ) <= GroundAngle;
 	}
 
-	public virtual bool TryStickToSurface( in TraceResult trSurface, float skin = 1f )
+	public virtual bool TryStickToSurface( in TraceResult trSurface, float skin = 0f )
 	{
 		if ( !Scene.IsValid() )
 			return false;
@@ -186,6 +186,62 @@ partial class FishboxController
 		}
 
 		return false;
+	}
+
+	public virtual bool TryStep( in TraceResult tr )
+	{
+		if ( !tr.Hit )
+			return false;
+
+		var vRemaining = tr.Delta - tr.Delta.ClampLength( tr.Distance );
+
+		return TryStep( tr.StartPosition, vRemaining, tr.Normal, 32f * Scale, vRemaining.Length );
+	}
+
+	public virtual bool TryStep( in Vector3 startPos, in Vector3 vMove, in Vector3 vNormal, float stepHeight, float hDist )
+	{
+		if ( stepHeight < float.Epsilon || hDist < float.Epsilon )
+			return false;
+
+		if ( vMove.AlmostEqual( 0f ) || vNormal.AlmostEqual( 0f ) )
+			return false;
+
+		this.Log( "aaa" );
+
+		// Align the movement axis along the hit normal.
+		var vForward = Vector3.VectorPlaneProject( vMove, Up ).Normal;
+		var vUpward = Vector3.VectorPlaneProject( Up, vForward ).Normal;
+
+		var trUpward = TraceDelta( startPos, vUpward * stepHeight );
+
+		// DebugOverlay.Trace( trUpward.BodyTrace, duration: 3f );
+
+		if ( trUpward.StartedSolid )
+			return false;
+
+		var vPos = trUpward.EndPosition;
+		var trForward = TraceDelta( vPos, vForward * hDist );
+		vPos = trForward.EndPosition;
+
+		// DebugOverlay.Trace( trForward.BodyTrace, duration: 3f );
+
+		if ( trForward.StartedSolid )
+			return false;
+
+		var trDown = TraceDelta( vPos, vUpward * (stepHeight * -2f) );
+		vPos = trDown.EndPosition;
+
+		DebugOverlay.Trace( trDown.BodyTrace, duration: 3f );
+
+		if ( trDown.StartedSolid || !trDown.Hit )
+			return false;
+
+		SetPhysicsPosition( vPos );
+		Transform.ClearInterpolation();
+
+		return true;
+
+		// return TryStickToSurface( trDown );
 	}
 
 	public virtual bool TryUnstuck()

@@ -76,9 +76,6 @@ partial class FishboxController
 		FollowParent();
 
 		UpdateUpDirection( in deltaTime );
-
-		// Stick to the ground.
-		UpdateGround();
 	}
 
 	protected virtual void UpdateUpDirection( in float deltaTime )
@@ -159,6 +156,8 @@ partial class FishboxController
 
 		IsSliding = false;
 		IsGrounded = false;
+
+		NextGround = 0.1f;
 
 		// Negate downwards velocity.
 		var jumpVel = GetJumpVelocity();

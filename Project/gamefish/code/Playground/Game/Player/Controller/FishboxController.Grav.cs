@@ -136,7 +136,7 @@ partial class FishboxController
 		}
 
 		var upVel = Velocity.Forward( vNormal );
-		var upSpeed = GroundTrace.Normal.Dot( upVel );
+		var upSpeed = vNormal.Dot( upVel );
 		var isRamping = upSpeed >= 300f;
 
 		IsGrounded = !isRamping && IsValidGround( GroundTrace );
@@ -151,8 +151,7 @@ partial class FishboxController
 		if ( GroundObject.IsValid() )
 			FollowObject = GroundObject;
 
-		if ( upSpeed <= 10f * Scale )
-			TryStickToSurface( GroundTrace );
+		TryStickToSurface( GroundTrace );
 	}
 
 	protected virtual void DoGroundMovement( in float deltaTime )
