@@ -77,7 +77,7 @@ partial class FishboxController
 				return StartPosition;
 
 			var vDelta = tr.Direction * tr.Distance;
-			// vDelta -= (Delta * Skin).ClampLength( vDelta.Length );
+			vDelta -= (Delta.Normal * Skin).ClampLength( vDelta.Length );
 
 			return StartPosition + vDelta;
 		}
