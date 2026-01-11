@@ -112,7 +112,7 @@
         "GravityFloating": 0.7,
         "GravitySinking": 2,
         "GroundAngle": 50,
-        "GroundCheckDistance": 5,
+        "GroundCheckDistance": 2,
         "GroundStickDistance": 32,
         "HeadSphere": {
           "_type": "component",
