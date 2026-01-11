@@ -148,13 +148,11 @@ partial class FishboxController
 		GroundCollider = GroundTrace.Collider;
 		GroundObject = GroundTrace.GameObject;
 
-		if ( upSpeed <= 0f )
-			TryStickToSurface( GroundTrace );
-
 		if ( GroundObject.IsValid() )
 			FollowObject = GroundObject;
 
-		// TryStickToSurface( GroundTrace );
+		if ( upSpeed <= 10f * Scale )
+			TryStickToSurface( GroundTrace );
 	}
 
 	protected virtual void DoGroundMovement( in float deltaTime )
