@@ -10,14 +10,30 @@ partial class Equipment : ISkinned
 
 	[Property]
 	[Feature( EQUIP ), Group( MODELS )]
-	public Model WorldModel { get => WorldRenderer?.Model; set { if ( WorldRenderer.IsValid() ) WorldRenderer.Model = value; } }
+	public Model WorldModel
+	{
+		get =>
+			WorldRenderer?.Model;
+		set
+		{
+			if ( WorldRenderer.IsValid() )
+				WorldRenderer.Model = value;
+			else if ( Application.IsEditor )
+			{
+				WorldRenderer ??= Components.Create<SkinnedModelRenderer>();
+				WorldRenderer.Model = value;
+				_wr = WorldRenderer;
+			}
+		}
+	}
 
 	[Property]
 	[Feature( EQUIP ), Group( MODELS )]
 	public virtual SkinnedModelRenderer WorldRenderer
 	{
 		// Auto-cache the component.
-		get => _wr.IsValid() ? _wr
+		get => _wr.IsValid()
+			? _wr
 			: _wr = Components?.Get<SkinnedModelRenderer>( FindMode.EverythingInDescendants );
 
 		set { _wr = value; }
