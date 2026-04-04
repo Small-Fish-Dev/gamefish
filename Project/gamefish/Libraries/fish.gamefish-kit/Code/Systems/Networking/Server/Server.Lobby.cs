@@ -1,12 +1,33 @@
 using System;
+using System.Threading.Tasks;
 using Sandbox.Network;
 
 namespace GameFish;
 
-partial class Server
+partial class Server : ISceneLoadingEvents
 {
 	public virtual string DefaultKickReason { get; set; } = "Kicked by the lobby host.";
 	public virtual string ShutdownKickReason { get; set; } = "Shutting down.";
+
+	/// <summary>
+	/// If enabled: a networked lobby should auto-open.
+	/// </summary>
+	public virtual bool IsAutoStartEnabled => !SceneSettings.InMainMenu;
+
+	Task ISceneLoadingEvents.OnLoad( Scene scene, SceneLoadOptions options )
+	{
+		AutoStart();
+		return Task.CompletedTask;
+	}
+
+	public virtual void AutoStart()
+	{
+		if ( Networking.IsActive )
+			return;
+
+		if ( IsAutoStartEnabled )
+			Open();
+	}
 
 	/// <summary>
 	/// Initializes the server(if possible).
@@ -23,7 +44,7 @@ partial class Server
 			return;
 		}
 
-		TryCreateLobby();
+		_ = TryCreateLobby();
 	}
 
 	/// <summary>
@@ -87,7 +108,7 @@ partial class Server
 	/// <param name="context"> What kind of lobby? Could be an enum or a string. </param>
 	/// <param name="cfgOverride"> The configuration to force. </param>
 	/// <returns> If the new lobby could be created. </returns>
-	public virtual bool TryCreateLobby( object context = null, LobbyConfig? cfgOverride = null )
+	public virtual async Task<bool> TryCreateLobby( object context = null, LobbyConfig? cfgOverride = null )
 	{
 		if ( Networking.IsActive )
 		{
@@ -95,7 +116,13 @@ partial class Server
 			return false;
 		}
 
-		var cfg = cfgOverride ?? GetLobbyConfig();
+		var cfg = cfgOverride ?? GetLobbyConfig( context );
+
+		while ( Game.Language is null )
+		{
+			// HACK: Wait for language to be loaded correctly
+			await Task.Delay( 100 );
+		}
 
 		Networking.CreateLobby( cfg );
 

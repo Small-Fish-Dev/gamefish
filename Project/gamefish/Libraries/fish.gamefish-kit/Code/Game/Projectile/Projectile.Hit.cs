@@ -1,19 +1,71 @@
 namespace GameFish;
 
-partial class Projectile
+partial class Projectile : Component.ICollisionListener
 {
+	/// <summary>
+	/// Forces collision on stuff owned by others to be handled by them.
+	/// <br /> <br />
+	/// <b> NOTE: </b> Important if shot by an NPC,
+	/// otherwise you should really keep this disabled.
+	/// <br /> <br />
+	/// <b> EXPLANATION: </b> This makes it so that the owner of the projectile
+	/// doesn't bother trying to hit stuff owned by other connections and
+	/// that they will perform the collision logic on their end. This solves
+	/// the problem of getting hit by NPC projectiles that you clearly dodged
+	/// on your end as a client due to lag.
+	/// </summary>
+	[Sync]
+	[Property]
+	[Title( "Ignore Proxy" )]
+	[Order( COLLISION_ORDER - 1 )]
+	[Feature( PROJECTILE ), Group( COLLISION )]
+	public bool IgnoreProxyCollision { get; set; }
+
 	/// <summary>
 	/// If enabled: ignore collision with teammates.
 	/// </summary>
 	[Property]
-	[Feature( PROJECTILE ), Group( COLLISION ), Order( COLLISION_ORDER )]
+	[Order( COLLISION_ORDER - 1 )]
+	[Feature( PROJECTILE ), Group( COLLISION )]
 	public bool IgnoreTeam { get; set; } = true;
+
+	/// <summary>
+	/// The team to ignore collisions with.
+	/// <br /> <br />
+	/// <b> NOTE: </b> This is typically set upon spawning,
+	/// so you're only really putting in a default value here.
+	/// </summary>
+	[Sync]
+	[Property]
+	[Order( COLLISION_ORDER - 1 )]
+	[Feature( PROJECTILE ), Group( COLLISION )]
+	public Team Team
+	{
+		get => _team;
+		protected set
+		{
+			_team = value;
+			OnSetTeam( value );
+		}
+	}
+
+	protected Team _team;
+
+	/// <summary>
+	/// Assigns this projectile's team.
+	/// </summary>
+	public virtual void SetTeam( Team team )
+		=> Team = team;
+
+	protected virtual void OnSetTeam( Team team )
+		=> Team.UpdateTags( GameObject, team?.Tag );
 
 	/// <summary>
 	/// Settings used when moving to trace for collision.
 	/// </summary>
+	[Order( COLLISION_ORDER + 1 )]
 	[Property, WideMode, InlineEditor]
-	[Feature( PROJECTILE ), Group( COLLISION ), Order( COLLISION_ORDER + 1 )]
+	[Feature( PROJECTILE ), Group( COLLISION )]
 	public TraceSettings TraceSettings { get; set; }
 
 
@@ -100,11 +152,14 @@ partial class Projectile
 
 	void ICollisionListener.OnCollisionStart( Collision c )
 	{
-		if ( GameObject.IsValid() && GameObject.Active )
-			TryCollide( c );
+		if ( !GameObject.IsValid() || !Active )
+			return;
+
+		TryCollide( c );
 	}
 
-	protected virtual bool IsCollision( in SceneTraceResult tr )
+
+	public virtual bool IsCollision( in SceneTraceResult tr )
 	{
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
 			return false;
@@ -112,6 +167,18 @@ partial class Projectile
 		if ( IgnoreTeam && Team.IsValid() )
 			if ( tr.GameObject.IsTeam( Team ) )
 				return false;
+
+		if ( IgnoreProxyCollision )
+		{
+			// In proxy mode only the hit object's owner can impact.
+			if ( tr.GameObject.IsProxy )
+				return false;
+		}
+		else if ( IsProxy )
+		{
+			// Otherwise only the owner can check for collision.
+			return false;
+		}
 
 		return true;
 	}
@@ -129,6 +196,13 @@ partial class Projectile
 
 		if ( !hitObj.IsValid() )
 			return false;
+
+		// Proxy collision should defer to the owner still.
+		if ( IsProxy )
+		{
+			OnProxyCollision( impact );
+			return true;
+		}
 
 		if ( impact.EndPosition.HasValue )
 			WorldPosition = impact.EndPosition.Value;
@@ -164,9 +238,6 @@ partial class Projectile
 
 		PlayImpactEffect( tImpact );
 
-		if ( !GameObject.IsValid() )
-			return;
-
 		DoImpactDamage( in impact );
 	}
 
@@ -182,31 +253,21 @@ partial class Projectile
 
 		var data = DamageData.FromImpact( ImpactDamage, in impact, this, Attacker );
 
-		if ( !target.TryDamage( in data ) )
-			return;
+		if ( target.TryDamage( in data ) )
+			OnImpactDamage( in data );
+	}
 
-		// TEMP: Manual impulse. Should be in `ApplyDamage`.
-		if ( data.Impulse is Vector3 vel )
-			if ( target.Components.TryGet<IVelocity>( out var iVel, FindMode.EnabledInSelf | FindMode.InAncestors ) )
-				iVel.TryImpulse( vel );
-
-		/*
-		if ( obj.TryDamage( info ) && AllowHurtEffects )
-			if ( obj.Components.Get<DamageModule>( FindMode.EnabledInSelfAndDescendants ) is var dm )
-				dm?.PlayHitEffect( hitPos + hitNormal * 10f, Rotation.LookAt( -hitNormal ) );
-		*/
+	protected virtual void OnImpactDamage( in DamageData data )
+	{
 	}
 
 	protected virtual void DoExplosion( in ImpactData impact )
 	{
 		PlayExplosionEffect( WorldTransform );
 
-		if ( !GameObject.IsValid() )
-			return;
-
 		var origin = impact.EndPosition ?? Center;
 
-		foreach ( var enemy in GetEnemiesWithin( origin, ExplosionRadius ) )
+		foreach ( var enemy in FindEnemiesWithin( origin, ExplosionRadius ) )
 		{
 			if ( !enemy.IsValid() || !enemy.Active )
 				continue;
@@ -240,4 +301,14 @@ partial class Projectile
 
 		ExplosionPrefab.TrySpawn( t, out var _ );
 	}
+
+	protected virtual void OnProxyCollision( ImpactData impact )
+	{
+		// TODO: Prevent RPC/impact spam from lag.
+		RpcCollide( impact );
+	}
+
+	[Rpc.Owner( NetFlags.Reliable | NetFlags.SendImmediate )]
+	protected void RpcCollide( ImpactData impact )
+		=> TryCollide( in impact );
 }

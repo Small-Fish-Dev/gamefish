@@ -71,7 +71,7 @@ partial class DataFile<TDataComp, TDataClass>
 	/// </summary>
 	public abstract string FileName { get; }
 
-	[JsonIgnore, ReadOnly]
+	[JsonIgnore, ReadOnly, WideMode]
 	[Feature( SAVING ), Order( ORDER + 10 )]
 	[Property, Group( DATA ), Title( "Data" )]
 	public Dictionary<string, JsonNode> Entries => DataObject?.ToDictionary();

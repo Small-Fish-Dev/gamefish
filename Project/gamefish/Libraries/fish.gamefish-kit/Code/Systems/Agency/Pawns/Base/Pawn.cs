@@ -35,6 +35,7 @@ public abstract partial class Pawn : MovingEntity
 	public Agent Owner
 	{
 		get => _owner;
+
 		protected set
 		{
 			var old = _owner;

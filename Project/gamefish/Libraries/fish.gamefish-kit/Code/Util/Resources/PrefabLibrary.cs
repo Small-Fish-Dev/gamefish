@@ -30,6 +30,26 @@ public static class PrefabLibrary
 	}
 
 	/// <summary>
+	/// Finds all <typeparamref name="T"/>s in all prefabs.
+	/// </summary>
+	public static IEnumerable<T> Find<T>()
+		where T : class
+	{
+		if ( All is null )
+			yield break;
+
+		foreach ( var (prefab, obj) in All )
+		{
+			var components = obj?.Components?.GetAll<T>();
+
+			var found = components?.FirstOrDefault( c => c is not null );
+
+			if ( found is not null )
+				yield return found;
+		}
+	}
+
+	/// <summary>
 	/// Finds all components of a type in all prefabs.
 	/// </summary>
 	public static IEnumerable<T> FindComponents<T>()
@@ -68,6 +88,30 @@ public static class PrefabLibrary
 
 			if ( components?.Any( c => c is T ) is true )
 				yield return (obj, prefab);
+		}
+	}
+
+	/// <summary>
+	/// Finds all prefab/<typeparamref name="T"/> pairs.
+	/// This is probably slow so avoid using it too much.
+	/// </summary>
+	public static IEnumerable<(PrefabFile Prefab, T Class)> FindPrefabsByType<T>()
+	{
+		if ( All == null )
+			yield break;
+
+		foreach ( var (prefab, obj) in All )
+		{
+			if ( !prefab.IsValid() )
+				continue;
+
+			if ( !obj.IsValid() )
+				continue;
+
+			var component = obj.Components.Get<T>();
+
+			if ( component is not null )
+				yield return (prefab, component);
 		}
 	}
 

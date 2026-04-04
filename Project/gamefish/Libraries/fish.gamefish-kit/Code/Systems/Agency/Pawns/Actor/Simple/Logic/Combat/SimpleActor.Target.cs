@@ -21,6 +21,7 @@ partial class SimpleActor
 	public Pawn Target
 	{
 		get => _target.IsValid() ? _target : null;
+
 		protected set
 		{
 			if ( _target == value )

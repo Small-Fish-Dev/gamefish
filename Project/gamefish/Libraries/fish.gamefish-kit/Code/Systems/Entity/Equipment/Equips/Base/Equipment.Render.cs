@@ -2,8 +2,6 @@ namespace GameFish;
 
 partial class Equipment : ISkinned
 {
-	protected const string MODELS = "Models";
-
 	[Property]
 	[Feature( EQUIP ), Group( MODELS )]
 	public Model ViewModel { get; set; }

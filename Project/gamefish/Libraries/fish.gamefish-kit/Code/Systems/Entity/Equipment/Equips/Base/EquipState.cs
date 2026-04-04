@@ -16,7 +16,7 @@ public enum EquipState
 	Deployed = 2,
 
 	/// <summary>
-	/// Kept in <see cref="PawnEquipment.Equipped"/> but not visible.
+	/// Kept in <see cref="EquipInventory.Equipped"/> but not visible.
 	/// </summary>
 	Holstered = 3,
 }

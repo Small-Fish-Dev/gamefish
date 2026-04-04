@@ -47,8 +47,8 @@ public partial struct DamageSettings
 	/// <summary>
 	/// Push them back this much.
 	/// </summary>
-	[Order( FORCE_ORDER )]
 	[KeyProperty]
+	[Order( FORCE_ORDER )]
 	[ToggleGroup( nameof( EnableForces ) )]
 	public float Impulse { get; set; }
 
@@ -139,5 +139,10 @@ public partial struct DamageSettings
 
 	/// <returns> The damage that should be dealt(assuming range is enabled). </returns>
 	public readonly float GetDamageFromDistance( in float distance )
-		=> BaseDamage * Range.Evaluate( distance );
+	{
+		if ( !EnableRange )
+			return BaseDamage;
+
+		return BaseDamage * Range.Evaluate( distance );
+	}
 }

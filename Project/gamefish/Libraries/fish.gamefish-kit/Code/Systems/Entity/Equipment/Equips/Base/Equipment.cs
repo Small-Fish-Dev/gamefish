@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// An equipment that <see cref="PawnEquipment"/> can store, deploy and use.
+/// An equipment that <see cref="EquipInventory"/> can store, deploy and use.
 /// </summary>
 [Icon( "plumbing" )]
 [EditorHandle( Icon = "🏹" )]
@@ -53,7 +53,7 @@ public partial class Equipment : DynamicEntity
 
 	/// <returns> If a pawn can equip this. </returns>
 	public virtual bool AllowEquip( Pawn pawn )
-		=> pawn.IsValid() && pawn.HasModule<PawnEquipment>();
+		=> pawn.IsValid() && pawn.HasModule<EquipInventory>();
 
 	/// <returns> If the owning pawn can press buttons to use this. </returns>
 	public virtual bool AllowInput()

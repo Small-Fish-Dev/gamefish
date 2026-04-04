@@ -40,11 +40,19 @@ partial class DynamicEntity : IPhysics
 	}
 
 	[Rpc.Owner( NetFlags.Unreliable | NetFlags.SendImmediate )]
-	public virtual void SendImpulse( Vector3 vel )
+	public void RpcImpulse( Vector3 vel )
 	{
 		if ( !ITransform.IsValid( in vel ) )
 			return;
+	}
 
+	/// <summary>
+	/// Allows the owner to apply velocity in a way that can be altered.
+	/// <br /> <br />
+	/// <b> NOTE: </b> May be called by others with <see cref="RpcImpulse"/>.
+	/// </summary>
+	public virtual void ApplyImpulse( Vector3 vel )
+	{
 		Velocity += vel;
 	}
 

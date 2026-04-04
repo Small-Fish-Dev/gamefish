@@ -131,7 +131,7 @@ public partial struct TraceSettings
 
 	public readonly SceneTrace Build( GameObject obj, in Vector3 from, in Vector3 to, bool ignoreObject = true, bool useRotation = true )
 	{
-		if ( !obj.IsValid() )
+		if ( !obj.IsValid() || !obj.Scene.IsValid() )
 			return default;
 
 		Rotation? rOffset = useRotation ? obj.WorldRotation : null;
@@ -172,7 +172,7 @@ public partial struct TraceSettings
 	{
 		var results = tr.RunAll();
 
-		if ( Filter.UseTagWhitelist )
+		if ( Filter.IsValid() && Filter.UseTagWhitelist )
 			return results.Where( PassesWhitelist );
 
 		return results;

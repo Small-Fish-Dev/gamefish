@@ -22,6 +22,13 @@ partial class Server
 		=> (cl = FindClient( cn )).IsValid();
 
 	/// <summary>
+	/// Tries to get a <typeparamref name="T"/> from its connection.
+	/// </summary>
+	/// <returns> If the <typeparamref name="T"/> could be found. </returns>
+	public static bool TryFindClient<T>( Connection cn, out T cl ) where T : Client
+		=> (cl = FindClient( cn ) as T).IsValid();
+
+	/// <summary>
 	/// Finds the <see cref="Client"/> from its connection and get its pawn.
 	/// </summary>
 	public static Pawn FindPawn( Connection cn )

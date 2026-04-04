@@ -87,7 +87,7 @@ partial class Equipment
 	/// Allows this equipment to block functions.
 	/// </summary>
 	/// <returns> If functionality is enabled. </returns>
-	public virtual bool IsInputAllowed( EquipFunction func = null )
+	public virtual bool IsFunctionInputAllowed( EquipFunction func = null )
 		=> !Mouse.Active;
 
 	/// <summary>

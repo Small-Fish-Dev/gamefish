@@ -54,7 +54,7 @@ public partial class SceneSettings : Singleton<SceneSettings>
 	/// <br /> <br />
 	/// <b> NOTE: </b> This is just for overriding
 	/// based on the scene. You should set defaults
-	/// in the game manager component itself.
+	/// in the game manager's prefab directly.
 	/// </summary>
 	[Property]
 	[Title( "State Override" )]

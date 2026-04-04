@@ -9,9 +9,12 @@ partial class BaseController
 		LocalEyePosition = GetLocalEyeTargetPosition();
 	}
 
-	public virtual float GetWishSpeed()
+	protected virtual bool IsMovementAllowed()
+		=> AllowMovement && Pawn?.IsAlive is true;
+
+	public virtual float GetMovementSpeed()
 	{
-		if ( !AllowMovement || Pawn?.IsAlive is not true )
+		if ( !IsMovementAllowed() )
 			return 0f;
 
 		return MoveSpeed;
@@ -32,7 +35,7 @@ partial class BaseController
 
 	public virtual Vector3 GetWishVelocity( in Vector3? inputDir = null )
 	{
-		var wishSpeed = GetWishSpeed();
+		var wishSpeed = GetMovementSpeed();
 
 		if ( wishSpeed.AlmostEqual( 0f ) )
 			return Vector3.Zero;

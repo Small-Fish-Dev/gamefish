@@ -47,21 +47,24 @@ partial class Random
 			return false;
 		}
 
-		// Pick a random number from what's possible and find a match.
-		var count = dict.Count;
-
-		double randomValue = Math.Max( 0d, totalWeight ) * Double( 0f, 1f );
-
-		for ( var i = 0; i < count; i++ )
+		if ( totalWeight > 0 )
 		{
-			var (key, chance) = dict.ElementAtOrDefault( i );
+			// Pick a random number from what's possible and find a match.
+			var count = dict.Count;
 
-			randomValue -= chance;
+			double randomValue = Math.Max( 0d, totalWeight ) * Double( 0f, 1f );
 
-			if ( randomValue <= 0 )
+			for ( var i = 0; i < count; i++ )
 			{
-				result = key;
-				return true;
+				var (key, chance) = dict.ElementAtOrDefault( i );
+
+				randomValue -= chance;
+
+				if ( randomValue <= 0 )
+				{
+					result = key;
+					return true;
+				}
 			}
 		}
 

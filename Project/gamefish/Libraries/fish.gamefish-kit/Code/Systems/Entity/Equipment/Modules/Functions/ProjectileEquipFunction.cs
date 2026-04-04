@@ -9,17 +9,22 @@ namespace GameFish;
 [Title( "Projectile Shooter" )]
 public partial class ProjectileEquipFunction : EquipFunction
 {
+	protected const int PROJECTILE_ORDER = EQUIP_ORDER - 1337;
+
 	/// <summary>
 	/// Play this sound upon successfully firing a projectile.
 	/// </summary>
 	[Property]
 	[Title( "Sound" )]
-	[Feature( MODULE ), Group( PROJECTILE )]
+	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
 	public virtual SoundEvent ShootSound { get; set; }
 
+	/// <summary>
+	/// The projectile prefab to spawn.
+	/// </summary>
 	[Property]
 	[Title( "Prefab" )]
-	[Feature( MODULE ), Group( PROJECTILE )]
+	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
 	public virtual PrefabFile ProjectilePrefab { get; set; }
 
 	/// <summary>
@@ -28,7 +33,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Velocity" )]
-	[Feature( MODULE ), Group( PROJECTILE )]
+	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
 	public virtual Vector3 ProjectileVelocity { get; set; } = new Vector3( 1500f, 0f, 0f );
 
 	/// <summary>
@@ -37,7 +42,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	[Property]
 	[InlineEditor]
 	[Title( "Spawn Offset" )]
-	[Feature( MODULE ), Group( PROJECTILE )]
+	[Feature( PROJECTILE ), Group( TRANSFORM ), Order( PROJECTILE_ORDER )]
 	public virtual Offset ProjectileOffset { get; set; } = new( Vector3.Forward * 16f, Rotation.Identity );
 
 	/// <summary>
@@ -45,25 +50,35 @@ public partial class ProjectileEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Cone" )]
-	[Feature( MODULE ), Group( SPREAD )]
+	[Range( 0f, 180f, clamped: false )]
+	[Feature( PROJECTILE ), Group( SPREAD )]
 	public virtual float AimSpreadCone { get; set; } = 0f;
+
+	/// <summary>
+	/// The number of projectiles to spawn.
+	/// </summary>
+	[Property]
+	[Title( "Count" )]
+	[Range( 1, 10, clamped: false )]
+	[Feature( PROJECTILE ), Group( SPREAD ), Order( PROJECTILE_ORDER )]
+	public virtual int Count { get; set; } = 1;
 
 	/// <summary>
 	/// If enabled: force the scale. <br />
 	/// Otherwise it will use the scale of the prefab itself.
 	/// </summary>
 	[Property]
-	[Feature( MODULE ), Group( PROJECTILE )]
-	[ToggleGroup( nameof( HasScaleOverride ), Label = "Scale Override" )]
+	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
+	[ToggleGroup( nameof( HasScaleOverride ), Label = SCALING )]
 	public virtual bool HasScaleOverride { get; set; }
 
 	/// <summary>
-	/// What to override the spawned prefab's scale with.
+	/// Set the spawned prefab's scale to this.
 	/// </summary>
 	[Property]
-	[Title( "Scale" )]
-	[Feature( MODULE )]
+	[Title( "Override" )]
 	[ToggleGroup( nameof( HasScaleOverride ) )]
+	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
 	public virtual Vector3 ProjectileScale { get; set; } = Vector3.One;
 
 	/// <summary>
@@ -71,7 +86,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Prediction" )]
-	[Feature( NPC ), Group( PROJECTILE )]
+	[Feature( NPC ), Group( AIMING )]
 	public virtual bool AimPrediction { get; set; }
 
 	/*
@@ -94,12 +109,25 @@ public partial class ProjectileEquipFunction : EquipFunction
 
 	protected override void Activate()
 	{
+		if ( Count < 1 )
+			return;
+
+		var playEffect = false;
+
 		var tAim = AimTransform;
+		var rAim = tAim.Rotation;
 
-		if ( AimSpreadCone != 0f )
-			tAim.Rotation *= GetSpreadConeRotation( AimSpreadCone );
+		for ( var i = 1; i <= Count; i++ )
+		{
+			var rSpread = AimSpreadCone != 0f
+				? rAim * GetSpreadConeRotation( AimSpreadCone )
+				: rAim;
 
-		if ( TrySpawnProjectile( out var _, tAim ) )
+			if ( TrySpawnProjectile( out var _, tAim.WithRotation( rSpread ) ) )
+				playEffect = true;
+		}
+
+		if ( playEffect )
 			PlayActivationEffect( tAim );
 	}
 

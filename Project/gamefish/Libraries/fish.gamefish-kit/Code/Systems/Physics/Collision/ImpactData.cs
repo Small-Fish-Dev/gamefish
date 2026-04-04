@@ -23,8 +23,6 @@ public partial struct ImpactData : IValid
 
 	/// <summary> The impacted hitbox. </summary>
 	public Hitbox Hitbox { get; set; }
-	/// <summary> The impacted shape. </summary>
-	public PhysicsShape Shape { get; set; }
 
 	public Vector3 HitPosition { get; set; }
 	public Vector3 HitNormal { get; set; }
@@ -51,7 +49,6 @@ public partial struct ImpactData : IValid
 		Collider = cHit;
 
 		Hitbox = hitbox;
-		Shape = shape;
 
 		HitPosition = hitPos;
 		HitNormal = hitNormal;
@@ -69,8 +66,6 @@ public partial struct ImpactData : IValid
 
 		HitPosition = c.Contact.Point;
 		HitNormal = c.Contact.Normal;
-
-		Shape = c.Other.Shape;
 	}
 
 	/// <param name="mover"> The object causing the collision. </param>
@@ -83,7 +78,6 @@ public partial struct ImpactData : IValid
 		Collider = tr.Collider;
 
 		Hitbox = tr.Hitbox;
-		Shape = tr.Shape;
 
 		HitPosition = tr.HitPosition;
 		HitNormal = tr.Normal;

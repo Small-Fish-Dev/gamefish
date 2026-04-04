@@ -51,7 +51,7 @@ partial class GameManager
 		// Scene-specific settings may block spawning the game manager.
 		if ( SceneSettings.TryGetInstance( out var s ) && !s.SpawnGameManager )
 		{
-			Print.WarnFrom( typeof( GameManager ), "Settings manager blocked spawning." );
+			// Print.InfoFrom( typeof( GameManager ), "Settings manager blocked spawning." );
 			return false;
 		}
 

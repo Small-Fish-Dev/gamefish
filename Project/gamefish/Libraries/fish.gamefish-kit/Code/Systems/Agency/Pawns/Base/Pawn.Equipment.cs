@@ -6,13 +6,15 @@ partial class Pawn
 {
 	[Property]
 	[Feature( PAWN ), Group( EQUIPMENT )]
-	public virtual PawnEquipment Equipment
+	public virtual EquipInventory Equipment
 	{
-		get => _equipment.GetCached( this );
-		set => _equipment = value;
+		get => _equip.IsValid() ? _equip
+			: _equip ??= _equip.GetCached( this );
+
+		set => _equip = value;
 	}
 
-	protected PawnEquipment _equipment;
+	protected EquipInventory _equip;
 
 	[Property, JsonIgnore]
 	[ShowIf( nameof( InGame ), true )]

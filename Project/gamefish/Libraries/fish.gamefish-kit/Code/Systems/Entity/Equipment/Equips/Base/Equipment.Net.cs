@@ -20,15 +20,15 @@ partial class Equipment : Component.INetworkSpawn
 	[Sync( SyncFlags.FromHost )]
 	public Pawn Pawn
 	{
-		get => _owner;
+		get => _pawn;
 		protected set
 		{
-			_owner = value;
-			OnOwnerSet( _owner );
+			_pawn = value;
+			OnOwnerSet( _pawn );
 		}
 	}
 
-	protected Pawn _owner;
+	protected Pawn _pawn;
 
 	public override bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
 		=> base.TrySetNetworkOwner( cn, allowProxy: allowProxy || Networking.IsHost );
@@ -101,7 +101,7 @@ partial class Equipment : Component.INetworkSpawn
 		Pawn = owner;
 	}
 
-	protected void OnOwnerSet( Pawn owner )
+	protected virtual void OnOwnerSet( Pawn owner )
 	{
 		if ( !this.InGame() || !GameObject.IsValid() )
 			return;
@@ -113,7 +113,7 @@ partial class Equipment : Component.INetworkSpawn
 			return;
 		}
 
-		var inv = owner.GetModule<PawnEquipment>();
+		var inv = owner.GetModule<EquipInventory>();
 
 		if ( IsProxy )
 			goto OnEquip;
@@ -134,11 +134,6 @@ partial class Equipment : Component.INetworkSpawn
 				if ( !inv.TryDeploy( this ) )
 					EquipState = EquipState.Holstered;
 			}
-		}
-		else
-		{
-			// If no inventory then it's dropped.
-			EquipState = EquipState.Dropped;
 		}
 
 		// Call OnEquip on all clients.

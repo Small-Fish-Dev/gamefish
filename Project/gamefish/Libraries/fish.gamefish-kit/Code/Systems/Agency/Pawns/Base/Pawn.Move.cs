@@ -32,7 +32,7 @@ partial class Pawn
 		if ( !IsAlive || !Controller.IsValid() )
 			return 0f;
 
-		return Controller.GetWishSpeed();
+		return Controller.GetMovementSpeed();
 	}
 
 	/// <returns> The pawn's currently intended movement velocity. </returns>

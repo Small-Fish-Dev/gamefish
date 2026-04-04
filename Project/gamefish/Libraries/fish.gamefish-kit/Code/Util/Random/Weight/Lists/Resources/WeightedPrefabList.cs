@@ -1,4 +1,3 @@
-
 namespace GameFish;
 
 public class WeightedPrefabList : WeightedResourceList<PrefabFile>

@@ -95,7 +95,7 @@ partial class Entity
 	[ToggleGroup( nameof( NetworkAutomatically ) )]
 	[ShowIf( nameof( ShowNetworkProperties ), true )]
 	public NetworkOrphaned NetworkOrphanedMode => NetworkOrphanedModeDefault;
-	protected virtual NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.Destroy;
+	protected virtual NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
 
 	/// <summary>
 	/// The connection owning this entity.

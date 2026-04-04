@@ -12,6 +12,9 @@ namespace GameFish.Razor;
 /// </summary>
 public struct DisplayText : IValid
 {
+	/// <summary>
+	/// Tells you if the text isn't blank.
+	/// </summary>
 	[Hide]
 	public readonly bool IsValid => !Text.IsBlank();
 
@@ -54,7 +57,7 @@ public struct DisplayText : IValid
 	public Color? Color { get; set; }
 
 	/// <summary>
-	/// Creates a blank, default(invalid) line of text.
+	/// Creates a blank, default(invalid) line of text that you can add to.
 	/// </summary>
 	public DisplayText() { }
 
@@ -85,4 +88,7 @@ public struct DisplayText : IValid
 
 	public DisplayText WithText( string text )
 		=> this with { Text = text };
+
+	public override readonly int GetHashCode()
+		=> HashCode.Combine( Text, Font, Weight, Size, Color );
 }

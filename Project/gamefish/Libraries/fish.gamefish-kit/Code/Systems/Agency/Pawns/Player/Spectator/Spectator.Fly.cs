@@ -55,7 +55,7 @@ partial class Spectator
 	[Property]
 	[Title( "Friction" )]
 	[Feature( SPECTATOR ), ToggleGroup( nameof( FlyingEnabled ) )]
-	public virtual Friction FlyingFriction { get; set; }
+	public virtual Friction FlyingFriction { get; set; } = new();
 
 	protected virtual void DoFlying( in float deltaTime )
 	{

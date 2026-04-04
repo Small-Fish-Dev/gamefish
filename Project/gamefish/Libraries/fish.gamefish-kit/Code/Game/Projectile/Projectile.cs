@@ -3,10 +3,10 @@ using System.Text.Json.Serialization;
 namespace GameFish;
 
 /// <summary>
-/// It gets thrown. It hurts enemies.
+/// It gets launched. It hurts enemies.
 /// </summary>
 [Icon( "rocket_launch" )]
-public partial class Projectile : MovingEntity, Component.ICollisionListener, ITeam
+public partial class Projectile : MovingEntity, ITeam
 {
 	protected const int PROJECTILE_ORDER = DEFAULT_ORDER - 2000;
 	protected const int PROJECTILE_DEBUG_ORDER = PROJECTILE_ORDER - 100;
@@ -23,24 +23,16 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 	public bool DebugLogging { get; set; }
 
 	/// <summary>
-	/// The team to ignore collisions with.
+	/// If true: render trace gizmos in-editor.
+	/// <br /> <br />
+	/// <b> NOTE: </b> Disable this for better visibility.
 	/// </summary>
-	[Sync]
-	[Property, JsonIgnore]
+	[Property]
+	[JsonIgnore]
+	[Title( "Render Trace" )]
 	[Order( PROJECTILE_DEBUG_ORDER )]
-	[ShowIf( nameof( InGame ), true )]
 	[Feature( PROJECTILE ), Group( DEBUG )]
-	public Team Team
-	{
-		get => _team;
-		protected set
-		{
-			_team = value;
-			OnSetTeam( value );
-		}
-	}
-
-	protected Team _team;
+	public bool DebugRenderTrace { get; set; } = true;
 
 	/// <summary>
 	/// Destroys the object if it's been going on for too long.
@@ -51,15 +43,6 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 	[Range( 0f, 20f, clamped: false )]
 	[Feature( PROJECTILE ), Group( TIMING )]
 	public float SelfDestructDelay { get; set; } = 10f;
-
-	/// <summary>
-	/// Assigns this projectile's team.
-	/// </summary>
-	public virtual void SetTeam( Team team )
-		=> Team = team;
-
-	protected virtual void OnSetTeam( Team team )
-		=> Team.UpdateTags( GameObject, team?.Tag );
 
 
 	/*
@@ -126,14 +109,7 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 		if ( !GameObject.IsValid() )
 			return;
 
-		// What speed is this meant to be going?
-		if ( !ProjectileTargetSpeed.HasValue )
-		{
-			if ( Velocity != default )
-				ProjectileTargetSpeed = Velocity.Length;
-			else
-				ProjectileTargetSpeed = DefaultSpeed;
-		}
+		InitializePhysics();
 
 		PlayLoopingSound();
 	}
@@ -150,8 +126,23 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 	{
 		base.OnFixedUpdate();
 
-		if ( IsProxy )
+		if ( !GameObject.IsValid() )
 			return;
+
+		var deltaTime = Time.Delta;
+
+		if ( IsProxy )
+		{
+			if ( IgnoreProxyCollision )
+			{
+				var startPos = WorldPosition;
+				var move = Velocity * deltaTime;
+
+				TryCollide( startPos, startPos + move, out _ );
+			}
+
+			return;
+		}
 
 		if ( SinceCreated > SelfDestructDelay )
 		{
@@ -161,10 +152,9 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 				PlayImpactEffect( WorldTransform );
 
 			GameObject?.Destroy();
+
 			return;
 		}
-
-		var deltaTime = Time.Delta;
 
 		UpdateVelocity( deltaTime );
 		Move( deltaTime, isFixedUpdate: true );
@@ -177,9 +167,31 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 		if ( !GameObject.IsValid() )
 			return;
 
+		RenderTraceGizmos();
+	}
+
+	protected virtual void RenderTraceGizmos()
+	{
+		if ( !DebugRenderTrace )
+			return;
+
 		var c = Color.Magenta.Desaturate( 0.3f );
 
 		TraceSettings.DrawGizmos( WorldTransform, cLines: c, cSolid: c.WithAlphaMultiplied( 0.2f ) );
+	}
+
+	/// <summary>
+	/// Determines stuff like target velocity on start.
+	/// </summary>
+	protected virtual void InitializePhysics()
+	{
+		if ( !ProjectileTargetSpeed.HasValue )
+		{
+			if ( Velocity != default )
+				ProjectileTargetSpeed = Velocity.Length;
+			else
+				ProjectileTargetSpeed = DefaultSpeed;
+		}
 	}
 
 	/// <returns> If this projectile should destroy itself. </returns>
@@ -194,6 +206,11 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 		Attacker = atkr.AsValid();
 		Source = equip.AsValid<Entity>() ?? func.AsValid<Entity>();
 
+		PlayFireSound();
+	}
+
+	protected virtual void PlayFireSound()
+	{
 		if ( FireSound.IsValid() )
 			BroadcastSound( FireSound );
 	}
@@ -202,22 +219,5 @@ public partial class Projectile : MovingEntity, Component.ICollisionListener, IT
 	{
 		if ( LoopingSound.IsValid() )
 			EmitSound( LoopingSound );
-	}
-
-	protected virtual IEnumerable<Pawn> GetEnemiesWithin( in Vector3 origin, in float radius )
-	{
-		if ( !Scene.IsValid() || !Team.IsValid() )
-			return [];
-
-		var trSphere = Scene.Trace
-			.IgnoreGameObjectHierarchy( GameObject )
-			.Sphere( radius, origin, origin ).RunAll();
-
-		var enemies = trSphere
-			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
-			.Where( pawn => pawn.IsValid() && Team.IsEnemy( pawn.Team ) )
-			.Distinct();
-
-		return enemies;
 	}
 }

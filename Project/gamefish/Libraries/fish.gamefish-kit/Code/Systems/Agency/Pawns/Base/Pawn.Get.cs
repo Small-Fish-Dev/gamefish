@@ -9,8 +9,7 @@ partial class Pawn
 	/// </remarks>
 	public static IEnumerable<TPawn> GetAll<TPawn>() where TPawn : Pawn
 		=> Game.ActiveScene?.Components?.GetAll<TPawn>( FindMode.EverythingInSelfAndDescendants )
-			?.Where( p => p.IsValid() )
-			?? [];
+			?.Where( p => p.IsValid() ) ?? [];
 
 	/// <returns> Every valid and active <typeparamref name="TPawn"/>. </returns>
 	public static IEnumerable<TPawn> GetAllActive<TPawn>() where TPawn : Pawn

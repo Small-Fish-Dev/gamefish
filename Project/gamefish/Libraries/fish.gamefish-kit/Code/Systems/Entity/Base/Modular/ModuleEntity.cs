@@ -18,7 +18,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	public List<Module> Modules { get; protected set; }
 
 	/// <returns> If this is the module we're looking for. </returns>
-	protected virtual bool IsModule<TMod>( Module m ) where TMod : Module
+	protected virtual bool IsModule<TMod>( Module m ) where TMod : class
 		=> m.IsValid() && m is TMod;
 
 	public override bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
@@ -28,7 +28,8 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 		if ( !base.TrySetNetworkOwner( cn, allowProxy ) )
 			return false;
 
-		UpdateModuleOwnership( cn, allowProxy );
+		UpdateModuleOwnership( cn );
+
 		return true;
 	}
 
@@ -37,7 +38,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	/// </summary>
 	/// <typeparam name="TMod"> The specific module. </typeparam>
 	/// <returns> If the module exists. </returns>
-	public bool HasModule<TMod>() where TMod : Module
+	public bool HasModule<TMod>() where TMod : class
 	{
 		var mType = typeof( TMod );
 		return GetModules().Any( IsModule<TMod> );
@@ -57,7 +58,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 
 	/// <typeparam name="TMod"> The specific module. </typeparam>
 	/// <returns> The first(if any) <typeparamref name="TMod"/>. </returns>
-	public TMod GetModule<TMod>() where TMod : Module
+	public TMod GetModule<TMod>() where TMod : class
 	{
 		var mType = typeof( TMod );
 		return GetModules().FirstOrDefault( IsModule<TMod> ) as TMod;
@@ -65,7 +66,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 
 	/// <typeparam name="TMod"> The specific module. </typeparam>
 	/// <returns> Every module of this type(if any, never null). </returns>
-	public IEnumerable<TMod> GetModules<TMod>() where TMod : Module
+	public IEnumerable<TMod> GetModules<TMod>() where TMod : class
 	{
 		return GetModules()
 			.Where( IsModule<TMod> )
@@ -73,10 +74,10 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	}
 
 	/// <typeparam name="TMod"> The specific module. </typeparam>
-	public bool TryGetModule<TMod>( out TMod m ) where TMod : Module
+	public bool TryGetModule<TMod>( out TMod m ) where TMod : class
 	{
 		m = GetModule<TMod>();
-		return m.IsValid();
+		return m != default;
 	}
 
 	/// <summary>
@@ -110,8 +111,15 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 		if ( !GameObject.IsValid() || GameObject.IsDestroyed )
 			return false;
 
-		if ( !m.IsValid() || !m.IsParent( this ) )
+		if ( !m.IsValid() || m == this || !m.IsParent( this ) )
 			return false;
+
+		// Prevent recursive module parenting.
+		if ( m.Parent == this || m.Modules?.Contains( this ) is true )
+		{
+			this.Warn( $"Tried to register module:[{m}] when it was our parent!" );
+			return false;
+		}
 
 		// Add it to the list.
 		if ( Modules is null )
@@ -180,19 +188,23 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	/// Update the network ownership of currently registered modules. <br />
 	/// Does not try to register modules if they aren't cached yet.
 	/// </summary>
-	protected void UpdateModuleOwnership( Connection cn = null, bool allowProxy = false )
+	protected void UpdateModuleOwnership( Connection cn = null )
 	{
 		if ( !GameObject.IsValid() )
 			return;
 
-		if ( !allowProxy && IsProxy )
+		if ( !Network.Active || IsProxy )
 			return;
 
 		cn ??= Network?.Owner;
 
 		foreach ( var mod in GetModules() )
-			if ( mod.IsValid() )
-				mod.TrySetNetworkOwner( cn );
+		{
+			if ( !mod.IsValid() )
+				continue;
+
+			mod.TrySetNetworkOwner( cn, allowProxy: true );
+		}
 	}
 
 	/// <summary>
@@ -217,7 +229,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 		if ( !m.IsValid() )
 		{
 			this.Warn( $"No {typeof( TMod )} found on prefab:[{prefab}]! Destroying." );
-			go.Destroy();
+			go.DestroyImmediate();
 			return false;
 		}
 

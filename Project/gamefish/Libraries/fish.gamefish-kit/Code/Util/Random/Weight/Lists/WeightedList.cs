@@ -4,7 +4,7 @@ namespace GameFish;
 
 /// <summary>
 /// Lets you choose from a dictionary with the likelihood being greater the higher the number is.
-/// <br />
+/// <br /> <br />
 /// <b> NOTE: </b> Inherit this class for inspector support.
 /// </summary>
 [Group( Library.NAME )]
@@ -15,8 +15,9 @@ public class WeightedList<TObject>
 	protected const float WEIGHT_STEP = 5f;
 
 	[Hide, JsonIgnore]
-	[Range( WEIGHT_MIN, WEIGHT_MAX, clamped: true ), Step( WEIGHT_STEP )]
-	public virtual Dictionary<TObject, float> Entries { get; protected set; }
+	[Step( WEIGHT_STEP )]
+	[Range( WEIGHT_MIN, WEIGHT_MAX, clamped: true )]
+	protected virtual Dictionary<TObject, float> Entries { get; set; }
 
 	[Hide]
 	[Group( WEIGHT )]
@@ -41,11 +42,18 @@ public class WeightedList<TObject>
 	}
 
 	/// <summary>
+	/// Generates the internal entries if they haven't been already.
+	/// </summary>
+	/// <returns> The weight dictionary(or null). </returns>
+	public virtual Dictionary<TObject, float> GetEntries()
+		=> Entries ??= GenerateEntries();
+
+	/// <summary>
 	/// Allows you to convert your own weight dictionary.
 	/// This is automatically cached if the returned value is not null.
 	/// </summary>
 	/// <returns> The weight dictionary(or null). </returns>
-	protected virtual Dictionary<TObject, float> GetEntries()
+	protected virtual Dictionary<TObject, float> GenerateEntries()
 		=> Entries;
 
 	/// <summary>
@@ -56,7 +64,7 @@ public class WeightedList<TObject>
 	[Button( "Refresh" ), WideMode]
 	public void Refresh()
 	{
-		Entries = GetEntries();
+		Entries = GenerateEntries();
 		CalculateWeight();
 	}
 
@@ -66,7 +74,7 @@ public class WeightedList<TObject>
 	/// <returns> The resulting weight(or <c>0</c>). </returns>
 	protected double CalculateWeight()
 	{
-		Entries ??= GetEntries();
+		Entries ??= GenerateEntries();
 
 		if ( Entries is null )
 			return 0d;
@@ -91,7 +99,7 @@ public class WeightedList<TObject>
 	/// <returns> If a valid result was found. </returns>
 	public bool TryPick( out TObject result, TObject @default = default )
 	{
-		Entries ??= GetEntries();
+		Entries ??= GenerateEntries();
 
 		if ( Random.TryGetWeighted( Entries, GetTotalWeightCached(), out var obj ) )
 			return (result = obj) is not null && (result is not IValid v || v.IsValid());

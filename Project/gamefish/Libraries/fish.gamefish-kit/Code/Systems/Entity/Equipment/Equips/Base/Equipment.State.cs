@@ -35,7 +35,7 @@ partial class Equipment
 
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( EQUIP ), Group( DEBUG )]
-	public PawnEquipment Inventory => Pawn?.Equipment;
+	public EquipInventory Inventory => Pawn?.Equipment;
 
 	protected virtual void OnEquipStateChanged( EquipState state )
 	{

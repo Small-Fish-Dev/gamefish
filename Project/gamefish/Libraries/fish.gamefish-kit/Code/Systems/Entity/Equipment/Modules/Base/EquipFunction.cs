@@ -75,7 +75,7 @@ public abstract partial class EquipFunction : EquipModule
 	/// Is the input state requirement being met? <br />
 	/// In other words: are they pressing/holding/releasing the button?
 	/// </summary>
-	public virtual bool IsInputting => IsInputEnabled && Input?.IsInputting() is true;
+	public virtual bool IsInputting => IsInputEnabled && Input?.IsInputting() == true;
 
 	/// <summary>
 	/// The point in time that this was last used.
@@ -97,7 +97,7 @@ public abstract partial class EquipFunction : EquipModule
 		if ( !IsInputting )
 			return;
 
-		if ( !Equip.IsValid() || !Equip.IsInputAllowed( this ) )
+		if ( !Equip.IsValid() || !Equip.IsFunctionInputAllowed( this ) )
 			return;
 
 		TryActivate();

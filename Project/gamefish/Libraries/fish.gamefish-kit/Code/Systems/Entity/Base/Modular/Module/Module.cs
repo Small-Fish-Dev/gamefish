@@ -28,7 +28,7 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 	/// <returns> The first targeted parent entity in our hierarchy(or null, not cached). </returns>
 	protected virtual ModuleEntity FindParent()
 		=> Components?.GetAll<ModuleEntity>( FindMode.EverythingInSelfAndAncestors )
-			.FirstOrDefault( p => p.IsValid() && IsParent( p ) );
+			.FirstOrDefault( p => p.IsValid() && p != this && IsParent( p ) );
 
 	/// <returns> If this module is meant to target that component. </returns>
 	public abstract bool IsParent( ModuleEntity comp );
@@ -87,9 +87,9 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 		if ( Parent.IsValid() && Parent == newParent )
 			return true;
 
-		// Let 'em know we failed.
 		if ( !newParent.TryRegisterModule( this ) )
 		{
+			// Let 'em know we failed.
 			OnRegistrationFailure( newParent );
 			return false;
 		}
@@ -115,9 +115,6 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 	/// <param name="parent"> The target parent(or null if if none found). </param>
 	protected virtual void OnRegistrationFailure( ModuleEntity parent )
 	{
-		// Ensure no network owner upon failure.
-		if ( Network?.Owner is not null )
-			TrySetNetworkOwner( null, allowProxy: false );
 	}
 
 	/// <summary>
@@ -130,10 +127,13 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 
 		Parent = parent;
 
+		if ( IsProxy )
+			return;
+
 		var cn = parent?.Network?.Owner;
 
 		if ( cn is not null )
-			TrySetNetworkOwner( cn );
+			TrySetNetworkOwner( cn, allowProxy: true );
 	}
 
 	/// <summary>

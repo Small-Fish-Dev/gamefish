@@ -2,6 +2,13 @@ namespace GameFish;
 
 partial class Pawn : ISimulate
 {
+
+	[Property]
+	[Order( PAWN_ORDER )]
+	[Feature( PAWN ), Group( INTERACTION )]
+	[Range( 0f, 300f, clamped: false ), Step( 1f )]
+	public virtual float UseDistance { get; set; } = 120f;
+
 	/*
 	/// <summary>
 	/// The thing we're currently focusing on.

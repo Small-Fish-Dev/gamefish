@@ -65,7 +65,7 @@ public partial class Seat : DynamicEntity, IUsable, ISitTarget
 	[Feature( SEAT ), Group( VEHICLE ), Order( VEHICLE_ORDER )]
 	public bool IsDriving { get; set; } = true;
 
-	public virtual float GetUsablePriority( Pawn pawn )
+	public virtual float UseOrder( Pawn pawn )
 	{
 		if ( !pawn.IsValid() )
 			return 0f;

@@ -15,7 +15,6 @@ public partial struct DamageData
 	public Vector3? HitPosition { get; set; }
 
 	public Hitbox Hitbox { get; set; }
-	public PhysicsShape Shape { get; set; }
 
 	public Pawn Attacker { get; set; }
 	public Entity Inflictor { get; set; }
@@ -53,7 +52,6 @@ public partial struct DamageData
 		HitPosition = info.Position;
 
 		Hitbox = info.Hitbox;
-		Shape = info.Shape;
 
 		if ( info.Attacker.IsValid() )
 			if ( Pawn.TryGet( info.Attacker, out var pawn ) )
@@ -83,7 +81,6 @@ public partial struct DamageData
 		data.Impulse = s.GetImpulse( tr.Direction, data.Damage );
 
 		data.Hitbox = tr.Hitbox;
-		data.Shape = tr.Shape;
 
 		if ( equip.IsValid() )
 		{
@@ -121,7 +118,6 @@ public partial struct DamageData
 		data.HitPosition = impact.HitPosition;
 
 		data.Hitbox = impact.Hitbox;
-		data.Shape = impact.Shape;
 
 		data.Attacker = atkr;
 		data.Inflictor = phys;

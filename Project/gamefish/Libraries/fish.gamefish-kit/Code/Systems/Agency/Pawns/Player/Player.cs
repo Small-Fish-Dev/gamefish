@@ -9,6 +9,8 @@ public partial class PlayerPawn : Player;
 [EditorHandle( Icon = "😎" )]
 public partial class Player : Pawn
 {
+	protected const int PLAYER_ORDER = PAWN_ORDER - 1337;
+
 	protected override void OnEnabled()
 	{
 		Tags?.Add( TAG_PLAYER );
@@ -59,7 +61,7 @@ public partial class Player : Pawn
 		usable = tr.GameObject.Components
 			.GetAll<IUsable>( FindMode.EnabledInSelf | FindMode.InDescendants | FindMode.InAncestors )
 			.Where( u => u.IsUsable( this ) )
-			.OrderBy( u => u.GetUsablePriority( this ) )
+			.OrderBy( u => u.UseOrder( this ) )
 			.FirstOrDefault();
 
 		return usable is not null;

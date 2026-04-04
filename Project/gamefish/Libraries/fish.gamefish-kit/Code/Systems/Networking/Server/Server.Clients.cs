@@ -19,6 +19,11 @@ partial class Server
 	/// <summary> A list of valid player-only clients that are actively connected. </summary>
 	public static IEnumerable<Client> ConnectedClients => PlayerClients.Where( cl => cl.Connected );
 
+	/// <summary> A list of valid <typeparamref name="TCLient"/> clients(including bots). </summary>
+	public static IEnumerable<TCLient> GetAllClients<TCLient>() where TCLient : Client
+		=> ValidClients.Select( cl => cl as TCLient )
+			.Where( cl => cl.IsValid() );
+
 	/// <summary>
 	/// Called when a new connection has become fully active on the server.
 	/// </summary>
@@ -49,6 +54,8 @@ partial class Server
 		if ( !cl.IsValid() )
 			return;
 
+		ISceneEvent<IClientSpawnedEvent>.Post( ev => ev.OnClientSpawned( cn, cl ) );
+
 		if ( GameState.TryGetCurrent( out var mode ) )
 		{
 			mode.OnClientSpawned( cl );
@@ -56,9 +63,16 @@ partial class Server
 		}
 
 		if ( DefaultPawnPrefab.IsValid() )
-			cl.SetPawnFromPrefab( DefaultPawnPrefab );
+		{
+			Transform tSpawn = global::Transform.Zero;
 
-		if ( !cl.Pawn.IsValid() )
+			if ( GameManager.TryGetInstance( out var gm ) )
+				tSpawn = gm.FindSpawnPoint( cl );
+
+			cl.SetPawnFromPrefab( DefaultPawnPrefab, tSpawn );
+		}
+
+		if ( !cl.Pawn.IsValid() && !SceneSettings.InMainMenu )
 			this.Warn( $"Failed to spawn any pawn for Client:[{cl}]!!" );
 	}
 

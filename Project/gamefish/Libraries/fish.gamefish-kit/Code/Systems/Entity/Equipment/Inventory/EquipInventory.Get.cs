@@ -2,7 +2,7 @@ using System;
 
 namespace GameFish;
 
-partial class PawnEquipment
+partial class EquipInventory
 {
 	public void RefreshList()
 	{

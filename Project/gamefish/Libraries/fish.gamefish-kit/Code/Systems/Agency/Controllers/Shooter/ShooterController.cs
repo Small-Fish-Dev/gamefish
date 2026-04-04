@@ -131,7 +131,7 @@ public partial class ShooterController : BaseController
 	public virtual float GetSprintSpeed( in float? baseSpeed = null )
 		=> (baseSpeed ?? MoveSpeed) * SprintMultiplier;
 
-	public override float GetWishSpeed()
+	public override float GetMovementSpeed()
 	{
 		if ( !AllowMovement || Pawn?.IsAlive is not true )
 			return 0f;

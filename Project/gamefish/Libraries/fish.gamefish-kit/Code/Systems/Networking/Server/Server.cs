@@ -40,17 +40,11 @@ public partial class Server : Singleton<Server>, Component.INetworkListener
 	/// </summary>
 	public static long Time => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-	/// <summary>
-	/// If enabled: a networked lobby should auto-open.
-	/// </summary>
-	public virtual bool AutoStart => true;
-
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		if ( AutoStart )
-			Open();
+		AutoStart();
 	}
 
 	public virtual void OnActive( Connection cn )

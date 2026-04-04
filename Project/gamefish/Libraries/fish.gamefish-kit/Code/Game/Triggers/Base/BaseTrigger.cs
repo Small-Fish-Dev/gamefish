@@ -42,8 +42,8 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 	/// <summary>
 	/// Allows automatically creating, updating and previewing a collider.
 	/// </summary>
-	[Property, Order( TRIGGER_ORDER )]
-	[Feature( TRIGGER ), Group( COLLISION )]
+	[Property]
+	[Feature( TRIGGER ), Group( COLLISION ), Order( TRIGGER_ORDER )]
 	public virtual ColliderType Collider
 	{
 		get => _colType;
@@ -56,8 +56,9 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 	public virtual bool UsingSphere => Collider is ColliderType.Sphere;
 	public virtual bool UsingCylinder => Collider is ColliderType.Cylinder;
 
+	[Property]
 	[ShowIf( nameof( UsingBox ), true )]
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public virtual BBox BoxSize
 	{
 		get => _boxSize;
@@ -66,8 +67,9 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 
 	protected BBox _boxSize = new( new Vector3( -128f, -128f, -128f ), new Vector3( 128f, 128f, 128f ) );
 
+	[Property]
 	[ShowIf( nameof( UsingSphere ), true )]
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public float SphereRadius
 	{
 		get => _sphereRadius;
@@ -80,8 +82,9 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 
 	protected float _sphereRadius = 128f;
 
+	[Property]
 	[ShowIf( nameof( UsingCylinder ), true )]
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public float CylinderRadius
 	{
 		get => _cylinderRadius;
@@ -94,8 +97,9 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 
 	protected float _cylinderRadius = 128f;
 
+	[Property]
 	[ShowIf( nameof( UsingCylinder ), true )]
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public float CylinderHeight
 	{
 		get => _cylinderHeight;
@@ -108,9 +112,10 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 
 	protected float _cylinderHeight = 128f;
 
+	[Property]
 	[Range( 3, 32, clamped: true )]
 	[ShowIf( nameof( UsingCylinder ), true )]
-	[Property, Feature( TRIGGER ), Group( COLLISION )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public int CylinderSides
 	{
 		get => _cylinderSides;
@@ -127,67 +132,72 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 	/// <summary>
 	/// Print debug logs related to triggering?
 	/// </summary>
-	[Property, Feature( TRIGGER ), Group( DEBUG )]
+	[Property]
+	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool DebugTrigger { get; set; } = false;
 
 	/// <summary>
 	/// Render gizmos in play mode?
 	/// </summary>
-	[Property, Feature( TRIGGER ), Group( DEBUG )]
+	[Property]
+	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool DebugGizmos { get; set; } = false;
 
 	/// <summary>
 	/// Enables overriding the default color for the collider gizmo.
 	/// </summary>
+	[Property]
 	[Title( "Use Custom Color" )]
-	[Property, Feature( TRIGGER ), Group( DEBUG )]
+	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool UseCustomColor { get; set; } = false;
 
 	/// <summary>
 	/// Which custom color to use for the collider gizmo(if enabled).
 	/// </summary>
+	[Property]
 	[Title( "Collider Color" )]
-	[Property, Feature( TRIGGER ), Group( DEBUG )]
+	[Feature( TRIGGER ), Group( DEBUG )]
 	[ShowIf( nameof( UseCustomColor ), true )]
 	public virtual Color CustomColor { get; set; } = Color.White;
 
 	/// <summary>
 	/// The opacity of the solid part of the shape.
 	/// </summary>
+	[Property]
 	[Title( "Solid Alpha" )]
 	[Range( 0f, 1f, clamped: true )]
-	[Property, Feature( TRIGGER ), Group( DEBUG )]
+	[Feature( TRIGGER ), Group( DEBUG )]
 	public float DebugGizmoSolidAlpha { get; set; } = 0f;
 
 
 	/// <summary> An object that passed filters just touched this. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnEnter { get; set; }
 
 	/// <summary> An object that passed filters just exited this. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnExit { get; set; }
 
 	/// <summary> A passing object just entered this as it was previously empty. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnFirstEnter { get; set; }
 
 	/// <summary> The only object occupying this trigger just exited. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnEmptied { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnInsideUpdate { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
-	[Order( CALLBACKS_ORDER )]
-	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
+	[Property]
+	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
 	public Action<BaseTrigger, GameObject> OnInsideFixedUpdate { get; set; }
 
 

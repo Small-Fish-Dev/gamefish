@@ -3,18 +3,11 @@ namespace GameFish;
 partial class Actor
 {
 	/// <summary>
-	/// The fixed randomization seed. Auto-generated.
+	/// The fixed randomization seed.
 	/// Lets you produce consistent offsets using randomization methods.
 	/// </summary>
 	[Sync]
-	public int Seed
-	{
-		// Auto-generate the seed if we own this.
-		get => !_seed.HasValue && !IsProxy ? ShuffleRandomSeed() : _seed ?? 0;
-		set => _seed = value;
-	}
-
-	protected int? _seed;
+	public int Seed { get; set; }
 
 	/// <returns> A random integer that is at least 1. </returns>
 	protected static int RandomSeed => Random.Int( 1, 42069 );

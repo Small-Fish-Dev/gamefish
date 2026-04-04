@@ -2,22 +2,53 @@ namespace GameFish;
 
 partial class DynamicEntity : IHealth
 {
+	protected const int HEALTH_ORDER = ENTITY_ORDER - 500;
+
 	[Sync]
-	[Property, Feature( HEALTH )]
-	public bool IsAlive { get; protected set; } = true;
+	[Property]
+	[Feature( HEALTH )]
+	public bool IsAlive
+	{
+		get => _isAlive;
+		protected set
+		{
+			if ( _isAlive == value )
+				return;
+
+			var prev = _isAlive;
+			_isAlive = value;
+
+			if ( _isAlive )
+				OnAlive();
+			else
+				OnDeath();
+
+			OnSetIsAlive( _isAlive, prev );
+		}
+	}
+
+	protected bool _isAlive = true;
+
+	protected virtual void OnSetIsAlive( in bool isAlive, in bool wasAlive )
+	{
+	}
 
 	/// <summary> Is this capable of ever taking damage? </summary>
-	[Property, Feature( HEALTH )]
+	[Property]
+	[Feature( HEALTH )]
+	[Order( HEALTH_ORDER )]
 	public virtual bool IsDestructible { get; set; } = true;
 
 	[Sync]
 	[Feature( HEALTH )]
+	[Order( HEALTH_ORDER )]
 	[Property, Title( "Health" )]
 	[ShowIf( nameof( IsDestructible ), true )]
 	public float Health { get; protected set; } = 100f;
 
 	[Sync]
 	[Feature( HEALTH )]
+	[Order( HEALTH_ORDER )]
 	[Property, Title( "Max Health" )]
 	[ShowIf( nameof( IsDestructible ), true )]
 	public float MaxHealth { get; set; } = 100f;
@@ -36,6 +67,8 @@ partial class DynamicEntity : IHealth
 	protected void DebugTakeDamage()
 		=> TrySendDamage( new() { Damage = DebugDamage } );
 
+	public IEnumerable<DamageModule> DamageModules
+		=> GetModules<DamageModule>().Where( m => m.IsValid() && m.Active );
 
 	public virtual bool TrySendDamage( in DamageData data )
 	{
@@ -48,8 +81,7 @@ partial class DynamicEntity : IHealth
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.SendImmediate )]
 	protected void SendDamage( DamageData data )
-		=> TryReceiveDamage( in data );
-
+		=> TryReceiveDamage( data );
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
 	public void RpcHostSetHealth( float hp )
@@ -60,13 +92,12 @@ partial class DynamicEntity : IHealth
 		=> ModifyHealth( in hp );
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void RpcHostKill()
+	public void RpcHostTryKill()
 		=> TryKill();
 
 	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void RpcHostRevive( bool restoreHealth = false )
+	public void RpcHostTryRevive( bool restoreHealth = false )
 		=> TryRevive( restoreHealth );
-
 
 	public virtual void SetHealth( in float hp )
 	{
@@ -93,7 +124,6 @@ partial class DynamicEntity : IHealth
 			Health = 0f;
 
 		IsAlive = false;
-		OnDeath();
 
 		return true;
 	}
@@ -103,47 +133,54 @@ partial class DynamicEntity : IHealth
 		if ( IsProxy || IsAlive )
 			return false;
 
-		IsAlive = true;
 		Health = Health.Max( restoreHealth ? MaxHealth : Health.Max( 1 ) );
 
-		OnRevival();
+		IsAlive = true;
 
 		return true;
 	}
 
 	public virtual void OnDeath()
 	{
+		foreach ( var m in DamageModules )
+			m.OnDeath();
 	}
 
-	public virtual void OnRevival()
+	public virtual void OnAlive()
 	{
+		foreach ( var m in DamageModules )
+			m.OnAlive();
 	}
-
 
 	public virtual bool CanDamage( in DamageData data )
-		=> IsDestructible && data.Damage > 0;
+		=> IsDestructible;
 
 	/// <summary>
 	/// Called by the owner to attempt inflicting the damage.
 	/// </summary>
 	/// <returns> If this damage should be inflicted or not. </returns>
-	protected virtual bool TryReceiveDamage( in DamageData data )
+	protected bool TryReceiveDamage( DamageData data )
 	{
+		// Pre-damage module modification.
+		foreach ( var m in DamageModules )
+			m.ModifyDamage( ref data );
+
+		// Check if the damage is valid after modification.
 		if ( !CanDamage( in data ) )
 			return false;
 
-		ApplyDamage( data );
+		ApplyDamage( in data );
 		return true;
 	}
 
 	/// <summary>
 	/// Actually performs the damage meant to be dealt.
 	/// </summary>
-	/// <param name="data"></param>
-	protected virtual void ApplyDamage( DamageData data )
+	protected virtual void ApplyDamage( in DamageData data )
 	{
 		ModifyHealth( -data.Damage );
 
+		// Post-damage entity response.
 		OnDamaged( in data );
 	}
 
@@ -151,6 +188,26 @@ partial class DynamicEntity : IHealth
 	/// Called after the damage has been successfully applied.
 	/// </summary>
 	protected virtual void OnDamaged( in DamageData data )
+	{
+		// Post-damage module response.
+		foreach ( var m in DamageModules )
+			m.OnDamaged( in data );
+
+		// Post-damage impulse.
+		if ( data.Impulse is Vector3 impulse )
+			ApplyDamageImpulse( impulse );
+
+		// Damage particles, sound etc.
+		OnDamagedEffect( in data );
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	protected virtual void ApplyDamageImpulse( Vector3 impulse )
+		=> ApplyImpulse( impulse );
+
+	public virtual void OnDamagedEffect( in DamageData data )
 	{
 	}
 }

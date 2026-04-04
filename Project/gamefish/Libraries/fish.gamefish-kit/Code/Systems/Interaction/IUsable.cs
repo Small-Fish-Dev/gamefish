@@ -9,10 +9,11 @@ public interface IUsable
 	/// Lets this be used over other possible usables.
 	/// Lower numbers should indicate a higher priority(useful with distance/angle).
 	/// </summary>
-	public float GetUsablePriority( Pawn pawn );
+	public float UseOrder( Pawn pawn );
 
-	/// <returns> If that pawn is allowed to use this. </returns>
-	public bool IsUsable( Pawn pawn );
+	/// <returns> If the pawn is allowed to interact. </returns>
+	public virtual bool IsUsable( Pawn pawn )
+		=> pawn.IsValid() && pawn.IsAlive;
 
 	/// <summary>
 	/// Networks the request to use this.

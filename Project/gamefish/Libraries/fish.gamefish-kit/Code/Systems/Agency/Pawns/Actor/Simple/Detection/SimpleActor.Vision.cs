@@ -33,9 +33,9 @@ partial class SimpleActor
 	/// </summary>
 	[Property]
 	[Title( "Frequency" )]
-	[Range( 0f, 2f, clamped: false )]
+	[Range( 0f, 1f, clamped: false )]
 	[Feature( ACTOR ), Group( VISION )]
-	protected virtual float DefaultVisionFrequency { get; set; } = 0.25f;
+	protected virtual float DefaultVisionFrequency { get; set; } = 0.1f;
 
 	public virtual float VisionAngle => DefaultVisionAngle;
 	public virtual float VisionDistance => DefaultVisionDistance;
@@ -85,14 +85,6 @@ partial class SimpleActor
 		// if ( DrawVisionGizmos )
 		// DebugOverlay.Line( EyePosition, EyePosition + EyeRotation.Forward * VisionDistance, duration: VisionFrequency );
 
-		var target = Target;
-
-		if ( target.IsValid() && IsPawnVisible( target, out var aimPos ) )
-		{
-			OnPawnVisible( target, aimPos ?? Target.Center );
-			return;
-		}
-
 		// Trace in a sphere to find enemies.
 		var eyePos = EyePosition;
 
@@ -141,8 +133,31 @@ partial class SimpleActor
 	protected virtual void OnEnemyVisible( Pawn enemy, in Vector3 at )
 	{
 		// Double check that new targets are enemies.
-		if ( Target != enemy && !TrySetTarget( enemy ) )
+		if ( !enemy.IsValid() || !IsEnemy( enemy ) )
 			return;
+
+		if ( Target != enemy )
+		{
+			// If we have a current valid target then see if we can switch.
+			if ( Target.IsValid() && CanTarget( Target ) )
+			{
+				// Compare the distance to see if the new target is closer.
+				if ( GetTargetOrigin( Target ) is Vector3 oldTargetPos
+					&& GetTargetOrigin( enemy ) is Vector3 newTargetPos )
+				{
+					var oldTargetDist = EyePosition.Distance( oldTargetPos );
+					var newTargetDist = EyePosition.Distance( newTargetPos );
+
+					// If our current target is closer then ignore them.
+					if ( oldTargetDist <= newTargetDist )
+						return;
+				}
+			}
+
+			// If we can't change target then uhh don't?
+			if ( !TrySetTarget( enemy ) )
+				return;
+		}
 
 		TargetVisible = true;
 

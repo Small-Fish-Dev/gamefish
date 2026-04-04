@@ -21,7 +21,7 @@ public abstract partial class Actor : Pawn
 	{
 		base.OnStart();
 
-		// ...
+		ShuffleRandomSeed();
 	}
 
 	protected override void OnUpdate()

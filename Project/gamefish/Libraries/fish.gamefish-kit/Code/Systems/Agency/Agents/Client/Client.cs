@@ -7,8 +7,14 @@ namespace GameFish;
 [EditorHandle( Icon = "account_box" )]
 public partial class Client : Agent
 {
+	protected const int CLIENT_ORDER = AGENT_ORDER - 1000;
+	protected const int CLIENT_DEBUG_ORDER = CLIENT_ORDER + 500;
+
 	public static IEnumerable<Client> All => Server.ValidClients;
 	public static IEnumerable<Client> Players => Server.PlayerClients;
+
+	public static IEnumerable<TClient> GetAll<TClient>() where TClient : Client
+		=> Server.GetAllClients<TClient>();
 
 	/// <summary>
 	/// A valid <see cref="Client"/> only ever belonging to the local connection(or null).
@@ -93,6 +99,13 @@ public partial class Client : Agent
 		if ( !Local.IsValid() )
 			if ( this.IsOwner() && IsPlayer )
 				Local = this;
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		UpdateVoice();
 	}
 
 	protected override void OnDestroy()

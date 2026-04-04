@@ -12,7 +12,8 @@ partial class Library
 	/// <param name="netMode"></param>
 	/// <param name="ignoreProxy"> Fails if the object is owned by another. </param>
 	/// <returns> If the object was valid and we had permission. </returns>
-	public static bool NetworkSetup( this GameObject go, Connection cn = null,
+	public static bool NetworkSetup( this GameObject go,
+		Connection cn = null,
 		NetworkOrphaned orphanMode = NetworkOrphaned.Host,
 		OwnerTransfer ownerTransfer = OwnerTransfer.Fixed,
 		NetworkMode netMode = NetworkMode.Object,
@@ -25,20 +26,27 @@ partial class Library
 			return false;
 
 		go.NetworkMode = netMode;
+
+		// Network spawn inactive and/or child objects.
+		if ( !go.Network.Active || !go.IsNetworkRoot )
+		{
+			return go.NetworkSpawn( new NetworkSpawnOptions()
+			{
+				Owner = cn,
+				StartEnabled = true,
+				OrphanedMode = orphanMode,
+				OwnerTransfer = ownerTransfer,
+			} );
+		}
+
+		// Update active root network objects.
 		go.Network.SetOrphanedMode( orphanMode );
 		go.Network.SetOwnerTransfer( ownerTransfer );
 
-		if ( go.Network.Active )
-		{
-			if ( cn is null )
-				return go.Network.DropOwnership();
-			else
-				return go.Network.AssignOwnership( cn );
-		}
+		if ( cn is null )
+			return go.Network.DropOwnership();
 		else
-		{
-			return go.NetworkSpawn( true, cn );
-		}
+			return go.Network.AssignOwnership( cn );
 	}
 
 	/// <returns> If this object is valid and explicitly owned by the local client. </returns>

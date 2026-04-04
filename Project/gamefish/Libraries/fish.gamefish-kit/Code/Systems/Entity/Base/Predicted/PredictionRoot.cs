@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace GameFish;
 
 /// <summary>
@@ -10,10 +8,11 @@ public partial class PredictionRoot : Entity
 	// Prediction root/manager is never networked.
 	protected override bool? IsNetworkedOverride => false;
 
-	[Property, Feature( NETWORKING )]
+	[Property]
+	[Feature( NETWORKING )]
 	public PredictedEntity EntitySource { get; set; }
 
-	[ReadOnly]
-	[Property, Feature( NETWORKING )]
+	[Property, ReadOnly]
+	[Feature( NETWORKING )]
 	public PredictedEntity EntityProxy { get; set; }
 }

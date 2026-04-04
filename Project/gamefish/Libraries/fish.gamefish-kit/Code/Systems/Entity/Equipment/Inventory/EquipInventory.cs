@@ -3,14 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
+[Hide, Obsolete( $"Use {nameof( EquipInventory )} instead." )]
+public class PawnEquipment : EquipInventory;
+
 /// <summary>
 /// A pawn module that manages and optionally spawns equipment.
 /// </summary>
 [Icon( "backpack" )]
-public partial class PawnEquipment : Module
+public partial class EquipInventory : Module
 {
 	public const string SLOTTING = "Slotting";
-	public const string INVENTORY = "Inventory";
 
 	public Pawn Pawn => Parent as Pawn;
 
@@ -18,31 +20,40 @@ public partial class PawnEquipment : Module
 		=> comp.IsValid() && comp is Pawn;
 
 	/// <summary> If true: only try to pick up weapons in their intended slot. </summary>
+	[Property]
 	[Title( "Strict" )]
-	[Property, Feature( EQUIP ), Group( SLOTTING )]
+	[Feature( EQUIP ), Group( SLOTTING )]
 	public virtual bool StrictSlots { get; set; }
 
 	/// <summary> If true: prevent picking up multiple instances of a weapon. </summary>
+	[Property]
 	[Title( "Unique" )]
-	[Property, Feature( EQUIP ), Group( SLOTTING )]
+	[Feature( EQUIP ), Group( SLOTTING )]
 	public virtual bool UniqueEquips { get; set; } = true;
 
 	/// <summary> How many weapons can fit in each individual slot? </summary>
+	[Property]
 	[Title( "Size" )]
 	[Range( 1, 4, clamped: false ), Step( 1f )]
-	[Property, Feature( EQUIP ), Group( SLOTTING )]
+	[Feature( EQUIP ), Group( SLOTTING )]
 	public virtual int SlotCapacity { get; set; } = 1;
 
 	/// <summary> How many equipment slots are available overall? </summary>
+	[Property]
 	[Title( "Available" )]
 	[Range( 0, 10, clamped: false ), Step( 1f )]
-	[Property, Feature( EQUIP ), Group( SLOTTING )]
+	[Feature( EQUIP ), Group( SLOTTING )]
 	public virtual int SlotCount { get; set; } = 10;
 
-	/// <summary> The part of each slot select action's name that comes before its number. </summary>
+	/// <summary>
+	/// The part of each slot select action's name that comes before its number.
+	/// <br /> <br />
+	/// <b> TODO: </b> Have this be configured by the project.
+	/// </summary>
+	[Property]
 	[Title( "Input Prefix" )]
 	[Range( 0, 10, clamped: false ), Step( 1f )]
-	[Property, Feature( EQUIP ), Group( SLOTTING )]
+	[Feature( EQUIP ), Group( SLOTTING )]
 	public virtual string InputPrefix { get; set; } = "Slot";
 
 	/// <summary>
@@ -52,34 +63,44 @@ public partial class PawnEquipment : Module
 	[Title( "Logging" )]
 	[Order( DEBUG_ORDER )]
 	[Feature( EQUIP ), Group( DEBUG )]
-	public virtual bool DebugLogging { get; set; } = false;
+	public bool DebugLogging { get; set; } = false;
 
 	/// <summary>
 	/// Automatically give the loadout when this module first starts? <br />
 	/// If not then you'll need to call <see cref="GiveLoadout"/> yourself.
 	/// </summary>
-	[Property, Feature( EQUIP ), Group( INVENTORY )]
-	public virtual bool AutoGiveLoadout { get; set; } = true;
+	[Property]
+	[Title( "Auto-Deploy" )]
+	[Feature( EQUIP ), Group( INVENTORY )]
+	public virtual bool AutoLoadoutDeploy { get; set; } = true;
 
 	/// <summary> The weapons to spawn. </summary>
-	[WideMode]
-	[Property, Feature( EQUIP ), Group( INVENTORY )]
+	[Property, WideMode]
+	[Title( "Default Loadout" )]
+	[Feature( EQUIP ), Group( INVENTORY )]
 	public virtual List<EquipLoadoutEntry> Loadout { get; set; } = [];
 
 	/// <summary>
 	/// The main active equipment.
 	/// </summary>
+	[Property]
 	[Title( "Active Equip" )]
-	[InlineEditor, ReadOnly, JsonIgnore]
-	[Property, Feature( EQUIP ), Group( INVENTORY )]
-	protected Equipment InspectorActiveEquip => ActiveEquip;
+	[InlineEditor, JsonIgnore]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( EQUIP ), Group( INVENTORY )]
+	protected Equipment InspectorActiveEquip
+	{
+		get => ActiveEquip;
+		set => ActiveEquip = value;
+	}
 
 	/// <summary>
 	/// All currently equipped items according to the host.
 	/// </summary>
+	[Property]
 	[Title( "Equipped" )]
 	[InlineEditor, ReadOnly, JsonIgnore]
-	[Property, Feature( EQUIP ), Group( INVENTORY )]
+	[Feature( EQUIP ), Group( INVENTORY )]
 	protected NetList<Equipment> InspectorEquipped => Equipped;
 
 	/// <summary>
@@ -117,7 +138,7 @@ public partial class PawnEquipment : Module
 		if ( !Networking.IsHost )
 			return;
 
-		if ( AutoGiveLoadout && this.InGame() )
+		if ( AutoLoadoutDeploy && this.InGame() )
 		{
 			if ( DebugLogging )
 				this.Log( $"Auto-giving loadout for pawn:[{Pawn}]" );

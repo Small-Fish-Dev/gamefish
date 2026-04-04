@@ -34,7 +34,7 @@ partial class SimpleActor
 	[Property, JsonIgnore]
 	[Title( "Mental State" )]
 	[Feature( ACTOR ), Group( MIND ), Order( ACTOR_ORDER )]
-	public virtual MentalState InspectorMentalState
+	protected virtual MentalState InspectorMindState
 	{
 		get => MindState;
 		set => MindState = value;

@@ -9,7 +9,7 @@ partial class Library
 	/// </summary>
 	/// <remarks>
 	/// Lets you skip checking if <typeparamref name="TValid"/> is valid and not simply null.
-	/// <br />
+	/// <br /> <br />
 	/// <b> BEFORE: </b> <c> var thing = one.IsValid() ? one : (two.IsValid() ? two : null); </c>
 	/// <br />
 	/// <b> AFTER: </b> <c> var thing = one.AsValid() ?? two.AsValid() </c>

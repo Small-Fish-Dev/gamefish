@@ -18,7 +18,7 @@ public abstract class WeightedResourceList<TResource> : WeightedList<TResource> 
 		return false;
 	}
 
-	protected override Dictionary<TResource, float> GetEntries()
+	protected override Dictionary<TResource, float> GenerateEntries()
 	{
 		Dictionary<TResource, float> dict = [];
 

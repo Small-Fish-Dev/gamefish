@@ -16,12 +16,12 @@ public partial class Spectator : Player
 
 		protected set
 		{
-			var prevSpec = _spectating;
+			var prev = _spectating;
 
 			_spectating = value;
 
 			if ( this.IsOwner() )
-				OnSpectatingSet( prevSpec, value );
+				OnSpectatingSet( value, prev );
 		}
 	}
 
@@ -153,7 +153,7 @@ public partial class Spectator : Player
 	/// <summary>
 	/// Called whenever <see cref="Spectating"/> has been set.
 	/// </summary>
-	protected virtual void OnSpectatingSet( Pawn prev, Pawn next )
+	protected virtual void OnSpectatingSet( Pawn next, Pawn prev = null )
 	{
 		if ( !this.IsOwner() )
 			return;

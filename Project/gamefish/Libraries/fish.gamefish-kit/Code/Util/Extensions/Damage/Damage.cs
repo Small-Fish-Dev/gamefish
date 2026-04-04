@@ -2,13 +2,13 @@ namespace GameFish;
 
 partial class Library
 {
-	public const FindMode DefaultFindMode = FindMode.EnabledInSelf | FindMode.InAncestors;
+	public const FindMode FIND_ENTITY = FindMode.EnabledInSelf | FindMode.InAncestors;
 
 	/// <summary>
 	/// Looks for <see cref="IHealth"/> to use <see cref="IHealth.TrySendDamage(in DamageData)"/>.
 	/// </summary>
 	/// <returns> If we were able to find and bother sending our damage. </returns>
-	public static bool TryDamage( this GameObject obj, in DamageData data, in FindMode findMode = DefaultFindMode )
+	public static bool TryDamage( this GameObject obj, in DamageData data, in FindMode findMode = FIND_ENTITY )
 	{
 		if ( !obj.IsValid() )
 			return false;

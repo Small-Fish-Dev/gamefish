@@ -16,12 +16,12 @@ public interface IVelocity
 		if ( !ITransform.IsValid( in vel ) )
 			return false;
 
-		SendImpulse( vel );
+		RpcImpulse( vel );
 		return true;
 	}
 
 	/// <summary>
 	/// Networks impulse velocity to the owner.
 	/// </summary>
-	public void SendImpulse( Vector3 vel );
+	public void RpcImpulse( Vector3 vel );
 }
