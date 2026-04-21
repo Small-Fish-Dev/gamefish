@@ -55,15 +55,18 @@ public partial class CitizenDresser : Module, Component.ExecuteInEditor
 	/// If true: overlays a default outfit. <br />
 	/// Overrides any avatar outfitting.
 	/// <br /> <br />
-	/// <b> NOTE: </b> Ignores <see cref="PreventAvatarSlots"/>.
+	/// <b> NOTE: </b> Ignores "Prevent Slots".
 	/// </summary>
 	[Property]
 	[Feature( OUTFIT ), Order( OUTFIT_ORDER )]
-	[ToggleGroup( nameof( UseDefault ), Label = DEFAULTS )]
+	[ToggleGroup( nameof( UseDefault ), Label = DEFAULT )]
 	public bool UseDefault { get; set; }
 
+	/// <summary>
+	/// This clothing will be overlayed on the model(if enabled).
+	/// </summary>
+	[Title( "Outfit" )]
 	[Property, InlineEditor]
-	[Title( "Default Outfit" )]
 	[ToggleGroup( nameof( UseDefault ) )]
 	[Feature( OUTFIT ), Order( OUTFIT_ORDER )]
 	public CitizenOutfit DefaultOutfit { get; set; }
@@ -85,7 +88,7 @@ public partial class CitizenDresser : Module, Component.ExecuteInEditor
 		{
 			_equipped = value;
 
-			if ( AutoApply )
+			if ( InGame )
 				UpdateOutfit();
 		}
 	}

@@ -123,6 +123,7 @@ public static partial class Strings
 
 	public const string CONFIG = "⚙ Config";
 	public const string SETTINGS = "⚙ Settings";
+	public const string DEFAULT = "⚙ Default";
 	public const string DEFAULTS = "⚙ Defaults";
 
 	public const string SCENE = "🌐 Scene";
