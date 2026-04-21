@@ -174,7 +174,7 @@ partial class FishboxController
 
 		Velocity.Separate( vNormal, out var upVel, out var hVel );
 
-		var wishSpeed = GetWishSpeed();
+		var wishSpeed = GetMovementSpeed();
 		var speedLimit = hVel.Length.Max( wishSpeed );
 
 		var speed = Acceleration * wishSpeed;

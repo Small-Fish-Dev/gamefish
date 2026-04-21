@@ -97,12 +97,12 @@ partial class FishboxController
 		SetUpDirection( upDirDest );
 	}
 
-	public override float GetWishSpeed()
+	public override float GetMovementSpeed()
 	{
 		if ( IsSliding )
 			return SlideAcceleration;
 
-		var speed = base.GetWishSpeed();
+		var speed = base.GetMovementSpeed();
 
 		if ( IsSprinting )
 			speed = GetSprintSpeed( speed );
