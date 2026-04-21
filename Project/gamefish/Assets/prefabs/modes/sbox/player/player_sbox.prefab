@@ -63,6 +63,7 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "Team": "data/teams/player.team",
+        "UseDistance": 120,
         "View": {
           "_type": "component",
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
@@ -188,8 +189,8 @@
           ]
         },
         "SlopeSpeed": {
-          "rangex": "0.00000001490116,0.9999997",
-          "rangey": "99.99988,700.0001",
+          "rangex": "1.49011603E-08,0.999999702",
+          "rangey": "99.9998779,700.000122",
           "frames": [
             {
               "x": 0,
@@ -282,7 +283,7 @@
             "__guid": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "__enabled": true,
             "Flags": 0,
-            "AllowCyclingMode": true,
+            "AllowCyclingMode": false,
             "ClassId": null,
             "ClassName": null,
             "CollideOwned": false,
@@ -294,9 +295,9 @@
             "DefaultCollisionRadius": 5,
             "FirstPersonMode": {
               "_type": "component",
-              "component_id": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
-              "go": "0d477140-245e-4027-8796-e93691384711",
-              "component_type": "FirstPersonViewMode"
+              "component_id": "9d851d0f-e7fb-40f0-9a2a-8a4007c36d28",
+              "go": "7fb7d7db-219f-4d0b-b904-32044e72d4e1",
+              "component_type": "ThirdPersonViewMode"
             },
             "IsClass": false,
             "IsNetworkingForced": true,
@@ -426,49 +427,6 @@
                 },
                 "Tint": "1,1,1,1",
                 "UseAnimGraph": true
-              }
-            ],
-            "Children": []
-          },
-          {
-            "__guid": "0d477140-245e-4027-8796-e93691384711",
-            "__version": 2,
-            "Flags": 0,
-            "Name": "First Person",
-            "Position": "0,0,0",
-            "Rotation": "0,0,0,1",
-            "Scale": "1,1,1",
-            "Tags": "",
-            "Enabled": false,
-            "NetworkMode": 1,
-            "NetworkFlags": 0,
-            "NetworkOrphaned": 3,
-            "NetworkTransmit": true,
-            "OwnerTransfer": 1,
-            "Components": [
-              {
-                "__type": "GameFish.FirstPersonViewMode",
-                "__guid": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
-                "__enabled": true,
-                "Flags": 0,
-                "AllowFirstPerson": true,
-                "ClassId": null,
-                "ClassName": null,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "ShowViewRenderer": true
               }
             ],
             "Children": []
@@ -623,7 +581,7 @@
             "__enabled": true,
             "Flags": 0,
             "AnimationGraph": null,
-            "BodyGroups": 681,
+            "BodyGroups": 649,
             "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
@@ -711,6 +669,75 @@
                 "PreventAvatarSlots": 0,
                 "UseAvatar": true,
                 "UseDefault": false
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "dffc0f20-5522-4754-a962-67987bd601ae",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Clothing - y_front_pants_white",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "clothing",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "2712bd1e-0bd5-455e-aeb3-5d97fe2c4dd0",
+                "__enabled": true,
+                "Flags": 0,
+                "AnimationGraph": null,
+                "BodyGroups": 18446744073709551615,
+                "BoneMergeTarget": {
+                  "_type": "component",
+                  "component_id": "cfec74af-9bf9-4535-870e-8ddc5d8f0ed5",
+                  "go": "6e7f4c8a-47de-44e8-adba-7be294cb523c",
+                  "component_type": "SkinnedModelRenderer"
+                },
+                "CreateAttachments": false,
+                "CreateBoneObjects": false,
+                "LodOverride": null,
+                "MaterialGroup": null,
+                "MaterialOverride": null,
+                "Materials": null,
+                "Model": "models/citizen_clothes/underwear/y_front_pants/models/y_front_pants_m_human.vmdl",
+                "Morphs": {},
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "PlaybackRate": 1,
+                "RenderOptions": {
+                  "GameLayer": true,
+                  "OverlayLayer": false,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "On",
+                "Sequence": {
+                  "Name": null,
+                  "Looping": true,
+                  "Blending": false
+                },
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
               }
             ],
             "Children": []
@@ -853,7 +880,7 @@
             "__guid": "41565e7f-493f-4aa8-802e-130a36e10531",
             "__enabled": true,
             "Flags": 0,
-            "AutoGiveLoadout": false,
+            "AutoLoadoutDeploy": true,
             "ClassId": null,
             "ClassName": null,
             "DebugLogging": false,
@@ -988,6 +1015,8 @@
               "Scale": 1,
               "Offset": 0,
               "Scroll": 0,
+              "FilterMode": "Anisotropic",
+              "TextureAddressMode": "Wrap",
               "Clamp": false
             },
             "UseVectorPoints": true,
@@ -1019,13 +1048,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []
