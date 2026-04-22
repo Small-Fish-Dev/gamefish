@@ -27,8 +27,17 @@ partial class Library
 
 		go.NetworkMode = netMode;
 
-		// Network spawn inactive and/or child objects.
-		if ( !go.Network.Active || !go.IsNetworkRoot )
+		if ( go.Network.Active )
+		{
+			go.Network.SetOrphanedMode( orphanMode );
+			go.Network.SetOwnerTransfer( ownerTransfer );
+
+			if ( cn is null )
+				return go.Network.DropOwnership();
+			else
+				return go.Network.AssignOwnership( cn );
+		}
+		else
 		{
 			return go.NetworkSpawn( new NetworkSpawnOptions()
 			{
@@ -38,15 +47,6 @@ partial class Library
 				OwnerTransfer = ownerTransfer,
 			} );
 		}
-
-		// Update active root network objects.
-		go.Network.SetOrphanedMode( orphanMode );
-		go.Network.SetOwnerTransfer( ownerTransfer );
-
-		if ( cn is null )
-			return go.Network.DropOwnership();
-		else
-			return go.Network.AssignOwnership( cn );
 	}
 
 	/// <returns> If this object is valid and explicitly owned by the local client. </returns>
