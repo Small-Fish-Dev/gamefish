@@ -8,9 +8,7 @@ partial class Pawn
 	[Feature( PAWN ), Group( EQUIPMENT )]
 	public virtual EquipInventory Equipment
 	{
-		get => _equip.IsValid() ? _equip
-			: _equip ??= _equip.GetCached( this );
-
+		get => this.GetCached( ref _equip );
 		set => _equip = value;
 	}
 

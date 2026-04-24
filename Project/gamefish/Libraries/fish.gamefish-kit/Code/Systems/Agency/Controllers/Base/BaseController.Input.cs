@@ -2,13 +2,6 @@ namespace GameFish;
 
 partial class BaseController
 {
-	protected override void OnStart()
-	{
-		base.OnStart();
-
-		LocalEyePosition = GetLocalEyeTargetPosition();
-	}
-
 	protected virtual bool IsMovementAllowed()
 		=> AllowMovement && Pawn?.IsAlive is true;
 
@@ -41,22 +34,5 @@ partial class BaseController
 			return Vector3.Zero;
 
 		return GetWishDirection( in inputDir ) * wishSpeed;
-	}
-
-	public virtual void UpdateView( in float deltaTime )
-	{
-		if ( IsProxy )
-			return;
-
-		UpdateEyePosition( deltaTime );
-	}
-
-	/// <summary>
-	/// Performs eye position target transitioning.
-	/// </summary>
-	public virtual void UpdateEyePosition( in float deltaTime )
-	{
-		LocalEyePosition = Vector3.SmoothDamp( LocalEyePosition, GetLocalEyeTargetPosition(),
-			ref _eyeVel, EyeMoveSmoothing, EyeMoveSpeed * deltaTime );
 	}
 }

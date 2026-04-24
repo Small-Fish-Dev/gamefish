@@ -8,7 +8,7 @@ public partial class Propeller : AttachedDevice
 {
 	[Property, JsonIgnore, ReadOnly]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public Rigidbody TargetRigidbody => _rbTarget.GetCached( ParentPoint.Object, FindMode.EnabledInSelf | FindMode.InAncestors );
+	public Rigidbody TargetRigidbody => ParentPoint.Object?.GetCached( ref _rbTarget, FindMode.EnabledInSelf | FindMode.InAncestors );
 	protected Rigidbody _rbTarget;
 
 	[Property]

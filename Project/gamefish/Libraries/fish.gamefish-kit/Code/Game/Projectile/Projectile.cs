@@ -133,7 +133,7 @@ public partial class Projectile : MovingEntity, ITeam
 
 		if ( IsProxy )
 		{
-			if ( IgnoreProxyCollision )
+			if ( ProxyCollision )
 			{
 				var startPos = WorldPosition;
 				var move = Velocity * deltaTime;

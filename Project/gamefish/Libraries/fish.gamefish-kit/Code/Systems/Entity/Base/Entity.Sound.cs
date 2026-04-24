@@ -7,226 +7,169 @@ partial class Entity
 	/// <summary>
 	/// Attaches an existing sound handle to this object.
 	/// </summary>
-	public SoundHandle AttachSound( SoundHandle soundHandle, Transform? tWorld = null )
+	public SoundHandle AttachSound( SoundHandle soundHandle, in Transform tLocal )
 	{
 		if ( !soundHandle.IsValid() || !GameObject.IsValid() )
 			return null;
 
 		soundHandle.Parent = GameObject;
 		soundHandle.FollowParent = true;
-		soundHandle.LocalTransform = tWorld.HasValue
-			? WorldTransform.ToLocal( tWorld.Value )
-			: global::Transform.Zero;
+
+		if ( tLocal.IsValid )
+			soundHandle.LocalTransform = tLocal;
 
 		return soundHandle;
 	}
 
-
-	#region SoundEvent
-
-
 	/// <summary>
-	/// Allows the object's owner to broadcast a sound event on this object.
+	/// Attaches an existing sound handle to this object using settings.
 	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	public void BroadcastSound( SoundEvent soundEvent, Vector3? worldPos = null )
+	public SoundHandle AttachSound( SoundHandle soundHandle, in SoundSettings s )
 	{
-		_ = worldPos is Vector3 sndPos
-			? EmitSound( soundEvent, new Transform( sndPos ) )
-			: EmitSound( soundEvent );
-	}
-
-	/// <summary>
-	/// Allows the object's owner to broadcast a sound event on this object.
-	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	public void BroadcastSound( SoundEvent soundEvent, SoundSettings settings )
-		=> EmitSound( soundEvent, settings );
-
-	/// <summary>
-	/// Allows the host to broadcast a sound event on this object.
-	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void HostBroadcastSound( SoundEvent soundEvent, Vector3? worldPos = null )
-	{
-		_ = worldPos is Vector3 sndPos
-			? EmitSound( soundEvent, new Transform( sndPos ) )
-			: EmitSound( soundEvent );
-	}
-
-	/// <summary>
-	/// Allows the host to broadcast a sound event on this object.
-	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void HostBroadcastSound( SoundEvent soundEvent, SoundSettings settings )
-		=> EmitSound( soundEvent, settings );
-
-	/// <summary>
-	/// Plays a sound event locally that follows this object.
-	/// </summary>
-	public SoundHandle EmitSound( SoundEvent soundEvent )
-	{
-		if ( !soundEvent.IsValid() )
+		if ( !soundHandle.IsValid() || !GameObject.IsValid() )
 			return null;
 
-		return AttachSound( Sound.Play( soundEvent ) );
+		soundHandle.Parent = GameObject;
+		soundHandle.FollowParent = true;
+
+		ApplySoundSettings( soundHandle, in s );
+
+		return soundHandle;
 	}
 
-	/// <summary>
-	/// Plays a sound event locally at a position that follows this object.
-	/// </summary>
-	public SoundHandle EmitSound( SoundEvent soundEvent, in Vector3 worldPos )
-		=> EmitSound( soundEvent, new Transform( worldPos ) );
-
-	/// <summary>
-	/// Plays a sound event locally that follows this object.
-	/// </summary>
-	public SoundHandle EmitSound( SoundEvent soundEvent, Transform? tWorld = null )
+	private void ApplySoundSettings( SoundHandle soundHandle, in SoundSettings s )
 	{
-		if ( !soundEvent.IsValid() )
-			return null;
-
-		var soundHandle = Sound.Play( soundEvent, tWorld?.Position ?? WorldPosition );
-
 		if ( !soundHandle.IsValid() )
-			return null;
+			return;
 
-		return AttachSound( soundHandle, tWorld );
-	}
+		// Could be a world or local transform.
+		var t = s.Transform;
 
-	/// <summary>
-	/// Plays a sound event locally at a transform.
-	/// </summary>
-	public SoundHandle EmitSound( SoundEvent soundEvent, in SoundSettings s )
-	{
-		if ( !soundEvent.IsValid() )
-			return null;
+		if ( t.IsValid )
+		{
+			if ( s.InWorld )
+				soundHandle.Transform = t;
+			else
+				soundHandle.LocalTransform = t;
+		}
 
-		var soundHandle = Sound.Play( soundEvent, s.Transform?.Position ?? WorldPosition );
-
-		if ( !soundHandle.IsValid() )
-			return null;
-
+		// Apply volume/mixer options.
 		if ( s.Volume is float sndVol )
 			soundHandle.Volume = sndVol;
 
 		if ( s.Pitch is float sndPitch )
 			soundHandle.Pitch = sndPitch;
 
-		if ( s.Mixer is string sndMixer )
+		var sndMixer = s.Mixer;
+
+		if ( !sndMixer.IsBlank() )
+		{
 			soundHandle.TargetMixer = Mixer.FindMixerByName( sndMixer )
 				?? soundHandle.TargetMixer
 				?? Mixer.Default;
-
-		if ( !s.Following.IsValid() )
-			return AttachSound( soundHandle, s.Transform );
-
-		Transform? tLocal = s.Transform is Transform tSound
-				? s.Following.WorldTransform.ToWorld( tSound )
-				: null;
-
-		return AttachSound( soundHandle, tLocal );
+		}
 	}
 
 
-	#endregion SoundEvent
-
-
-	#region SoundFile
-
+	/// <summary>
+	/// Plays a sound event locally that follows this object.
+	/// </summary>
+	public SoundHandle EmitSound( SoundEvent soundEvent, in Vector3 localPos = default )
+		=> EmitSound( soundEvent, new Transform( localPos ) );
 
 	/// <summary>
-	/// Allows the object's owner to broadcast a sound file on this object.
+	/// Plays a sound event locally that follows this object.
 	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	public void BroadcastSound( SoundFile soundFile, Vector3? worldPos = null )
+	public SoundHandle EmitSound( SoundEvent soundEvent, in Transform tLocal )
 	{
-		_ = worldPos is Vector3 sndPos
-			? EmitSound( soundFile, new Transform( sndPos ) )
-			: EmitSound( soundFile );
+		if ( !soundEvent.IsValid() )
+			return null;
+
+		return AttachSound( Sound.Play( soundEvent ), tLocal );
 	}
 
 	/// <summary>
-	/// Allows the object's owner to broadcast a sound file on this object.
+	/// Plays a sound event locally using settings.
 	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
-	public void BroadcastSound( SoundFile soundFile, SoundSettings settings )
-		=> EmitSound( soundFile, settings );
-
-	/// <summary>
-	/// Allows the host to broadcast a sound file on this object.
-	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void HostBroadcastSound( SoundFile soundFile, Vector3? worldPos = null )
+	public SoundHandle EmitSound( SoundEvent soundEvent, in SoundSettings s )
 	{
-		_ = worldPos is Vector3 sndPos
-			? EmitSound( soundFile, new Transform( sndPos ) )
-			: EmitSound( soundFile );
+		if ( !soundEvent.IsValid() )
+			return null;
+
+		return AttachSound( Sound.Play( soundEvent ), in s );
 	}
 
-	/// <summary>
-	/// Allows the host to broadcast a sound file on this object.
-	/// </summary>
-	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void HostBroadcastSound( SoundFile soundFile, SoundSettings settings )
-		=> EmitSound( soundFile, settings );
-
 
 	/// <summary>
-	/// Plays a sound file locally on this object.
+	/// Plays a sound file locally that follows this object.
 	/// </summary>
-	public SoundHandle EmitSound( SoundFile soundFile )
-		=> EmitSound( soundFile, new Transform( WorldPosition ) );
+	public SoundHandle EmitSound( SoundFile soundFile, in Vector3 localPos = default )
+		=> EmitSound( soundFile, new Transform( localPos ) );
 
 	/// <summary>
-	/// Plays a sound file locally at a position.
+	/// Plays a sound file locally that follows this object.
 	/// </summary>
-	public SoundHandle EmitSound( SoundFile soundFile, in Vector3 pos )
-		=> EmitSound( soundFile, new Transform( pos ) );
-
-	/// <summary>
-	/// Plays a sound file locally. <br />
-	/// Uses the object's position if transform is not specified.
-	/// </summary>
-	public SoundHandle EmitSound( SoundFile soundFile, in Transform? tWorld = null )
+	public SoundHandle EmitSound( SoundFile soundFile, in Transform tLocal )
 	{
 		if ( !soundFile.IsValid() )
 			return null;
 
-		return AttachSound( Sound.PlayFile( soundFile ), tWorld );
+		return AttachSound( Sound.PlayFile( soundFile ), tLocal );
 	}
 
 	/// <summary>
-	/// Plays a sound file locally at a transform.
+	/// Plays a sound file locally using settings.
 	/// </summary>
 	public SoundHandle EmitSound( SoundFile soundFile, in SoundSettings s )
 	{
 		if ( !soundFile.IsValid() )
 			return null;
 
-		var soundHandle = Sound.PlayFile( soundFile,
-			volume: s.Volume ?? 1f,
-			pitch: s.Pitch ?? 1f
-		);
-
-		if ( !soundHandle.IsValid() )
-			return null;
-
-		if ( s.Mixer is string sndMixer )
-			soundHandle.TargetMixer = Mixer.FindMixerByName( sndMixer )
-				?? soundHandle.TargetMixer
-				?? Mixer.Default;
-
-		if ( !s.Following.IsValid() )
-			return AttachSound( soundHandle, s.Transform );
-
-		Transform? tLocal = s.Transform is Transform tSound
-				? s.Following.WorldTransform.ToWorld( tSound )
-				: null;
-
-		return AttachSound( soundHandle, tLocal );
+		return AttachSound( Sound.PlayFile( soundFile ), in s );
 	}
 
 
-	#endregion SoundFile
+	/// <summary>
+	/// Allows the object's owner to broadcast a sound event on this object.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
+	public void BroadcastSound( SoundEvent soundEvent, Vector3 localPos = default )
+		=> EmitSound( soundEvent, in localPos );
+
+	/// <summary>
+	/// Allows the object's owner to broadcast a sound event on this object using settings.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
+	public void BroadcastSound( SoundEvent soundEvent, SoundSettings settings )
+		=> EmitSound( soundEvent, in settings );
+
+
+	/// <summary>
+	/// Allows the host to broadcast a sound event on this object.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
+	public void HostBroadcastSound( SoundEvent soundEvent, Vector3 localPos = default )
+		=> EmitSound( soundEvent, in localPos );
+
+	/// <summary>
+	/// Allows the host to broadcast a sound event on this object using settings.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
+	public void HostBroadcastSound( SoundEvent soundEvent, SoundSettings settings )
+		=> EmitSound( soundEvent, in settings );
+
+
+	/// <summary>
+	/// Allows the object's owner to broadcast a sound file on this object using settings.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.OwnerOnly )]
+	public void BroadcastSound( SoundFile soundFile, SoundSettings settings )
+		=> EmitSound( soundFile, in settings );
+
+	/// <summary>
+	/// Allows the host to broadcast a sound file on this object using settings.
+	/// </summary>
+	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.HostOnly )]
+	public void HostBroadcastSound( SoundFile soundFile, SoundSettings settings )
+		=> EmitSound( soundFile, in settings );
 }

@@ -16,22 +16,8 @@ partial class Equipment
 	protected EquipState DebugEquipState => EquipState;
 
 	[Sync]
-	public EquipState EquipState
-	{
-		get => _equipState;
-		set
-		{
-			if ( _equipState == value )
-				return;
-
-			_equipState = value;
-
-			if ( this.InGame() )
-				OnEquipStateChanged( _equipState );
-		}
-	}
-
-	protected EquipState _equipState;
+	public EquipState EquipState { get; set; }
+	private EquipState currentEquipState;
 
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( EQUIP ), Group( DEBUG )]
@@ -58,21 +44,12 @@ partial class Equipment
 		}
 	}
 
-	protected override void OnPreRender()
+	protected virtual void UpdateState()
 	{
-		base.OnPreRender();
-
-		switch ( EquipState )
+		if ( currentEquipState != EquipState )
 		{
-			case EquipState.Dropped:
-				SetVisibility( viewModel: false, worldModel: true );
-				break;
-			case EquipState.Deployed:
-				SetVisibility( viewModel: true, worldModel: false );
-				break;
-			case EquipState.Holstered:
-				SetVisibility( viewModel: false, worldModel: false );
-				break;
+			currentEquipState = EquipState;
+			OnEquipStateChanged( currentEquipState );
 		}
 	}
 
@@ -125,25 +102,55 @@ partial class Equipment
 
 	protected virtual void OnDrop()
 	{
+		DropEffects();	
+
 		if ( IsProxy )
 			return;
+
 
 		OnModuleEvent( e => e.OnDrop() );
 	}
 
+	protected virtual void DropEffects()
+	{
+		SetVisibility( false, true );
+	}
+
 	protected virtual void OnDeploy()
 	{
+		DeployEffects();
 		if ( IsProxy )
+		{
 			return;
+		}
 
 		OnModuleEvent( e => e.OnDeploy() );
 	}
 
+	protected virtual void DeployEffects()
+	{
+		if ( IsProxy )
+		{
+			SetVisibility( false, true );
+		}
+		else
+		{
+			SetVisibility( true, false );
+		}
+	}
+
 	protected virtual void OnHolster()
 	{
+		HolsterEffects();
+
 		if ( IsProxy )
 			return;
 
 		OnModuleEvent( e => e.OnHolster() );
+	}
+
+	protected virtual void HolsterEffects()
+	{
+		SetVisibility( false, false );
 	}
 }

@@ -19,7 +19,7 @@ public partial class Breakable : DynamicEntity
 	/// Should the object be destroyed when this is broken?
 	/// </summary>
 	[Property]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
 	public bool DestroyObject { get; set; } = true;
 
 	/// <summary>
@@ -27,14 +27,14 @@ public partial class Breakable : DynamicEntity
 	/// </summary>
 	[Property]
 	[Title( "Centering" )]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
 	public bool CenterEffects { get; set; } = true;
 
 	/// <summary>
 	/// Should the effect prefab inherit this object's scale?
 	/// </summary>
 	[Property]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
 	public bool InheritScale { get; set; } = true;
 
 	/// <summary>
@@ -42,7 +42,7 @@ public partial class Breakable : DynamicEntity
 	/// </summary>
 	[Property]
 	[Title( "Offset" )]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
 	public Transform EffectsOffset { get; set; } = global::Transform.Zero;
 
 	/// <summary>
@@ -53,7 +53,7 @@ public partial class Breakable : DynamicEntity
 	/// </summary>
 	[Property]
 	[Title( "Prefab" )]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
 	public PrefabFile BreakPrefab { get; set; }
 
 	/// <summary>
@@ -61,7 +61,7 @@ public partial class Breakable : DynamicEntity
 	/// </summary>
 	[Property]
 	[Title( "Break Sound" )]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( SOUND ), Order( BREAKABLE_ORDER )]
 	public SoundEvent BreakSound { get; set; }
 
 	/// <summary>
@@ -69,7 +69,7 @@ public partial class Breakable : DynamicEntity
 	/// </summary>
 	[Property]
 	[Title( "Damaged Sound" )]
-	[Feature( HEALTH ), Group( BREAKABLE )]
+	[Feature( BREAKABLE ), Group( SOUND ), Order( BREAKABLE_ORDER )]
 	public SoundEvent DamagedSound { get; set; }
 
 	protected override void OnDamaged( in DamageData data )
@@ -131,13 +131,10 @@ public partial class Breakable : DynamicEntity
 		}
 	}
 
-#pragma warning disable CA1822 // Mark members as static
 
 	[Rpc.Broadcast( NetFlags.OwnerOnly | NetFlags.SendImmediate | NetFlags.Reliable )]
-	protected void RpcBreakSound( SoundEvent snd, Vector3 pos )
+	protected static void RpcBreakSound( SoundEvent snd, Vector3 pos )
 	{
 		Sound.Play( snd, pos );
 	}
-
-#pragma warning restore CA1822 // Mark members as static
 }

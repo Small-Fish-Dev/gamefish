@@ -19,7 +19,7 @@ public partial class SimpleActor : Actor
 
 	protected override void Think( in float deltaTime, in bool isFixedUpdate )
 	{
-		UpdatePerception( in deltaTime );
+		UpdateDetection( in deltaTime );
 
 		UpdateMentalState( in deltaTime );
 

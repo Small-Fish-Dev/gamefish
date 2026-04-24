@@ -74,6 +74,8 @@ public partial class Equipment : DynamicEntity
 	{
 		base.OnUpdate();
 
+		UpdateState();
+
 		if ( !this.InGame() )
 			return;
 

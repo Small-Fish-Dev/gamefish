@@ -35,18 +35,11 @@ public partial class FishboxController : ShooterController
 		base.OnPreRender();
 	}
 
-	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
-	{
-		base.Simulate( deltaTime, isFixedUpdate );
-
-		UpdateView( in deltaTime );
-	}
-
 	protected Vector3 _rEyeVel = Vector3.Zero;
 
-	public override void UpdateView( in float deltaTime )
+	protected override void UpdateEyeRotation( in float deltaTime )
 	{
-		base.UpdateView( deltaTime );
+		base.UpdateEyeRotation( deltaTime );
 
 		Rotation rEyeDest;
 

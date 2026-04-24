@@ -67,7 +67,7 @@ partial class GameState
 	}
 
 	/// <summary>
-	/// Attempts to ensure the client has a playable pawn.
+	/// Attempts to ensures the client has a playable pawn.
 	/// </summary>
 	/// <param name="cl"> The player-to-be. </param>
 	/// <param name="pawn"> The resulting pawn component(if any). </param>

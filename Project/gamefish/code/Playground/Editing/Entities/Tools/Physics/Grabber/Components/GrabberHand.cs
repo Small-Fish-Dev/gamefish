@@ -10,7 +10,7 @@ public partial class GrabberHand : ModuleEntity
 	/// </summary>
 	[Property]
 	[Feature( EDITOR ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public FixedJoint Joint => _joint.GetCached( GameObject, FindMode.InChildren );
+	public FixedJoint Joint => GameObject?.GetCached( ref _joint, FindMode.InChildren );
 	protected FixedJoint _joint;
 
 	[Sync]

@@ -19,14 +19,14 @@ partial class ActorMind
 	/// </summary>
 	public void SetTarget( Pawn target, bool isVisible = false, bool knowPosition = false, bool isFighting = true )
 	{
-		if ( Target.IsValid() && Target == target )
+		if ( IsTargeting() && Target == target )
 			return;
 
 		Target = target;
 
 		var seenPos = isVisible
 			? GetTargetAimPosition( target )
-			: IsPawnVisible( target, out var hitPos ) ? hitPos : null;
+			: IsVisible( target, out var hitPos ) ? hitPos : null;
 
 		if ( isVisible || seenPos is not null )
 			OnTargetVisible( target, seenPos ?? target.Center );
@@ -39,14 +39,14 @@ partial class ActorMind
 	/// Does a vision check for the specified pawn. Might be expensive, depending.
 	/// </summary>
 	/// <param name="pawn"> Them. </param>
-	/// <param name="aimPos"> The position we could see them at. </param>
+	/// <param name="visiblePos"> The position we could see them at. </param>
 	/// <returns> If we could see the pawn. </returns>
-	public virtual bool IsPawnVisible( Pawn pawn, out Vector3? aimPos )
+	public virtual bool IsVisible( Pawn pawn, out Vector3? visiblePos )
 	{
-		if ( Detection?.IsPawnVisible( pawn, out aimPos ) is true )
+		if ( Detection?.IsPawnVisible( pawn, out visiblePos ) is true )
 			return true;
 
-		aimPos = null;
+		visiblePos = null;
 		return false;
 	}
 
@@ -60,7 +60,7 @@ partial class ActorMind
 
 		LastSeenTarget = 0f;
 
-		TargetAimPosition = ActiveEquip?.PrimaryFunction?.GetTargetAimPosition( enemy, at ) ?? at;
+		TargetAimPosition = ActiveEquip?.PrimaryFunction?.GetTargetAimPoint( enemy, at ) ?? at;
 		LastKnownTargetPosition = GetTargetPosition( enemy );
 
 		State?.OnTargetVisible( enemy, at );
@@ -86,7 +86,7 @@ partial class ActorMind
 
 		// Allow equipment to affect our aim(such as shooting a projectile ahead).
 		if ( ActiveEquip is var equip && equip.IsValid() )
-			if ( equip.GetTargetAimPosition( target, target.Center ) is Vector3 equipAim )
+			if ( equip.GetTargetAimPoint( target, target.Center ) is Vector3 equipAim )
 				return equipAim;
 
 		// Default to the approximate center of the target.

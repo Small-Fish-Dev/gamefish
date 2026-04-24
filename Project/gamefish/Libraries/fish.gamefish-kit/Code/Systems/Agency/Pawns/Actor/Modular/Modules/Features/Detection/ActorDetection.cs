@@ -107,7 +107,7 @@ public partial class ActorDetection : ActorFeature
 	/// </summary>
 	public virtual void UpdateTargetVisibility()
 	{
-		if ( !Target.IsValid() )
+		if ( !IsTargeting() )
 			return;
 
 		if ( IsPawnVisible( Target, out var visiblePos ) )

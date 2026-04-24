@@ -51,10 +51,13 @@ public abstract partial class ActorModule : Module
 	public Vector3? TargetAimPosition => Mind?.TargetAimPosition;
 
 	/// <summary> Do we have a valid target? </summary>
-	public bool IsTargetValid() => Mind?.Target.IsValid() is true;
+	public bool IsTargeting() => Actor?.IsTargeting() is true;
 
 	/// <summary> Is the target valid and currently visible? </summary>
-	public bool IsTargetVisible() => IsTargetValid() && Detection?.TargetVisible is true;
+	public bool IsTargetValid( Pawn pawn ) => Actor?.IsTargetValid( pawn ) is true;
+
+	/// <summary> Is the target valid and currently visible? </summary>
+	public bool IsTargetVisible() => IsTargeting() && Detection?.TargetVisible is true;
 
 
 	public Vector3 WishVelocity

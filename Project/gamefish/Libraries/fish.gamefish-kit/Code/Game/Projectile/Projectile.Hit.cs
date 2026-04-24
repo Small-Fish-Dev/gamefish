@@ -3,23 +3,23 @@ namespace GameFish;
 partial class Projectile : Component.ICollisionListener
 {
 	/// <summary>
-	/// Forces collision on stuff owned by others to be handled by them.
+	/// Forces collision detection to be handled by whoever owns the other thing.
 	/// <br /> <br />
 	/// <b> NOTE: </b> Important if shot by an NPC,
 	/// otherwise you should really keep this disabled.
 	/// <br /> <br />
 	/// <b> EXPLANATION: </b> This makes it so that the owner of the projectile
-	/// doesn't bother trying to hit stuff owned by other connections and
-	/// that they will perform the collision logic on their end. This solves
-	/// the problem of getting hit by NPC projectiles that you clearly dodged
+	/// doesn't bother trying to hit stuff owned by other connections and that
+	/// they will perform the collision detection on their end. This solves the
+	/// problem of getting hit by NPC projectiles you have clearly dodged
 	/// on your end as a client due to lag.
 	/// </summary>
 	[Sync]
 	[Property]
-	[Title( "Ignore Proxy" )]
+	[Title( "Proxy Hit" )]
 	[Order( COLLISION_ORDER - 1 )]
 	[Feature( PROJECTILE ), Group( COLLISION )]
-	public bool IgnoreProxyCollision { get; set; }
+	public bool ProxyCollision { get; set; }
 
 	/// <summary>
 	/// If enabled: ignore collision with teammates.
@@ -168,7 +168,7 @@ partial class Projectile : Component.ICollisionListener
 			if ( tr.GameObject.IsTeam( Team ) )
 				return false;
 
-		if ( IgnoreProxyCollision )
+		if ( ProxyCollision )
 		{
 			// In proxy mode only the hit object's owner can impact.
 			if ( tr.GameObject.IsProxy )

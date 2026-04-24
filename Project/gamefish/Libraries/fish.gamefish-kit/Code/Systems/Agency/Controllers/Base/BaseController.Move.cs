@@ -4,8 +4,7 @@ partial class BaseController
 {
 	protected const int MOVEMENT_ORDER = PAWN_ORDER + 1000;
 
-	public Rigidbody Rigidbody => _rb.IsValid() ? _rb
-		: _rb = _rb.GetCached( GameObject, FindMode.EverythingInSelf | FindMode.InAncestors );
+	public Rigidbody Rigidbody => GameObject.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
 
 	protected Rigidbody _rb;
 
@@ -132,14 +131,6 @@ partial class BaseController
 	{
 		GroundCollider = null;
 		GroundObject = null;
-	}
-
-	/// <summary>
-	/// Called by the pawn's owner to run controller logic.
-	/// Typically ran before movement.
-	/// </summary>
-	public virtual void Simulate( in float deltaTime, in bool isFixedUpdate )
-	{
 	}
 
 	protected virtual void OnSetWishVelocity( in Vector3 wishVel )

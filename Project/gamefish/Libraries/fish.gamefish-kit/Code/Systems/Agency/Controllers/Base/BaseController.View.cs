@@ -46,10 +46,10 @@ partial class BaseController
 	public virtual FloatRange PitchRange { get; set; } = new( -89.9f, 89.9f );
 
 	/// <summary>
-	/// The relative eye angles.
+	/// The local(relative) eye angles.
 	/// </summary>
-	[Title( "Eye Angles" )]
 	[Property, JsonIgnore]
+	[Title( "Eye Angles" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	protected virtual Angles InspectorLocalEyeAngles
@@ -129,8 +129,51 @@ partial class BaseController
 	public virtual Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Zero;
 
+
 	/// <summary>
-	/// Attemps to adds <paramref name="rLook"/> to our local aim rotation.
+	/// Initializes the view.
+	/// <br /> <br />
+	/// <b> NOTE: </b> A good place to reset/snap transitions.
+	/// </summary>
+	protected virtual void SetupView()
+	{
+		_localEyePos = GetLocalEyeTargetPosition();
+	}
+
+	/// <summary>
+	/// Performs automatic eye position/rotation logic for crouching, wall running, stuff like that.
+	/// </summary>
+	protected virtual void SimulateView( in float deltaTime )
+	{
+		UpdateEyePosition( in deltaTime );
+		UpdateEyeRotation( in deltaTime );
+	}
+
+	/// <summary>
+	/// Performs automatic eye positioning such as when crouching.
+	/// </summary>
+	protected virtual void UpdateEyePosition( in float deltaTime )
+	{
+		var eyePos = LocalEyePosition;
+		var eyeTargetPos = GetLocalEyeTargetPosition();
+
+		LocalEyePosition = Vector3.SmoothDamp( eyePos, eyeTargetPos,
+			ref _eyeVel, EyeMoveSmoothing, EyeMoveSpeed * deltaTime );
+	}
+
+	/// <summary>
+	/// Performs automatic eye rotation such as resetting roll over time.
+	/// </summary>
+	protected virtual void UpdateEyeRotation( in float deltaTime )
+	{
+		var fRoll = LocalEyeRotation.Roll();
+		fRoll = (fRoll * deltaTime * -10f).Clamp( -fRoll, fRoll );
+
+		LocalEyeRotation *= Rotation.FromRoll( fRoll );
+	}
+
+	/// <summary>
+	/// Attempts to add <paramref name="rLook"/> to our local aim rotation.
 	/// </summary>
 	/// <returns> If aiming was allowed. </returns>
 	public virtual bool TryAim( in Rotation rLook, in float deltaTime )
@@ -144,8 +187,6 @@ partial class BaseController
 			angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( PitchRange );
 			angAim.yaw += angLook.yaw;
 
-			angAim.roll = angAim.roll.LerpDegreesTo( 0f, deltaTime * 10f );
-
 			LocalEyeAngles = angAim;
 		}
 		else
@@ -155,8 +196,6 @@ partial class BaseController
 
 			rAim *= Rotation.FromAxis( rInverse.Up, angLook.yaw );
 			rAim *= Rotation.FromPitch( angLook.pitch );
-
-			rAim *= Rotation.FromRoll( -rAim.Roll() * deltaTime * 10f );
 
 			LocalEyeRotation = rAim;
 		}

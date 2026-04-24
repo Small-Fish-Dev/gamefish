@@ -20,7 +20,7 @@ partial class Pawn
 	[Feature( PAWN ), Group( MOVEMENT )]
 	public virtual BaseController Controller
 	{
-		get => _controller.GetCached( GameObject );
+		get => this.GetCached( ref _controller );
 		protected set => _controller = value;
 	}
 

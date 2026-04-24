@@ -10,7 +10,7 @@ partial class Editor
 	[Feature( EDITOR ), Group( SETTINGS )]
 	public float DrawNearbyHelperRadius { get; set; } = 2048f;
 
-	public HighlightOutline Outline => _outline ??= _outline.GetCached( GameObject );
+	public HighlightOutline Outline => GameObject?.GetCached( ref _outline );
 	protected HighlightOutline _outline;
 
 	protected void RenderNearbyHelpers()

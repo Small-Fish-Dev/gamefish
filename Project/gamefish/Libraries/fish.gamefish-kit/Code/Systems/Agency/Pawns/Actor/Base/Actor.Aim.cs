@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class SimpleActor
+partial class Actor
 {
 	/// <summary>
 	/// If enabled: aim at targets.
@@ -8,8 +8,8 @@ partial class SimpleActor
 	/// </summary>
 	[Property]
 	[Feature( ACTOR )]
-	[ToggleGroup( nameof( AllowAiming ), Label = AIMING )]
-	public virtual bool AllowAiming { get; set; } = true;
+	[ToggleGroup( nameof( IsAimingAllowed ), Label = AIMING )]
+	public virtual bool IsAimingAllowed { get; set; } = true;
 
 	/// <summary>
 	/// How quickly to aim towards the target.
@@ -19,7 +19,7 @@ partial class SimpleActor
 	[Title( "Speed" )]
 	[Feature( ACTOR )]
 	[Range( 0.1f, 20f, clamped: false )]
-	[ToggleGroup( nameof( AllowAiming ) )]
+	[ToggleGroup( nameof( IsAimingAllowed ) )]
 	public virtual float AimingSpeed { get; set; } = 2f;
 
 	/// <summary>
@@ -30,31 +30,29 @@ partial class SimpleActor
 	[Feature( ACTOR )]
 	[Title( "Smoothness" )]
 	[Range( 0.1f, 10f, clamped: false )]
-	[ToggleGroup( nameof( AllowAiming ) )]
+	[ToggleGroup( nameof( IsAimingAllowed ) )]
 	public virtual float AimingSmoothness { get; set; } = 1f;
 
-	protected Vector3 _lookSpeed;
+	/// <summary>
+	/// The point in world-space this is trying to aim towards.
+	/// </summary>
+	[Sync]
+	public Vector3? AimPoint { get; set; }
+
+	protected Vector3 _lookSpeed = Vector3.Zero;
 
 	protected virtual void UpdateAiming( in float deltaTime )
 	{
-		if ( !AllowAiming )
+		if ( !IsAimingAllowed )
 			return;
 
-		if ( MindState is MentalState.Fighting && TargetVisible )
-			TargetAimPosition = GetTargetAimPosition( Target );
+		if ( IsTargetVisible() )
+			AimPoint = GetTargetAimPoint( Target );
 
-		if ( TargetAimPosition is Vector3 aimAt )
+		if ( AimPoint is Vector3 aimAt )
 			LookAt( aimAt, in deltaTime );
 		else if ( Velocity.Length > 20 )
 			LookTowards( Rotation.LookAt( Velocity ), in deltaTime );
-	}
-
-	public override float? GetTargetDistance()
-	{
-		if ( TargetAimPosition is not Vector3 aimPos )
-			return null;
-
-		return EyePosition.Distance( aimPos );
 	}
 
 	/// <summary>
@@ -95,5 +93,44 @@ partial class SimpleActor
 			smoothTime: AimingSmoothness,
 			deltaTime: AimingSpeed * deltaTime
 		);
+	}
+
+	/// <returns> Where we should aim at to hit this target(such as ahead of them). </returns>
+	public virtual Vector3? GetTargetAimPoint( Pawn target = null, Vector3? at = null )
+	{
+		if ( !IsAimingAllowed )
+			return null;
+
+		target ??= Target;
+
+		if ( !target.IsValid() )
+			return null;
+
+		// Default to the approximate center of the target.
+		at ??= target.Center;
+
+		// Allow equipment to affect our aim(such as shooting a projectile ahead).
+		if ( ActiveEquip is var equip && equip.IsValid() )
+			if ( equip.GetTargetAimPoint( target, at ) is Vector3 equipAim )
+				return equipAim;
+
+		return at;
+	}
+
+	/// <returns> The distance from the target(or null). </returns>
+	public virtual float? GetDistanceFromTarget( Pawn target = null )
+	{
+		target ??= Target;
+
+		if ( !target.IsValid() )
+			return null;
+
+		if ( AimPoint is Vector3 aimPos )
+			return EyePosition.Distance( aimPos );
+
+		if ( GetTargetOrigin( target ) is Vector3 targetPos )
+			return EyePosition.Distance( targetPos );
+
+		return null;
 	}
 }

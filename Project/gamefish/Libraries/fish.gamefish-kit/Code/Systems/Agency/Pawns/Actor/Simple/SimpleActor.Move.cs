@@ -6,7 +6,7 @@ namespace GameFish;
 partial class SimpleActor
 {
 	/// <summary>
-	/// The place we're immediately trying to get to.
+	/// The exact position this wants to move towards.
 	/// </summary>
 	[Sync]
 	public Vector3? Destination
@@ -29,20 +29,40 @@ partial class SimpleActor
 		base.UpdateNavigation( deltaTime );
 
 		if ( GetDestination() is Vector3 dest )
-			TryMoveTo( dest );
+			TrySetDestination( dest );
 	}
 
 	/// <returns> The exact goal position(or null). </returns>
 	protected virtual Vector3? GetDestination()
 	{
-		if ( !Target.IsValid() )
+		if ( !IsTargeting() )
 			return null;
 
 		// Shrimply chase the target by default.
-		if ( TargetVisible )
+		if ( IsTargetVisible() )
 			return GetTargetOrigin( Target );
 
 		return LastKnownTargetPosition;
+	}
+
+	/// <summary>
+	/// Attempts to direct this actor towards a position.
+	/// </summary>
+	/// <param name="to"> The place we're trying to get to. </param>
+	/// <param name="haltUponFail"> If true: stop moving if the place was invalid. </param>
+	/// <returns> If we could move towards that point. </returns>
+	public virtual bool TrySetDestination( in Vector3 to, bool haltUponFail = false )
+	{
+		if ( GetNearestPoint( to ) is Vector3 dest )
+		{
+			Destination = dest;
+			return true;
+		}
+
+		if ( haltUponFail )
+			StopMoving();
+
+		return false;
 	}
 
 	/// <summary>
@@ -82,26 +102,6 @@ partial class SimpleActor
 	{
 		Destination = null;
 		SetWishVelocity( Vector3.Zero );
-	}
-
-	/// <summary>
-	/// Attempts to direct this actor towards a position.
-	/// </summary>
-	/// <param name="to"> The place we're trying to get to. </param>
-	/// <param name="haltUponFail"> Stop moving if one couldn't be found? </param>
-	/// <returns> If we could move towards that point. </returns>
-	public virtual bool TryMoveTo( in Vector3 to, bool haltUponFail = false )
-	{
-		if ( GetNearestPoint( to ) is Vector3 dest )
-		{
-			Destination = dest;
-			return true;
-		}
-
-		if ( haltUponFail )
-			StopMoving();
-
-		return false;
 	}
 
 	protected virtual NavMeshPath? CalculatePath( in Vector3 from, in Vector3 to )

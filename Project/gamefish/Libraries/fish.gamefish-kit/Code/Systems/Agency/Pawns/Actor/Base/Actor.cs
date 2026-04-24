@@ -7,7 +7,7 @@ namespace GameFish;
 [EditorHandle( Icon = "🤖" )]
 public abstract partial class Actor : Pawn
 {
-	protected const int ACTOR_ORDER = PAWN_ORDER - 100;
+	protected const int ACTOR_ORDER = PAWN_ORDER - 1000;
 
 	public override bool IsPlayer { get; } = false;
 
@@ -15,7 +15,7 @@ public abstract partial class Actor : Pawn
 	/// Is this NPC meant to be thinking?
 	/// It probably shouldn't if it's dead.
 	/// </summary>
-	public virtual bool IsThinking => this.IsValid() && IsAlive;
+	public virtual bool IsThinking => GameObject.IsValid() && IsAlive;
 
 	protected override void OnStart()
 	{
@@ -28,27 +28,44 @@ public abstract partial class Actor : Pawn
 	{
 		base.OnUpdate();
 
-		if ( !Owner.IsValid() && CanSimulate() )
-			FrameSimulate( Time.Delta );
+		if ( Owner.IsValid() )
+			return;
+
+		OnActorUpdate( Time.Delta );
 	}
 
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
 
-		if ( !Owner.IsValid() && CanSimulate() )
-			FixedSimulate( Time.Delta );
+		if ( Owner.IsValid() )
+			return;
+
+		OnActorFixedUpdate( Time.Delta );
 	}
 
+	protected virtual void OnActorUpdate( in float deltaTime )
+	{
+		if ( CanSimulate() )
+			FrameSimulate( deltaTime );
+	}
+
+	protected virtual void OnActorFixedUpdate( in float deltaTime )
+	{
+		if ( CanSimulate() )
+			FixedSimulate( deltaTime );
+	}
+
+	// Prevent NPCs from taking button input.
 	public override bool AllowInput()
 		=> false;
 
 	public override bool CanSimulate()
 	{
-		if ( !this.IsValid() || IsProxy )
+		if ( !GameObject.IsValid() )
 			return false;
 
-		return true;
+		return !IsProxy;
 	}
 
 	public override void FrameSimulate( in float deltaTime )
@@ -56,23 +73,12 @@ public abstract partial class Actor : Pawn
 		if ( IsThinking )
 			Think( in deltaTime, isFixedUpdate: false );
 
-		Move( in deltaTime, isFixedUpdate: false );
+		base.FrameSimulate( in deltaTime );
 	}
 
-	protected abstract void Think( in float deltaTime, in bool isFixedUpdate );
-
-	/// <summary>
-	/// Tells the actor where and how to go.
-	/// </summary>
-	protected virtual void UpdateNavigation( in float deltaTime )
+	protected virtual void Think( in float deltaTime, in bool isFixedUpdate )
 	{
-	}
-
-	/// <summary>
-	/// Look out for things of interest.
-	/// </summary>
-	public virtual void UpdatePerception( in float deltaTime )
-	{
+		UpdateDetection( in deltaTime );
 	}
 
 	protected override void Move( in float deltaTime, in bool isFixedUpdate )
@@ -84,7 +90,15 @@ public abstract partial class Actor : Pawn
 		Controller.TryMove( in deltaTime, in isFixedUpdate, GetWishVelocity() );
 	}
 
-	public abstract float? GetTargetDistance();
+	/// <summary>
+	/// Tells the actor where and how to go.
+	/// </summary>
+	protected virtual void UpdateNavigation( in float deltaTime )
+	{
+	}
 
+	// NPCs don't take player input.
+	public override void UpdateView( in float deltaTime ) { }
 	protected override void DoAiming( in float deltaTime ) { }
+	protected override void UpdateInput( in float deltaTime ) { }
 }

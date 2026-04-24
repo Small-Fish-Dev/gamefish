@@ -134,7 +134,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	protected override void PlayActivationEffect( in Transform tOrigin )
 	{
 		var obj = Parent?.GameObject ?? GameObject;
-		var s = SoundSettings.InWorld( obj, tOrigin.Position );
+		var s = SoundSettings.FromWorld( obj, tOrigin.Position );
 
 		TryPlaySound( ShootSound, s );
 	}
@@ -240,12 +240,12 @@ public partial class ProjectileEquipFunction : EquipFunction
 			rb.Velocity = GetProjectileVelocity( tOrigin );
 	}
 
-	public override Vector3? GetTargetAimPosition( Pawn pawn, in Vector3? aimAt = null, in bool clampLength = true )
+	public override Vector3? GetTargetAimPoint( Pawn pawn, in Vector3? aimAt = null, in bool clampLength = true )
 	{
 		if ( AimPrediction && pawn.IsValid() )
 			return GetPredictedTargetPosition( aimAt ?? pawn.Center, pawn.Velocity );
 
-		return base.GetTargetAimPosition( pawn, aimAt );
+		return base.GetTargetAimPoint( pawn, aimAt );
 	}
 
 	/// <returns> A position that may be more likely to hit a moving target. </returns>

@@ -11,7 +11,7 @@ public partial class FacepunchController : BaseController
 	[Feature( PAWN )]
 	public PlayerController PlayerController
 	{
-		get => _pc.GetCached( GameObject );
+		get => GameObject.GetCached( ref _pc );
 		set { _pc = value; }
 	}
 

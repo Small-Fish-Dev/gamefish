@@ -40,7 +40,7 @@ partial class Equipment
 	[Feature( NPC ), Group( MODULES )]
 	public virtual EquipFunction PrimaryFunction
 	{
-		get => _primary.GetCached( this );
+		get => this.GetCached( ref _primary );
 		set => _primary = value;
 	}
 
@@ -51,6 +51,9 @@ partial class Equipment
 	/// </summary>
 	public virtual bool TryPrimary( Actor npc )
 	{
+		if ( !npc.IsValid() )
+			return false;
+
 		var primary = PrimaryFunction;
 
 		// Must have a primary function off cooldown.
@@ -58,7 +61,7 @@ partial class Equipment
 			return false;
 
 		// Must have a position we're trying to aim at.
-		if ( !npc.IsValid() || npc.GetTargetDistance() is not float targetDist )
+		if ( npc.GetDistanceFromTarget() is not float targetDist )
 			return false;
 
 		// Prevents them from shooting from too far away or blowing themselves/others up.
@@ -72,13 +75,13 @@ partial class Equipment
 	/// Overrides where an NPC aims this(if not null).
 	/// </summary>
 	/// <remarks> Would be very useful for aiming projectiles ahead. </remarks>
-	/// <param name="targetPawn"> The shmuck. </param>
+	/// <param name="target"> The shmuck. </param>
 	/// <param name="baseAim"> Where the NPC would aim by default(or not). </param>
-	public virtual Vector3? GetTargetAimPosition( Pawn targetPawn, in Vector3? baseAim = null )
-		=> PrimaryFunction?.GetTargetAimPosition( targetPawn, in baseAim );
+	public virtual Vector3? GetTargetAimPoint( Pawn target, in Vector3? baseAim = null )
+		=> PrimaryFunction?.GetTargetAimPoint( target, in baseAim );
 
 	/// <summary>
-	/// Called by NPCs we're simulating while actively deployed.
+	/// Called by an NPC during its simulation while actively deployed.
 	/// </summary>
 	public virtual void Simulate( Actor npc, in float deltaTime )
 	{

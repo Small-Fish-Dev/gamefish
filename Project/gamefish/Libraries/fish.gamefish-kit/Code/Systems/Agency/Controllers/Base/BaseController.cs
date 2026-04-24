@@ -24,13 +24,26 @@ public abstract partial class BaseController : Module
 	/// <summary>
 	/// The pawn using this for movement etc.
 	/// <br /> <br />
-	/// <b> NOTE: </b> It should be on the same object.
+	/// <b> NOTE: </b> It should probably be on the same object.
 	/// </summary>
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( PAWN ), Order( PAWN_ORDER )]
 	public Pawn Pawn => Parent as Pawn;
 
-	protected Pawn _pawn;
-
 	public PawnView View => Pawn?.View;
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		SetupView();
+	}
+
+	/// <summary>
+	/// Typically ran by the associated pawn just before movement is performed.
+	/// </summary>
+	public virtual void Simulate( in float deltaTime, in bool isFixedUpdate )
+	{
+		SimulateView( in deltaTime );
+	}
 }

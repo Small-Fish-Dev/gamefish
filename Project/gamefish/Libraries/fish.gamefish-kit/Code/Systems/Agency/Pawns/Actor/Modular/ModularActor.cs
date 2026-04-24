@@ -20,7 +20,7 @@ public abstract partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( MIND ), Order( MIND_ORDER )]
 	public virtual ActorMind Mind
 	{
-		get => _mind.GetCached( this );
+		get => this.GetCached( ref _mind );
 		set => _mind = value;
 	}
 
@@ -33,7 +33,7 @@ public abstract partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( MOVEMENT ), Order( MOVEMENT_ORDER )]
 	public virtual ActorNavigation Navigation
 	{
-		get => _nav.GetCached( this );
+		get => this.GetCached( ref _nav );
 		set => _nav = value;
 	}
 
@@ -46,7 +46,7 @@ public abstract partial class ModularActor : Actor
 	[Feature( ACTOR ), Group( DETECTION ), Order( DETECTION_ORDER )]
 	public virtual ActorDetection Detection
 	{
-		get => _detection.GetCached( this );
+		get => this.GetCached( ref _detection );
 		set => _detection = value;
 	}
 
