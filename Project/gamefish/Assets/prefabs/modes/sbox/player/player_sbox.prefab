@@ -531,7 +531,6 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Opacity": 1,
             "OpacitySpeed": 2,
             "Ragdoll": null,
             "SkinRenderer": {
@@ -674,7 +673,7 @@
             "Children": []
           },
           {
-            "__guid": "dffc0f20-5522-4754-a962-67987bd601ae",
+            "__guid": "700ad548-d114-4972-aa1a-1c6d6175ea68",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -691,7 +690,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2712bd1e-0bd5-455e-aeb3-5d97fe2c4dd0",
+                "__guid": "22f0acfd-7272-41ac-a966-8cb2a5a759b7",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
