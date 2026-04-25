@@ -1,7 +1,8 @@
 namespace GameFish;
 
 /// <summary>
-/// Rootin', tootin' an' shootin'.
+/// A very basic controller with sprinting and ducking.
+/// Ideal for first-person shooters.
 /// </summary>
 public abstract class ShooterController : BaseController
 {
