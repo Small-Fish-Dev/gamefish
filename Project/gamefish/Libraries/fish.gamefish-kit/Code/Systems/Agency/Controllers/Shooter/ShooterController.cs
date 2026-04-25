@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// Rootin', tootin' an' shootin'.
 /// </summary>
-public partial class ShooterController : BaseController
+public abstract class ShooterController : BaseController
 {
 	/// <summary>
 	/// The button to run. <br />
@@ -76,7 +76,7 @@ public partial class ShooterController : BaseController
 	public virtual bool AllowDucking { get; set; } = true;
 
 	[Property]
-	[Title( "Move Speed (Ducked)" )]
+	[Title( "Move Speed" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[ToggleGroup( nameof( AllowDucking ) )]
 	[Feature( PAWN ), Order( DUCKING_ORDER )]
@@ -90,7 +90,11 @@ public partial class ShooterController : BaseController
 	[ToggleGroup( nameof( AllowJumping ), Label = JUMPING )]
 	public virtual bool AllowJumping { get; set; } = true;
 
+	/// <summary>
+	/// The sudden force from jumping.
+	/// </summary>
 	[Property]
+	[Title( "Impulse" )]
 	[ToggleGroup( nameof( AllowJumping ) )]
 	[ShowIf( nameof( HasJumpButton ), true )]
 	[Feature( PAWN ), Order( JUMPING_ORDER )]
@@ -110,40 +114,65 @@ public partial class ShooterController : BaseController
 	public virtual float EyeHeightDuck { get; set; } = 32f;
 
 	[Sync]
-	public bool IsDucking { get; set; }
+	public bool IsDucking
+	{
+		get => _isDucking;
+		set
+		{
+			if ( _isDucking == value )
+				return;
+
+			_isDucking = value;
+			OnSetIsDucking( value );
+		}
+	}
+
+	protected bool _isDucking = false;
 
 	[Sync]
-	public bool IsSprinting { get; set; }
+	public bool IsSprinting
+	{
+		get => _isSprinting;
+		set
+		{
+			if ( _isSprinting == value )
+				return;
+
+			_isSprinting = value;
+			OnSetIsSprinting( value );
+		}
+	}
+
+	protected bool _isSprinting = false;
+
+	protected virtual void OnSetIsDucking( in bool isDucking )
+	{
+	}
+
+	protected virtual void OnSetIsSprinting( in bool isSprinting )
+	{
+	}
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
-
-	protected override void Move( in float deltaTime )
-	{
-		PreMove( in deltaTime );
-		PostMove( in deltaTime );
-	}
-
-	protected override void PreMove( in float deltaTime ) { }
-
-	protected override void PostMove( in float deltaTime ) { }
 
 	public virtual float GetSprintSpeed( in float? baseSpeed = null )
 		=> (baseSpeed ?? MoveSpeed) * SprintMultiplier;
 
 	public override float GetMovementSpeed()
 	{
-		if ( !AllowMovement || Pawn?.IsAlive is not true )
+		if ( !IsMovementAllowed() )
 			return 0f;
 
 		var moveSpeed = MoveSpeed;
 
+		// Move slower when ducked.
+		if ( AllowDucking )
+			moveSpeed = LocalEyePosition.z.Remap( EyeHeightDuck, EyeHeightStand, MoveSpeedDucked, MoveSpeed );
+
 		if ( ShouldSprint )
 			moveSpeed = GetSprintSpeed( moveSpeed );
 
-		if ( !HasDuckButton )
-			return moveSpeed;
-
-		return LocalEyePosition.z.Remap( EyeHeightDuck, EyeHeightStand, MoveSpeedDucked, MoveSpeed );
+		return moveSpeed;
 	}
 }

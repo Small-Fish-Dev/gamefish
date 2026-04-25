@@ -4,7 +4,7 @@ partial class BaseController
 {
 	protected const int MOVEMENT_ORDER = PAWN_ORDER + 1000;
 
-	public Rigidbody Rigidbody => GameObject.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
+	public Rigidbody Rigidbody => GameObject?.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
 
 	protected Rigidbody _rb;
 
@@ -39,7 +39,7 @@ partial class BaseController
 	/// The target movement speed to accelerate towards.
 	/// </summary>
 	[Property]
-	[Title( "Move Speed" )]
+	[Title( "Speed (default)" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[ToggleGroup( nameof( AllowMovement ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
@@ -83,7 +83,8 @@ partial class BaseController
 	[Feature( PAWN ), Group( DEBUG )]
 	protected bool InspectorIsGrounded => IsGrounded;
 
-	[Property, Normal]
+	[Normal]
+	[Property]
 	[Title( "Ground Normal" )]
 	[Feature( PAWN ), Group( DEBUG )]
 	protected Vector3 InspectorGroundNormal => GroundNormal;
