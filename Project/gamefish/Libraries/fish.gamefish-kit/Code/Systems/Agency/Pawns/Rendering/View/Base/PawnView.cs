@@ -84,6 +84,9 @@ public partial class PawnView : Module, ISimulate
 	{
 		base.OnPreRender();
 
+		if ( !InGame )
+			return;
+
 		UpdatePawn();
 	}
 

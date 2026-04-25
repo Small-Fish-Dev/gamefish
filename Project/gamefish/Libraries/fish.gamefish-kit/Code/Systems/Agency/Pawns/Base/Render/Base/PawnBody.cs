@@ -1,24 +1,32 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 public abstract partial class PawnBody : Module
 {
+	protected const int MODEL_ORDER = MODULE_ORDER - 1000;
+
 	public override bool IsParent( ModuleEntity comp )
 		=> comp is Pawn;
+
+	[Title( "Opacity" )]
+	[Property, JsonIgnore]
+	[Range( 0f, 1f ), Step( 0.001f )]
+	[Feature( MODEL ), Group( EFFECTS ), Order( MODEL_ORDER )]
+	protected float InspectorOpacity
+	{
+		get => Opacity;
+		set => Opacity = value;
+	}
 
 	/// <summary>
 	/// The speed that this fades back in on its own.
 	/// </summary>
 	[Property]
-	[Feature( MODEL ), Group( EFFECTS )]
+	[Range( 0.1f, 10f, clamped: false )]
+	[Feature( MODEL ), Group( EFFECTS ), Order( MODEL_ORDER )]
 	public float OpacitySpeed { get; set; } = 2f;
 
-	/// <summary>
-	/// What opacity is it currently at?
-	/// </summary>
-	[Property]
-	[Range( 0f, 1f ), Step( 0.001f )]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( MODEL ), Group( DEBUG ), Order( DEBUG_ORDER )]
 	public virtual float Opacity
 	{
 		get => _opacity;
@@ -29,12 +37,15 @@ public abstract partial class PawnBody : Module
 		}
 	}
 
-	protected float _opacity;
+	protected float _opacity = 1f;
 
 	public Model Model { get => GetModel(); set => SetModel( value ); }
 
 	protected override void OnUpdate()
 	{
+		if ( !InGame )
+			return;
+
 		UpdateOpacity();
 	}
 
