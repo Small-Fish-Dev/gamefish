@@ -1,6 +1,9 @@
 namespace GameFish;
 
-public partial class PhysicsController : BaseController
+/// <summary>
+/// A very basic controller meant for use with a <see cref="Rigidbody"/>.
+/// </summary>
+public abstract class PhysicsController : BaseController
 {
 	protected override void Move( in float deltaTime )
 	{

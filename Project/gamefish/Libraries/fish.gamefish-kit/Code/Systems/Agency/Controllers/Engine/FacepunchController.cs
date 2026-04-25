@@ -11,7 +11,7 @@ public partial class FacepunchController : BaseController
 	[Feature( PAWN )]
 	public PlayerController PlayerController
 	{
-		get => GameObject.GetCached( ref _pc );
+		get => GameObject?.GetCached( ref _pc );
 		set { _pc = value; }
 	}
 
@@ -23,7 +23,7 @@ public partial class FacepunchController : BaseController
 
 		if ( !PlayerController.IsValid() )
 		{
-			this.Warn( "needs a PlayerController to function!" );
+			this.Warn( $"needs a {typeof( PlayerController )} to function!" );
 			return;
 		}
 
