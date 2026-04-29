@@ -205,8 +205,38 @@ public abstract class FirstPersonController : BaseController
 		return IsWishingJump();
 	}
 
+	/// <returns> The velocity to add from jumping. </returns>
 	public virtual Vector3 GetJumpVelocity()
-		=> WorldRotation.Up * JumpImpulse;
+	{
+		Vector3 dir;
+
+		if ( IsGrounded && GroundNormal != default )
+			dir = GroundNormal;
+		else
+			dir = WorldRotation.Up;
+
+		return dir * JumpImpulse;
+	}
+
+	/// <summary>
+	/// Performs a jump with optional velocity override.
+	/// </summary>
+	public virtual void Jump( in Vector3? addVel = null )
+	{
+		var impulse = addVel ?? GetJumpVelocity();
+
+		if ( impulse.AlmostEqual( 0f ) )
+			return;
+
+		var vel = Velocity;
+
+		// Prevent staggered jumps by negating downward velocity.
+		vel = vel.Horizontal( impulse.Normal );
+		vel += impulse;
+
+		IsGrounded = false;
+		Velocity = vel;
+	}
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
