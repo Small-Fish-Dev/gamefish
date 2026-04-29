@@ -76,7 +76,7 @@ public partial class Spectator : Player
 	public override bool AllowSpectators => false;
 
 	/// <summary> Spectators can never be spectated. </summary>
-	public override bool AllowSpectator( Pawn spec )
+	public override bool IsSpectatorAllowed( Pawn spec )
 		=> false;
 
 	protected override void OnEnabled()
@@ -177,7 +177,7 @@ public partial class Spectator : Player
 		if ( target == this )
 			return false;
 
-		return target.AllowSpectator( this );
+		return target.IsSpectatorAllowed( this );
 	}
 
 	public override bool TrySpectate( Pawn target )
