@@ -10,7 +10,7 @@ namespace GameFish;
 [Icon( "directions_run" )]
 public abstract partial class BaseController : Module
 {
-	protected const int PAWN_ORDER = DEFAULT_ORDER - 444;
+	protected const int PAWN_ORDER = DEFAULT_ORDER - 1000;
 
 	protected const int AIMING_ORDER = 1000;
 	protected const int EYEPOS_ORDER = 2000;

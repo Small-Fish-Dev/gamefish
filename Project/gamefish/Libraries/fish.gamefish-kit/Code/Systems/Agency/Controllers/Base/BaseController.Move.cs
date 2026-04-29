@@ -2,8 +2,9 @@ namespace GameFish;
 
 partial class BaseController
 {
-	protected const int PHYSICS_ORDER = PAWN_ORDER + 1000;
+	protected const int PHYSICS_ORDER = PAWN_ORDER + 100;
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
+	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
 	public Rigidbody Rigidbody => GameObject?.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
 
@@ -16,7 +17,13 @@ partial class BaseController
 		{
 			if ( Rigidbody.IsValid() )
 				Rigidbody.Velocity = value;
+
+			OnSetVelocity( in value );
 		}
+	}
+
+	protected virtual void OnSetVelocity( in Vector3 vel )
+	{
 	}
 
 	/// <summary>
@@ -81,13 +88,13 @@ partial class BaseController
 
 	[Property]
 	[Title( "Is Grounded" )]
-	[Feature( PAWN ), Group( DEBUG )]
+	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
 	protected bool InspectorIsGrounded => IsGrounded;
 
 	[Normal]
 	[Property]
 	[Title( "Ground Normal" )]
-	[Feature( PAWN ), Group( DEBUG )]
+	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
 	protected Vector3 InspectorGroundNormal => GroundNormal;
 
 	[Sync]
@@ -190,7 +197,6 @@ partial class BaseController
 
 		return Scene.Trace
 			.Size( BBox.FromHeightAndRadius( 16f, 8f ) )
-			// .Sphere( 16f, from, to )
 			.IgnoreGameObjectHierarchy( GameObject );
 	}
 
@@ -214,6 +220,9 @@ partial class BaseController
 	/// </summary>
 	protected virtual void ApplyFriction( in float deltaTime )
 	{
+		if ( !IsGrounded )
+			return;
+
 		Velocity = Velocity.WithFriction( Friction, deltaTime );
 	}
 
