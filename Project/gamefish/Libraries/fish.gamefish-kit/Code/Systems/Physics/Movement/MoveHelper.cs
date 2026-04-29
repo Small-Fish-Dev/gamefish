@@ -180,13 +180,12 @@ public partial class MoveHelper
 	/// <param name="surfaceNormal"> The normal of the surface to slide along. </param>
 	protected virtual void Slide( in Vector3 surfaceNormal )
 	{
-		var slideDir = Vector3.VectorPlaneProject( Direction, surfaceNormal );
-		var surfaceDot = Direction.Dot( slideDir ).Positive();
+		var vProject = Vector3.VectorPlaneProject( Velocity, surfaceNormal );
+		var dot = 1f - Direction.Dot( surfaceNormal ).Abs();
 
-		Velocity = slideDir * (Velocity.Length * surfaceDot);
-
-		Direction = slideDir;
-		Distance *= surfaceDot;
+		Direction = vProject.Normal;
+		Velocity = vProject;
+		Distance *= dot;
 
 		var trSlide = Trace
 			.FromTo( Position, Position + (Direction * Distance) )
