@@ -6,6 +6,11 @@ namespace GameFish;
 public enum EquipState
 {
 	/// <summary>
+	/// Doesn't know what state it's meant to be in yet.
+	/// </summary>
+	Initializing = 0,
+
+	/// <summary>
 	/// Probably on the ground somewhere.
 	/// </summary>
 	Dropped = 1,

@@ -16,19 +16,36 @@ partial class Equipment
 	protected EquipState DebugEquipState => EquipState;
 
 	[Sync]
-	public EquipState EquipState { get; set; }
-	private EquipState currentEquipState;
+	public EquipState EquipState
+	{
+		get => _equipState ?? EquipState.Initializing;
+		set
+		{
+			// "Initializing"
+			if ( value is EquipState.Initializing )
+				return;
+
+			if ( _equipState.HasValue )
+				if ( _equipState.Value == value )
+					return;
+
+			_equipState = value;
+			OnEquipStateChanged( in value );
+		}
+	}
+
+	protected EquipState? _equipState;
 
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( EQUIP ), Group( DEBUG )]
 	public EquipInventory Inventory => Pawn?.Equipment;
 
-	protected virtual void OnEquipStateChanged( EquipState state )
+	protected virtual void OnEquipStateChanged( in EquipState state )
 	{
-		if ( this.InEditor() || !GameObject.IsValid() )
+		if ( !InGame )
 			return;
 
-		// Log.Info( $"DEBUG: {this}.EquipState = {state}" );
+		// this.Log( $"DEBUG: {this}.EquipState = {state}" );
 
 		switch ( EquipState )
 		{
@@ -42,26 +59,44 @@ partial class Equipment
 				OnHolster();
 				break;
 		}
+
+		UpdateVisibility( in state );
 	}
 
-	protected virtual void UpdateState()
+	protected virtual void UpdateVisibility( in EquipState state )
 	{
-		if ( currentEquipState != EquipState )
+		switch ( state )
 		{
-			currentEquipState = EquipState;
-			OnEquipStateChanged( currentEquipState );
+			case EquipState.Dropped:
+				SetViewRendererVisibility( false );
+				SetWorldRendererVisibility( true );
+				break;
+
+			case EquipState.Deployed:
+				var isOwner = this.IsOwner();
+				SetViewRendererVisibility( isOwner );
+				SetWorldRendererVisibility( !isOwner );
+				break;
+
+			case EquipState.Holstered:
+				SetViewRendererVisibility( false );
+				SetWorldRendererVisibility( false );
+				break;
 		}
 	}
 
-	protected void SetVisibility( bool viewModel, bool worldModel = false )
+	protected virtual void SetViewRendererVisibility( in bool isVisible )
 	{
 		var r = ViewRenderer?.ModelRenderer;
 
 		if ( r.IsValid() )
-			r.Enabled = viewModel;
+			r.Enabled = isVisible;
+	}
 
+	protected virtual void SetWorldRendererVisibility( in bool isVisible )
+	{
 		if ( WorldRenderer.IsValid() )
-			WorldRenderer.Enabled = worldModel;
+			WorldRenderer.Enabled = isVisible;
 	}
 
 	public virtual bool CanDeploy( Equipment from = null )
@@ -102,55 +137,25 @@ partial class Equipment
 
 	protected virtual void OnDrop()
 	{
-		DropEffects();	
-
 		if ( IsProxy )
 			return;
-
 
 		OnModuleEvent( e => e.OnDrop() );
 	}
 
-	protected virtual void DropEffects()
-	{
-		SetVisibility( false, true );
-	}
-
 	protected virtual void OnDeploy()
 	{
-		DeployEffects();
 		if ( IsProxy )
-		{
 			return;
-		}
 
 		OnModuleEvent( e => e.OnDeploy() );
 	}
 
-	protected virtual void DeployEffects()
-	{
-		if ( IsProxy )
-		{
-			SetVisibility( false, true );
-		}
-		else
-		{
-			SetVisibility( true, false );
-		}
-	}
-
 	protected virtual void OnHolster()
 	{
-		HolsterEffects();
-
 		if ( IsProxy )
 			return;
 
 		OnModuleEvent( e => e.OnHolster() );
-	}
-
-	protected virtual void HolsterEffects()
-	{
-		SetVisibility( false, false );
 	}
 }
