@@ -253,5 +253,6 @@ partial class BaseController
 			.Move( from, to, Velocity );
 
 		WorldPosition = move.Position;
+		Velocity = move.Velocity;
 	}
 }
