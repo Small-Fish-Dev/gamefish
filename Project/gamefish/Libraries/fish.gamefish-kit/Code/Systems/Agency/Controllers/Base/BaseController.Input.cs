@@ -2,16 +2,32 @@ namespace GameFish;
 
 partial class BaseController
 {
-	protected virtual bool IsMovementAllowed()
-		=> AllowMovement && Pawn?.IsAlive is true;
-
-	public virtual float GetMovementSpeed()
+	/// <summary>
+	/// Registers active inputs.
+	/// </summary>
+	protected virtual void UpdateInput( in float deltaTime )
 	{
-		if ( !IsMovementAllowed() )
-			return 0f;
-
-		return MoveSpeed;
 	}
+
+	/// <summary>
+	/// Clears all active inputs.
+	/// </summary>
+	protected virtual void ResetInput()
+	{
+	}
+
+	/// <returns> If input should move this. </returns>
+	protected virtual bool IsMovementAllowed()
+	{
+		if ( !Pawn.IsValid() )
+			return false;
+
+		return Pawn.IsAlive;
+	}
+
+	/// <returns> The intended movement speed(if allowed). </returns>
+	public virtual float GetMovementSpeed()
+		=> MoveSpeed;
 
 	public virtual Vector3 GetWishDirection( in Vector3? inputDir = null )
 	{

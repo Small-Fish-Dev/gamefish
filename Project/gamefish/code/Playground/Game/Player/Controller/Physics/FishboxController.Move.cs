@@ -61,11 +61,6 @@ partial class FishboxController
 
 	protected override void PreMove( in float deltaTime )
 	{
-		var isAlive = Pawn?.IsAlive is true;
-
-		IsDucking = isAlive && ShouldDuck;
-		IsSprinting = isAlive && ShouldSprint;
-
 		DoAbilities( in deltaTime );
 	}
 
@@ -131,16 +126,16 @@ partial class FishboxController
 	}
 
 	public override Vector3 GetJumpVelocity()
-		=> GroundNormal * JumpSpeed;
+		=> GroundNormal * JumpImpulse;
 
 	protected virtual void DoJumping( in float deltaTime )
 	{
-		if ( !AllowJumping || !ShouldJump )
+		if ( !JumpingEnabled || !ShouldJump() )
 			return;
 
 		if ( IsWallRunning )
 		{
-			if ( PressedJump )
+			if ( JumpInput.IsHeld )
 				DoWallRunJump();
 
 			return;

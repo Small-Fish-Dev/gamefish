@@ -14,6 +14,7 @@ public abstract partial class BaseController : Module
 
 	protected const int AIMING_ORDER = 1000;
 	protected const int EYEPOS_ORDER = 2000;
+
 	protected const int SPRINT_ORDER = 4000;
 	protected const int DUCKING_ORDER = 5000;
 	protected const int JUMPING_ORDER = 6000;
@@ -44,6 +45,7 @@ public abstract partial class BaseController : Module
 	/// </summary>
 	public virtual void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{
+		UpdateInput( in deltaTime );
 		SimulateView( in deltaTime );
 	}
 }

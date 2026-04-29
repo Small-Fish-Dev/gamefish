@@ -2,7 +2,8 @@ namespace GameFish;
 
 partial class BaseController
 {
-	protected const int MOVEMENT_ORDER = PAWN_ORDER + 1000;
+	protected const int PHYSICS_ORDER = PAWN_ORDER + 1000;
+	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
 
 	public Rigidbody Rigidbody => GameObject?.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
 
@@ -24,16 +25,16 @@ partial class BaseController
 	/// </summary>
 	[Property]
 	[Range( 0.01f, 5f, clamped: false )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PAWN_ORDER )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public float SkinWidth { get; set; } = 0.5f;
 
 	/// <summary>
-	/// Should the owner be able to input their movement?
+	/// Should this be able to input its movement?
 	/// </summary>
 	[Property]
 	[Feature( PAWN )]
-	[ToggleGroup( nameof( AllowMovement ), Label = MOVEMENT )]
-	public virtual bool AllowMovement { get; set; } = true;
+	[ToggleGroup( nameof( MovementEnabled ), Label = MOVEMENT )]
+	public virtual bool MovementEnabled { get; set; } = true;
 
 	/// <summary>
 	/// The target movement speed to accelerate towards.
@@ -41,7 +42,7 @@ partial class BaseController
 	[Property]
 	[Title( "Speed (default)" )]
 	[Range( 0f, 1000f, clamped: false )]
-	[ToggleGroup( nameof( AllowMovement ) )]
+	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual float MoveSpeed { get; set; } = 250f;
 
@@ -50,7 +51,7 @@ partial class BaseController
 	/// </summary>
 	[Property]
 	[Range( 0f, 100f, clamped: false )]
-	[ToggleGroup( nameof( AllowMovement ) )]
+	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual float Acceleration { get; set; } = 10f;
 
@@ -58,7 +59,7 @@ partial class BaseController
 	/// Slows their speed down over time.
 	/// </summary>
 	[Property]
-	[ToggleGroup( nameof( AllowMovement ) )]
+	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual Friction Friction { get; set; } = new();
 
@@ -167,7 +168,7 @@ partial class BaseController
 	{
 		ApplyFriction( in deltaTime );
 
-		if ( AllowMovement )
+		if ( IsMovementAllowed() )
 			Velocity = Velocity.AddClamped( WishVelocity * Acceleration * deltaTime, MoveSpeed );
 	}
 

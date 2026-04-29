@@ -3,7 +3,7 @@ using ShrimpleCharacterController;
 
 namespace Fishbox;
 
-public partial class FishboxController : ShooterController
+public partial class FishboxController : FirstPersonController
 {
 	public const int PLAYER_ORDER = DEFAULT_ORDER - 1997;
 
@@ -14,11 +14,6 @@ public partial class FishboxController : ShooterController
 
 	public const string WALLRUNNING = "🧗 Wall Running";
 	public const int WALLRUNNING_ORDER = 6000;
-
-	public override bool ShouldJump => AllowJumping && HasJumpButton && HoldingJump;
-
-	protected bool HoldingJump => Input.Down( JumpButton );
-	protected bool PressedJump => Input.Pressed( JumpButton );
 
 	protected override void OnStart()
 	{

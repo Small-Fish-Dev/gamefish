@@ -26,7 +26,7 @@ public partial class AmmoEquipModule : EquipFunction
 		set => IsReloadingEnabled = value;
 	}
 
-	public override FunctionInput Input { get; set; } = new( "Reload", InputMode.Held, 0.1f );
+	public override InputFunction Input { get; set; } = new( "Reload", InputMode.Held, 0.1f );
 
 
 	public override bool IsCombatFunction => false;

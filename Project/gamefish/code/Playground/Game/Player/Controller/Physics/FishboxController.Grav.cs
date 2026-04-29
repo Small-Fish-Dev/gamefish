@@ -99,10 +99,10 @@ partial class FishboxController
 		}
 		else if ( !IsGrounded )
 		{
-			if ( ShouldJump )
+			if ( ShouldJump() )
 				grav *= GravityFloating;
 
-			if ( !IsSliding && ShouldDuck )
+			if ( !IsSliding && IsDucking )
 				grav *= GravitySinking;
 		}
 

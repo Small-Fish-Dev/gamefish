@@ -226,7 +226,7 @@ partial class FishboxController
 
 		if ( !IsWallRunning )
 		{
-			if ( !NextJump || !HoldingJump )
+			if ( !NextJump || !JumpInput.IsHeld )
 				return;
 
 			// Where are we trying to move to?

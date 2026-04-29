@@ -28,8 +28,8 @@ public enum InputMode
 
 partial class Library
 {
-	/// <returns> If the mode matches the action's input state. </returns>
-	public static bool Active( this InputMode mode, string action, bool complainOnMissing = true )
+	/// <returns> If an input is active with respect to a state. </returns>
+	public static bool IsActive( this InputMode mode, string action, bool complainOnMissing = true )
 	{
 		if ( action.IsBlank() )
 			return false;

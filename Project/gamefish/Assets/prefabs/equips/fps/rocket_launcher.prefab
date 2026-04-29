@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "25b1ac72-8da3-4062-96c8-32de053aab34",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "rocket_launcher",
     "Position": "0,0,0",
@@ -10,7 +10,7 @@
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
@@ -19,6 +19,7 @@
         "__type": "GameFish.Equipment",
         "__guid": "04ed4e20-8ebf-48fc-9cec-822ecc06569f",
         "__enabled": true,
+        "Flags": 0,
         "ClassId": "rocket_launcher",
         "ClassName": null,
         "DebugDamage": 25,
@@ -34,7 +35,7 @@
         "Health": 100,
         "HolsteringOffset": {
           "Position": "0,0,-70",
-          "Rotation": "0,0,-0.3826835,0.9238795"
+          "Rotation": "0,0,-0.382683486,0.923879504"
         },
         "Icon": null,
         "IsAlive": true,
@@ -62,14 +63,13 @@
         },
         "Slot": 0,
         "ViewModel": null,
-        "WorldModel": null,
         "WorldRenderer": null
       }
     ],
     "Children": [
       {
         "__guid": "e3792737-3299-4fa9-8f4a-4f7d31b8d5df",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "Ammo",
         "Position": "0,0,0",
@@ -78,7 +78,7 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -87,6 +87,7 @@
             "__type": "GameFish.AmmoEquipModule",
             "__guid": "3e276860-7711-4765-b05f-d0278f558086",
             "__enabled": true,
+            "Flags": 0,
             "ClassId": null,
             "ClassName": null,
             "DefaultMagazineSize": 20,
@@ -94,8 +95,10 @@
             "FunctionDescription": "Refills your ammo.",
             "FunctionName": "Reload",
             "InspectorInput": {
-              "Action": "Reload",
-              "Mode": "Held",
+              "Setting": {
+                "Action": "Reload",
+                "Mode": "Held"
+              },
               "Cooldown": 0.1
             },
             "InspectorIsInputEnabled": true,
@@ -127,7 +130,7 @@
       },
       {
         "__guid": "0bebad5f-1164-4892-b004-86cf256737a8",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "Shooter",
         "Position": "0,0,0",
@@ -136,7 +139,7 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -145,6 +148,7 @@
             "__type": "GameFish.ProjectileEquipFunction",
             "__guid": "74c5ab05-427d-48c3-9ada-61dc6a80f1fc",
             "__enabled": true,
+            "Flags": 0,
             "AimPrediction": false,
             "AimSpreadCone": 0,
             "Ammo": {
@@ -156,6 +160,7 @@
             "AmmoCost": 1,
             "ClassId": "rocket_launcher",
             "ClassName": null,
+            "Count": 1,
             "FunctionDescription": "Fires a missile.",
             "FunctionName": "Shoot",
             "HasScaleOverride": false,
@@ -164,8 +169,10 @@
               "Max": 1000
             },
             "InspectorInput": {
-              "Action": "Attack1",
-              "Mode": "Pressed",
+              "Setting": {
+                "Action": "Attack1",
+                "Mode": "Pressed"
+              },
               "Cooldown": 0.15
             },
             "InspectorIsInputEnabled": true,
@@ -210,13 +217,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []

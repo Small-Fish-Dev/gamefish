@@ -23,5 +23,5 @@ public struct ToolFunction
 	public ToolFunction() { }
 
 	public readonly bool IsInputting()
-		=> Mode.Active( Action );
+		=> Mode.IsActive( Action );
 }

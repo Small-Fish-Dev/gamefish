@@ -31,13 +31,13 @@ public abstract partial class EquipFunction : EquipModule
 	[Title( "Input" )]
 	[Property, InlineEditor( Label = false )]
 	[Feature( MODULE ), Group( INPUT ), Order( INPUT_ORDER )]
-	protected FunctionInput InspectorInput
+	protected InputFunction InspectorInput
 	{
 		get => Input;
 		set => Input = value;
 	}
 
-	public virtual FunctionInput Input { get; set; } = new( "Attack1", InputMode.Held, 0.15f );
+	public virtual InputFunction Input { get; set; } = new( "Attack1", InputMode.Held, 0.15f );
 
 	/// <summary>
 	/// The name to display for this function(if any).
@@ -75,7 +75,7 @@ public abstract partial class EquipFunction : EquipModule
 	/// Is the input state requirement being met? <br />
 	/// In other words: are they pressing/holding/releasing the button?
 	/// </summary>
-	public virtual bool IsInputting => IsInputEnabled && Input?.IsInputting() == true;
+	public virtual bool IsInputting => IsInputEnabled && Input.IsActive;
 
 	/// <summary>
 	/// The point in time that this was last used.
@@ -115,7 +115,7 @@ public abstract partial class EquipFunction : EquipModule
 	/// <returns> How long this function's cooldown should last. </returns>
 	public virtual float GetCooldownDuration()
 	{
-		var cooldown = Input?.Cooldown ?? 1f;
+		var cooldown = Input.Cooldown;
 
 		if ( Equip.IsValid() )
 			return Equip.GetCooldownDuration( cooldown, this );
