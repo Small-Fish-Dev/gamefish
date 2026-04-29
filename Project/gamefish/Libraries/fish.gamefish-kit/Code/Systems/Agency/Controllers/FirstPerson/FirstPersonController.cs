@@ -146,8 +146,27 @@ public abstract class FirstPersonController : BaseController
 		IsSprinting = isAlive && ShouldSprint();
 	}
 
-	protected virtual bool ShouldDuck() => DuckingEnabled && DuckInput.IsActive;
-	protected virtual bool ShouldJump() => JumpingEnabled && JumpInput.IsActive;
+	protected virtual bool ShouldDuck()
+	{
+		if ( !DuckingEnabled )
+			return false;
+
+		return DuckInput.IsActive;
+	}
+
+	protected virtual bool ShouldJump()
+	{
+		if ( !JumpingEnabled )
+			return false;
+
+		if ( !IsGrounded )
+			return false;
+
+		return JumpInput.IsActive;
+	}
+
+	public virtual Vector3 GetJumpVelocity()
+		=> WorldRotation.Up * JumpImpulse;
 
 	protected virtual bool ShouldSprint()
 	{
@@ -173,9 +192,6 @@ public abstract class FirstPersonController : BaseController
 
 		return moveSpeed;
 	}
-
-	public virtual Vector3 GetJumpVelocity()
-		=> WorldRotation.Up * JumpImpulse;
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
