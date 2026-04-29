@@ -176,7 +176,12 @@ partial class BaseController
 		ApplyFriction( in deltaTime );
 
 		if ( IsMovementAllowed() )
-			Velocity = Velocity.AddClamped( WishVelocity * Acceleration * deltaTime, MoveSpeed );
+		{
+			var addVel = WishVelocity * Acceleration * deltaTime;
+			var speedLimit = GetMovementSpeed();
+
+			Velocity = Velocity.AddClamped( addVel, speedLimit );
+		}
 	}
 
 	/// <summary>
