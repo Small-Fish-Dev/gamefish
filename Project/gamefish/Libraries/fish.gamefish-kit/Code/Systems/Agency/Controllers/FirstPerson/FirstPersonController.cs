@@ -173,11 +173,14 @@ public abstract class FirstPersonController : BaseController
 		if ( !SprintingEnabled )
 			return false;
 
+		if ( !IsGrounded )
+			return false;
+
 		return IsWishingSprint();
 	}
 
-	public virtual float GetSprintSpeed( in float? baseSpeed = null )
-		=> (baseSpeed ?? MoveSpeed) * SprintMultiplier;
+	public virtual float GetSprintSpeed( in float? speed = null )
+		=> (speed ?? MoveSpeed) * SprintMultiplier;
 
 	public override float GetMovementSpeed()
 	{
@@ -187,7 +190,7 @@ public abstract class FirstPersonController : BaseController
 		if ( DuckingEnabled )
 			moveSpeed = LocalEyePosition.z.Remap( EyeHeightDuck, EyeHeightStand, MoveSpeedDucked, MoveSpeed );
 
-		if ( IsWishingSprint() )
+		if ( ShouldSprint() )
 			moveSpeed = GetSprintSpeed( moveSpeed );
 
 		return moveSpeed;
