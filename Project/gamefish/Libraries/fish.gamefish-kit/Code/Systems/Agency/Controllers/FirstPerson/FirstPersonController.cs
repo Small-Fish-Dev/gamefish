@@ -146,34 +146,34 @@ public abstract class FirstPersonController : BaseController
 		IsSprinting = isAlive && ShouldSprint();
 	}
 
+	/// <returns> If ducking is currently intended. </returns>
+	protected virtual bool IsWishingDuck()
+		=> DuckInput.IsActive;
+
+	/// <returns> If sprinting is currently intended. </returns>
+	protected virtual bool IsWishingSprint()
+		=> Input.Down( SprintInput ) == !IsSprintDefault;
+
+	/// <returns> If jumping is currently intended. </returns>
+	protected virtual bool IsWishingJump()
+		=> JumpInput.IsActive;
+
+	/// <returns> If ducking should be active. </returns>
 	protected virtual bool ShouldDuck()
 	{
 		if ( !DuckingEnabled )
 			return false;
 
-		return DuckInput.IsActive;
+		return IsWishingDuck();
 	}
 
-	protected virtual bool ShouldJump()
-	{
-		if ( !JumpingEnabled )
-			return false;
-
-		if ( !IsGrounded )
-			return false;
-
-		return JumpInput.IsActive;
-	}
-
-	public virtual Vector3 GetJumpVelocity()
-		=> WorldRotation.Up * JumpImpulse;
-
+	/// <returns> If sprinting should be active. </returns>
 	protected virtual bool ShouldSprint()
 	{
 		if ( !SprintingEnabled )
 			return false;
 
-		return Input.Down( SprintInput ) == !IsSprintDefault;
+		return IsWishingSprint();
 	}
 
 	public virtual float GetSprintSpeed( in float? baseSpeed = null )
@@ -183,15 +183,30 @@ public abstract class FirstPersonController : BaseController
 	{
 		var moveSpeed = MoveSpeed;
 
-		// Move slower when ducked.
+		// Affect move speed smoothly between stances.
 		if ( DuckingEnabled )
 			moveSpeed = LocalEyePosition.z.Remap( EyeHeightDuck, EyeHeightStand, MoveSpeedDucked, MoveSpeed );
 
-		if ( ShouldSprint() )
+		if ( IsWishingSprint() )
 			moveSpeed = GetSprintSpeed( moveSpeed );
 
 		return moveSpeed;
 	}
+
+	/// <returns> If jumping should be performed this frame. </returns>
+	protected virtual bool ShouldJump()
+	{
+		if ( !JumpingEnabled )
+			return false;
+
+		if ( !IsGrounded )
+			return false;
+
+		return IsWishingJump();
+	}
+
+	public virtual Vector3 GetJumpVelocity()
+		=> WorldRotation.Up * JumpImpulse;
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
