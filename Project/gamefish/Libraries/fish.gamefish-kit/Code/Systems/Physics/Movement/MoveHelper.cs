@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace GameFish;
 
 /// <summary>
@@ -30,6 +32,14 @@ public sealed class MoveHelper
 	/// </summary>
 	public bool IsStuck { get; set; }
 
+
+	/// <summary> The maximum number of algorithm iterations possible. </summary>
+	public int Limit { get; set; } = 10;
+
+	/// <summary> The number of iterations remaining before cancellation. </summary>
+	public int Budget { get; set; }
+
+
 	/// <summary>
 	/// Movement/collision logic tries to stay this far away
 	/// from surfaces to prevent getting stuck in them.
@@ -60,14 +70,24 @@ public sealed class MoveHelper
 
 
 	/// <summary> Allow projecting momentum along surfaces? </summary>
-	public bool Sliding { get; set; } = true;
+	public bool AllowSliding { get; set; } = true;
 
 
-	/// <summary> The maximum number of algorithm iterations possible. </summary>
-	public int Limit { get; set; } = 5;
+	/// <summary> Stick to floors? Also prevents slipping down them. </summary>
+	public bool AllowGrounding { get; set; } = true;
 
-	/// <summary> The number of iterations remaining before cancellation. </summary>
-	public int Budget { get; set; }
+	/// <summary> The angle in which a surface is considered ground. </summary>
+	public float GroundAngle { get; set; } = 45f;
+
+	/// <summary> The maximum distance to stick to ground. </summary>
+	public float GroundDistance { get; set; } = 16f;
+
+	/// <summary> The surface normal of a perfectly flat foor. </summary>
+	public Vector3 Up { get; set; } = Vector3.Up;
+	public Vector3 Down => -Up;
+
+	/// <summary> Are we standing on a floor? </summary>
+	public bool IsGrounded { get; set; } = false;
 
 
 	public MoveHelper() { }
@@ -93,42 +113,102 @@ public sealed class MoveHelper
 	{
 		// Controller = c;
 		Trace = c?.BuildTrace() ?? default;
+
 		return this;
 	}
 
 	public MoveHelper WithTrace( in SceneTrace tr )
 	{
 		Trace = tr;
+
 		return this;
 	}
 
+	/// <summary>
+	/// Sets the hypothetical position the mover is currently at.
+	/// </summary>
 	public MoveHelper WithPosition( in Vector3 pos )
 	{
 		Position = pos;
+
 		return this;
 	}
 
+	/// <summary>
+	/// Sets the mover's hypothetical movement direction.
+	/// </summary>
 	public MoveHelper WithDirection( in Vector3 dir )
 	{
 		Direction = dir;
+
 		return this;
 	}
 
+	/// <summary>
+	/// Sets the total lifetime distance the mover is trying to go.
+	/// </summary>
 	public MoveHelper WithDistance( in float distance )
 	{
 		Distance = distance;
+
 		return this;
 	}
 
 	public MoveHelper WithVelocity( in Vector3 vel )
 	{
 		Velocity = vel;
+
 		return this;
 	}
 
 	public MoveHelper WithSliding( in bool bSliding )
 	{
-		Sliding = bSliding;
+		AllowSliding = bSliding;
+
+		return this;
+	}
+
+	/// <summary>
+	/// Sets if we should stick to ground.
+	/// </summary>
+	public MoveHelper WithGroundSticking( in bool bGroundSticking )
+	{
+		AllowGrounding = bGroundSticking;
+
+		return this;
+	}
+
+	/// <summary>
+	/// Enables grounding with this angle.
+	/// </summary>
+	public MoveHelper WithGrounding( in float fAngle, in float dist )
+	{
+		AllowGrounding = true;
+		GroundAngle = fAngle;
+
+		return this;
+	}
+
+	/// <summary>
+	/// Enables grounding with this angle, stick distance and flat floor surface normal.
+	/// </summary>
+	public MoveHelper WithGrounding( in float fAngle, in float stickDist, in Vector3 vUp )
+	{
+		AllowGrounding = true;
+		GroundAngle = fAngle;
+
+		Up = vUp;
+
+		return this;
+	}
+
+	/// <summary>
+	/// Enables grounding with this angle and flat floor surface normal.
+	/// </summary>
+	public MoveHelper WithGrounded( in bool bGrounded )
+	{
+		IsGrounded = bGrounded;
+
 		return this;
 	}
 
@@ -159,6 +239,9 @@ public sealed class MoveHelper
 
 		Budget = Limit;
 
+		if ( !AllowGrounding )
+			IsGrounded = false;
+
 		Move( Direction, Distance );
 
 		return this;
@@ -166,8 +249,7 @@ public sealed class MoveHelper
 
 	private void Move( in Vector3 dir, in float dist )
 	{
-		// Prevent infinite loops.
-		if ( Distance <= 0f || Budget <= 0f )
+		if ( dir == default || dist < 0f )
 			return;
 
 		Budget--;
@@ -186,10 +268,11 @@ public sealed class MoveHelper
 		if ( !trMove.Hit )
 		{
 			Position += dir * dist;
+
+			Finish();
+
 			return;
 		}
-
-		var vHitSkin = trMove.Normal * SkinWidth;
 
 		// Stuck inside of something.
 		if ( trMove.StartedSolid )
@@ -197,25 +280,50 @@ public sealed class MoveHelper
 			// TODO: Proper unstuck algorithm.
 			IsStuck = true;
 
-			var skinPos = trMove.EndPosition + vHitSkin;
+
+			var vNormalSkin = trMove.Normal * SkinWidth;
+			var skinPos = trMove.EndPosition + vNormalSkin;
 
 			if ( !IsEmpty( skinPos, out _ ) )
 			{
 				Position = skinPos;
 				Velocity = default;
+
+				Finish();
+
 				return;
 			}
 		}
 
 		// Hit something.
 		Distance -= trMove.Distance;
-		Position = trMove.EndPosition + vHitSkin;
 
-		if ( Sliding )
-			Slide( in dir, in trMove.Normal );
+		OnCollision( in dir, in trMove );
+
+		// Prevent infinite loops.
+		if ( Distance <= 0f || Budget <= 0f )
+			return;
 
 		// Keep moving if we have distance to go.
 		Move( Direction, Distance );
+	}
+
+	private void OnCollision( in Vector3 moveDir, in SceneTraceResult trMove )
+	{
+		var hitGround = IsGround( trMove.Normal );
+
+		if ( hitGround )
+		{
+			IsGrounded = true;
+			Position = trMove.EndPosition + (Up * SkinWidth);
+		}
+		else
+		{
+			Position = trMove.EndPosition + (trMove.Normal * SkinWidth);
+		}
+
+		if ( AllowSliding )
+			Slide( in moveDir, in trMove.Normal );
 	}
 
 	/// <summary>
@@ -225,16 +333,30 @@ public sealed class MoveHelper
 	/// <param name="normal"> The direction of the surface to slide along. </param>
 	private void Slide( in Vector3 moveDir, in Vector3 normal )
 	{
-		if ( Distance <= 0f )
+		if ( moveDir == default || normal == default )
 			return;
 
-		Velocity = Vector3.VectorPlaneProject( Velocity, normal );
+		var dot = moveDir.Dot( normal );
 
-		var vProject = Vector3.VectorPlaneProject( moveDir, normal );
-		var dot = 1f - moveDir.Dot( normal ).Abs();
+		if ( dot == 0f )
+		{
+			Velocity = default;
+
+			Direction = default;
+			Distance = 0f;
+
+			return;
+		}
+
+		if ( IsGround( normal ) )
+			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
+		else
+			Velocity = Vector3.VectorPlaneProject( Velocity, normal );
+
+		var vProject = Vector3.VectorPlaneProject( in moveDir, in normal );
 
 		Direction = vProject.Normal;
-		Distance *= dot;
+		Distance *= vProject.Length;
 	}
 
 	public bool IsEmpty( in Vector3 pos, out SceneTraceResult trEmpty )
@@ -244,5 +366,44 @@ public sealed class MoveHelper
 			.Run();
 
 		return !trEmpty.StartedSolid;
+	}
+
+	public bool IsGround( in Vector3 normal )
+	{
+		if ( !AllowGrounding )
+			return false;
+
+		if ( Up.Angle( normal ) > GroundAngle )
+			return false;
+
+		var upVel = Velocity.Forward( Up );
+		var upSpeed = upVel.Dot( normal );
+
+		return upSpeed < 30f;
+	}
+
+	public bool IsTouchingGround( out SceneTraceResult trGround, in float dist )
+	{
+		trGround = Trace
+			.FromTo( Position, Position + (Down * dist) )
+			.Run();
+
+		return trGround.Hit && IsGround( in trGround.Normal );
+	}
+
+	private void Finish()
+	{
+		if ( !AllowGrounding )
+			return;
+
+		var stickDist = IsGrounded ? GroundDistance : SkinWidth.Max( 1f );
+
+		IsGrounded = IsTouchingGround( out var trGround, stickDist );
+
+		if ( IsGrounded )
+		{
+			Move( Down, trGround.Distance );
+			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
+		}
 	}
 }
