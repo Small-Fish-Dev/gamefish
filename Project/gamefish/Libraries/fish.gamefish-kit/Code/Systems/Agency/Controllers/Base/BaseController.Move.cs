@@ -255,7 +255,7 @@ partial class BaseController
 		var move = Mover ??= new();
 
 		move.WithTrace( BuildTrace() )
-			.Move( from, to, Velocity );
+			.Run( from, to, Velocity );
 
 		WorldPosition = move.Position;
 		Velocity = move.Velocity;
