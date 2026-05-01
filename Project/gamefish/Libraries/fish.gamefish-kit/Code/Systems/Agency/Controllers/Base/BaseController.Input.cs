@@ -19,6 +19,9 @@ partial class BaseController
 	/// <returns> If input should move this. </returns>
 	protected virtual bool IsMovementAllowed()
 	{
+		if ( !MovementEnabled )
+			return false;
+
 		if ( !Pawn.IsValid() )
 			return false;
 
