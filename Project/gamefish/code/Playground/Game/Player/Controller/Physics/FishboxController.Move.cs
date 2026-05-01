@@ -108,17 +108,28 @@ partial class FishboxController
 		return wishVel;
 	}
 
+	protected override bool ShouldJump()
+	{
+		if ( !JumpingEnabled )
+			return false;
+
+		if ( !IsGrounded && !IsWallRunning )
+			return false;
+
+		return IsWishingJump();
+	}
+
 	public override Vector3 GetJumpVelocity()
 		=> GroundNormal * JumpImpulse;
 
 	protected virtual void DoJumping( in float deltaTime )
 	{
-		if ( !JumpingEnabled || !ShouldJump() )
+		if ( !ShouldJump() )
 			return;
 
 		if ( IsWallRunning )
 		{
-			if ( JumpInput.IsHeld )
+			if ( JumpInput.IsPressed )
 				DoWallRunJump();
 
 			return;
