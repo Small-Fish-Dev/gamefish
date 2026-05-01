@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace GameFish;
 
 /// <summary>
@@ -235,9 +233,9 @@ public sealed class MoveHelper
 	/// </summary>
 	public MoveHelper Run()
 	{
-		Origin = Position;
-
 		Budget = Limit;
+
+		Origin = Position;
 
 		if ( !AllowGrounding )
 			IsGrounded = false;
@@ -298,7 +296,10 @@ public sealed class MoveHelper
 		// Hit something.
 		Distance -= trMove.Distance;
 
-		OnCollision( in dir, in trMove );
+		SnapTo( in trMove );
+
+		if ( AllowSliding )
+			Slide( in dir, in trMove.Normal );
 
 		// Prevent infinite loops.
 		if ( Distance <= 0f || Budget <= 0f )
@@ -308,7 +309,7 @@ public sealed class MoveHelper
 		Move( Direction, Distance );
 	}
 
-	private void OnCollision( in Vector3 moveDir, in SceneTraceResult trMove )
+	public void SnapTo( in SceneTraceResult trMove )
 	{
 		var hitGround = IsGround( trMove.Normal );
 
@@ -321,17 +322,21 @@ public sealed class MoveHelper
 		{
 			Position = trMove.EndPosition + (trMove.Normal * SkinWidth);
 		}
-
-		if ( AllowSliding )
-			Slide( in moveDir, in trMove.Normal );
 	}
+
+	/// <summary>
+	/// Redirects momentum along the hit surface.
+	/// </summary>
+	/// <param name="normal"> The direction of the surface to slide along. </param>
+	public void Slide( in Vector3 normal )
+		=> Slide( Direction, in normal );
 
 	/// <summary>
 	/// Redirects momentum along the hit surface.
 	/// </summary>
 	/// <param name="moveDir"> The direction of movement. </param>
 	/// <param name="normal"> The direction of the surface to slide along. </param>
-	private void Slide( in Vector3 moveDir, in Vector3 normal )
+	public void Slide( in Vector3 moveDir, in Vector3 normal )
 	{
 		if ( moveDir == default || normal == default )
 			return;
@@ -402,7 +407,7 @@ public sealed class MoveHelper
 
 		if ( IsGrounded )
 		{
-			Move( Down, trGround.Distance );
+			SnapTo( trGround );
 			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
 		}
 	}
