@@ -196,7 +196,7 @@ public abstract class FirstPersonController : BaseController
 		return moveSpeed;
 	}
 
-	/// <returns> If jumping should be performed this frame. </returns>
+	/// <returns> If we should jump this frame(such as if pressed). </returns>
 	protected virtual bool ShouldJump()
 	{
 		if ( !JumpingEnabled )

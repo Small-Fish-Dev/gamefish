@@ -6,20 +6,41 @@ partial class BaseController
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
 	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
-	public Rigidbody Rigidbody => GameObject?.GetCached( ref _rb, FindMode.EverythingInSelf | FindMode.InAncestors );
+	public Rigidbody Rigidbody => Pawn?.Rigidbody;
 
-	protected Rigidbody _rb;
-
-	public virtual Vector3 Velocity
+	[Sync]
+	public Vector3 Velocity
 	{
-		get => Rigidbody?.Velocity ?? Vector3.Zero;
+		get
+		{
+			// Always keep the cached value up to date.
+			_vel = GetVelocity();
+			return _vel;
+		}
 		set
 		{
-			if ( Rigidbody.IsValid() )
-				Rigidbody.Velocity = value;
+			// Cache the intended value.
+			_vel = value;
 
+			SetVelocity( in value );
 			OnSetVelocity( in value );
 		}
+	}
+
+	protected Vector3 _vel;
+
+	protected virtual Vector3 GetVelocity()
+	{
+		if ( Rigidbody.IsValid() )
+			return Rigidbody.Velocity;
+
+		return _vel;
+	}
+
+	protected virtual void SetVelocity( in Vector3 vel )
+	{
+		if ( Rigidbody.IsValid() )
+			Rigidbody.Velocity = vel;
 	}
 
 	protected virtual void OnSetVelocity( in Vector3 vel )

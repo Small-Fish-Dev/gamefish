@@ -6,19 +6,6 @@ namespace Fishbox;
 
 partial class FishboxController
 {
-	[Sync]
-	public override Vector3 Velocity
-	{
-		get => Rigidbody?.Velocity ?? default;
-		set
-		{
-			if ( Rigidbody.IsValid() )
-				Rigidbody.Velocity = value;
-
-			OnSetVelocity( in value );
-		}
-	}
-
 	/// <summary>
 	/// How fast the player moves in the air(capped by movement speed).
 	/// </summary>
@@ -31,10 +18,6 @@ partial class FishboxController
 
 	[Sync]
 	public TimeUntil NextJump { get; set; }
-
-	protected virtual void OnSetVelocity( in Vector3 vel )
-	{
-	}
 
 	protected override void Move( in float deltaTime )
 	{
