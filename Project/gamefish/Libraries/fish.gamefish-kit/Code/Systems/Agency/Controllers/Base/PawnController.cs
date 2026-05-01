@@ -5,10 +5,10 @@ namespace GameFish;
 /// <summary>
 /// Something that takes input to move around.
 /// <br /> <br />
-/// <b> NOTE: </b> Meant to be controlled by a pawn.
+/// <b> NOTE: </b> Meant to be controlled by a <see cref="Pawn"/>.
 /// </summary>
 [Icon( "directions_run" )]
-public abstract partial class BaseController : Module
+public abstract partial class PawnController : Module
 {
 	protected const int PAWN_ORDER = DEFAULT_ORDER - 1000;
 

@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BaseController
+partial class PawnController
 {
 	/// <summary>
 	/// Registers active inputs.

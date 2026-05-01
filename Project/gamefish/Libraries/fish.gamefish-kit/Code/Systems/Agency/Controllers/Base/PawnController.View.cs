@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
-partial class BaseController
+partial class PawnController
 {
 	/// <summary>
 	/// How quickly to transition towards the target position.

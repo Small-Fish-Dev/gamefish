@@ -4,7 +4,7 @@ namespace GameFish;
 /// A very basic controller with sprinting and ducking.
 /// Ideal for use with first-person shooters.
 /// </summary>
-public abstract class FirstPersonController : BaseController
+public abstract class FirstPersonController : PawnController
 {
 	/// <summary>
 	/// Should this be able to toggle increasing its speed?

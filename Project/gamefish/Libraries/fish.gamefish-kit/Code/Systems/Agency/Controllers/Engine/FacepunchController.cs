@@ -1,8 +1,6 @@
-using System;
-
 namespace GameFish;
 
-public partial class FacepunchController : BaseController
+public partial class FacepunchController : PawnController
 {
 	/// <summary>
 	/// The unfortunately less than ideal built-in controller.
@@ -51,7 +49,6 @@ public partial class FacepunchController : BaseController
 		if ( PlayerController.IsValid() )
 			PlayerController.EyeAngles = r;
 	}
-
 
 	// The engine's controller handles this stuff.
 	public override bool TryMove( in float deltaTime, in bool isFixedUpdate, in Vector3 wishVel = default )

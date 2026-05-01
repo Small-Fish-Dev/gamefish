@@ -3,7 +3,7 @@ namespace GameFish;
 /// <summary>
 /// A very basic controller meant for use with a <see cref="Rigidbody"/>.
 /// </summary>
-public abstract class PhysicsController : BaseController
+public abstract class PhysicsController : PawnController
 {
 	protected override void Move( in float deltaTime )
 	{

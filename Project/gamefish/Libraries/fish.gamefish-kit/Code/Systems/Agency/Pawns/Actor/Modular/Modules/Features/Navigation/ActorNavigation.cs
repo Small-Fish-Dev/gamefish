@@ -16,7 +16,7 @@ public partial class ActorNavigation : ActorFeature
 
 	[Property]
 	[Feature( NAVIGATION ), Group( MOVEMENT )]
-	public new BaseController Controller => base.Controller;
+	public new PawnController Controller => base.Controller;
 
 	[Sync]
 	public Vector3? Destination { get; set; }

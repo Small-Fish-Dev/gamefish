@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BaseController
+partial class PawnController
 {
 	protected const int PHYSICS_ORDER = PAWN_ORDER + 100;
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;

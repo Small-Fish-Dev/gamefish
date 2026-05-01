@@ -28,13 +28,13 @@ partial class Pawn
 	[Property]
 	[Order( PAWN_ORDER )]
 	[Feature( PAWN ), Group( MOVEMENT )]
-	public virtual BaseController Controller
+	public virtual PawnController Controller
 	{
 		get => this.GetCached( ref _controller );
 		protected set => _controller = value;
 	}
 
-	protected BaseController _controller;
+	protected PawnController _controller;
 
 	/// <returns> The intended movement speed for this pawn. </returns>
 	public virtual float GetWishSpeed()

@@ -90,7 +90,7 @@ public sealed class MoveHelper
 
 	public MoveHelper() { }
 
-	public MoveHelper( BaseController c )
+	public MoveHelper( PawnController c )
 	{
 		// Controller = c;
 		Trace = c.BuildTrace();
@@ -107,7 +107,7 @@ public sealed class MoveHelper
 	}
 
 
-	public MoveHelper WithController( BaseController c )
+	public MoveHelper WithController( PawnController c )
 	{
 		// Controller = c;
 		Trace = c?.BuildTrace() ?? default;

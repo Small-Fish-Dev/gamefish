@@ -380,7 +380,7 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 		return obj.Components.TryGet( out rb, FindMode.EnabledInSelf | FindMode.InAncestors );
 	}
 
-	protected static bool TryGetController( GameObject obj, out BaseController c )
+	protected static bool TryGetController( GameObject obj, out PawnController c )
 	{
 
 		if ( !obj.IsValid() )
@@ -407,7 +407,7 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 	/// <summary>
 	/// Directly modifies the velocity of <paramref name="c"/>.
 	/// </summary>
-	public virtual void SetVelocity( BaseController c, in Vector3 linear )
+	public virtual void SetVelocity( PawnController c, in Vector3 linear )
 	{
 		if ( c.IsValid() )
 			c.Velocity = linear;

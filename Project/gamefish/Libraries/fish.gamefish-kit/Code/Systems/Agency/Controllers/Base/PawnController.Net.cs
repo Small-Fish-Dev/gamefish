@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BaseController
+partial class PawnController
 {
 	protected override bool IsNetworkSetupAllowed() => false;
 	protected override bool? IsNetworkedOverride => false;

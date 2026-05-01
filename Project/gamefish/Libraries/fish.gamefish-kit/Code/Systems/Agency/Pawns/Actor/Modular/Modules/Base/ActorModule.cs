@@ -19,7 +19,7 @@ public abstract partial class ActorModule : Module
 	public ActorNavigation Navigation => Actor?.Navigation;
 
 	/// <summary> The movement controller. </summary>
-	public BaseController Controller => Actor?.Controller;
+	public PawnController Controller => Actor?.Controller;
 	public bool IsGrounded => Controller?.IsGrounded is true;
 
 	/// <summary> The actively select behavior(if any). </summary>
