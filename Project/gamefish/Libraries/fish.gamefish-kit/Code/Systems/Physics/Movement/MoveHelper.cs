@@ -278,17 +278,15 @@ public sealed class MoveHelper
 			// TODO: Proper unstuck algorithm.
 			IsStuck = true;
 
-
 			var vNormalSkin = trMove.Normal * SkinWidth;
 			var skinPos = trMove.EndPosition + vNormalSkin;
 
+			Position = skinPos;
+			Velocity = default;
+
 			if ( !IsEmpty( skinPos, out _ ) )
 			{
-				Position = skinPos;
-				Velocity = default;
-
 				Finish();
-
 				return;
 			}
 		}
@@ -303,7 +301,10 @@ public sealed class MoveHelper
 
 		// Prevent infinite loops.
 		if ( Distance <= 0f || Budget <= 0f )
+		{
+			Finish();
 			return;
+		}
 
 		// Keep moving if we have distance to go.
 		Move( Direction, Distance );
