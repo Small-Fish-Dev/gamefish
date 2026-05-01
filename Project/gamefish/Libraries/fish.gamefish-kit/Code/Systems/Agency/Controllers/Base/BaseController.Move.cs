@@ -134,7 +134,19 @@ partial class BaseController
 
 	protected bool _isGrounded;
 
-	[Sync] public Vector3 GroundNormal { get; set; } = Vector3.Up;
+	[Sync]
+	public Vector3 GroundNormal
+	{
+		get => _groundNormal;
+		set
+		{
+			_groundNormal = value;
+			OnSetGroundNormal( in value );
+		}
+	}
+
+	protected Vector3 _groundNormal = Vector3.Up;
+
 	[Sync] public Collider GroundCollider { get; set; }
 	[Sync] public GameObject GroundObject { get; set; }
 
@@ -143,6 +155,8 @@ partial class BaseController
 	/// <summary>
 	/// The current movement data/utility.
 	/// Used to manually move stuff with collision.
+	/// <br /> <br />
+	/// <b> TODO: </b> Make this a component.
 	/// </summary>
 	public virtual MoveHelper Mover
 	{
@@ -155,12 +169,19 @@ partial class BaseController
 	public bool CanSimulate() => !IsProxy;
 
 	/// <summary>
-	/// Called when <see cref="IsGrounded"/> is changed to something else.
+	/// Called when <see cref="IsGrounded"/> is toggled.
 	/// </summary>
 	protected virtual void OnSetIsGrounded( in bool isGrounded )
 	{
-		GroundCollider = null;
-		GroundObject = null;
+		if ( !isGrounded )
+		{
+			GroundCollider = null;
+			GroundObject = null;
+		}
+	}
+
+	protected virtual void OnSetGroundNormal( in Vector3 vNormal )
+	{
 	}
 
 	protected virtual void OnSetWishVelocity( in Vector3 wishVel )
