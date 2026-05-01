@@ -4,11 +4,21 @@ partial class Pawn
 {
 	public override Vector3 Velocity
 	{
-		get => Controller?.Velocity ?? Vector3.Zero;
+		get
+		{
+			if ( Controller.IsValid() )
+				return Controller.Velocity;
+			else if ( Rigidbody.IsValid() )
+				return Rigidbody.Velocity;
+
+			return default;
+		}
 		set
 		{
 			if ( Controller.IsValid() )
 				Controller.Velocity = value;
+			else if ( Rigidbody.IsValid() )
+				Rigidbody.Velocity = value;
 		}
 	}
 
