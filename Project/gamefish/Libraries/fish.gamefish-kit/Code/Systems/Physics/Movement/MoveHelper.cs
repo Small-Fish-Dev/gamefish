@@ -87,13 +87,15 @@ public sealed class MoveHelper
 	/// <summary> Are we standing on a floor? </summary>
 	public bool IsGrounded { get; set; } = false;
 
+	/// <summary> Are we standing on a floor? </summary>
+	public Vector3 GroundNormal { get; set; } = Vector3.Up;
+
 
 	public MoveHelper() { }
 
-	public MoveHelper( PawnController c )
+	public MoveHelper( ControllerPhysics phys )
 	{
-		// Controller = c;
-		Trace = c.BuildTrace();
+		Trace = phys?.Trace() ?? default;
 	}
 
 	public MoveHelper( in SceneTrace tr, in Vector3 pos, in Vector3 dir, in float dist, in Vector3 vel )
@@ -107,10 +109,9 @@ public sealed class MoveHelper
 	}
 
 
-	public MoveHelper WithController( PawnController c )
+	public MoveHelper WithController( ControllerPhysics phys )
 	{
-		// Controller = c;
-		Trace = c?.BuildTrace() ?? default;
+		Trace = phys?.Trace() ?? default;
 
 		return this;
 	}
@@ -182,6 +183,7 @@ public sealed class MoveHelper
 	public MoveHelper WithGrounding( in float fAngle, in float dist )
 	{
 		AllowGrounding = true;
+
 		GroundAngle = fAngle;
 
 		return this;
@@ -193,7 +195,9 @@ public sealed class MoveHelper
 	public MoveHelper WithGrounding( in float fAngle, in float stickDist, in Vector3 vUp )
 	{
 		AllowGrounding = true;
+
 		GroundAngle = fAngle;
+		GroundDistance = stickDist;
 
 		Up = vUp;
 
@@ -409,7 +413,13 @@ public sealed class MoveHelper
 		if ( IsGrounded )
 		{
 			SnapTo( trGround );
+
+			GroundNormal = trGround.Normal;
 			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
+		}
+		else
+		{
+			GroundNormal = Up;
 		}
 	}
 }

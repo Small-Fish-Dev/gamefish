@@ -4,7 +4,7 @@
     "__version": 2,
     "Flags": 0,
     "Name": "player_shooter",
-    "Position": "21.4499969,0,0",
+    "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
     "Tags": "player,team_player",
@@ -125,16 +125,44 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "Physics": {
+          "_type": "component",
+          "component_id": "1c916bfd-7441-4512-84be-645850788ad1",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "CylinderPhysics"
+        },
         "PitchClamping": true,
         "PitchRange": {
           "Min": -89.9,
           "Max": 89.9
         },
-        "Radius": 16,
-        "SkinWidth": 0.5,
         "SprintingEnabled": true,
         "SprintInput": "Run",
         "SprintMultiplier": 1.5
+      },
+      {
+        "__type": "GameFish.CylinderPhysics",
+        "__guid": "1c916bfd-7441-4512-84be-645850788ad1",
+        "__enabled": true,
+        "Flags": 0,
+        "ClassId": "player_shooter",
+        "ClassName": null,
+        "IsClass": false,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "1c916bfd-7441-4512-84be-645850788ad1",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Radius": 16,
+        "SkinWidth": 0.5
       }
     ],
     "Children": [
@@ -547,7 +575,7 @@
             "Children": []
           },
           {
-            "__guid": "32eecaff-31cb-4d57-bbed-2741971ea9aa",
+            "__guid": "43071c1b-29d0-4fff-b7b5-9fce93ebd301",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -564,7 +592,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "d1a599ed-ad8e-4d66-b48a-930f5ab28c70",
+                "__guid": "d785c4a4-c2e4-4c74-900a-33924a66f7a6",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

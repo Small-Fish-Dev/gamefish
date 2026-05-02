@@ -61,45 +61,31 @@ partial class FishboxController
 
 	protected TraceResult GroundTrace { get; set; }
 
-	public override SceneTrace BuildTrace()
-	{
-		if ( !Scene.IsValid() )
-			return default;
-
-		var tr = Scene.Trace
-			.IgnoreGameObjectHierarchy( GameObject )
-			.WithCollisionRules( Tags )
-			.Rotated( WorldRotation );
-
-		return tr;
-	}
-
 	/// <summary>
 	/// Traces our colliders at the current position.
 	/// </summary>
-	public TraceResult TraceAtPosition( in TraceSettings? s = null )
-		=> TraceTransform( WorldTransform, s );
+	public TraceResult TraceAtPosition( in float? fSkin = null )
+		=> TraceTransform( WorldTransform, fSkin );
 
 	/// <summary>
 	/// Traces our colliders if we were at that position.
 	/// </summary>
-	public TraceResult TraceAtPosition( in Vector3 worldPos, in TraceSettings? s = null )
-		=> TraceTransform( WorldTransform.WithPosition( worldPos ), s );
+	public TraceResult TraceAtPosition( in Vector3 worldPos, in float? fSkin = null )
+		=> TraceTransform( WorldTransform.WithPosition( worldPos ), fSkin );
 
 	/// <summary>
 	/// Traces our colliders as they are at the given transform.
 	/// </summary>
-	public TraceResult TraceTransform( in Transform tWorld, in TraceSettings? s = null )
-		=> TraceDelta( tWorld, Vector3.Zero, s );
+	public TraceResult TraceTransform( in Transform tWorld, in float? fSkin = null )
+		=> TraceDelta( tWorld, Vector3.Zero, fSkin );
 
-	public TraceResult TraceDelta( in Vector3 startPos, in Vector3 vDelta, in TraceSettings? s = null )
-		=> TraceDelta( WorldTransform.WithPosition( startPos ), in vDelta, s );
+	public TraceResult TraceDelta( in Vector3 startPos, in Vector3 vDelta, in float? fSkin = null )
+		=> TraceDelta( WorldTransform.WithPosition( startPos ), in vDelta, fSkin );
 
-	public virtual TraceResult TraceDelta( Transform tWorld, in Vector3 vDelta, in TraceSettings? s = null )
+	public virtual TraceResult TraceDelta( in Transform tWorld, in Vector3 vDelta, in float? fSkin = null )
 	{
 		var scale = WorldScale.z;
-		var settings = s ?? new( skin: SkinWidth * scale );
-		var skin = settings.Skin;
+		var skin = fSkin ?? (Physics?.SkinWidth * scale) ?? 0.5f;
 
 		var radius = (Radius * scale) - skin;
 		var totalHeight = (GetTotalHeight() * scale) - skin;
@@ -117,7 +103,7 @@ partial class FishboxController
 		var headStart = tWorld.Position + headOffset;
 		var headEnd = endPos + headOffset;
 
-		var trBase = BuildTrace();
+		var trBase = Trace();
 
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();
@@ -128,7 +114,7 @@ partial class FishboxController
 			DebugOverlay.Trace( trHead );
 		}
 
-		return new( in settings, in tWorld, in vDelta, in trBody, in trHead );
+		return new( in skin, in tWorld, in vDelta, in trBody, in trHead );
 	}
 
 	protected virtual bool IsValidGround( in TraceResult tr )
@@ -292,7 +278,7 @@ partial class FishboxController
 		var freePos = startPos - (fudgeDir * skin * (depth + 1));
 
 		var toOriginDelta = startPos - freePos;
-		var trShrunk = TraceDelta( freePos, toOriginDelta, new( skin: skin ) );
+		var trShrunk = TraceDelta( freePos, toOriginDelta, skin );
 
 		if ( trShrunk.StartedSolid )
 			goto NextAttempt;

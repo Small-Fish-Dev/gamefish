@@ -32,7 +32,7 @@ partial class FishboxController : IScenePhysicsEvents, Component.ICollisionListe
 		UpdateGround();
 
 		var vMove = Velocity * Scene.FixedDelta;
-		var trMove = TraceDelta( WorldPosition, vMove, new( skin: 0f ) );
+		var trMove = TraceDelta( WorldPosition, vMove, fSkin: 0f );
 
 		if ( !IsSlippery( trMove ) )
 			TryStep( trMove );

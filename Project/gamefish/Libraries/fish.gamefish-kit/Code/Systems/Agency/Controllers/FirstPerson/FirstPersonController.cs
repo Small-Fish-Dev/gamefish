@@ -184,12 +184,15 @@ public abstract class FirstPersonController : PawnController
 
 	public override float GetMovementSpeed()
 	{
-		var moveSpeed = MoveSpeed;
+		float moveSpeed;
 
 		// Affect move speed smoothly between stances.
 		if ( DuckingEnabled )
 			moveSpeed = LocalEyePosition.z.Remap( EyeHeightDuck, EyeHeightStand, MoveSpeedDucked, MoveSpeed );
+		else
+			moveSpeed = MoveSpeed;
 
+		// And runnin' runnin'.
 		if ( ShouldSprint() )
 			moveSpeed = GetSprintSpeed( moveSpeed );
 

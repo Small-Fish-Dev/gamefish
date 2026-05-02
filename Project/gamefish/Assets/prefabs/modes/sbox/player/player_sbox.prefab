@@ -85,11 +85,7 @@
         "Acceleration": 15,
         "AirAcceleration": 2500,
         "AllowAiming": true,
-        "AllowDucking": true,
-        "AllowJumping": true,
-        "AllowMovement": true,
         "AllowSliding": true,
-        "AllowSprinting": true,
         "AllowWallRunning": true,
         "BodyCylinder": {
           "_type": "component",
@@ -101,7 +97,11 @@
         "ClassName": null,
         "DebugLogUnstuck": false,
         "DebugRenderTraces": false,
-        "DuckButton": "duck",
+        "DuckingEnabled": true,
+        "DuckInput": {
+          "Action": "Duck",
+          "Mode": "Held"
+        },
         "EyeHeightDuck": 32,
         "EyeHeightStand": 64,
         "EyeMoveSmoothing": 0.15,
@@ -124,10 +124,16 @@
         "InspectorGroundNormal": "0,0,1",
         "InspectorIsGrounded": false,
         "IsClass": false,
-        "IsNetworkingForced": false,
+        "IsNetworkingForced": true,
         "IsSliding": false,
-        "JumpButton": "jump",
-        "JumpSpeed": 320,
+        "IsSprintDefault": false,
+        "JumpImpulse": 400,
+        "JumpingEnabled": true,
+        "JumpInput": {
+          "Action": "Jump",
+          "Mode": "Pressed"
+        },
+        "MovementEnabled": true,
         "MoveSpeed": 250,
         "MoveSpeedDucked": 120,
         "NetworkAutomatically": true,
@@ -142,13 +148,18 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "Physics": {
+          "_type": "component",
+          "component_id": "f09be569-b333-48c8-b967-16f51b174cca",
+          "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
+          "component_type": "BodyPhysics"
+        },
         "PitchClamping": true,
         "PitchRange": {
           "Min": -89.9,
           "Max": 89.9
         },
         "Radius": 12,
-        "SkinWidth": 5,
         "SlideAcceleration": 1500,
         "SlideMinSpeed": 400,
         "SlideStopSpeed": 250,
@@ -215,8 +226,8 @@
             }
           ]
         },
-        "SprintButton": "run",
-        "SprintDefault": false,
+        "SprintingEnabled": true,
+        "SprintInput": "Run",
         "SprintMultiplier": 1.7,
         "WallRunGravity": 0.5,
         "WallRunJumpSpeed": "750,300",
@@ -225,6 +236,29 @@
           "Max": 110
         },
         "WallRunStickDistance": 5
+      },
+      {
+        "__type": "GameFish.BodyPhysics",
+        "__guid": "f09be569-b333-48c8-b967-16f51b174cca",
+        "__enabled": true,
+        "Flags": 0,
+        "ClassId": "player_sbox",
+        "ClassName": null,
+        "IsClass": false,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "f09be569-b333-48c8-b967-16f51b174cca",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "SkinWidth": 0.5
       },
       {
         "__type": "Sandbox.Rigidbody",
@@ -673,7 +707,7 @@
             "Children": []
           },
           {
-            "__guid": "700ad548-d114-4972-aa1a-1c6d6175ea68",
+            "__guid": "17549872-8111-4a0c-a4ab-4579c38446f8",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -690,7 +724,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "22f0acfd-7272-41ac-a966-8cb2a5a759b7",
+                "__guid": "356174ce-9228-4a2d-968d-ed5c462fd239",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

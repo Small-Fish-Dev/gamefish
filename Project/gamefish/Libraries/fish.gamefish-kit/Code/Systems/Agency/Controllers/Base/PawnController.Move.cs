@@ -6,55 +6,7 @@ partial class PawnController
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
 	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
-	public Rigidbody Rigidbody => Pawn?.Rigidbody;
-
-	[Sync]
-	public Vector3 Velocity
-	{
-		get
-		{
-			// Always keep the cached value up to date.
-			_vel = GetVelocity();
-			return _vel;
-		}
-		set
-		{
-			// Cache the intended value.
-			_vel = value;
-
-			SetVelocity( in value );
-			OnSetVelocity( in value );
-		}
-	}
-
-	protected Vector3 _vel;
-
-	protected virtual Vector3 GetVelocity()
-	{
-		if ( Rigidbody.IsValid() )
-			return Rigidbody.Velocity;
-
-		return _vel;
-	}
-
-	protected virtual void SetVelocity( in Vector3 vel )
-	{
-		if ( Rigidbody.IsValid() )
-			Rigidbody.Velocity = vel;
-	}
-
-	protected virtual void OnSetVelocity( in Vector3 vel )
-	{
-	}
-
-	/// <summary>
-	/// Movement/collision logic tries to stay this far away
-	/// from surfaces to prevent getting stuck in them.
-	/// </summary>
-	[Property]
-	[Range( 0.01f, 5f, clamped: false )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public float SkinWidth { get; set; } = 0.5f;
+	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
 	/// <summary>
 	/// Should this be able to input its movement?
@@ -93,78 +45,74 @@ partial class PawnController
 
 	[Property]
 	[Title( "Is Grounded" )]
+	[ShowIf( nameof( InGame ), true )]
 	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
 	protected bool InspectorIsGrounded => IsGrounded;
 
 	[Normal]
 	[Property]
 	[Title( "Ground Normal" )]
+	[ShowIf( nameof( InGame ), true )]
 	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
-	protected Vector3 InspectorGroundNormal => GroundNormal;
+	protected Vector3 InspectorGroundNormal => Physics?.GroundNormal ?? default;
 
-	[Sync]
-	public bool IsGrounded
+	public virtual bool IsGrounded
 	{
-		get => _isGrounded;
+		get => Physics?.IsGrounded is true;
 		set
 		{
-			if ( _isGrounded == value )
-				return;
-
-			_isGrounded = value;
-			OnSetIsGrounded( in value );
+			if ( Physics.IsValid() )
+				Physics.IsGrounded = value;
 		}
 	}
 
-	protected bool _isGrounded;
-
-	[Sync]
-	public Vector3 GroundNormal
+	public virtual Vector3 GroundNormal
 	{
-		get => _groundNormal;
+		get => Physics?.GroundNormal ?? Vector3.Up;
 		set
 		{
-			_groundNormal = value;
-			OnSetGroundNormal( in value );
+			if ( Physics.IsValid() )
+				Physics.GroundNormal = value;
 		}
 	}
 
-	protected Vector3 _groundNormal = Vector3.Up;
-
-	[Sync] public Collider GroundCollider { get; set; }
-	[Sync] public GameObject GroundObject { get; set; }
-
-	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
-
-	/// <summary>
-	/// The current movement data/utility.
-	/// Used to manually move stuff with collision.
-	/// <br /> <br />
-	/// <b> TODO: </b> Make this a component.
-	/// </summary>
-	public virtual MoveHelper Mover
+	public virtual Collider GroundCollider
 	{
-		get => _move;
-		set => _move = value;
-	}
-
-	protected MoveHelper _move;
-
-	public bool CanSimulate() => !IsProxy;
-
-	/// <summary>
-	/// Called when <see cref="IsGrounded"/> is toggled.
-	/// </summary>
-	protected virtual void OnSetIsGrounded( in bool isGrounded )
-	{
-		if ( !isGrounded )
+		get => Physics?.GroundCollider;
+		set
 		{
-			GroundCollider = null;
-			GroundObject = null;
+			if ( Physics.IsValid() )
+				Physics.GroundCollider = value;
 		}
 	}
 
-	protected virtual void OnSetGroundNormal( in Vector3 vNormal )
+	public virtual GameObject GroundObject
+	{
+		get => Physics?.GroundObject;
+		set
+		{
+			if ( Physics.IsValid() )
+				Physics.GroundObject = value;
+		}
+	}
+
+	/// <inheritdoc cref="ControllerPhysics.OnSetIsGrounded"/>
+	public virtual void OnSetIsGrounded( in bool isGrounded )
+	{
+	}
+
+	/// <inheritdoc cref="ControllerPhysics.OnSetGroundNormal"/>
+	public virtual void OnSetGroundNormal( in Vector3 normal )
+	{
+	}
+
+	/// <inheritdoc cref="ControllerPhysics.OnSetGroundCollider"/>
+	public virtual void OnSetGroundCollider( Collider c )
+	{
+	}
+
+	/// <inheritdoc cref="ControllerPhysics.OnSetGroundObject"/>
+	public virtual void OnSetGroundObject( GameObject obj )
 	{
 	}
 
@@ -193,7 +141,8 @@ partial class PawnController
 	/// </summary>
 	protected virtual void PreMove( in float deltaTime )
 	{
-		ApplyFriction( in deltaTime );
+		if ( IsGrounded )
+			ApplyFriction( in deltaTime );
 
 		if ( IsMovementAllowed() )
 		{
@@ -211,33 +160,9 @@ partial class PawnController
 	{
 	}
 
-	/// <summary>
-	/// This is where solid object filters and such go.
-	/// </summary>
-	/// <returns> The basis of every collison trace. </returns>
-	public virtual SceneTrace BuildTrace()
+	public virtual void OnSetVelocity( in Vector3 vel )
 	{
-		if ( !Scene.IsValid() )
-			return default;
-
-		return Scene.Trace
-			.Size( BBox.FromHeightAndRadius( 16f, 8f ) )
-			.IgnoreGameObjectHierarchy( GameObject );
 	}
-
-	/// <summary>
-	/// Creates the default collision trace and sets the start and end points.
-	/// </summary>
-	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace BuildTrace( Vector3 from, Vector3 to )
-		=> BuildTrace().FromTo( from, to );
-
-	/// <summary>
-	/// Creates the default collision trace and sets the end point relative to our starting position.
-	/// </summary>
-	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace BuildTrace( Vector3 delta )
-		=> BuildTrace( WorldPosition, WorldPosition + delta );
 
 	/// <summary>
 	/// Reduces velocity over time.
@@ -245,39 +170,11 @@ partial class PawnController
 	/// </summary>
 	protected virtual void ApplyFriction( in float deltaTime )
 	{
-		if ( !IsGrounded )
-			return;
-
 		Velocity = Velocity.WithFriction( Friction, deltaTime );
 	}
 
-	/// <summary>
-	/// Moves using traces using a relative vector for the destination.
-	/// Basically adds <paramref name="delta"/> to the current position.
-	/// </summary>
-	public void MoveBy( in Vector3 delta )
-		=> MoveTo( WorldPosition + delta );
+	public SceneTrace Trace() => Physics?.Trace() ?? default;
 
-	/// <summary>
-	/// Moves using traces from the current position towards the destination.
-	/// </summary>
-	public void MoveTo( in Vector3 to )
-		=> Move( WorldPosition, in to );
-
-	/// <summary>
-	/// Moves using traces from one position to another.
-	/// </summary>
-	public virtual void Move( in Vector3 from, in Vector3 to )
-	{
-		if ( from == to )
-			return;
-
-		var move = Mover ??= new();
-
-		move.WithTrace( BuildTrace() )
-			.Run( from, to, Velocity );
-
-		WorldPosition = move.Position;
-		Velocity = move.Velocity;
-	}
+	public void Move( in Vector3 from, in Vector3 to ) => Physics?.Move( from, to );
+	public void Move( in Transform tFrom, in Transform tDest ) => Physics?.Move( tFrom, tDest );
 }

@@ -242,7 +242,7 @@ partial class FishboxController
 
 			// Not wall running and trying to run.
 			var hDist = velMove.Length * Scene.FixedDelta;
-			var trDist = hDist.Max( SkinWidth + 1f );
+			var trDist = hDist.Max( (Physics?.SkinWidth ?? 0.5f) + 1f );
 			var vDelta = velMove.Normal * trDist;
 
 			var trMove = TraceDelta( WorldPosition, vDelta );

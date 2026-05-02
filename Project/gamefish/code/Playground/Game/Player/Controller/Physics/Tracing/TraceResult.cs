@@ -4,8 +4,7 @@ partial class FishboxController
 {
 	public partial struct TraceResult
 	{
-		public readonly TraceSettings Settings { get; }
-		public readonly float Skin => Settings.Skin;
+		public readonly float Skin { get; }
 
 		public Transform WorldStart { get; set; }
 
@@ -46,9 +45,9 @@ partial class FishboxController
 
 		public TraceResult() { }
 
-		public TraceResult( in TraceSettings s, in Transform tStart, in Vector3 delta, in SceneTraceResult trBody, in SceneTraceResult trHead )
+		public TraceResult( in float skin, in Transform tStart, in Vector3 delta, in SceneTraceResult trBody, in SceneTraceResult trHead )
 		{
-			Settings = s;
+			Skin = skin;
 
 			WorldStart = tStart;
 			Delta = delta;

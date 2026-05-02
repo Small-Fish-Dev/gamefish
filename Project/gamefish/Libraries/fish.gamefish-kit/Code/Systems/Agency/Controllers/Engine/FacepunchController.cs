@@ -42,6 +42,7 @@ public partial class FacepunchController : PawnController
 		PlayerController.UseCameraControls = false;
 	}
 
+	// Can't set the eye position of the Facepunch controller.
 	public override void SetLocalEyePosition( Vector3 pos ) { }
 
 	protected override void OnSetLocalEyeRotation( in Rotation r )

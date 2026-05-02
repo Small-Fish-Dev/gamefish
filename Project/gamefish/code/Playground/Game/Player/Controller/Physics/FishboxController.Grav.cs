@@ -37,7 +37,7 @@ partial class FishboxController
 
 	public override Vector3 Gravity => GravityDirection * base.Gravity.Length;
 
-	protected override void OnSetIsGrounded( in bool isGrounded )
+	public override void OnSetIsGrounded( in bool isGrounded )
 	{
 		base.OnSetIsGrounded( isGrounded );
 

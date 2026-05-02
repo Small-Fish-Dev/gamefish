@@ -12,15 +12,6 @@ public partial class ShooterController : FirstPersonController
 	protected const string BADASS = "😎 Badass";
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
-	/// <summary>
-	/// The radius of the cylinder and head.
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Group( PHYSICS )]
-	public float Radius { get; set; } = 16f;
-
-	protected float Height => Radius * 2f;
-
 	protected Vector3 Up => WorldRotation.Up;
 	protected Vector3 Down => WorldRotation.Down;
 
@@ -36,8 +27,6 @@ public partial class ShooterController : FirstPersonController
 	{
 		base.PostMove( deltaTime );
 
-		IsGrounded = Mover?.IsGrounded is true;
-
 		// Gravity.
 		if ( !IsGrounded )
 			Velocity += Gravity * deltaTime;
@@ -47,18 +36,8 @@ public partial class ShooterController : FirstPersonController
 	{
 		PreMove( in deltaTime );
 
-		MoveBy( Velocity * deltaTime );
+		Physics?.Run( in deltaTime );
 
 		PostMove( in deltaTime );
-	}
-
-	public override SceneTrace BuildTrace()
-	{
-		if ( !Scene.IsValid() )
-			return default;
-
-		return Scene.Trace
-			.Cylinder( Height, Radius )
-			.IgnoreGameObjectHierarchy( GameObject );
 	}
 }
