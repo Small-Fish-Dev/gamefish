@@ -10,7 +10,7 @@ namespace Fishbox;
 public partial class ShooterController : FirstPersonController
 {
 	protected const string BADASS = "😎 Badass";
-	protected const int BADASS_ORDER = PHYSICS_ORDER - 1000;
+	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
 	/// <summary>
 	/// The radius of the cylinder and head.
