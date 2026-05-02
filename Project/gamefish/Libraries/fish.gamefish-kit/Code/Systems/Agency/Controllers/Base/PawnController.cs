@@ -65,6 +65,10 @@ public abstract partial class PawnController : PawnModule
 		}
 	}
 
+	public virtual void OnSetVelocity( in Vector3 vel )
+	{
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();

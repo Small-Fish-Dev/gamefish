@@ -160,10 +160,6 @@ partial class PawnController
 	{
 	}
 
-	public virtual void OnSetVelocity( in Vector3 vel )
-	{
-	}
-
 	/// <summary>
 	/// Reduces velocity over time.
 	/// You should apply this before adding velocity.

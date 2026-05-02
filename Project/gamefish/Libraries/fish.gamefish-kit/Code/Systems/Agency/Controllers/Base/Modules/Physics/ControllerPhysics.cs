@@ -37,6 +37,7 @@ public abstract partial class ControllerPhysics : ControllerModule
 
 	protected virtual void OnSetVelocity( in Vector3 vel )
 	{
+		Controller?.OnSetVelocity( vel );
 	}
 
 	protected virtual Vector3 GetVelocity()
