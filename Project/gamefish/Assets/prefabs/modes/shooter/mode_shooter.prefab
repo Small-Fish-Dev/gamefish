@@ -1,0 +1,73 @@
+{
+  "RootObject": {
+    "__guid": "4cd23632-7fb9-47f8-92c6-f1dc55fc634e",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "mode_shooter",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 1,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Fishbox.ShooterMode",
+        "__guid": "952a98fd-6052-457f-8b50-b1bc95237eda",
+        "__enabled": true,
+        "Flags": 0,
+        "ClassId": "state_sandbox",
+        "ClassName": "Sandbox Mode",
+        "IsClass": true,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "952a98fd-6052-457f-8b50-b1bc95237eda",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "Host",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PlayerPawnPrefab": "prefabs/modes/shooter/player/player_shooter.prefab",
+        "SpectatorPrefab": "prefabs/player/spectator.prefab"
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
