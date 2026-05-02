@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// Simplified physics data about one thing hitting another.
+/// Simplified networkable physics data about one thing hitting another.
 /// <br /> <br />
 /// <b> NOTE: </b> Useful for objects with custom movement.
 /// </summary>
