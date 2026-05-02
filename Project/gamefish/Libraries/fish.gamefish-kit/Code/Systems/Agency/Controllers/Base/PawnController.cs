@@ -25,7 +25,7 @@ public abstract partial class PawnController : PawnModule
 	}
 
 	/// <summary>
-	/// Typically ran by the associated pawn just before movement is performed.
+	/// Ran by the paret pawn just before movement is performed.
 	/// </summary>
 	public virtual void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{

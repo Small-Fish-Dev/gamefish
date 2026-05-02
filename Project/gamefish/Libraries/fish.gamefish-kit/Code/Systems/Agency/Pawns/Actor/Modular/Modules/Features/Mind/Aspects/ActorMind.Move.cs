@@ -15,7 +15,7 @@ partial class ActorMind
 		var dest = GetDestination( ActiveEquip );
 
 		if ( dest.HasValue && Controller.IsValid() )
-			wishVel = Controller.GetWishVelocity( Center.Direction( dest.Value ) );
+			wishVel = Controller.CalculateWishVelocity( Center.Direction( dest.Value ) );
 
 		State?.PreMove( in deltaTime, dest, in speed, ref wishVel );
 	}

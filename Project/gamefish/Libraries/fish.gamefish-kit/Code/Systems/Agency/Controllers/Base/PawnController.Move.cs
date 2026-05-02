@@ -91,22 +91,6 @@ partial class PawnController
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual Friction Friction { get; set; } = new();
 
-	[Sync]
-	public Vector3 WishVelocity
-	{
-		get => _wishVel;
-		set
-		{
-			if ( _wishVel == value )
-				return;
-
-			_wishVel = value;
-			OnSetWishVelocity( in value );
-		}
-	}
-
-	protected Vector3 _wishVel = Vector3.Zero;
-
 	[Property]
 	[Title( "Is Grounded" )]
 	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
@@ -184,17 +168,11 @@ partial class PawnController
 	{
 	}
 
-	protected virtual void OnSetWishVelocity( in Vector3 wishVel )
-	{
-	}
-
 	/// <summary>
 	/// Tells this controller to perform its movement logic.
 	/// </summary>
-	public virtual bool TryMove( in float deltaTime, in bool isFixedUpdate, in Vector3 wishVel = default )
+	public virtual bool TryMove( in float deltaTime, in bool isFixedUpdate )
 	{
-		WishVelocity = wishVel;
-
 		Move( in deltaTime );
 
 		return true;

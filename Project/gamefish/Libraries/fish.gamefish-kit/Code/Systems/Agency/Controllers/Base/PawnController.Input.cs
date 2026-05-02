@@ -3,6 +3,30 @@ namespace GameFish;
 partial class PawnController
 {
 	/// <summary>
+	/// The velocity this is intending to move.
+	/// </summary>
+	[Sync]
+	public Vector3 WishVelocity
+	{
+		get => _wishVel;
+		set
+		{
+			if ( _wishVel == value )
+				return;
+
+			_wishVel = value;
+
+			OnSetWishVelocity( in value );
+		}
+	}
+
+	protected Vector3 _wishVel = Vector3.Zero;
+
+	public virtual void OnSetWishVelocity( in Vector3 wishVel )
+	{
+	}
+
+	/// <summary>
 	/// Registers active inputs.
 	/// </summary>
 	protected virtual void UpdateInput( in float deltaTime )
@@ -32,7 +56,7 @@ partial class PawnController
 	public virtual float GetMovementSpeed()
 		=> MoveSpeed;
 
-	public virtual Vector3 GetWishDirection( in Vector3? inputDir = null )
+	public virtual Vector3 CalculateWishDirection( in Vector3? inputDir = null )
 	{
 		if ( inputDir is not Vector3 moveInput )
 			return default;
@@ -45,13 +69,13 @@ partial class PawnController
 		return rMove * moveInput;
 	}
 
-	public virtual Vector3 GetWishVelocity( in Vector3? inputDir = null )
+	public virtual Vector3 CalculateWishVelocity( in Vector3? inputDir = null )
 	{
 		var wishSpeed = GetMovementSpeed();
 
 		if ( wishSpeed.AlmostEqual( 0f ) )
 			return Vector3.Zero;
 
-		return GetWishDirection( in inputDir ) * wishSpeed;
+		return CalculateWishDirection( in inputDir ) * wishSpeed;
 	}
 }

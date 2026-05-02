@@ -68,9 +68,11 @@ public abstract partial class ModularActor : Actor
 			return;
 
 		Vector3 wishVel = default;
+
 		Mind?.PreMove( in deltaTime, Controller.GetMovementSpeed(), ref wishVel );
 
-		Controller.TryMove( in deltaTime, in isFixedUpdate, in wishVel );
+		Controller.WishVelocity = wishVel;
+		Controller.TryMove( in deltaTime, in isFixedUpdate );
 	}
 
 	protected override void Think( in float deltaTime, in bool isFixedUpdate )

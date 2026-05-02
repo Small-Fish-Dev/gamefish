@@ -51,7 +51,7 @@ public partial class FacepunchController : PawnController
 	}
 
 	// The engine's controller handles this stuff.
-	public override bool TryMove( in float deltaTime, in bool isFixedUpdate, in Vector3 wishVel = default )
+	public override bool TryMove( in float deltaTime, in bool isFixedUpdate )
 		=> false;
 
 	protected override void Move( in float deltaTime ) { }

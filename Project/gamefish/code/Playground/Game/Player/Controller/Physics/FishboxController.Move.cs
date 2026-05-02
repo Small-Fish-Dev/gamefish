@@ -88,7 +88,7 @@ partial class FishboxController
 		return speed;
 	}
 
-	public override Vector3 GetWishDirection( in Vector3? inputDir = null )
+	public override Vector3 CalculateWishDirection( in Vector3? inputDir = null )
 	{
 		if ( inputDir is not Vector3 moveInput )
 			return default;
@@ -101,9 +101,9 @@ partial class FishboxController
 		return rMove * moveInput;
 	}
 
-	public override Vector3 GetWishVelocity( in Vector3? inputDir = null )
+	public override Vector3 CalculateWishVelocity( in Vector3? inputDir = null )
 	{
-		var wishVel = base.GetWishVelocity( inputDir );
+		var wishVel = base.CalculateWishVelocity( inputDir );
 
 		return wishVel;
 	}

@@ -77,23 +77,19 @@ partial class SimpleActor
 			StopMoving();
 	}
 
-	public override void Move( in float deltaTime, in bool isFixedUpdate )
-	{
-		if ( !Controller.IsValid() )
-			return;
-
-		Vector3 wishVel = GetWishVelocity();
-		Controller.TryMove( in deltaTime, in isFixedUpdate, in wishVel );
-	}
-
-	public override Vector3 GetWishVelocity()
+	public override Vector3 CalculateWishVelocity()
 	{
 		if ( !IsAlive || Destination is null )
-			return Vector3.Zero;
+			return default;
+
+		var c = Controller;
+
+		if ( !c.IsValid() )
+			return default;
 
 		var dest = Destination.Value;
 		var moveDir = WorldPosition.Direction( dest );
-		var moveSpeed = GetWishSpeed();
+		var moveSpeed = c.GetMovementSpeed();
 
 		return moveDir * moveSpeed;
 	}
@@ -101,7 +97,7 @@ partial class SimpleActor
 	public virtual void StopMoving()
 	{
 		Destination = null;
-		SetWishVelocity( Vector3.Zero );
+		WishVelocity = 0f;
 	}
 
 	protected virtual NavMeshPath? CalculatePath( in Vector3 from, in Vector3 to )

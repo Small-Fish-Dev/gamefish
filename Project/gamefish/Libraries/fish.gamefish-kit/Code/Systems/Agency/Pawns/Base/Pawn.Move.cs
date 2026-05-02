@@ -2,6 +2,20 @@ namespace GameFish;
 
 partial class Pawn : IMove
 {
+	/// <summary>
+	/// The component responsible for using input to aim and move.
+	/// </summary>
+	[Property]
+	[Order( PAWN_ORDER )]
+	[Feature( PAWN ), Group( MOVEMENT )]
+	public virtual PawnController Controller
+	{
+		get => this.GetCached( ref _controller );
+		protected set => _controller = value;
+	}
+
+	protected PawnController _controller;
+
 	public override Vector3 Velocity
 	{
 		get
@@ -22,40 +36,36 @@ partial class Pawn : IMove
 		}
 	}
 
-	/// <summary>
-	/// The component responsible for using input to aim and move.
-	/// </summary>
-	[Property]
-	[Order( PAWN_ORDER )]
-	[Feature( PAWN ), Group( MOVEMENT )]
-	public virtual PawnController Controller
+	public Vector3 WishVelocity
 	{
-		get => this.GetCached( ref _controller );
-		protected set => _controller = value;
-	}
-
-	protected PawnController _controller;
-
-	/// <returns> The intended movement speed for this pawn. </returns>
-	public virtual float GetWishSpeed()
-	{
-		if ( !IsAlive || !Controller.IsValid() )
-			return 0f;
-
-		return Controller.GetMovementSpeed();
+		get => Controller?.WishVelocity ?? default;
+		set
+		{
+			if ( Controller is var c && c.IsValid() )
+				c.WishVelocity = value;
+		}
 	}
 
 	/// <returns> The pawn's currently intended movement velocity. </returns>
-	public virtual Vector3 GetWishVelocity()
-		=> Controller.IsValid() ? Controller.WishVelocity : Vector3.Zero;
-
-	/// <summary>
-	/// Sets the pawn's intended movement velocity.
-	/// </summary>
-	public virtual void SetWishVelocity( in Vector3 wishVel )
+	public virtual Vector3 CalculateWishVelocity()
 	{
-		if ( Controller.IsValid() )
-			Controller.WishVelocity = wishVel;
+		if ( !IsAlive )
+			return default;
+
+		var c = Controller;
+
+		if ( !c.IsValid() )
+			return default;
+
+		Vector3? inputDir = null;
+
+		if ( Owner is Client cl )
+		{
+			if ( cl.TryGetMove( out var clMoveDir ) )
+				inputDir = clMoveDir;
+		}
+
+		return c.CalculateWishVelocity( inputDir );
 	}
 
 	/// <summary>
@@ -65,26 +75,21 @@ partial class Pawn : IMove
 	{
 		if ( Seat.IsValid() )
 		{
+			WishVelocity = default;
 			FollowSeat( Seat );
-
-			if ( Controller.IsValid() )
-				Controller.WishVelocity = default;
-
 			return;
 		}
 
 		if ( !Controller.IsValid() )
 			return;
 
-		Controller.Simulate( in deltaTime, in isFixedUpdate );
-
 		// Player-only input by default.
 		Vector3 wishVel = Vector3.Zero;
 
-		if ( Owner is Client cl && cl.TryGetMove( out var moveDir ) )
-			wishVel = Controller.GetWishVelocity( moveDir );
+		Controller.WishVelocity = CalculateWishVelocity();
 
-		Controller.TryMove( in deltaTime, in isFixedUpdate, in wishVel );
+		Controller.Simulate( in deltaTime, in isFixedUpdate );
+		Controller.TryMove( in deltaTime, in isFixedUpdate );
 	}
 
 	public override bool TryTeleport( in Transform tDest )

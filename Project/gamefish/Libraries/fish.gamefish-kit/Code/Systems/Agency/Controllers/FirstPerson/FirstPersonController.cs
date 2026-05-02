@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// A very basic controller with sprinting and ducking.
+/// A very basic controller with sprinting, ducking and jumping. <br />
 /// Ideal for use with first-person shooters.
 /// </summary>
 public abstract class FirstPersonController : PawnController

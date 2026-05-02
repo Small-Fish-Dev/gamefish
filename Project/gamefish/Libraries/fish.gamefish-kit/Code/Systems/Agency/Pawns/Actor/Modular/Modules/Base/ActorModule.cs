@@ -62,8 +62,12 @@ public abstract partial class ActorModule : Module
 
 	public Vector3 WishVelocity
 	{
-		get => Actor?.GetWishVelocity() ?? default;
-		set => Actor?.SetWishVelocity( in value );
+		get => Actor?.WishVelocity ?? default;
+		set
+		{
+			if ( Actor.IsValid() )
+				Actor.WishVelocity = value;
+		}
 	}
 
 	public Vector3 Velocity
