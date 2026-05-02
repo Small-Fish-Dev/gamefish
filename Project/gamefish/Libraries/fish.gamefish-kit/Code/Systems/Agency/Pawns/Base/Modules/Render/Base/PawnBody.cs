@@ -2,12 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
-public abstract partial class PawnBody : Module
+public abstract partial class PawnBody : PawnModule
 {
 	protected const int MODEL_ORDER = MODULE_ORDER - 1000;
-
-	public override bool IsParent( ModuleEntity comp )
-		=> comp is Pawn;
 
 	[Title( "Opacity" )]
 	[Property, JsonIgnore]

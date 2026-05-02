@@ -5,18 +5,15 @@ namespace GameFish;
 /// This should be on a child object of the pawn(otherwise expect problems).
 /// </summary>
 [Icon( "videocam" )]
-public partial class PawnView : Module, ISimulate
+public partial class PawnView : PawnModule, ISimulate
 {
-	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
+	protected const int VIEW_ORDER = PAWN_ORDER - 1000;
 	protected const int VIEW_DEBUG_ORDER = VIEW_ORDER - 10;
 
-	protected const int MODES_ORDER = DEFAULT_ORDER - 800;
+	protected const int MODES_ORDER = VIEW_ORDER + 100;
 	protected const int MODES_DEBUG_ORDER = MODES_ORDER - 10;
 
 	protected override bool? IsNetworkedOverride => true;
-
-	public override bool IsParent( ModuleEntity comp )
-		=> comp is Pawn;
 
 	/// <summary>
 	/// If true: the view will be traced from aiming origin to the destination and collide according to its settings.

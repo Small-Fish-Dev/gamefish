@@ -12,7 +12,7 @@ public partial class FishboxPlayer : Player
 			mod.UpdateInput( in deltaTime );
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		var modules = PlayerModules;
 

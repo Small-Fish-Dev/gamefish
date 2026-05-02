@@ -10,14 +10,9 @@ public class PawnEquipment : EquipInventory;
 /// A pawn module that manages and optionally spawns equipment.
 /// </summary>
 [Icon( "backpack" )]
-public partial class EquipInventory : Module
+public partial class EquipInventory : PawnModule
 {
 	public const string SLOTTING = "Slotting";
-
-	public Pawn Pawn => Parent as Pawn;
-
-	public override bool IsParent( ModuleEntity comp )
-		=> comp.IsValid() && comp is Pawn;
 
 	/// <summary> If true: only try to pick up weapons in their intended slot. </summary>
 	[Property]
