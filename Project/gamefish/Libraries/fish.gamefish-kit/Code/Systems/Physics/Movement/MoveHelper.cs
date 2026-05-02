@@ -283,12 +283,12 @@ public sealed class MoveHelper
 			IsStuck = true;
 
 			var vNormalSkin = trMove.Normal * SkinWidth;
-			var skinPos = trMove.EndPosition + vNormalSkin;
+			var skinAdjust = trMove.EndPosition + vNormalSkin;
 
-			Position = skinPos;
-			Velocity = default;
+			Position = skinAdjust;
+			// Velocity = default;
 
-			if ( !IsEmpty( skinPos, out _ ) )
+			if ( !IsEmpty( skinAdjust, out _ ) )
 			{
 				Finish();
 				return;
