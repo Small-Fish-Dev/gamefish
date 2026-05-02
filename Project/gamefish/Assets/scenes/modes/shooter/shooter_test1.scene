@@ -299,7 +299,7 @@
       "__guid": "457f9da8-6873-4f61-a12c-2273317879f8",
       "__version": 2,
       "Flags": 0,
-      "Name": "Level",
+      "Name": "Vehicle Level",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -15983,8 +15983,8 @@
       "__guid": "89555bea-637f-4ece-a3bd-35b5be6b8d94",
       "__version": 2,
       "Flags": 0,
-      "Name": "Test Level",
-      "Position": "0,-4480,0",
+      "Name": "Controller Level",
+      "Position": "0,0,0",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -16064,6 +16064,11 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "1908353f-7069-467e-b315-45c13181a07d"
+        }
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
@@ -16071,11 +16076,6 @@
       },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
-      },
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "1908353f-7069-467e-b315-45c13181a07d"
-        }
       }
     }
   },
