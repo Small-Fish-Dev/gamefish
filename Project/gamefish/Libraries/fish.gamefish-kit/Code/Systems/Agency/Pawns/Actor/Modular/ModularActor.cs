@@ -62,7 +62,7 @@ public abstract partial class ModularActor : Actor
 	{
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		if ( !Controller.IsValid() )
 			return;

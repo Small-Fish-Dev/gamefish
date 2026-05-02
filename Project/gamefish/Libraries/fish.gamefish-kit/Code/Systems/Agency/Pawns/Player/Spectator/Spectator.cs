@@ -113,7 +113,7 @@ public partial class Spectator : Player
 		base.FrameSimulate( deltaTime );
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		if ( !Controller.IsValid() || !Spectating.IsValid() )
 		{

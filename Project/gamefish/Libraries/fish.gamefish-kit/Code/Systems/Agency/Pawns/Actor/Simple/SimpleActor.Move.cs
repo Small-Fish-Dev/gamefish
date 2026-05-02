@@ -77,7 +77,7 @@ partial class SimpleActor
 			StopMoving();
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		if ( !Controller.IsValid() )
 			return;

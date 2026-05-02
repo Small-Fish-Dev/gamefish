@@ -2,7 +2,7 @@ using System;
 
 namespace GameFish;
 
-partial class Projectile
+partial class Projectile : IMove
 {
 	/// <summary>
 	/// The speed to go if not otherwise specified(like by an equipment).
@@ -49,7 +49,7 @@ partial class Projectile
 		DoHoming( in deltaTime );
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public virtual void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		var startPos = WorldPosition;
 		var move = Velocity * deltaTime;

@@ -81,7 +81,7 @@ public abstract partial class Actor : Pawn
 		UpdateDetection( in deltaTime );
 	}
 
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public override void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		if ( !Controller.IsValid() )
 			return;

@@ -6,7 +6,7 @@ namespace GameFish;
 /// It gets launched. It hurts enemies.
 /// </summary>
 [Icon( "rocket_launch" )]
-public partial class Projectile : MovingEntity, ITeam
+public partial class Projectile : DynamicEntity, ITeam
 {
 	protected const int PROJECTILE_ORDER = DEFAULT_ORDER - 2000;
 	protected const int PROJECTILE_DEBUG_ORDER = PROJECTILE_ORDER - 100;

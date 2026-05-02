@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class Pawn
+partial class Pawn : IMove
 {
 	public override Vector3 Velocity
 	{
@@ -61,7 +61,7 @@ partial class Pawn
 	/// <summary>
 	/// Directly tells this pawn to perform its movement logic.
 	/// </summary>
-	protected override void Move( in float deltaTime, in bool isFixedUpdate )
+	public virtual void Move( in float deltaTime, in bool isFixedUpdate )
 	{
 		if ( Seat.IsValid() )
 		{
