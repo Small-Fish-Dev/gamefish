@@ -83,14 +83,12 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
+        "AirAcceleration": 5,
         "AllowAiming": true,
         "ClassId": "player_shooter",
         "ClassName": null,
         "DuckingEnabled": true,
-        "DuckInput": {
-          "Action": "Duck",
-          "Mode": "Held"
-        },
+        "DuckInput": "Duck",
         "EyeHeightDuck": 32,
         "EyeHeightStand": 64,
         "EyeMoveSmoothing": 0.15,
@@ -110,6 +108,7 @@
           "Action": "Jump",
           "Mode": "Held"
         },
+        "JumpSlopeFactor": 1,
         "MovementEnabled": true,
         "MoveSpeed": 350,
         "MoveSpeedDucked": 200,
@@ -575,7 +574,7 @@
             "Children": []
           },
           {
-            "__guid": "43071c1b-29d0-4fff-b7b5-9fce93ebd301",
+            "__guid": "e85f84e6-78f5-4f30-ac26-51d99c046dda",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -592,7 +591,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "d785c4a4-c2e4-4c74-900a-33924a66f7a6",
+                "__guid": "33c52d12-845b-4532-8f2e-d5d551093320",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -673,16 +672,7 @@
             "InputPrefix": "Slot",
             "IsClass": false,
             "IsNetworkingForced": true,
-            "Loadout": [
-              {
-                "Prefab": "prefabs/equips/fps/magnum.prefab",
-                "Slot": "Primary"
-              },
-              {
-                "Prefab": "prefabs/equips/fps/rocket_launcher.prefab",
-                "Slot": "Secondary"
-              }
-            ],
+            "Loadout": [],
             "NetworkAutomatically": true,
             "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
             "NetworkingMode": "Object",
