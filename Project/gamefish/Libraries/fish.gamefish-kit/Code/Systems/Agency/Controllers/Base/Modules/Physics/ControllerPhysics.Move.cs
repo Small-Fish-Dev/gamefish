@@ -28,9 +28,6 @@ partial class ControllerPhysics
 	/// </summary>
 	public void Move( in Vector3 from, in Vector3 to )
 	{
-		if ( from == to )
-			return;
-
 		var tWorld = Origin;
 
 		var tFrom = tWorld.WithPosition( from );
@@ -42,11 +39,8 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Moves using traces from one position to another.
 	/// </summary>
-	public void Move( in Transform tFrom, in Transform tDest )
+	public virtual void Move( in Transform tFrom, in Transform tDest )
 	{
-		if ( tFrom == tDest )
-			return;
-
 		var move = Mover ??= new();
 
 		move.Trace = Trace();
