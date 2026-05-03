@@ -171,6 +171,6 @@ partial class PawnController
 
 	public SceneTrace Trace() => Physics?.Trace() ?? default;
 
-	public void Move( in Vector3 from, in Vector3 to ) => Physics?.Move( from, to );
-	public void Move( in Transform tFrom, in Transform tDest ) => Physics?.Move( tFrom, tDest );
+	public void Move( in Vector3 from, in Vector3 to ) => Physics?.Move( in from, in to );
+	public void Move( in Transform tFrom, in Vector3 to ) => Physics?.Move( in tFrom, to );
 }

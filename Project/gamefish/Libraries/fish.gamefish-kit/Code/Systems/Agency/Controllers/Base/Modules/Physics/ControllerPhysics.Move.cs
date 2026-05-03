@@ -1,5 +1,3 @@
-using System;
-
 namespace GameFish;
 
 partial class ControllerPhysics
@@ -27,24 +25,17 @@ partial class ControllerPhysics
 	/// Moves using traces from one position to another.
 	/// </summary>
 	public void Move( in Vector3 from, in Vector3 to )
-	{
-		var tWorld = Origin;
-
-		var tFrom = tWorld.WithPosition( from );
-		var tDest = tWorld.WithPosition( to );
-
-		Move( in tFrom, in tDest );
-	}
+		=> Move( Origin.WithPosition( from ), in to );
 
 	/// <summary>
 	/// Moves using traces from one position to another.
 	/// </summary>
-	public virtual void Move( in Transform tFrom, in Transform tDest )
+	public virtual void Move( in Transform tFrom, in Vector3 to )
 	{
 		var move = Mover ??= new();
 
 		move.Trace = Trace();
-		move.Run( tFrom.Position, tDest.Position, Velocity );
+		move.Run( in tFrom.Position, in to, Velocity );
 
 		Velocity = move.Velocity;
 		WorldPosition = move.Position;
