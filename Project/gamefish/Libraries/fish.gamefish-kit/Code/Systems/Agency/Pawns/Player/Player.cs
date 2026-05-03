@@ -1,7 +1,5 @@
 namespace GameFish;
 
-public partial class PlayerPawn : Player;
-
 /// <summary>
 /// A pawn that can only be owned by a player.
 /// </summary>
