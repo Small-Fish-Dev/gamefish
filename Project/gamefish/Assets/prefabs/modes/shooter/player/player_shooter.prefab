@@ -108,6 +108,7 @@
           "Action": "Jump",
           "Mode": "Held"
         },
+        "JumpLeap": 50,
         "JumpSlopeFactor": 1,
         "MovementEnabled": true,
         "MoveSpeed": 350,
@@ -146,6 +147,9 @@
         "Flags": 0,
         "ClassId": "player_shooter",
         "ClassName": null,
+        "GroundAngle": 45,
+        "GroundDistance": 16,
+        "GroundingEnabled": true,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
@@ -161,7 +165,8 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "Radius": 16,
-        "SkinWidth": 0.5
+        "SkinWidth": 0.5,
+        "SlidingEnabled": true
       }
     ],
     "Children": [
