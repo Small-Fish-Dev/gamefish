@@ -20,8 +20,9 @@ partial class ControllerPhysics
 	/// <summary>
 	/// This is where solid object filters and such go.
 	/// </summary>
+	/// <param name="skin"> The skin width. Grows/shrinks shape size. </param>
 	/// <returns> The basis of every collison trace. </returns>
-	public virtual SceneTrace Trace()
+	public virtual SceneTrace Trace( in float skin = 0f )
 	{
 		if ( !Scene.IsValid() )
 			return default;
@@ -36,35 +37,47 @@ partial class ControllerPhysics
 	/// Creates the default collision trace and sets the start and end points.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public SceneTrace Trace( in Vector3 from, in Vector3 to )
+	public SceneTrace Trace( in Vector3 from, in Vector3 to, in float skin = 0f )
 	{
 		var tFrom = Origin.WithPosition( from );
 
-		return Trace( in tFrom, in to );
+		return Trace( in tFrom, in to, skin: skin );
 	}
 
 	/// <summary>
 	/// Creates the default collision trace and sets the end point relative to our starting position.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public SceneTrace Trace( in Vector3 vDelta )
+	public SceneTrace Trace( in Vector3 vDelta, in float skin = 0f )
 	{
 		var tFrom = Origin;
 		var to = tFrom.Position + vDelta;
 
-		return Trace( in tFrom, in to );
+		return Trace( in tFrom, in to, skin: skin );
 	}
 
 	/// <summary>
 	/// Creates the default collision trace and sets the start and end transforms.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace Trace( in Transform tFrom, in Vector3 to )
-		=> Trace().FromTo( tFrom, to );
+	public virtual SceneTrace Trace( in Transform tFrom, in Vector3 to, in float skin = 0f )
+		=> Trace( skin: skin ).FromTo( tFrom, to );
 
-	public virtual bool IsEmpty( in Vector3 pos, out SceneTraceResult trEmpty )
+	/// <returns> If that space is free. </returns>
+	public bool IsEmpty( in Vector3 pos, out SceneTraceResult trEmpty, in float skin = 0f )
+		=> IsEmpty( Origin.WithPosition( pos ), out trEmpty, skin: skin );
+
+	/// <returns> If that space is free. </returns>
+	public virtual bool IsEmpty( in Transform tSpace, out SceneTraceResult trEmpty, in float skin = 0f )
 	{
-		trEmpty = Trace( pos, pos ).Run();
-		return !trEmpty.StartedSolid;
+		trEmpty = Trace( in tSpace, in tSpace.Position, skin: in skin ).Run();
+
+		if ( trEmpty.Hit )
+			return false;
+
+		if ( trEmpty.StartedSolid )
+			return false;
+
+		return true;
 	}
 }

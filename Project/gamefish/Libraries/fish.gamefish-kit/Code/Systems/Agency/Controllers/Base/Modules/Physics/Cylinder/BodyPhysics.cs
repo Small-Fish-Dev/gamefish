@@ -13,7 +13,7 @@ public class BodyPhysics : ControllerPhysics
 			Rigidbody.Velocity = vel;
 	}
 
-	public override SceneTrace Trace()
+	public override SceneTrace Trace( in float skin = 0f )
 	{
 		if ( !Scene.IsValid() )
 			return default;

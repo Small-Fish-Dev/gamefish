@@ -11,10 +11,10 @@ public class CylinderPhysics : ControllerPhysics
 
 	protected float Height => Radius * 2f;
 
-	public override SceneTrace Trace()
+	public override SceneTrace Trace( in float skin = 0f )
 	{
 		var tr = base.Trace()
-			.Cylinder( Height, Radius )
+			.Cylinder( Height + skin, Radius + (skin * 0.5f) )
 			.IgnoreGameObjectHierarchy( GameObject );
 
 		return tr;
