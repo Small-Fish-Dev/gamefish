@@ -23,14 +23,14 @@ partial class PawnController
 	/// The target movement speed to accelerate towards.
 	/// </summary>
 	[Property]
-	[Title( "Speed (default)" )]
+	[Title( "Max Speed (default)" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual float MoveSpeed { get; set; } = 250f;
 
 	/// <summary>
-	/// How quickly the target speed is reached.
+	/// How quickly maximum speed is reached while grounded.
 	/// </summary>
 	[Property]
 	[Range( 0f, 100f, clamped: false )]
@@ -39,7 +39,7 @@ partial class PawnController
 	public virtual float Acceleration { get; set; } = 10f;
 
 	/// <summary>
-	/// How quickly target speed is reached while airborne.
+	/// How quickly maximum speed is reached while airborne.
 	/// </summary>
 	[Property]
 	[Range( 0f, 100f, clamped: false )]
@@ -169,13 +169,28 @@ partial class PawnController
 
 	/// <summary>
 	/// Reduces velocity over time.
-	/// You should apply this before adding velocity.
+	/// You typically apply this before <see cref="ApplyAcceleration"/>.
 	/// </summary>
 	protected virtual void ApplyFriction( in float deltaTime )
 	{
-		Velocity = Velocity.WithFriction( Friction, deltaTime );
+		// Apply only horizontal friction while grounded.
+		if ( IsGrounded )
+		{
+			Velocity.Separate( Up, out var upVel, out var hVel );
+
+			hVel = hVel.WithFriction( Friction, in deltaTime );
+			Velocity = hVel + upVel;
+
+			return;
+		}
+
+		// Apply friction on each axis if airborne.
+		Velocity = Velocity.WithFriction( Friction, in deltaTime );
 	}
 
+	/// <summary>
+	/// Adds intended velocity.
+	/// </summary>
 	protected virtual void ApplyAcceleration( in float deltaTime )
 	{
 		var accel = IsGrounded ? Acceleration : AirAcceleration;
@@ -186,7 +201,6 @@ partial class PawnController
 
 		var moveSpeed = GetMovementSpeed();
 		var currentSpeed = hVel.Length;
-
 		var speedLimit = moveSpeed.Max( currentSpeed );
 
 		hVel = (hVel + hAdd).ClampLength( speedLimit );
