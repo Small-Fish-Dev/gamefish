@@ -9,26 +9,26 @@ partial class ControllerPhysics
 	public virtual MoveHelper Mover { get; set; }
 
 	/// <summary>
-	/// Moves using traces using a relative vector for the destination.
+	/// Moves using a relative vector for the destination.
 	/// Basically adds <paramref name="delta"/> to the current position.
 	/// </summary>
 	public void MoveDelta( in Vector3 delta )
 		=> MoveTo( WorldPosition + delta );
 
 	/// <summary>
-	/// Moves using traces from the current position towards the destination.
+	/// Moves from the current position towards the destination.
 	/// </summary>
 	public void MoveTo( in Vector3 to )
 		=> Move( WorldPosition, in to );
 
 	/// <summary>
-	/// Moves using traces from one position to another.
+	/// Moves from one position to another.
 	/// </summary>
 	public void Move( in Vector3 from, in Vector3 to )
 		=> Move( Origin.WithPosition( from ), in to );
 
 	/// <summary>
-	/// Moves using traces from one position to another.
+	/// Moves from a transform to a position.
 	/// </summary>
 	public virtual void Move( in Transform tFrom, in Vector3 to )
 	{
