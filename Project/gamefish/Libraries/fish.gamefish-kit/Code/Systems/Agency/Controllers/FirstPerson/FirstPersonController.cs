@@ -88,9 +88,20 @@ public abstract class FirstPersonController : PawnController
 	/// </summary>
 	[Property]
 	[Title( "Impulse" )]
+	[Range( 0f, 1000f, clamped: false )]
 	[Feature( PAWN ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpImpulse { get; set; } = 400f;
+
+	/// <summary>
+	/// Extra horizontal speed from movement direction upon jumping.
+	/// </summary>
+	[Property]
+	[Title( "Leap Speed" )]
+	[Range( 0f, 250f, clamped: false )]
+	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[ToggleGroup( nameof( JumpingEnabled ) )]
+	public virtual float JumpLeap { get; set; } = 0f;
 
 	/// <summary>
 	/// The incline of a slope adds horizontal velocity to jumps by this much.
@@ -232,6 +243,12 @@ public abstract class FirstPersonController : PawnController
 	{
 		var vel = Up * JumpImpulse;
 
+		if ( JumpLeap != 0f )
+		{
+			var wishDir = WishVelocity.Normal.Horizontal( Up );
+			vel += wishDir * JumpLeap;
+		}
+
 		if ( !IsGrounded || GroundNormal == default )
 			return vel;
 
@@ -251,14 +268,14 @@ public abstract class FirstPersonController : PawnController
 		if ( impulse.AlmostEqual( 0f ) )
 			return;
 
-		var vel = Velocity;
+		Velocity.Separate( Up, out var upVel, out var hVel );
 
 		// Prevent staggered jumps by negating downward velocity.
-		vel = vel.Horizontal( impulse.Normal );
-		vel += impulse;
+		var upDot = upVel.Dot( Up );
+		upVel = Up * upDot.Positive();
 
 		IsGrounded = false;
-		Velocity = vel;
+		Velocity = hVel + upVel + impulse;
 	}
 
 	public override Vector3 GetLocalEyeTargetPosition()
