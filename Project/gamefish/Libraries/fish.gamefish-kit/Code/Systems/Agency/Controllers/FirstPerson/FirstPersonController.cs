@@ -14,6 +14,9 @@ public abstract class FirstPersonController : PawnController
 	[ToggleGroup( nameof( SprintingEnabled ), Label = SPRINTING )]
 	public virtual bool SprintingEnabled { get; set; } = true;
 
+	/// <summary>
+	/// The input to hold for sprinting.
+	/// </summary>
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
@@ -21,6 +24,9 @@ public abstract class FirstPersonController : PawnController
 	[ToggleGroup( nameof( SprintingEnabled ) )]
 	public string SprintInput { get; set; } = "Run";
 
+	/// <summary>
+	/// The move speed multiplier applied while sprinting.
+	/// </summary>
 	[Property]
 	[Feature( PAWN ), Order( SPRINT_ORDER )]
 	[ToggleGroup( nameof( SprintingEnabled ) )]

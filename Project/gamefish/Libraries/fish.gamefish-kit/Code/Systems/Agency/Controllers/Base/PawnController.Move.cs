@@ -39,6 +39,15 @@ partial class PawnController
 	public virtual float Acceleration { get; set; } = 10f;
 
 	/// <summary>
+	/// How quickly target speed is reached while airborne.
+	/// </summary>
+	[Property]
+	[Range( 0f, 100f, clamped: false )]
+	[ToggleGroup( nameof( MovementEnabled ) )]
+	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
+	public virtual float AirAcceleration { get; set; } = 5f;
+
+	/// <summary>
 	/// Slows their speed down over time.
 	/// </summary>
 	[Property]
@@ -169,7 +178,8 @@ partial class PawnController
 
 	protected virtual void ApplyAcceleration( in float deltaTime )
 	{
-		var addVel = WishVelocity * Acceleration * deltaTime;
+		var accel = IsGrounded ? Acceleration : AirAcceleration;
+		var addVel = WishVelocity * accel * deltaTime;
 
 		addVel.Separate( Up, out var upAdd, out var hAdd );
 		Velocity.Separate( Up, out var upVel, out var hVel );
