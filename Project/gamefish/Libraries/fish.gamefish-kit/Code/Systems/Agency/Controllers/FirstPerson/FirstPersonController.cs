@@ -45,11 +45,11 @@ public abstract class FirstPersonController : PawnController
 	public bool DuckingEnabled { get; set; } = true;
 
 	[Property]
-	[InlineEditor]
+	[InputAction]
 	[Title( "Input" )]
 	[Feature( PAWN ), Order( DUCKING_ORDER )]
 	[ToggleGroup( nameof( DuckingEnabled ) )]
-	public InputSetting DuckInput { get; set; } = new( "Duck", InputMode.Held );
+	public string DuckInput { get; set; } = "Duck";
 
 	[Property]
 	[Title( "Move Speed" )]
@@ -158,7 +158,7 @@ public abstract class FirstPersonController : PawnController
 
 	/// <returns> If ducking is currently intended. </returns>
 	protected virtual bool IsWishingDuck()
-		=> DuckInput.IsActive;
+		=> Input.Down( DuckInput );
 
 	/// <returns> If sprinting is currently intended. </returns>
 	protected virtual bool IsWishingSprint()
