@@ -86,6 +86,16 @@ public abstract class FirstPersonController : PawnController
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpImpulse { get; set; } = 400f;
 
+	/// <summary>
+	/// The incline of a slope adds horizontal velocity to jumps by this much.
+	/// </summary>
+	[Property]
+	[Title( "Slope Factor" )]
+	[Range( 0f, 1f, clamped: false )]
+	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[ToggleGroup( nameof( JumpingEnabled ) )]
+	public virtual float JumpSlopeFactor { get; set; } = 1f;
+
 	[Property]
 	[Title( "Standing Height" )]
 	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
@@ -214,22 +224,23 @@ public abstract class FirstPersonController : PawnController
 	/// <returns> The velocity to add from jumping. </returns>
 	public virtual Vector3 GetJumpVelocity()
 	{
-		Vector3 dir;
+		var vel = Up * JumpImpulse;
 
-		if ( IsGrounded && GroundNormal != default )
-			dir = GroundNormal;
-		else
-			dir = WorldRotation.Up;
+		if ( !IsGrounded || GroundNormal == default )
+			return vel;
 
-		return dir * JumpImpulse;
+		var hSlope = (GroundNormal * JumpImpulse).Horizontal( Up );
+		vel += hSlope * JumpSlopeFactor;
+
+		return vel;
 	}
 
 	/// <summary>
 	/// Performs a jump with optional velocity override.
 	/// </summary>
-	public virtual void Jump( in Vector3? addVel = null )
+	public virtual void Jump( in Vector3? jumpVel = null )
 	{
-		var impulse = addVel ?? GetJumpVelocity();
+		var impulse = jumpVel ?? GetJumpVelocity();
 
 		if ( impulse.AlmostEqual( 0f ) )
 			return;

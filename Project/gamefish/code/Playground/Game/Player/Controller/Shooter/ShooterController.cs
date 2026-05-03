@@ -12,9 +12,6 @@ public partial class ShooterController : FirstPersonController
 	protected const string BADASS = "😎 Badass";
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
-	protected Vector3 Up => WorldRotation.Up;
-	protected Vector3 Down => WorldRotation.Down;
-
 	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{
 		base.Simulate( deltaTime, isFixedUpdate );

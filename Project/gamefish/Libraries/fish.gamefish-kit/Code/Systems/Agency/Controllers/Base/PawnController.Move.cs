@@ -7,6 +7,8 @@ partial class PawnController
 	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
 	public virtual Vector3 Up => WorldRotation.Up;
+	public Vector3 Down => -Up;
+
 	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
 	/// <summary>
