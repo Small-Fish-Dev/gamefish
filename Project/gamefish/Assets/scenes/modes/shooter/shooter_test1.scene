@@ -15982,59 +15982,99 @@
     {
       "__guid": "89555bea-637f-4ece-a3bd-35b5be6b8d94",
       "__version": 2,
-      "Flags": 0,
-      "Name": "Controller Level",
-      "Position": "0,0,0",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [],
-      "Children": [
-        {
-          "__guid": "e4c39e08-d5bb-4af8-adfa-2bc0f9c3fc00",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "Map",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.MapInstance",
-              "__guid": "d96f213b-e08a-45d7-a373-9f24ec68799c",
-              "__enabled": true,
-              "Flags": 0,
-              "__version": 1,
-              "EnableCollision": true,
-              "MapName": "maps/gamefish/gamefish_example1.vmap",
-              "NoOrigin": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnMapLoaded": null,
-              "OnMapUnloaded": null,
-              "UseMapFromLaunch": false
-            }
-          ],
-          "Children": []
-        }
-      ]
+      "__Prefab": "prefabs/levels/test/controller_test_level.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "46cb635a-025e-430d-8582-34ffaf775422"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0,1"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "c3325dcc-6ac1-475a-bdd2-751eb8f6bcff"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0,1"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "1090c852-d556-414e-8567-52465f03291d"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0,1"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "9c3e31f3-23cd-440e-abb5-9fb12a772ff9"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,0,1"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "58ab6566-2fa8-4a5b-a740-072c34baaea5": "89555bea-637f-4ece-a3bd-35b5be6b8d94",
+        "b41db84f-8ebe-4598-a9e8-cc768d816cba": "c7f9acf1-e6b4-4303-9421-f154dfccdd49",
+        "81d2dd29-83b0-499e-8db8-3cbdb489278f": "42a1db0b-d8dd-42d4-b6b0-45ec126d3b32",
+        "4d255228-12f6-40c3-bb70-f58fa5d5c5fd": "7aeef65d-566a-40a3-80ac-eae43bbe1a79",
+        "36b9d7bc-a481-4e13-b411-9f14eadd666a": "b9ad0df0-dcdc-4bcd-a942-63172c528132",
+        "a32bc8ff-d73b-461b-a172-cfcc5be96a99": "73a0f822-5087-444c-9782-b40c1a86c7bc",
+        "062ffc2f-8b17-44ce-a9a0-7a0d1d100c9a": "8db699d6-7ebe-4862-bb14-f91a9a5ed601",
+        "a7402c89-a2ee-426c-97e2-0992d38f9221": "ef236ecc-097c-4b11-9f3d-503440195235",
+        "0140940a-6339-4943-b75b-9f8484127105": "836972eb-7d13-49ea-bd27-f7460751d299",
+        "99e4fea8-8319-4386-8011-4bb799ff572d": "c0b6c0c6-05bd-4507-a387-cc2a1d8614c4",
+        "44dd87f0-0d9c-4ed8-a02b-6bfea98ebd1d": "66d9cd2f-6e0d-48f8-969f-754cd6009585",
+        "8b70b54c-8e8d-489f-86d3-089b39a6bd58": "688dbe8d-11f5-42f4-9d6b-eea7f75f4d99",
+        "9f64f732-3fa8-4936-a913-7b041df150ed": "977f394b-345a-4e2e-8a68-ca1ba548b35e",
+        "0ef82664-c2bd-48b4-a6e5-6c3bd01b83cc": "011d1235-d046-4953-8dd7-c105fa38de41",
+        "7031f4c5-856a-4794-ae11-d73eb1962787": "3506d76d-ffd2-4b93-a5cd-d958a97c1779",
+        "2491af19-8eac-4abc-a8e5-2473ff9b4f9e": "2e8bbcb8-cd06-447e-aba1-3ca0dbb770c7",
+        "d02fa09a-1607-42a4-963f-0992ace4def7": "40c0c59c-18b4-45d0-bba5-9a356bcd862e",
+        "6e27a837-07f6-46d5-9513-2cddde5d6e84": "1bf48b91-6ea2-4255-ad2d-919b46314412",
+        "980d9c92-9fc9-4f65-ae74-815489ec598d": "564bbd7a-45a7-465a-bee0-70701153d1a4",
+        "0120fff7-d89a-4337-a0e7-03511d89d6b6": "273d41f6-bbf5-4c3b-a1cc-ec71ee2d2c66",
+        "8e2cb665-9267-4d86-b7d5-8f04ec2ae4a2": "97d27d34-20c8-4f89-b2d6-05d0de6b2099",
+        "1fba15c3-d5da-48ce-8b73-7d811dbbb3b0": "cfff041a-39b7-4d53-b63c-d13c69842c8a",
+        "55e12418-6fd1-445a-920e-db098a3fda54": "4ffa9f21-13f3-4a03-b681-5bc78ec6ade6",
+        "8bf27811-591c-4431-b707-8c21b9ad5e04": "26458879-bd7d-4354-882b-4ec70f564bb0",
+        "462eb7fa-e7fa-4949-b145-3926ea1355ad": "4255d572-26b0-4942-9730-251fa1db3411",
+        "a6b533e9-379e-4900-9ae5-5a16e968ef48": "d7cce5f9-3365-44e1-9e51-ea38327b005f",
+        "46cb635a-025e-430d-8582-34ffaf775422": "58370ff7-9a2e-4171-8af0-c4d0ad75436c",
+        "ac3bdaf6-3089-4a1f-907c-1b8f7fbd1ab4": "d88cc392-bb31-41b1-b2ad-8ab931fdcd61",
+        "f873246b-91fe-4609-b9c2-3ca4b1f17dc1": "bf9a115b-f8c9-4701-ab7a-7f979343e6c7",
+        "c3325dcc-6ac1-475a-bdd2-751eb8f6bcff": "268b0d2b-4883-484d-8e35-51bc56b9b3e5",
+        "f290a13d-533b-41d6-957d-9d6c73cda139": "a80f606b-800f-4538-9f64-d394a5f8b926",
+        "3849877f-e3e6-4f8b-9d13-df6e093b7a1d": "41cb91eb-314f-499e-a400-c034876c8d90",
+        "1090c852-d556-414e-8567-52465f03291d": "7dd85354-40f3-44e5-9888-4ff299298f29",
+        "6d7fa13c-23ae-48ae-818f-ca9cb8536edb": "bc5b5173-eee7-4d31-a053-3a098a7c0129",
+        "193fafe7-ca1d-492c-b78a-02d3c2897728": "572430d6-11bd-45b8-b64c-15f5edfb4162",
+        "9c3e31f3-23cd-440e-abb5-9fb12a772ff9": "deb8c8c2-bb9b-4ce3-a56d-9fa81139e9a5",
+        "0a58b0ce-fa03-4c60-90a4-876b3b2a5c8e": "253ba092-dbef-47ab-9574-b591a1598e16",
+        "dc268b77-292a-430f-ba40-db536c952143": "ae45e47a-19b5-41b0-9542-eb67d97a820a",
+        "5b6a8023-5f33-4d77-87bb-af083cd764e7": "acab5dd9-0a3b-4646-b076-89fb7b89a4bc",
+        "75b776e3-3400-41f0-95f9-66a66ad255a1": "5e32aaf9-eb32-45c9-9b3d-772e36e98612",
+        "52d8735a-2fd1-4f5c-9400-f9b37329bd27": "f48c580f-2078-4b27-9d64-626fd876e078",
+        "611652ef-37be-45ca-91e1-cde91e22bea6": "8c6a38c4-03dd-4c8a-9fa8-0d61461c4ddd",
+        "7b750222-efdf-47eb-8834-2e838a5cac70": "1f18390f-2370-4566-8cf2-0bcecb3b54f5",
+        "73bbcb28-05aa-4516-8261-c21811f8735b": "a9a52c46-43eb-4717-bc57-aaee9b1b8ce4",
+        "5d4f6f0d-b627-4ca6-808b-3278bd46922b": "da35f760-51eb-4901-b240-8d2cd650a785",
+        "dc598be8-b0d5-427c-a4c5-b60b4eb09a8b": "107ab465-995f-49bd-a2f4-86b10e0507a7",
+        "0d46883d-0905-4d15-ab88-f1f02adbe870": "1fca47ea-4767-47c8-bedc-6d2acdb5ba35",
+        "c023df0a-9e3a-48ff-8d20-b3be2d4bb211": "1f0c54d7-ca31-4988-9ba8-e2aa33dba6bb",
+        "99cdcb4a-f885-b1ca-d976-7b0ca8b9a185": "f0f634b9-110f-4f1a-9475-ecc83ffe711d",
+        "226bc18d-e1fd-4a9d-b33f-44014e855704": "af11caf0-6d7e-4bba-88ab-1b36f90c6f0d",
+        "30db7b01-ed64-4210-bbc3-9dd352121dde": "d7195707-b65f-4f31-bb77-47f424525021"
+      }
     }
   ],
   "SceneProperties": {
@@ -16064,6 +16104,9 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "1908353f-7069-467e-b315-45c13181a07d"
@@ -16073,9 +16116,6 @@
         "Data": {
           "SelectionSets": []
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       }
     }
   },
