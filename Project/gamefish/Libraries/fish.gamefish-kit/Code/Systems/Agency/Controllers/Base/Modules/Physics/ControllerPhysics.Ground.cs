@@ -2,6 +2,24 @@ namespace GameFish;
 
 partial class ControllerPhysics
 {
+	/// <summary> Stick to floors? Also prevents slipping down them. </summary>
+	[Property]
+	[Range( 0.01f, 5f, clamped: false )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	public virtual bool GroundingEnabled { get; set; } = true;
+
+	/// <summary> The angle in which a surface is considered ground. </summary>
+	[Property]
+	[Range( 0f, 90f, clamped: false )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	public virtual float GroundAngle { get; set; } = 45f;
+
+	/// <summary> The maximum distance to stick to ground. </summary>
+	[Property]
+	[Range( 0f, 32f, clamped: false )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	public virtual float GroundDistance { get; set; } = 16f;
+
 	[Sync]
 	public bool IsGrounded
 	{
@@ -84,5 +102,19 @@ partial class ControllerPhysics
 	protected virtual void OnSetGroundObject( GameObject obj )
 	{
 		Controller?.OnSetGroundObject( obj );
+	}
+
+	public bool IsGround( in Vector3 normal )
+	{
+		if ( !GroundingEnabled )
+			return false;
+
+		if ( Up.Angle( normal ) > GroundAngle )
+			return false;
+
+		var upVel = Velocity.Forward( Up );
+		var upSpeed = upVel.Dot( normal );
+
+		return upSpeed < 30f;
 	}
 }

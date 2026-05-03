@@ -38,12 +38,9 @@ partial class ControllerPhysics
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
 	public SceneTrace Trace( in Vector3 from, in Vector3 to )
 	{
-		var tWorld = Origin;
+		var tFrom = Origin.WithPosition( from );
 
-		var tFrom = tWorld.WithPosition( from );
-		var tDest = tWorld.WithPosition( to );
-
-		return Trace( in tFrom, in tDest );
+		return Trace( in tFrom, in to );
 	}
 
 	/// <summary>
@@ -53,17 +50,21 @@ partial class ControllerPhysics
 	public SceneTrace Trace( in Vector3 vDelta )
 	{
 		var tFrom = Origin;
-		var tDest = tFrom.WithPosition( tFrom.Position + vDelta );
+		var to = tFrom.Position + vDelta;
 
-		return Trace( in tFrom, in tDest );
+		return Trace( in tFrom, in to );
 	}
 
 	/// <summary>
 	/// Creates the default collision trace and sets the start and end transforms.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public virtual SceneTrace Trace( in Transform tFrom, in Transform tDest )
+	public virtual SceneTrace Trace( in Transform tFrom, in Vector3 to )
+		=> Trace().FromTo( tFrom, to );
+
+	public virtual bool IsEmpty( in Vector3 pos, out SceneTraceResult trEmpty )
 	{
-		throw new NotImplementedException();
+		trEmpty = Trace( pos, pos ).Run();
+		return !trEmpty.StartedSolid;
 	}
 }
