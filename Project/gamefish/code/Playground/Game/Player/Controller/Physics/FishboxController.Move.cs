@@ -12,7 +12,7 @@ partial class FishboxController
 	[Property]
 	[Feature( PLAYER ), Group( MOVEMENT ), Order( DEFAULTS_ORDER )]
 	[Range( 0f, 10000f, clamped: false ), Step( 1f )]
-	public float AirAcceleration { get; set; } = 2000f;
+	public override float AirAcceleration { get; set; } = 2000f;
 
 	public MoveHelper MoveHelper { get; set; }
 
