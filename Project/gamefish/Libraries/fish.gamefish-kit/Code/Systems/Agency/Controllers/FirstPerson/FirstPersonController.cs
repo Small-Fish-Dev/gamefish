@@ -91,7 +91,7 @@ public abstract class FirstPersonController : PawnController
 	/// </summary>
 	[Property]
 	[Title( "Slope Factor" )]
-	[Range( 0f, 1f, clamped: false )]
+	[Range( 0f, 2f, clamped: false )]
 	[Feature( PAWN ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpSlopeFactor { get; set; } = 1f;
