@@ -5,6 +5,8 @@ namespace GameFish;
 /// </summary>
 public class BodyPhysics : ControllerPhysics
 {
+	public override ITagSet TraceTags => Tags;
+
 	protected override void SetVelocity( in Vector3 vel )
 	{
 		if ( Rigidbody.IsValid() )
@@ -19,7 +21,7 @@ public class BodyPhysics : ControllerPhysics
 		var tr = Scene.Trace
 			.IgnoreGameObjectHierarchy( GameObject )
 			.Body( Rigidbody, Origin.Position )
-			.WithCollisionRules( Tags )
+			.WithCollisionRules( TraceTags )
 			.Rotated( WorldRotation );
 
 		return tr;
