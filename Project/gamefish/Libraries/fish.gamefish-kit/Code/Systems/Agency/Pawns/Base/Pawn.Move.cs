@@ -84,8 +84,6 @@ partial class Pawn : IMove
 			return;
 
 		// Player-only input by default.
-		Vector3 wishVel = Vector3.Zero;
-
 		Controller.WishVelocity = CalculateWishVelocity();
 
 		Controller.Simulate( in deltaTime, in isFixedUpdate );
