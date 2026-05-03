@@ -68,11 +68,11 @@ public sealed class MoveHelper
 
 
 	/// <summary> Allow projecting momentum along surfaces? </summary>
-	public bool AllowSliding { get; set; } = true;
+	public bool SlidingEnabled { get; set; } = true;
 
 
 	/// <summary> Stick to floors? Also prevents slipping down them. </summary>
-	public bool AllowGrounding { get; set; } = true;
+	public bool GroundingEnabled { get; set; } = true;
 
 	/// <summary> The angle in which a surface is considered ground. </summary>
 	public float GroundAngle { get; set; } = 45f;
@@ -162,7 +162,7 @@ public sealed class MoveHelper
 
 	public MoveHelper WithSliding( in bool bSliding )
 	{
-		AllowSliding = bSliding;
+		SlidingEnabled = bSliding;
 
 		return this;
 	}
@@ -172,7 +172,7 @@ public sealed class MoveHelper
 	/// </summary>
 	public MoveHelper WithGroundSticking( in bool bGroundSticking )
 	{
-		AllowGrounding = bGroundSticking;
+		GroundingEnabled = bGroundSticking;
 
 		return this;
 	}
@@ -182,7 +182,7 @@ public sealed class MoveHelper
 	/// </summary>
 	public MoveHelper WithGrounding( in float fAngle, in float dist )
 	{
-		AllowGrounding = true;
+		GroundingEnabled = true;
 
 		GroundAngle = fAngle;
 
@@ -194,7 +194,7 @@ public sealed class MoveHelper
 	/// </summary>
 	public MoveHelper WithGrounding( in float fAngle, in float stickDist, in Vector3 vUp )
 	{
-		AllowGrounding = true;
+		GroundingEnabled = true;
 
 		GroundAngle = fAngle;
 		GroundDistance = stickDist;
@@ -241,7 +241,7 @@ public sealed class MoveHelper
 
 		Origin = Position;
 
-		if ( !AllowGrounding )
+		if ( !GroundingEnabled )
 			IsGrounded = false;
 
 		Move( Direction, Distance );
@@ -300,7 +300,7 @@ public sealed class MoveHelper
 
 		SnapTo( in trMove );
 
-		if ( AllowSliding )
+		if ( SlidingEnabled )
 			Slide( in dir, in trMove.Normal );
 
 		// Prevent infinite loops.
@@ -380,7 +380,7 @@ public sealed class MoveHelper
 
 	public bool IsGround( in Vector3 normal )
 	{
-		if ( !AllowGrounding )
+		if ( !GroundingEnabled )
 			return false;
 
 		if ( Up.Angle( normal ) > GroundAngle )
@@ -403,7 +403,7 @@ public sealed class MoveHelper
 
 	private void Finish()
 	{
-		if ( !AllowGrounding )
+		if ( !GroundingEnabled )
 			return;
 
 		var stickDist = IsGrounded ? GroundDistance : SkinWidth.Max( 1f );
