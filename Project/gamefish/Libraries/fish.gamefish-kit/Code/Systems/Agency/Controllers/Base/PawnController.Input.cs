@@ -61,12 +61,7 @@ partial class PawnController
 		if ( inputDir is not Vector3 moveInput )
 			return default;
 
-		var up = WorldRotation.Up;
-
-		var flatAim = Vector3.VectorPlaneProject( EyeForward, up );
-		var rMove = Rotation.LookAt( flatAim, up );
-
-		return rMove * moveInput;
+		return Perspective * moveInput;
 	}
 
 	public virtual Vector3 CalculateWishVelocity( in Vector3? inputDir = null )
