@@ -5,6 +5,12 @@ namespace GameFish;
 /// </summary>
 public class BodyPhysics : ControllerPhysics
 {
+	protected override void SetVelocity( in Vector3 vel )
+	{
+		if ( Rigidbody.IsValid() )
+			Rigidbody.Velocity = vel;
+	}
+
 	public override SceneTrace Trace()
 	{
 		if ( !Scene.IsValid() )
@@ -12,7 +18,7 @@ public class BodyPhysics : ControllerPhysics
 
 		var tr = Scene.Trace
 			.IgnoreGameObjectHierarchy( GameObject )
-			.Body( Rigidbody, WorldPosition )
+			.Body( Rigidbody, Origin.Position )
 			.WithCollisionRules( Tags )
 			.Rotated( WorldRotation );
 
