@@ -6,6 +6,7 @@ partial class PawnController
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
 	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
+	public virtual Vector3 Up => WorldRotation.Up;
 	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
 	/// <summary>
@@ -145,12 +146,7 @@ partial class PawnController
 			ApplyFriction( in deltaTime );
 
 		if ( IsMovementAllowed() )
-		{
-			var addVel = WishVelocity * Acceleration * deltaTime;
-			var speedLimit = GetMovementSpeed();
-
-			Velocity = Velocity.AddClamped( addVel, speedLimit );
-		}
+			ApplyAcceleration( in deltaTime );
 	}
 
 	/// <summary>
@@ -167,6 +163,24 @@ partial class PawnController
 	protected virtual void ApplyFriction( in float deltaTime )
 	{
 		Velocity = Velocity.WithFriction( Friction, deltaTime );
+	}
+
+	protected virtual void ApplyAcceleration( in float deltaTime )
+	{
+		var addVel = WishVelocity * Acceleration * deltaTime;
+
+		addVel.Separate( Up, out var upAdd, out var hAdd );
+		Velocity.Separate( Up, out var upVel, out var hVel );
+
+		var moveSpeed = GetMovementSpeed();
+		var currentSpeed = hVel.Length;
+
+		var speedLimit = moveSpeed.Max( currentSpeed );
+
+		hVel = (hVel + hAdd).ClampLength( speedLimit );
+		upVel += upAdd;
+
+		Velocity = hVel + upVel;
 	}
 
 	public SceneTrace Trace() => Physics?.Trace() ?? default;

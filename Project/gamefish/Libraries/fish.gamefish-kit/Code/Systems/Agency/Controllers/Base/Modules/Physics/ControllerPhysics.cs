@@ -14,6 +14,8 @@ public abstract partial class ControllerPhysics : ControllerModule
 {
 	protected const int PHYSICS_ORDER = DEFAULT_ORDER - 1000;
 
+	public Vector3 Up => Controller?.Up ?? WorldRotation.Up;
+
 	[Sync]
 	public Vector3 Velocity
 	{
