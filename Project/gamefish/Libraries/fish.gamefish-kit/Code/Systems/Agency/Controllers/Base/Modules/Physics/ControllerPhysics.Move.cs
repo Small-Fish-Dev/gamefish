@@ -52,9 +52,10 @@ partial class ControllerPhysics
 		move.Trace = Trace();
 		move.Run( tFrom.Position, tDest.Position, Velocity );
 
+		Velocity = move.Velocity;
 		WorldPosition = move.Position;
 
-		Velocity = move.Velocity;
 		IsGrounded = move.IsGrounded;
+		GroundNormal = move.GroundNormal;
 	}
 }

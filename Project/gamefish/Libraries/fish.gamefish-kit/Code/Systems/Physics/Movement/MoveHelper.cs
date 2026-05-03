@@ -283,12 +283,12 @@ public sealed class MoveHelper
 			IsStuck = true;
 
 			var vNormalSkin = trMove.Normal * SkinWidth;
-			var skinAdjust = trMove.EndPosition + vNormalSkin;
+			var vEndSkin = trMove.EndPosition + vNormalSkin;
 
-			Position = skinAdjust;
+			Position = vEndSkin;
 			// Velocity = default;
 
-			if ( !IsEmpty( skinAdjust, out _ ) )
+			if ( !IsEmpty( vEndSkin, out _ ) )
 			{
 				Finish();
 				return;
@@ -412,14 +412,11 @@ public sealed class MoveHelper
 
 		if ( IsGrounded )
 		{
+			// Snap to the ground.
 			SnapTo( trGround );
 
 			GroundNormal = trGround.Normal;
 			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
-		}
-		else
-		{
-			GroundNormal = Up;
 		}
 	}
 }
