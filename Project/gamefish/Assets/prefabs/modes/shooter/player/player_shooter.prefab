@@ -147,10 +147,16 @@
         "Flags": 0,
         "ClassId": "player_shooter",
         "ClassName": null,
+        "CylinderCollider": {
+          "_type": "component",
+          "component_id": "6cecd6c9-2b1d-42d5-a6f3-65d70ee13748",
+          "go": "9402846a-55d8-449f-a8ac-4ad77cec0251",
+          "component_type": "HullCollider"
+        },
         "GroundAngle": 45,
         "GroundDistance": 16,
         "GroundingEnabled": true,
-        "Height": 70,
+        "Height": 72,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
@@ -586,7 +592,7 @@
             "Children": []
           },
           {
-            "__guid": "e85f84e6-78f5-4f30-ac26-51d99c046dda",
+            "__guid": "8ceae1a8-9675-4e42-8d6e-460485730121",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -603,7 +609,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "33c52d12-845b-4532-8f2e-d5d551093320",
+                "__guid": "6de3e6ac-6d57-425f-bec0-6e92ac51be0e",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -701,6 +707,57 @@
             "SlotCount": 10,
             "StrictSlots": false,
             "UniqueEquips": false
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "9402846a-55d8-449f-a8ac-4ad77cec0251",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Cylinder",
+        "Position": "0,0,35",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.HullCollider",
+            "__guid": "6cecd6c9-2b1d-42d5-a6f3-65d70ee13748",
+            "__enabled": true,
+            "Flags": 0,
+            "BoxSize": "50,50,50",
+            "Center": "0,0,0",
+            "ColliderFlags": 0,
+            "Elasticity": null,
+            "Friction": null,
+            "Height": 70,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "Points": [],
+            "Radius": 16,
+            "Radius2": 16,
+            "RollingResistance": null,
+            "Slices": 16,
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0",
+            "Type": "Cylinder"
           }
         ],
         "Children": []
