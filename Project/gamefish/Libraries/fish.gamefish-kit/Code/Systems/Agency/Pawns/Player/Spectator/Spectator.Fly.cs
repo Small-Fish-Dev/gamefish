@@ -70,14 +70,14 @@ partial class Spectator
 			? moveDir * speed
 			: Vector3.Zero;
 
-		if ( AllowAscend && Input.Down( AscendAction ) )
-			wishVel += Vector3.Up * speed;
-
-		if ( AllowDescend && Input.Down( DescendAction ) )
-			wishVel += Vector3.Down * speed;
-
 		var rEye = EyeRotation;
 		var move = rEye * (wishVel * deltaTime);
+
+		if ( AllowAscend && Input.Down( AscendAction ) )
+			move += Vector3.Up * speed * deltaTime;
+
+		if ( AllowDescend && Input.Down( DescendAction ) )
+			move += Vector3.Down * speed * deltaTime;
 
 		var scroll = IControls.Scroll;
 
