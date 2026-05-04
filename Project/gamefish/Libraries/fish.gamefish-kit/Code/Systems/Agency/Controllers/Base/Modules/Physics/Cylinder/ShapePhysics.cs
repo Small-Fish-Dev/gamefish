@@ -18,15 +18,40 @@ public abstract class ShapePhysics : ControllerPhysics
 	[Feature( PAWN ), Group( DEBUG )]
 	public virtual Color RenderColor { get; set; } = Color.Cyan;
 
+	public abstract Collider ShapeCollider { get; }
+
 	protected override void DrawGizmos()
 	{
 		base.DrawGizmos();
 
-		RenderShape();
+		if ( RenderShapeEnabled )
+			RenderShape();
 	}
 
 	/// <summary>
 	/// Draw this shape at the current origin.
 	/// </summary>
 	public abstract void RenderShape();
+
+	[Button( "Create" )]
+	[ShowIf( nameof( InEditor ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected void ButtonCreateCollider()
+		=> CreateCollider();
+
+	[Button( "Update" )]
+	[ShowIf( nameof( InEditor ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected void ButtonUpdateCollider()
+		=> UpdateCollider();
+
+	/// <summary>
+	/// Creates the collider for this shape.
+	/// </summary>
+	protected abstract void CreateCollider();
+
+	/// <summary>
+	/// Sets the transform and settings of the collider for this shape.
+	/// </summary>
+	protected abstract void UpdateCollider();
 }
