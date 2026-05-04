@@ -4,7 +4,7 @@ namespace GameFish;
 /// A very basic controller with sprinting, ducking and jumping. <br />
 /// Ideal for use with first-person shooters.
 /// </summary>
-public abstract class FirstPersonController : PawnController
+public abstract partial class FirstPersonController : PawnController
 {
 	/// <summary>
 	/// Should this be able to toggle increasing its speed?
@@ -277,7 +277,4 @@ public abstract class FirstPersonController : PawnController
 		IsGrounded = false;
 		Velocity = hVel + upVel + impulse;
 	}
-
-	public override Vector3 GetLocalEyeTargetPosition()
-		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
 }
