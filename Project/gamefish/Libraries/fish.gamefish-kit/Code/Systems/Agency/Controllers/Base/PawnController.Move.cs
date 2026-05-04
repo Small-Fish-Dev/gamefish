@@ -6,6 +6,8 @@ partial class PawnController
 	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
 	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
 
+	public float SkinWidth => Physics?.SkinWidth ?? 0f;
+
 	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
 	/// <summary>
