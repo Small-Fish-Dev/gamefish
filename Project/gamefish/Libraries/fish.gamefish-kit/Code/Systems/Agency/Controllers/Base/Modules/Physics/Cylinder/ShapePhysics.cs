@@ -77,5 +77,14 @@ public abstract class ShapePhysics : ControllerPhysics
 	/// <summary>
 	/// Sets the transform and settings of the collider for this shape.
 	/// </summary>
-	protected abstract void UpdateCollider();
+	protected virtual void UpdateCollider()
+	{
+		if ( !ShapeCollider.IsValid() )
+			return;
+
+		ShapeCollider.LocalTransform = TraceOffset;
+
+		// Prevent negation of gravity from pushing into walls.
+		ShapeCollider.Friction = 0f;
+	}
 }

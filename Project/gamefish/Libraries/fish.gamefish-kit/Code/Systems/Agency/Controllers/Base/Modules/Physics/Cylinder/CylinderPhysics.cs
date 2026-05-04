@@ -54,15 +54,15 @@ public class CylinderPhysics : ShapePhysics
 
 	protected override void UpdateCollider()
 	{
+		base.UpdateCollider();
+
 		if ( !CylinderCollider.IsValid() )
 			return;
-
-		CylinderCollider.LocalTransform = TraceOffset;
-
-		CylinderCollider.Type = HullCollider.PrimitiveType.Cylinder;
 
 		CylinderCollider.Height = Height;
 		CylinderCollider.Radius = Radius;
 		CylinderCollider.Radius2 = Radius;
+
+		CylinderCollider.Type = HullCollider.PrimitiveType.Cylinder;
 	}
 }
