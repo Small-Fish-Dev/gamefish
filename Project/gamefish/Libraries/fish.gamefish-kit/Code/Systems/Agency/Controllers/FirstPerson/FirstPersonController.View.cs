@@ -27,22 +27,21 @@ partial class FirstPersonController
 
 	protected virtual void UpdateEyeCollision( in float deltaTime )
 	{
-		var radius = ViewCollisionRadius;
+		var radius = ViewCollisionRadius * WorldScale.x;
+		var skin = SkinWidth;
 
-		var startPos = WorldPosition + (Up * (radius + 1f));
-		var dist = EyeHeight - (radius + 1f);
+		var tWorld = WorldTransform;
+		var vUp = Up;
 
-		var trHead = Trace( startPos, startPos + (Up * dist) )
+		var zMin = radius + skin; //.Max( EyeHeightDuck );
+		var startPos = WorldPosition + (vUp * zMin);
+		var eyePos = tWorld.PointToWorld( LocalEyePosition );
+
+		var trHead = Trace( startPos, eyePos )
 			.Radius( radius )
 			.Run();
 
-		if ( !trHead.Hit )
-			return;
-
-		var localHit = WorldTransform.PointToLocal( trHead.EndPosition );
-		var zRoom = localHit.z;
-
-		if ( LocalEyePosition.z > zRoom )
-			LocalEyePosition = LocalEyePosition.WithZ( zRoom );
+		if ( trHead.Hit )
+			LocalEyePosition = tWorld.PointToLocal( trHead.EndPosition );
 	}
 }
