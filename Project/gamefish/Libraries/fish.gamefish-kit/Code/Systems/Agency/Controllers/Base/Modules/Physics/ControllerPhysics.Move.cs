@@ -97,53 +97,76 @@ partial class ControllerPhysics
 		Pawn.WorldTransform = Result.WithScale( Pawn.WorldScale );
 	}
 
+	/// <returns> The target position of the current projection. </returns>
+	protected virtual Vector3 GetDestination( in float skin = 0f )
+	{
+		var dest = Result.Position + (Direction * Distance);
+
+		// Add some skin to the trace.
+		dest += Direction * skin;
+
+		return dest;
+	}
+
 	/// <summary>
-	/// Move our hypothetical position/rotation and resolve collisions.
+	/// Move our hypothetical position/rotation and resolve collisions using default skin width.
 	/// </summary>
 	protected virtual void Project()
+		=> Project( SkinWidth.Positive() );
+
+	/// <summary>
+	/// Move our hypothetical position/rotation and resolve collisions with a specific skin width.
+	/// </summary>
+	protected virtual void Project( in float skin )
 	{
 		if ( Direction == default || Distance <= 0f )
 			return;
 
-		var dest = Result.Position + (Direction * Distance);
-
-		// Add some skin to the trace.
-		var skin = SkinWidth;
-		dest += Direction * skin;
-
-		var trMove = Trace( Result, dest ).Run();
+		var trMove = ProjectionTrace( in skin ).Run();
 
 		// No need to resolve collisions if there wasn't one.
 		if ( !trMove.Hit )
 		{
-			Result.Position += Direction * Distance;
-			Distance = 0f;
-			return;
+			OnFreeMove( in trMove, Direction, in skin );
+
+			if ( Distance <= 0 )
+				return;
 		}
 
 		// Stuck inside of something.
 		if ( trMove.StartedSolid )
 		{
-			// TODO: Proper unstuck algorithm.
-			var vNormalSkin = trMove.Normal * SkinWidth;
-			var vEndSkin = trMove.EndPosition + vNormalSkin;
+			OnStartedSolid( in trMove, Direction, in skin );
 
-			Result.Position = vEndSkin;
-			// Velocity = default;
-
-			if ( !IsEmpty( vEndSkin, out _ ) )
+			if ( Distance <= 0 )
 				return;
 		}
 
-		OnCollision( in trMove, Direction );
+		OnCollision( in trMove, Direction, in skin );
+	}
+
+	/// <summary>
+	/// Responds to a projected movement being completely unobstructed.
+	/// </summary>
+	protected virtual void OnFreeMove( in SceneTraceResult trMove, in Vector3 dir, in float skin = 0f )
+	{
+		Result.Position += Direction * Distance;
+		Distance = 0f;
+	}
+
+	protected virtual void OnStartedSolid( in SceneTraceResult trSolid, in Vector3 dir, in float skin = 0f )
+	{
+		// TODO: Proper unstuck algorithm.
+		Result.Position += trSolid.Normal * skin;
+		Distance -= skin;
 	}
 
 	/// <summary>
 	/// Responds to hits from projected movement.
 	/// </summary>
-	protected virtual void OnCollision( in SceneTraceResult trHit, in Vector3 dir )
+	protected virtual void OnCollision( in SceneTraceResult trHit, in Vector3 dir, in float skin = 0f )
 	{
-		SnapTo( in trHit );
+		SnapTo( in trHit, in skin );
 
 		Distance -= trHit.Distance;
 
@@ -151,38 +174,42 @@ partial class ControllerPhysics
 			return;
 
 		if ( SlidingEnabled )
-			Slide( in dir, in trHit.Normal );
+			Slide( in dir, in trHit.Normal, in skin );
 	}
 
-	protected virtual void SnapTo( in SceneTraceResult trMove )
+	protected virtual void SnapTo( in SceneTraceResult trMove, in float skin = 0f )
 	{
 		var hitGround = IsGround( trMove.Normal );
 
 		if ( hitGround )
 		{
 			IsGrounded = true;
-			Result.Position = trMove.EndPosition + (Up * SkinWidth);
+			Result.Position = trMove.EndPosition + (Up * skin);
 		}
 		else
 		{
-			Result.Position = trMove.EndPosition + (trMove.Normal * SkinWidth);
+			// var vWallProject = Vector3.VectorPlaneProject( trMove.Direction, trMove.Normal );
+			// var dir = (vWallProject + trMove.Normal).Normal;
+
+			var dir = trMove.Normal;
+
+			Result.Position = trMove.EndPosition + (dir * skin);
 		}
 	}
 
-	protected virtual void StickToGround()
+	protected virtual void StickToGround( in float skin = 0f )
 	{
 		if ( !GroundingEnabled )
 			return;
 
-		var stickDist = IsGrounded ? GroundDistance : SkinWidth.Max( 1f );
-
-		var trGround = Trace( Result, Result.Position + (Down * stickDist) ).Run();
+		var stickDist = IsGrounded ? GroundDistance.Max( skin ) : skin;
+		var trGround = Trace( Result, Result.Position + (Down * stickDist), in skin ).Run();
 
 		IsGrounded = trGround.Hit && IsGround( in trGround.Normal );
 
 		if ( IsGrounded )
 		{
-			SnapTo( trGround );
+			SnapTo( trGround, in skin );
 
 			GroundNormal = trGround.Normal;
 			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
@@ -193,15 +220,17 @@ partial class ControllerPhysics
 	/// Redirects momentum along the hit surface.
 	/// </summary>
 	/// <param name="normal"> The direction of the surface to slide along. </param>
-	protected void Slide( in Vector3 normal )
-		=> Slide( Direction, in normal );
+	/// <param name="skin"> The skin width. </param>
+	protected void Slide( in Vector3 normal, in float skin = 0f )
+		=> Slide( Direction, in normal, in skin );
 
 	/// <summary>
 	/// Redirects momentum along the hit surface.
 	/// </summary>
 	/// <param name="moveDir"> The direction of movement. </param>
 	/// <param name="normal"> The direction of the surface to slide along. </param>
-	protected virtual void Slide( in Vector3 moveDir, in Vector3 normal )
+	/// <param name="skin"> The skin width. </param>
+	protected virtual void Slide( in Vector3 moveDir, in Vector3 normal, in float skin = 0f )
 	{
 		if ( moveDir == default || normal == default )
 			return;

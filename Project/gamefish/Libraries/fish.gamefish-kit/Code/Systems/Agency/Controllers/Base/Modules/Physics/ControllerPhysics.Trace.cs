@@ -86,4 +86,8 @@ partial class ControllerPhysics
 
 		return true;
 	}
+
+	/// <returns> The trace used for iterating movement projection. </returns>
+	protected virtual SceneTrace ProjectionTrace( in float skin = 0f )
+		=> Trace( in Result, GetDestination( skin: skin ), skin: skin );
 }
