@@ -2,7 +2,17 @@ namespace GameFish;
 
 partial class ControllerPhysics
 {
-	/// <summary> Allow projecting momentum along surfaces? </summary>
+	/// <summary>
+	/// The limit of movement algorithm iterations that can be performed.
+	/// </summary>
+	[Property]
+	[Range( 1, 32, clamped: false )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	public int MaxIterations { get; set; } = 8;
+
+	/// <summary>
+	/// Allow projecting momentum along surfaces?
+	/// </summary>
 	[Property]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public bool SlidingEnabled { get; set; } = true;
@@ -68,8 +78,13 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void Run()
 	{
-		if ( Distance > 0f )
+		for ( var i = 0; i < MaxIterations; i++ )
+		{
+			if ( Distance <= 0f )
+				break;
+
 			Project();
+		}
 
 		End();
 	}
