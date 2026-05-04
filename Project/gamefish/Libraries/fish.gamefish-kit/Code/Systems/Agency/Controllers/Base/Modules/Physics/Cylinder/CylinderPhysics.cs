@@ -3,13 +3,18 @@ namespace GameFish;
 public class CylinderPhysics : ControllerPhysics
 {
 	/// <summary>
-	/// The radius of the cylinder and head.
+	/// The distance from the center the side of the cylinder.
 	/// </summary>
 	[Property]
 	[Feature( PAWN ), Group( PHYSICS )]
-	public float Radius { get; set; } = 16f;
+	public virtual float Radius { get; set; } = 16f;
 
-	protected float Height => Radius * 2f;
+	/// <summary>
+	/// The total height of the cylinder.
+	/// </summary>
+	[Property]
+	[Feature( PAWN ), Group( PHYSICS )]
+	protected virtual float Height { get; set; } = 64f;
 
 	public override SceneTrace Trace( in float skin = 0f )
 	{
