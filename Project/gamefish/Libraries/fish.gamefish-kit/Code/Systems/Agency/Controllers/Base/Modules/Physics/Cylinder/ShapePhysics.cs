@@ -37,7 +37,7 @@ public abstract class ShapePhysics : ControllerPhysics
 	[ShowIf( nameof( InEditor ), true )]
 	[Feature( PAWN ), Group( COLLISION )]
 	protected void ButtonCreateCollider()
-		=> CreateCollider();
+		=> CreateCollider( out _ );
 
 	[Button( "Update" )]
 	[ShowIf( nameof( InEditor ), true )]
@@ -48,7 +48,31 @@ public abstract class ShapePhysics : ControllerPhysics
 	/// <summary>
 	/// Creates the collider for this shape.
 	/// </summary>
-	protected abstract void CreateCollider();
+	protected virtual void CreateCollider( out GameObject obj )
+	{
+		obj = null;
+
+		if ( !Scene.IsValid() || !GameObject.IsValid() )
+			return;
+
+		// Don't duplicate on accident.
+		if ( ShapeCollider.IsValid() && ShapeCollider.GameObject.IsValid() )
+		{
+			this.Warn( "Prevented creating a duplicate shape collider." );
+			obj = ShapeCollider.GameObject;
+			return;
+		}
+
+		obj = Scene.CreateObject();
+
+		if ( !obj.IsValid() )
+			return;
+
+		obj.Name = "Collider";
+
+		obj.Parent = GameObject;
+		obj.LocalTransform = global::Transform.Zero;
+	}
 
 	/// <summary>
 	/// Sets the transform and settings of the collider for this shape.

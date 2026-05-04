@@ -40,16 +40,12 @@ public class CylinderPhysics : ShapePhysics
 		this.DrawCylinder( Radius, Height, RenderColor, Color.Transparent, tWorld: tOrigin );
 	}
 
-	protected override void CreateCollider()
+	protected override void CreateCollider( out GameObject obj )
 	{
-		if ( !Scene.IsValid() || !GameObject.IsValid() )
+		base.CreateCollider( out obj );
+
+		if ( !obj.IsValid() )
 			return;
-
-		var obj = Scene.CreateObject();
-		obj.Name = "Cylinder";
-
-		obj.Parent = GameObject;
-		obj.LocalTransform = global::Transform.Zero;
 
 		CylinderCollider = obj.Components?.Create<HullCollider>();
 
