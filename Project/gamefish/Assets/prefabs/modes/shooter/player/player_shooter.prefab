@@ -150,6 +150,7 @@
         "GroundAngle": 45,
         "GroundDistance": 16,
         "GroundingEnabled": true,
+        "Height": 70,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,
@@ -165,8 +166,14 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "Radius": 16,
+        "RenderColor": "0,1,1,1",
+        "RenderShapeEnabled": true,
         "SkinWidth": 0.5,
-        "SlidingEnabled": true
+        "SlidingEnabled": true,
+        "TraceOffset": {
+          "Position": "0,0,35",
+          "Rotation": "0,0,0,1"
+        }
       }
     ],
     "Children": [
