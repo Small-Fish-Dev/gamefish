@@ -8,16 +8,13 @@ partial class ControllerPhysics
 	public bool SlidingEnabled { get; set; } = true;
 
 	/// <summary> What position the movement started at. </summary>
-	protected Vector3 StartPosition { get; set; }
+	protected Transform Start = global::Transform.Zero;
 
-	/// <summary> What rotation the movement started at. </summary>
-	protected Rotation StartRotation { get; set; }
+	/// <summary> The inverse of the offset we're applying from the start. </summary>
+	protected Offset Delta = new();
 
-	/// <summary> The currently projected end position. </summary>
-	protected Vector3 Position { get; set; }
-
-	/// <summary> The currently projected end rotation. </summary>
-	protected Rotation Rotation { get; set; }
+	/// <summary> The currently projected end position/rotation. </summary>
+	protected Transform Result = global::Transform.Zero;
 
 	/// <summary> The currently projected movement direction. </summary>
 	protected Vector3 Direction { get; set; }
@@ -55,14 +52,13 @@ partial class ControllerPhysics
 	/// </summary>
 	public virtual void Move( in Transform tFrom, in Vector3 to )
 	{
-		StartPosition = tFrom.Position;
-		StartRotation = tFrom.Rotation;
-
-		Position = StartPosition;
-		Rotation = StartRotation;
-
 		Direction = tFrom.Position.Direction( in to );
 		Distance = tFrom.Position.Distance( in to );
+
+		Start = tFrom.WithOffset( TraceOffset );
+		Delta = Start.ToLocal( tFrom );
+
+		Result = Start;
 
 		Run();
 	}
@@ -96,12 +92,9 @@ partial class ControllerPhysics
 		if ( !Pawn.IsValid() )
 			return;
 
-		var tPawn = Pawn.WorldTransform;
+		Result = Result.ToWorld( Delta );
 
-		tPawn.Position = Position;
-		tPawn.Rotation = Rotation;
-
-		Pawn.WorldTransform = tPawn;
+		Pawn.WorldTransform = Result.WithScale( Pawn.WorldScale );
 	}
 
 	/// <summary>
@@ -112,18 +105,18 @@ partial class ControllerPhysics
 		if ( Direction == default || Distance <= 0f )
 			return;
 
-		var dest = Position + (Direction * Distance);
+		var dest = Result.Position + (Direction * Distance);
 
 		// Add some skin to the trace.
 		var skin = SkinWidth;
 		dest += Direction * skin;
 
-		var trMove = Trace( Position, dest ).Run();
+		var trMove = Trace( Result, dest ).Run();
 
 		// No need to resolve collisions if there wasn't one.
 		if ( !trMove.Hit )
 		{
-			Position += Direction * Distance;
+			Result.Position += Direction * Distance;
 			Distance = 0f;
 			return;
 		}
@@ -135,7 +128,7 @@ partial class ControllerPhysics
 			var vNormalSkin = trMove.Normal * SkinWidth;
 			var vEndSkin = trMove.EndPosition + vNormalSkin;
 
-			Position = vEndSkin;
+			Result.Position = vEndSkin;
 			// Velocity = default;
 
 			if ( !IsEmpty( vEndSkin, out _ ) )
@@ -168,11 +161,11 @@ partial class ControllerPhysics
 		if ( hitGround )
 		{
 			IsGrounded = true;
-			Position = trMove.EndPosition + (Up * SkinWidth);
+			Result.Position = trMove.EndPosition + (Up * SkinWidth);
 		}
 		else
 		{
-			Position = trMove.EndPosition + (trMove.Normal * SkinWidth);
+			Result.Position = trMove.EndPosition + (trMove.Normal * SkinWidth);
 		}
 	}
 
@@ -183,9 +176,7 @@ partial class ControllerPhysics
 
 		var stickDist = IsGrounded ? GroundDistance : SkinWidth.Max( 1f );
 
-		var trGround = Trace()
-			.FromTo( Position, Position + (Down * stickDist) )
-			.Run();
+		var trGround = Trace( Result, Result.Position + (Down * stickDist) ).Run();
 
 		IsGrounded = trGround.Hit && IsGround( in trGround.Normal );
 

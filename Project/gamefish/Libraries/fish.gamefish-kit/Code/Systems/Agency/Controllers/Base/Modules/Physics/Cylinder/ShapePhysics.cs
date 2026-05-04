@@ -18,15 +18,15 @@ public abstract class ShapePhysics : ControllerPhysics
 	[Feature( PAWN ), Group( DEBUG )]
 	public virtual Color RenderColor { get; set; } = Color.Cyan;
 
-	/// <summary>
-	/// Draw this shape at the current origin.
-	/// </summary>
-	public abstract void RenderShape();
-
 	protected override void DrawGizmos()
 	{
 		base.DrawGizmos();
 
 		RenderShape();
 	}
+
+	/// <summary>
+	/// Draw this shape at the current origin.
+	/// </summary>
+	public abstract void RenderShape();
 }
