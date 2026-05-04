@@ -33,7 +33,7 @@ public partial class ShooterController : FirstPersonController
 	{
 		PreMove( in deltaTime );
 
-		Physics?.Run( in deltaTime );
+		Physics?.Simulate( in deltaTime );
 
 		PostMove( in deltaTime );
 	}

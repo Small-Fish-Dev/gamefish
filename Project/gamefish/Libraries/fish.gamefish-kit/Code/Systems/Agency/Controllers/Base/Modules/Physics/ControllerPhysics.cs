@@ -57,7 +57,7 @@ public abstract partial class ControllerPhysics : ControllerModule
 			Rigidbody.Velocity = vel;
 	}
 
-	public virtual void Run( in float deltaTime )
+	public virtual void Simulate( in float deltaTime )
 	{
 		MoveDelta( Velocity * deltaTime );
 	}
