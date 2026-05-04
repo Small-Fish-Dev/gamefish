@@ -21,6 +21,8 @@ partial class ControllerPhysics
 
 	public virtual ITagSet TraceTags => Tags;
 
+	protected virtual float GroundSkin => SkinWidth;
+
 	public Transform Origin => Pawn?.WorldTransform ?? WorldTransform;
 
 	/// <summary>
@@ -88,6 +90,23 @@ partial class ControllerPhysics
 	}
 
 	/// <returns> The trace used for iterating movement projection. </returns>
-	protected virtual SceneTrace ProjectionTrace( in float skin = 0f )
-		=> Trace( in Result, GetDestination( skin: skin ), skin: skin );
+	protected virtual SceneTraceResult ProjectionTrace()
+	{
+		var dest = Result.Position + (Direction * Distance);
+
+		// Add some skin to the trace.
+		dest += Direction * SkinWidth;
+
+		return Trace( in Result, in dest, skin: SkinWidth ).Run();
+	}
+
+	protected virtual SceneTraceResult GroundTrace( float dist )
+	{
+		dist = (dist + SkinWidth).Max( SkinWidth );
+
+		var endPos = Result.Position + (Down * dist);
+		var tr = Trace( in Result, in endPos, skin: GroundSkin );
+
+		return tr.Run();
+	}
 }

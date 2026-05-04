@@ -112,17 +112,6 @@ partial class ControllerPhysics
 		Pawn.WorldTransform = Result.WithScale( Pawn.WorldScale );
 	}
 
-	/// <returns> The target position of the current projection. </returns>
-	protected virtual Vector3 GetDestination( in float skin = 0f )
-	{
-		var dest = Result.Position + (Direction * Distance);
-
-		// Add some skin to the trace.
-		dest += Direction * skin;
-
-		return dest;
-	}
-
 	/// <summary>
 	/// Move our hypothetical position/rotation and resolve collisions using default skin width.
 	/// </summary>
@@ -137,7 +126,7 @@ partial class ControllerPhysics
 		if ( Direction == default || Distance <= 0f )
 			return;
 
-		var trMove = ProjectionTrace( in skin ).Run();
+		var trMove = ProjectionTrace();
 
 		// No need to resolve collisions if there wasn't one.
 		if ( !trMove.Hit )
@@ -212,19 +201,19 @@ partial class ControllerPhysics
 		}
 	}
 
-	protected virtual void StickToGround( in float skin = 0f )
+	protected virtual void StickToGround()
 	{
 		if ( !GroundingEnabled )
 			return;
 
-		var stickDist = IsGrounded ? GroundDistance.Max( skin ) : skin;
-		var trGround = Trace( Result, Result.Position + (Down * stickDist), in skin ).Run();
+		var stickDist = IsGrounded ? GroundDistance.Max( SkinWidth ) : SkinWidth;
+		var trGround = GroundTrace( stickDist );
 
 		IsGrounded = trGround.Hit && IsGround( in trGround.Normal );
 
 		if ( IsGrounded )
 		{
-			SnapTo( trGround, in skin );
+			SnapTo( in trGround, SkinWidth );
 
 			GroundNormal = trGround.Normal;
 			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
