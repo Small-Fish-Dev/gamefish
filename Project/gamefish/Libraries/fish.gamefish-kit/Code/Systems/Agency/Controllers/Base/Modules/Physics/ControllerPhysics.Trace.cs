@@ -13,6 +13,12 @@ partial class ControllerPhysics
 	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public float SkinWidth { get; set; } = 0.5f;
 
+	[Property]
+	[Title( "Offset" )]
+	[InlineEditor, WideMode]
+	[Feature( PAWN ), Group( PHYSICS )]
+	public virtual Offset TraceOffset { get; set; } = new();
+
 	public virtual ITagSet TraceTags => Tags;
 
 	public Transform Origin => Pawn?.WorldTransform ?? WorldTransform;
