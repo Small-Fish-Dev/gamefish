@@ -93,11 +93,6 @@ public sealed class MoveHelper
 
 	public MoveHelper() { }
 
-	public MoveHelper( ControllerPhysics phys )
-	{
-		Trace = phys?.Trace() ?? default;
-	}
-
 	public MoveHelper( in SceneTrace tr, in Vector3 pos, in Vector3 dir, in float dist, in Vector3 vel )
 	{
 		Trace = tr;
@@ -108,13 +103,6 @@ public sealed class MoveHelper
 		Velocity = vel;
 	}
 
-
-	public MoveHelper WithController( ControllerPhysics phys )
-	{
-		Trace = phys?.Trace() ?? default;
-
-		return this;
-	}
 
 	public MoveHelper WithTrace( in SceneTrace tr )
 	{
