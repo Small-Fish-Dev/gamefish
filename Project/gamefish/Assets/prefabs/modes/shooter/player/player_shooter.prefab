@@ -90,7 +90,7 @@
         "DuckingEnabled": true,
         "DuckInput": "Duck",
         "EyeHeightDuck": 32,
-        "EyeHeightStand": 64,
+        "EyeHeightStand": 56,
         "EyeMoveSmoothing": 0.15,
         "EyeMoveSpeed": 1,
         "Friction": {
