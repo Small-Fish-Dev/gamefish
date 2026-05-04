@@ -61,9 +61,4 @@ public abstract partial class ControllerPhysics : ControllerModule
 	{
 		MoveDelta( Velocity * deltaTime );
 	}
-
-	public virtual bool TryStickToSurface( in Vector3 dir, in float maxDist )
-	{
-		throw new NotImplementedException();
-	}
 }
