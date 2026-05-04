@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public class CylinderPhysics : ControllerPhysics
+public class CylinderPhysics : ShapePhysics
 {
 	/// <summary>
 	/// The distance from the center the side of the cylinder.
@@ -23,5 +23,12 @@ public class CylinderPhysics : ControllerPhysics
 			.IgnoreGameObjectHierarchy( GameObject );
 
 		return tr;
+	}
+
+	public override void RenderShape()
+	{
+		var tOrigin = Origin.WithOffset( TraceOffset );
+
+		this.DrawCylinder( Radius, Height, RenderColor, Color.Transparent, tWorld: tOrigin );
 	}
 }
