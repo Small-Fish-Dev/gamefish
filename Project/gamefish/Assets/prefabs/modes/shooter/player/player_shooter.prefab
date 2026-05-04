@@ -138,7 +138,9 @@
         },
         "SprintingEnabled": true,
         "SprintInput": "Run",
-        "SprintMultiplier": 1.5
+        "SprintMultiplier": 1.5,
+        "ViewCollisionEnabled": true,
+        "ViewCollisionRadius": 14
       },
       {
         "__type": "GameFish.CylinderPhysics",
@@ -159,6 +161,7 @@
         "Height": 72,
         "IsClass": false,
         "IsNetworkingForced": true,
+        "MaxIterations": 8,
         "NetworkAutomatically": true,
         "NetworkId": "1c916bfd-7441-4512-84be-645850788ad1",
         "NetworkingMode": "Object",
@@ -592,7 +595,7 @@
             "Children": []
           },
           {
-            "__guid": "8ceae1a8-9675-4e42-8d6e-460485730121",
+            "__guid": "48296978-7787-4655-93e2-d427d7e57aa6",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -609,7 +612,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "6de3e6ac-6d57-425f-bec0-6e92ac51be0e",
+                "__guid": "b39c1b25-dbe3-44b4-98c9-4d9b9cf7f475",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
