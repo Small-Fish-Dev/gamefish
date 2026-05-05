@@ -9,6 +9,8 @@ public partial class Player : Pawn
 {
 	protected const int PLAYER_ORDER = PAWN_ORDER - 1337;
 
+	public static Player Local => Client.Local?.Pawn as Player;
+
 	protected override void OnEnabled()
 	{
 		Tags?.Add( TAG_PLAYER );
