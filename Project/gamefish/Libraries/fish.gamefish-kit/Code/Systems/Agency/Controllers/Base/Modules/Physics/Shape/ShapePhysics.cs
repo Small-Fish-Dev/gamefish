@@ -33,17 +33,36 @@ public abstract class ShapePhysics : ControllerPhysics
 	/// </summary>
 	public abstract void RenderShape();
 
-	[Button( "Create" )]
-	[ShowIf( nameof( InEditor ), true )]
-	[Feature( PAWN ), Group( COLLISION )]
-	protected void ButtonCreateCollider()
-		=> CreateCollider( out _ );
+	protected override void SetupPhysics()
+	{
+		base.SetupPhysics();
 
-	[Button( "Update" )]
-	[ShowIf( nameof( InEditor ), true )]
-	[Feature( PAWN ), Group( COLLISION )]
-	protected void ButtonUpdateCollider()
-		=> UpdateCollider();
+		var rb = Rigidbody;
+
+		if ( rb.IsValid() )
+		{
+			// Gravity is manually applied.
+			rb.Gravity = false;
+
+			// Fuck this garbage default.
+			rb.EnableImpactDamage = false;
+
+			// Prevent rotating from the physics engine.
+			rb.Locking = rb.Locking with
+			{
+				Pitch = true,
+				Yaw = true,
+				Roll = true
+			};
+		}
+	}
+
+	protected override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+
+		UpdateCollider();
+	}
 
 	/// <summary>
 	/// Creates the collider for this shape.
@@ -60,6 +79,7 @@ public abstract class ShapePhysics : ControllerPhysics
 		{
 			this.Warn( "Prevented creating a duplicate shape collider." );
 			obj = ShapeCollider.GameObject;
+
 			return;
 		}
 
@@ -87,4 +107,16 @@ public abstract class ShapePhysics : ControllerPhysics
 		// Prevent negation of gravity from pushing into walls.
 		ShapeCollider.Friction = 0f;
 	}
+
+	[Button( "Create" )]
+	[ShowIf( nameof( InEditor ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected void ButtonCreateCollider()
+		=> CreateCollider( out _ );
+
+	[Button( "Update" )]
+	[ShowIf( nameof( InEditor ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected void ButtonUpdateCollider()
+		=> UpdateCollider();
 }

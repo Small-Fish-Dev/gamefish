@@ -38,11 +38,6 @@ public abstract partial class ControllerPhysics : ControllerModule
 
 	protected Vector3 _vel;
 
-	protected virtual void OnSetVelocity( in Vector3 vel )
-	{
-		Controller?.OnSetVelocity( vel );
-	}
-
 	protected virtual Vector3 GetVelocity()
 	{
 		if ( Rigidbody.IsValid() )
@@ -57,8 +52,33 @@ public abstract partial class ControllerPhysics : ControllerModule
 			Rigidbody.Velocity = vel;
 	}
 
+	protected virtual void OnSetVelocity( in Vector3 vel )
+	{
+		Controller?.OnSetVelocity( vel );
+	}
+
 	public virtual void Simulate( in float deltaTime )
 	{
 		MoveDelta( Velocity * deltaTime );
+	}
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		SetupPhysics();
+	}
+
+	/// <summary>
+	/// Initalize physics components/settings at start.
+	/// </summary>
+	protected virtual void SetupPhysics()
+		=> UpdatePhysics();
+
+	/// <summary>
+	/// Updates physics settings according to parameters.
+	/// </summary>
+	protected virtual void UpdatePhysics()
+	{
 	}
 }

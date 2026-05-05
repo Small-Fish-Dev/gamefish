@@ -94,7 +94,8 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void End()
 	{
-		StickToGround();
+		if ( IsGrounded )
+			StickToGround();
 
 		Apply();
 	}
@@ -161,7 +162,11 @@ partial class ControllerPhysics
 	protected virtual void OnStartedSolid( in SceneTraceResult trSolid, in Vector3 dir, in float skin = 0f )
 	{
 		// TODO: Proper unstuck algorithm.
-		Result.Position += trSolid.Normal * skin;
+		var tStuck = Result.WithPosition( Result.Position + (trSolid.Normal * skin) );
+
+		if ( IsEmpty( tStuck, out _, skin: 0f ) )
+			Result.Position = tStuck.Position;
+
 		Distance -= skin;
 	}
 
@@ -170,6 +175,11 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void OnCollision( in SceneTraceResult trHit, in Vector3 dir, in float skin = 0f )
 	{
+		var isGround = IsGround( trHit.Normal );
+
+		if ( isGround )
+			IsGrounded = true;
+
 		SnapTo( in trHit, in skin );
 
 		Distance -= trHit.Distance;
@@ -183,21 +193,12 @@ partial class ControllerPhysics
 
 	protected virtual void SnapTo( in SceneTraceResult trMove, in float skin = 0f )
 	{
-		var hitGround = IsGround( trMove.Normal );
+		var tSnapTo = Result.WithPosition( trMove.EndPosition );
 
-		if ( hitGround )
+		if ( IsEmpty( in tSnapTo, out _, skin: 0f ) )
 		{
-			IsGrounded = true;
-			Result.Position = trMove.EndPosition + (Up * skin);
-		}
-		else
-		{
-			// var vWallProject = Vector3.VectorPlaneProject( trMove.Direction, trMove.Normal );
-			// var dir = (vWallProject + trMove.Normal).Normal;
-
-			var dir = trMove.Normal;
-
-			Result.Position = trMove.EndPosition + (dir * skin);
+			Result.Position = trMove.EndPosition;
+			return;
 		}
 	}
 
@@ -206,7 +207,7 @@ partial class ControllerPhysics
 		if ( !GroundingEnabled )
 			return;
 
-		var stickDist = IsGrounded ? GroundDistance.Max( SkinWidth ) : SkinWidth;
+		var stickDist = GroundDistance.Max( SkinWidth );
 		var trGround = GroundTrace( stickDist );
 
 		IsGrounded = trGround.Hit && IsGround( in trGround.Normal );

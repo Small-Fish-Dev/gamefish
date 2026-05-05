@@ -21,8 +21,6 @@ partial class ControllerPhysics
 
 	public virtual ITagSet TraceTags => Tags;
 
-	protected virtual float GroundSkin => SkinWidth;
-
 	public Transform Origin => Pawn?.WorldTransform ?? WorldTransform;
 
 	/// <summary>
@@ -94,9 +92,6 @@ partial class ControllerPhysics
 	{
 		var dest = Result.Position + (Direction * Distance);
 
-		// Add some skin to the trace.
-		dest += Direction * SkinWidth;
-
 		return Trace( in Result, in dest, skin: SkinWidth ).Run();
 	}
 
@@ -105,7 +100,7 @@ partial class ControllerPhysics
 		dist = (dist + SkinWidth).Max( SkinWidth );
 
 		var endPos = Result.Position + (Down * dist);
-		var tr = Trace( in Result, in endPos, skin: GroundSkin );
+		var tr = Trace( in Result, in endPos, skin: -SkinWidth );
 
 		return tr.Run();
 	}
