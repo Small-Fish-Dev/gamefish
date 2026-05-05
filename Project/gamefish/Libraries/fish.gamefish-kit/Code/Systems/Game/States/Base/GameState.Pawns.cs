@@ -58,7 +58,10 @@ partial class GameState
 			return true;
 
 		if ( !SpectatorPrefab.IsValid() )
+		{
+			this.Warn( $"Couldn't find spectator pawn prefab for assignment!" );
 			return false;
+		}
 
 		var tSpec = tPawn ?? cl.Pawn?.WorldTransform
 			.WithRotation( Rotation.Identity ); // TEMP
@@ -86,7 +89,10 @@ partial class GameState
 			return true;
 
 		if ( !PlayerPawnPrefab.IsValid() )
+		{
+			this.Warn( $"Couldn't find player pawn prefab for assignment!" );
 			return false;
+		}
 
 		return TrySetPawn( cl, PlayerPawnPrefab, out pawn, tPawn: tPawn, oldCleanup: oldCleanup );
 	}
