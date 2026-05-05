@@ -26,6 +26,12 @@ public partial class FacepunchController : PawnController
 		}
 
 		PlayerController.UseCameraControls = false;
+
+		// Hack for the hacks that fucked this up.
+		var rEye = WorldTransform.RotationToWorld( LocalEyeRotation );
+
+		WorldRotation = Rotation.Identity;
+		LocalEyeRotation = rEye;
 	}
 
 	protected override void OnUpdate()
