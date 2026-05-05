@@ -17,6 +17,8 @@ public abstract partial class ControllerPhysics : ControllerModule
 	public Vector3 Up => Controller?.Up ?? WorldRotation.Up;
 	public Vector3 Down => -Up;
 
+	public override Vector3 Center => Pawn?.Center ?? Controller?.Center ?? WorldPosition;
+
 	[Sync]
 	public Vector3 Velocity
 	{
