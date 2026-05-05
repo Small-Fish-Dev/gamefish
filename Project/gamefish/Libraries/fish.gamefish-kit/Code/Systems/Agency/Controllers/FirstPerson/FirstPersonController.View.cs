@@ -9,10 +9,10 @@ partial class FirstPersonController
 
 	[Property]
 	[Title( "Radius" )]
+	[Range( 0f, 32f, clamped: false )]
 	[Feature( VIEW ), Group( COLLISION )]
 	[ToggleGroup( nameof( ViewCollisionEnabled ) )]
-	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
-	public float ViewCollisionRadius { get; set; } = 14f;
+	public float ViewCollisionRadius { get; set; } = 8f;
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);
