@@ -20,6 +20,8 @@ public partial class ShooterController : FirstPersonController
 
 		if ( ShouldJump() )
 			Jump();
+
+		UpdateGravityBoots();
 	}
 
 	protected override void PostMove( in float deltaTime )
@@ -38,5 +40,32 @@ public partial class ShooterController : FirstPersonController
 		Physics?.Simulate( in deltaTime );
 
 		PostMove( in deltaTime );
+	}
+
+	protected virtual void UpdateGravityBoots()
+	{
+		if ( !Pawn.IsValid() )
+			return;
+
+		if ( !Input.Down( "Item" ) )
+			return;
+
+		var tr = Pawn.GetEyeTrace( 8096f ).Run();
+
+		if ( !tr.Hit )
+			return;
+
+		var oldCenter = Center;
+
+		var rEye = Pawn.EyeRotation;
+		var eyePos = Pawn.EyePosition;
+
+		var rUp = Rotation.LookAt( tr.Normal, tr.Direction );
+		WorldRotation = Rotation.LookAt( rUp.Up, rUp.Forward );
+
+		Pawn.WorldPosition += oldCenter - Center;
+
+		Pawn.EyeRotation = rEye;
+		Pawn.EyePosition = eyePos;
 	}
 }
