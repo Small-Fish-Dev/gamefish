@@ -55,13 +55,7 @@ partial class ControllerPhysics
 	{
 		trEmpty = Trace( in tSpace, in tSpace.Position, skin: in skin ).Run();
 
-		if ( trEmpty.Hit )
-			return false;
-
-		if ( trEmpty.StartedSolid )
-			return false;
-
-		return true;
+		return !trEmpty.StartedSolid;
 	}
 
 	protected virtual SceneTraceResult GroundTrace( ProjectedMovement move )

@@ -153,7 +153,8 @@ partial class ControllerPhysics
 		if ( trMove.StartedSolid )
 			OnStuck( in trMove, move );
 
-		OnCollide( in trMove, move );
+		if ( !move.IsStuck )
+			OnCollide( in trMove, move );
 	}
 
 	/// <summary>
@@ -175,10 +176,7 @@ partial class ControllerPhysics
 		move.IsStuck = true;
 
 		if ( TryUnstuck( in trStuck, move ) )
-		{
-			move.IsStuck = false;
 			return;
-		}
 
 		// Don't act like we're grounded if stuck in something.
 		move.IsGrounded = false;
@@ -189,10 +187,10 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void OnCollide( in SceneTraceResult trHit, ProjectedMovement move )
 	{
-		move.Distance -= trHit.Distance;
-
 		if ( !TrySnapTo( in trHit, move ) )
 			return;
+
+		move.Distance -= trHit.Distance;
 
 		if ( IsGround( in trHit.Normal ) )
 			OnGrounded( in trHit, move );
@@ -220,9 +218,7 @@ partial class ControllerPhysics
 
 	protected virtual bool TryStickToGround( in SceneTraceResult trGround, ProjectedMovement move )
 	{
-		var hitGround = trGround.Hit && IsGround( in trGround.Normal );
-
-		if ( !hitGround )
+		if ( !IsGround( in trGround ) )
 			return false;
 
 		if ( !TrySnapTo( trGround, move ) )
@@ -234,15 +230,11 @@ partial class ControllerPhysics
 
 	protected virtual bool TrySnapTo( in SceneTraceResult trMove, ProjectedMovement move )
 	{
-		var tDest = move.WithPosition( trMove.EndPosition );
+		if ( trMove.StartedSolid )
+			return false;
 
-		if ( IsEmpty( tDest, out _, skin: -SkinWidth ) )
-		{
-			move.Point = tDest;
-			return true;
-		}
-
-		return false;
+		move.Position = trMove.EndPosition;
+		return true;
 	}
 
 	protected virtual bool TryUnstuck( in Transform tStuck, ProjectedMovement move )
@@ -264,7 +256,7 @@ partial class ControllerPhysics
 			return true;
 
 		Vector3 vSkin;
-		Transform tEmpty;
+		var tEmpty = move.Point;
 
 		for ( var i = 0; i < MaxUnstuckTries; i++ )
 		{
@@ -276,10 +268,8 @@ partial class ControllerPhysics
 
 				if ( IsEmpty( tEmpty, out _, skin: 0f ) )
 				{
-					move.Point = tEmpty;
 					move.IsStuck = false;
-
-					return true;
+					break;
 				}
 			}
 
@@ -289,14 +279,16 @@ partial class ControllerPhysics
 
 			if ( IsEmpty( in tEmpty, out _, skin: 0f ) )
 			{
-				move.Point = tEmpty;
 				move.IsStuck = false;
-
-				return true;
+				break;
 			}
 		}
 
-		return !move.IsStuck;
+		if ( move.IsStuck )
+			return false;
+
+		move.Point = tEmpty;
+		return true;
 	}
 
 	/// <summary>
