@@ -84,4 +84,28 @@ public class ProjectedResult
 
 	public Transform WithRotation( in Rotation r )
 		=> Point.WithRotation( in r );
+
+	/// <returns> The position this wants to be given its movement parameters. </returns>
+	public Vector3 Destination()
+		=> Point.Position + (Direction * Distance);
+
+	/// <returns> Where the projection wants to be given its movement parameters. </returns>
+	public Transform Projected()
+		=> Project( Direction * Distance );
+
+	/// <returns> Where the projection would be with this position added. </returns>
+	public Transform Project( in Vector3 posAdd )
+		=> Point.WithPosition( Point.Position + posAdd );
+
+	/// <returns> Where the projection would be with this offset added. </returns>
+	public Transform Project( in Vector3 dir, in float dist )
+		=> Project( dir * dist );
+
+	/// <returns> Where the projection would be oriented with this rotation added. </returns>
+	public Transform Rotate( in Rotation r )
+		=> Point.WithRotation( Point.Rotation * r );
+
+	/// <returns> Where the projection would be oriented with this rotation added. </returns>
+	public Transform Rotate( in Vector3 axis, in float degrees )
+		=> Point.WithRotation( Point.Rotation * Rotation.FromAxis( axis, degrees ) );
 }
