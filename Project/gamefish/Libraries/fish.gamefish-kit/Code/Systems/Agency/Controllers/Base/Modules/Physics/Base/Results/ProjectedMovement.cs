@@ -84,8 +84,12 @@ public class ProjectedMovement
 		=> withSkin ? _trSkin : _trBase;
 
 	/// <returns> A trace from the current position to the projected destination. </returns>
-	public SceneTrace Trace( in bool skin )
+	public SceneTrace ProjectedTrace( in bool skin )
 		=> GetTrace( skin ).FromTo( in Point, Position + (Direction * Distance) );
+
+	/// <returns> A trace from the current position. </returns>
+	public SceneTrace Trace( in bool skin )
+		=> GetTrace( skin ).FromTo( in Point, in Point.Position );
 
 	/// <returns> A trace from the current position to a destination. </returns>
 	public SceneTrace Trace( in Vector3 endPos, in bool skin )

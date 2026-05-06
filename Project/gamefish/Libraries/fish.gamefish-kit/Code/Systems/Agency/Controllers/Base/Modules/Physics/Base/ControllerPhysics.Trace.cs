@@ -46,17 +46,21 @@ partial class ControllerPhysics
 	public virtual SceneTrace Trace( in Transform tFrom, in Vector3 to, in float skin = 0f )
 		=> Trace( skin: skin ).FromTo( tFrom, to );
 
-	/// <returns> If the space a projection is currently at is free. </returns>
-	protected bool IsEmpty( ProjectedMovement move, out SceneTraceResult trEmpty, in float skin = 0f )
-		=> IsEmpty( in move.Point, out trEmpty, in skin );
+	/// <returns> If the space projection would be at is currently free. </returns>
+	protected virtual bool IsEmpty( in Vector3 pos, in bool skin, ProjectedMovement move, out SceneTraceResult trEmpty )
+	{
+		trEmpty = move.Trace( move.WithPosition( pos ), in pos, in skin ).Run();
+		return !trEmpty.StartedSolid;
+	}
 
+	/*
 	/// <returns> If that space is free. </returns>
 	public virtual bool IsEmpty( in Transform tSpace, out SceneTraceResult trEmpty, in float skin = 0f )
 	{
 		trEmpty = Trace( in tSpace, in tSpace.Position, skin: in skin ).Run();
-
 		return !trEmpty.StartedSolid;
 	}
+	*/
 
 	protected virtual SceneTraceResult GroundTrace( ProjectedMovement move )
 	{

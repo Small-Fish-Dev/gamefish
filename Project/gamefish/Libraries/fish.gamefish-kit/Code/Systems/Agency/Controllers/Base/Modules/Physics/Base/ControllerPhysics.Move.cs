@@ -76,15 +76,18 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void Run( ProjectedMovement move )
 	{
+		if ( move is null )
+			return;
+
 		for ( var i = 0; i < MaxIterations; i++ )
 		{
+			Project( move );
+
 			if ( move.Distance <= 0f )
 				break;
 
 			if ( move.Direction == default )
 				break;
-
-			Project( move );
 		}
 
 		End( move );
@@ -136,25 +139,26 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void Project( ProjectedMovement move )
 	{
-		if ( move is null )
-			return;
+		var trMove = move.ProjectedTrace( skin: false ).Run();
 
-		var trMove = move.Trace( skin: false ).Run();
-
-		if ( !trMove.Hit )
+		if ( trMove.StartedSolid )
 		{
+			// Allow for custom unstuck behavior.
+			OnStuck( in trMove, move );
+		}
+		else if ( trMove.Hit )
+		{
+			// Hit something.
+			OnCollide( in trMove, move );
+		}
+		else
+		{
+			// Moving without obstruction.
 			OnFreeMove( in trMove, move );
 
 			if ( move.Distance <= 0 )
 				return;
 		}
-
-		// Allow for custom unstuck behavior.
-		if ( trMove.StartedSolid )
-			OnStuck( in trMove, move );
-
-		if ( !move.IsStuck )
-			OnCollide( in trMove, move );
 	}
 
 	/// <summary>
@@ -187,9 +191,10 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void OnCollide( in SceneTraceResult trHit, ProjectedMovement move )
 	{
-		if ( !TrySnapTo( in trHit, move ) )
+		if ( move.IsStuck || trHit.StartedSolid )
 			return;
 
+		move.Position = trHit.EndPosition;
 		move.Distance -= trHit.Distance;
 
 		if ( IsGround( in trHit.Normal ) )
@@ -237,17 +242,6 @@ partial class ControllerPhysics
 		return true;
 	}
 
-	protected virtual bool TryUnstuck( in Transform tStuck, ProjectedMovement move )
-	{
-		if ( IsEmpty( in tStuck, out var trStuck, skin: 0f ) )
-		{
-			move.IsStuck = false;
-			return true;
-		}
-
-		return TryUnstuck( in trStuck, move );
-	}
-
 	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedMovement move )
 	{
 		move.IsStuck = trStuck.StartedSolid;
@@ -256,30 +250,46 @@ partial class ControllerPhysics
 			return true;
 
 		Vector3 vSkin;
-		var tEmpty = move.Point;
+		Vector3 pos = move.Position;
 
-		for ( var i = 0; i < MaxUnstuckTries; i++ )
+		for ( var i = 1; i <= MaxUnstuckTries; i++ )
 		{
-			// Where were we coming from?
-			if ( LastVelocity is Vector3 lastVel )
+			// What are we touching?
+			if ( trStuck.Hit )
 			{
-				vSkin = -lastVel.Normal * SkinWidth * i;
-				tEmpty = move.Project( vSkin );
+				vSkin = trStuck.Normal * SkinWidth * i;
+				pos = move.Position + vSkin;
 
-				if ( IsEmpty( tEmpty, out _, skin: 0f ) )
+				if ( IsEmpty( pos, false, move, out _ ) )
 				{
 					move.IsStuck = false;
+					// this.Log( "hit normal skin" );
 					break;
 				}
 			}
 
-			// What are we touching?
-			vSkin = trStuck.Normal * SkinWidth * i;
-			tEmpty = move.Project( vSkin );
+			// Where were we coming from?
+			if ( LastVelocity is Vector3 lastVel && lastVel != default )
+			{
+				vSkin = -lastVel.Normal * SkinWidth * i;
+				pos = move.Position + vSkin;
 
-			if ( IsEmpty( in tEmpty, out _, skin: 0f ) )
+				if ( IsEmpty( pos, false, move, out _ ) )
+				{
+					move.IsStuck = false;
+					// this.Log( $"vel: {lastVel}" );
+					break;
+				}
+			}
+
+			// Pick a random place.
+			vSkin = Vector3.Random.Normal * i;
+			pos = move.Position + vSkin;
+
+			if ( IsEmpty( pos, false, move, out _ ) )
 			{
 				move.IsStuck = false;
+				// this.Log( "random" );
 				break;
 			}
 		}
@@ -287,7 +297,7 @@ partial class ControllerPhysics
 		if ( move.IsStuck )
 			return false;
 
-		move.Point = tEmpty;
+		move.Position = pos;
 		return true;
 	}
 
@@ -298,23 +308,14 @@ partial class ControllerPhysics
 	/// <param name="move"> The current movement projection. </param>
 	protected virtual void Slide( in Vector3 normal, ProjectedMovement move )
 	{
-		if ( normal == default || move.Direction == default )
+		if ( normal == default )
 			return;
 
-		var dot = move.Direction.Dot( normal );
-
-		if ( dot == 0f )
-		{
-			move.Distance = 0f;
-			move.Direction = default;
-
-			move.Velocity = default;
-
-			return;
-		}
-
-		// Reduce velocity.
+		// Project velocity along the plane.
 		ClipVelocity( in normal, move );
+
+		if ( move.Direction == default )
+			return;
 
 		// Affect direction/distance.
 		var vProject = Vector3.VectorPlaneProject( in move.Direction, in normal );
