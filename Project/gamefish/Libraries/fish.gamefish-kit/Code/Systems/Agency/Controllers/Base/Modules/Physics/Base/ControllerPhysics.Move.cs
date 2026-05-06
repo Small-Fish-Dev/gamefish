@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace GameFish;
 
 partial class ControllerPhysics
@@ -49,13 +51,23 @@ partial class ControllerPhysics
 	/// </summary>
 	public virtual void Move( in Transform tFrom, in Vector3 to )
 	{
+		var trBase = Trace( skin: 0f );
+		var trSkin = Trace( skin: -SkinWidth );
+
 		var dir = tFrom.Position.Direction( in to );
 		var dist = tFrom.Position.Distance( in to );
 
 		var tStart = tFrom.WithOffset( TraceOffset );
 		Offset delta = tStart.ToLocal( tFrom );
 
-		Run( new( in tStart, in delta, in dir, in dist, Velocity ) );
+		var move = new ProjectedMovement( in trBase, in trSkin, in tStart, in delta, in dir, in dist )
+		{
+			Velocity = Velocity,
+			IsGrounded = IsGrounded && GroundingEnabled,
+			GroundNormal = GroundNormal,
+		};
+
+		Run( move );
 	}
 
 	/// <summary>
@@ -72,7 +84,7 @@ partial class ControllerPhysics
 		}
 
 		if ( move.IsGrounded )
-			StickToGround( move );
+			TryStickToGround( move );
 
 		End( move );
 	}
@@ -93,12 +105,12 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void Apply( ProjectedMovement move )
 	{
-		Velocity = move.Velocity;
-
 		IsStuck = move.IsStuck;
 
-		IsGrounded = move.IsGrounded;
-		GroundNormal = move.GroundNormal;
+		Velocity = move.Velocity;
+
+		IsGrounded = move.IsGrounded && GroundingEnabled;
+		GroundNormal = move.IsGrounded ? move.GroundNormal : -Gravity.Normal;
 
 		if ( !Pawn.IsValid() )
 			return;
@@ -120,45 +132,112 @@ partial class ControllerPhysics
 		if ( move.Direction == default || move.Distance <= 0f )
 			return;
 
-		// Are we stuck in something to begin with?
-		IsStuck = !IsEmpty( in move.Point, out var trStuck, skin: 0f );
+		var trMove = move.Trace( skin: false ).Run();
 
-		// If we can't get unstuck then just give up.
-		if ( IsStuck && !TryUnstuck( in trStuck, move ) )
-			return;
-
-		var tProj = move.Projected();
-		var trBase = Trace( in move.Point, tProj.Position, skin: 0f ).Run();
-
-		if ( !trBase.Hit )
+		if ( !trMove.Hit )
 		{
-			move.Point = tProj;
-			move.Distance = 0f;
-			return;
+			OnFreeMove( in trMove, move );
+
+			if ( move.Distance <= 0 )
+				return;
 		}
 
-		OnProjectedCollision( in trBase, move );
+		// Allow for custom unstuck behavior.
+		if ( trMove.StartedSolid )
+			OnStuck( in trMove, move );
+
+		OnCollide( in trMove, move );
 	}
 
 	/// <summary>
-	/// Responds to hits from projected movement.
+	/// Reponds to a completely unobstructed movement projection.
 	/// </summary>
-	protected virtual void OnProjectedCollision( in SceneTraceResult trHit, ProjectedMovement move )
+	protected virtual void OnFreeMove( in SceneTraceResult trMove, ProjectedMovement move )
 	{
-		var isGround = IsGround( in trHit.Normal );
+		move.Position = trMove.EndPosition;
+		move.Distance = 0f;
 
-		if ( isGround )
-			move.IsGrounded = true;
+		// Look for ground again in case we're floating.
+		if ( move.IsGrounded )
+			move.IsGrounded = IsGround( GroundTrace( move ) );
+	}
 
-		SnapTo( in trHit, move );
+	/// <summary>
+	/// Responds to movement projection being stuck(possibly from the start).
+	/// </summary>
+	protected virtual void OnStuck( in SceneTraceResult trStuck, ProjectedMovement move )
+	{
+		move.IsStuck = true;
 
+		if ( TryUnstuck( in trStuck, move ) )
+		{
+			move.IsStuck = false;
+			return;
+		}
+
+		// Don't act like we're grounded if stuck in something.
+		move.IsGrounded = false;
+	}
+
+	/// <summary>
+	/// Responds to a movement projection hitting something.
+	/// </summary>
+	protected virtual void OnCollide( in SceneTraceResult trHit, ProjectedMovement move )
+	{
 		move.Distance -= trHit.Distance;
 
-		if ( move.Distance <= 0f )
+		if ( !TrySnapTo( in trHit, move ) )
 			return;
+
+		if ( IsGround( in trHit.Normal ) )
+			OnGrounded( in trHit, move );
 
 		if ( SlidingEnabled )
 			Slide( in trHit.Normal, move );
+	}
+
+	/// <summary>
+	/// Responds to movement projection touching ground.
+	/// </summary>
+	protected virtual void OnGrounded( in SceneTraceResult trGround, ProjectedMovement move )
+	{
+		if ( !trGround.Hit || trGround.StartedSolid )
+			return;
+
+		move.IsGrounded = true;
+		move.GroundNormal = trGround.Normal;
+
+		ClipVelocity( trGround.Normal, move );
+	}
+
+	protected bool TryStickToGround( ProjectedMovement move )
+		=> TryStickToGround( GroundTrace( move ), move );
+
+	protected virtual bool TryStickToGround( in SceneTraceResult trGround, ProjectedMovement move )
+	{
+		var hitGround = trGround.Hit && IsGround( in trGround.Normal );
+
+		if ( !hitGround )
+			return false;
+
+		if ( !TrySnapTo( trGround, move ) )
+			return false;
+
+		OnGrounded( in trGround, move );
+		return true;
+	}
+
+	protected virtual bool TrySnapTo( in SceneTraceResult trMove, ProjectedMovement move )
+	{
+		var tDest = move.WithPosition( trMove.EndPosition );
+
+		if ( IsEmpty( tDest, out _, skin: -SkinWidth ) )
+		{
+			move.Point = tDest;
+			return true;
+		}
+
+		return false;
 	}
 
 	protected virtual bool TryUnstuck( in Transform tStuck, ProjectedMovement move )
@@ -174,77 +253,41 @@ partial class ControllerPhysics
 
 	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedMovement move )
 	{
-		move.IsStuck = trStuck.StartedSolid;
+		if ( trStuck.StartedSolid )
+			move.IsStuck = true;
 
 		if ( !move.IsStuck )
 			return true;
 
 		Vector3 vSkin;
-		Transform tAddSkin;
+		Transform tEmpty;
 
 		if ( LastVelocity is Vector3 lastVel )
 		{
 			vSkin = -lastVel.Normal * SkinWidth;
-			tAddSkin = move.Project( vSkin );
+			tEmpty = move.Project( vSkin );
 
-			if ( IsEmpty( tAddSkin, out _, 0f ) )
+			if ( IsEmpty( tEmpty, out _, skin: 0f ) )
 			{
-				move.Point = tAddSkin;
+				move.Point = tEmpty;
 				move.IsStuck = false;
 
 				return true;
 			}
 		}
 
-		/*
 		vSkin = trStuck.Normal * SkinWidth;
-		tAddSkin = move.WithPosition( trStuck.EndPosition + vSkin );
+		tEmpty = move.Project( vSkin );
 
-		if ( IsEmpty( in tAddSkin, out _, 0f ) )
+		if ( IsEmpty( in tEmpty, out _, skin: 0f ) )
 		{
-			move.Point = tAddSkin;
+			move.Point = tEmpty;
 			move.IsStuck = false;
 
 			return true;
 		}
-		*/
 
 		return move.IsStuck;
-	}
-
-	protected virtual void SnapTo( in SceneTraceResult trMove, ProjectedMovement move )
-	{
-		var tSnapTo = move.Point.WithPosition( trMove.EndPosition );
-
-		if ( IsEmpty( in tSnapTo, out _, skin: 0f ) )
-		{
-			move.Point = tSnapTo;
-			return;
-		}
-	}
-
-	protected virtual void StickToGround( ProjectedMovement move )
-	{
-		if ( !GroundingEnabled )
-		{
-			move.IsGrounded = false;
-			return;
-		}
-
-		var skin = SkinWidth.Positive();
-
-		var stickDist = GroundDistance.Max( in skin );
-		var trGround = GroundTrace( move.Point, stickDist );
-
-		move.IsGrounded = trGround.Hit && IsGround( in trGround.Normal );
-
-		if ( move.IsGrounded )
-		{
-			SnapTo( trGround, move );
-
-			move.Velocity = Vector3.VectorPlaneProject( Velocity, Up );
-			move.GroundNormal = trGround.Normal;
-		}
 	}
 
 	/// <summary>
@@ -254,7 +297,7 @@ partial class ControllerPhysics
 	/// <param name="move"> The current movement projection. </param>
 	protected virtual void Slide( in Vector3 normal, ProjectedMovement move )
 	{
-		if ( move.Direction == default || normal == default )
+		if ( normal == default || move.Direction == default )
 			return;
 
 		var dot = move.Direction.Dot( normal );
@@ -270,17 +313,29 @@ partial class ControllerPhysics
 		}
 
 		// Reduce velocity.
-		var vel = move.Velocity;
-
-		if ( IsGround( normal ) )
-			move.Velocity = Vector3.VectorPlaneProject( in vel, Up );
-		else
-			move.Velocity = Vector3.VectorPlaneProject( in vel, in normal );
+		ClipVelocity( in normal, move );
 
 		// Affect direction/distance.
 		var vProject = Vector3.VectorPlaneProject( in move.Direction, in normal );
 
 		move.Direction = vProject.Normal;
 		move.Distance *= vProject.Length;
+	}
+
+	protected virtual void ClipVelocity( in Vector3 normal, ProjectedMovement move )
+	{
+		var vel = move.Velocity;
+
+		if ( IsGround( normal ) )
+		{
+			var flatSpeed = vel.Horizontal( in normal ).Length;
+			var planeVel = Vector3.VectorPlaneProject( in vel, in normal );
+
+			move.Velocity = planeVel.Normal * flatSpeed;
+		}
+		else
+		{
+			move.Velocity = Vector3.VectorPlaneProject( in vel, in normal );
+		}
 	}
 }

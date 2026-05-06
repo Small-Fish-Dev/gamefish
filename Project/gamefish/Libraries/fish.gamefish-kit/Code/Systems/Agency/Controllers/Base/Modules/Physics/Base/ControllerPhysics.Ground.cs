@@ -113,7 +113,15 @@ partial class ControllerPhysics
 		Controller?.OnSetGroundObject( obj );
 	}
 
-	public bool IsGround( in Vector3 normal )
+	public virtual bool IsGround( in SceneTraceResult trGround )
+	{
+		if ( !trGround.Hit )
+			return false;
+
+		return IsGround( in trGround.Normal );
+	}
+
+	public virtual bool IsGround( in Vector3 normal )
 	{
 		if ( !GroundingEnabled )
 			return false;
@@ -124,6 +132,6 @@ partial class ControllerPhysics
 		var upVel = Velocity.Forward( Up );
 		var upSpeed = upVel.Dot( normal );
 
-		return upSpeed < 30f;
+		return upSpeed < 300f;
 	}
 }

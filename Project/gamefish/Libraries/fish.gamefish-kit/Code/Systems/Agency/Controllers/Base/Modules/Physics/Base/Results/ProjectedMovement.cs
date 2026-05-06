@@ -63,8 +63,14 @@ public class ProjectedMovement
 		set => Point.Rotation = value;
 	}
 
-	public ProjectedMovement( in Transform tStart, in Offset delta, in Vector3 dir, in float dist, in Vector3 vel )
+	protected SceneTrace _trBase;
+	protected SceneTrace _trSkin;
+
+	public ProjectedMovement( in SceneTrace trBase, in SceneTrace trSkin, in Transform tStart, in Offset delta, in Vector3 dir, in float dist )
 	{
+		_trBase = trBase;
+		_trSkin = trSkin;
+
 		Start = tStart;
 		Point = tStart;
 
@@ -72,9 +78,22 @@ public class ProjectedMovement
 
 		Direction = dir;
 		Distance = dist;
-
-		Velocity = vel;
 	}
+
+	protected SceneTrace GetTrace( in bool withSkin )
+		=> withSkin ? _trSkin : _trBase;
+
+	/// <returns> A trace from the current position to the projected destination. </returns>
+	public SceneTrace Trace( in bool skin )
+		=> GetTrace( skin ).FromTo( in Point, Position + (Direction * Distance) );
+
+	/// <returns> A trace from the current position to a destination. </returns>
+	public SceneTrace Trace( in Vector3 endPos, in bool skin )
+		=> GetTrace( skin ).FromTo( in Point, in endPos );
+
+	/// <returns> A trace from a separate transform to a destination. </returns>
+	public SceneTrace Trace( in Transform tStart, in Vector3 endPos, in bool skin )
+		=> GetTrace( skin ).FromTo( in tStart, in endPos );
 
 	public Transform WithPosition( in Vector3 pos )
 		=> Point.WithPosition( in pos );

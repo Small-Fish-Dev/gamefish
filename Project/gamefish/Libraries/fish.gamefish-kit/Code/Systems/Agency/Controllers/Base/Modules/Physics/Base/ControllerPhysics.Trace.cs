@@ -40,38 +40,15 @@ partial class ControllerPhysics
 	}
 
 	/// <summary>
-	/// Creates the default collision trace and sets the start and end points.
-	/// </summary>
-	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public SceneTrace Trace( in Vector3 from, in Vector3 to, in float skin = 0f )
-	{
-		var tFrom = Origin.WithPosition( from );
-
-		return Trace( in tFrom, in to, skin: skin );
-	}
-
-	/// <summary>
-	/// Creates the default collision trace and sets the end point relative to our starting position.
-	/// </summary>
-	/// <returns> The basis of every collison trace(including a start/end). </returns>
-	public SceneTrace Trace( in Vector3 vDelta, in float skin = 0f )
-	{
-		var tFrom = Origin;
-		var to = tFrom.Position + vDelta;
-
-		return Trace( in tFrom, in to, skin: skin );
-	}
-
-	/// <summary>
 	/// Creates the default collision trace and sets the start and end transforms.
 	/// </summary>
 	/// <returns> The basis of every collison trace(including a start/end). </returns>
 	public virtual SceneTrace Trace( in Transform tFrom, in Vector3 to, in float skin = 0f )
 		=> Trace( skin: skin ).FromTo( tFrom, to );
 
-	/// <returns> If that space is free. </returns>
-	protected bool IsEmpty( out SceneTraceResult trEmpty, in float skin, ProjectedMovement result )
-		=> IsEmpty( in result.Point, out trEmpty, in skin );
+	/// <returns> If the space a projection is currently at is free. </returns>
+	protected bool IsEmpty( ProjectedMovement move, out SceneTraceResult trEmpty, in float skin = 0f )
+		=> IsEmpty( in move.Point, out trEmpty, in skin );
 
 	/// <returns> If that space is free. </returns>
 	public virtual bool IsEmpty( in Transform tSpace, out SceneTraceResult trEmpty, in float skin = 0f )
@@ -87,12 +64,13 @@ partial class ControllerPhysics
 		return true;
 	}
 
-	protected virtual SceneTraceResult GroundTrace( in Transform tStart, float dist )
+	protected virtual SceneTraceResult GroundTrace( ProjectedMovement move )
 	{
-		dist = (dist + SkinWidth).Max( SkinWidth );
+		var dist = move.IsGrounded ? GroundDistance.Positive() : 0f;
+		dist = dist.Max( SkinWidth * 2f ).Max( 1f );
 
-		var endPos = tStart.Position + (Down * dist);
-		var tr = Trace( in tStart, in endPos, skin: -SkinWidth );
+		var dest = move.Position + (Down * dist);
+		var tr = move.Trace( in move.Point, in dest, skin: false );
 
 		return tr.Run();
 	}

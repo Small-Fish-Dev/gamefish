@@ -209,12 +209,6 @@ partial class PawnController
 	public SceneTrace Trace( in float skin = 0f )
 		=> Physics?.Trace( skin: in skin ) ?? default;
 
-	public SceneTrace Trace( in Vector3 from, in Vector3 to, in float skin = 0f )
-		=> Physics?.Trace( in from, in to, skin: in skin ) ?? default;
-
-	public SceneTrace Trace( in Vector3 vDelta, in float skin = 0f )
-		=> Physics?.Trace( in vDelta, skin: in skin ) ?? default;
-
 	public SceneTrace Trace( in Transform tFrom, in Vector3 to, in float skin = 0f )
 		=> Physics?.Trace( in tFrom, in to, skin: in skin ) ?? default;
 
