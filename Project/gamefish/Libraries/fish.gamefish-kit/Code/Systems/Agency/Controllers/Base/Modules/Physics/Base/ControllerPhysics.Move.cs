@@ -81,11 +81,11 @@ partial class ControllerPhysics
 			if ( move.Distance <= 0f )
 				break;
 
+			if ( move.Direction == default )
+				break;
+
 			Project( move );
 		}
-
-		if ( move.IsGrounded )
-			TryStickToGround( move );
 
 		End( move );
 	}
@@ -96,7 +96,16 @@ partial class ControllerPhysics
 	protected virtual void End( ProjectedMovement move )
 	{
 		if ( !move.IsStuck )
-			LastVelocity = Velocity;
+		{
+			// Always detect ground after moving in case we're airborne.
+			move.IsGrounded = IsGround( GroundTrace( move ) );
+
+			if ( move.IsGrounded )
+				TryStickToGround( move );
+
+			// Remember velocity for unstuck.
+			LastVelocity = move.Velocity;
+		}
 
 		Apply( move );
 	}
@@ -130,9 +139,6 @@ partial class ControllerPhysics
 		if ( move is null )
 			return;
 
-		if ( move.Direction == default || move.Distance <= 0f )
-			return;
-
 		var trMove = move.Trace( skin: false ).Run();
 
 		if ( !trMove.Hit )
@@ -159,9 +165,6 @@ partial class ControllerPhysics
 
 		move.Position = trMove.EndPosition;
 		move.Distance = 0f;
-
-		// Look for ground again in case we're floating.
-		move.IsGrounded = IsGround( GroundTrace( move ) );
 	}
 
 	/// <summary>
