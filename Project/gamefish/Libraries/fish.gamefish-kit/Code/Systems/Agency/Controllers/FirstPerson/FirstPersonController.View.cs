@@ -45,7 +45,7 @@ partial class FirstPersonController
 		var tWorld = WorldTransform;
 		var worldDest = tWorld.PointToWorld( localDest );
 
-		var trHead = Trace( tWorld.WithPosition( Center ), worldDest )
+		var trHead = TracePhysics( tWorld.WithPosition( Center ), worldDest )
 			.Radius( radius )
 			.Run();
 

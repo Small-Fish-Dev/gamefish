@@ -103,7 +103,7 @@ partial class FishboxController
 		var headStart = tWorld.Position + headOffset;
 		var headEnd = endPos + headOffset;
 
-		var trBase = Trace();
+		var trBase = TracePhysics();
 
 		var trBody = trBase.Cylinder( bodyHeight, radius, bodyStart, bodyEnd ).Run();
 		var trHead = trBase.Sphere( radius, headStart, headEnd ).Run();

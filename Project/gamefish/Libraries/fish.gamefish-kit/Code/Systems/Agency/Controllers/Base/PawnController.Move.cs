@@ -206,10 +206,10 @@ partial class PawnController
 		Velocity = hVel + upVel;
 	}
 
-	public SceneTrace Trace( in float skin = 0f )
+	public SceneTrace TracePhysics( in float skin = 0f )
 		=> Physics?.Trace( skin: in skin ) ?? default;
 
-	public SceneTrace Trace( in Transform tFrom, in Vector3 to, in float skin = 0f )
+	public SceneTrace TracePhysics( in Transform tFrom, in Vector3 to, in float skin = 0f )
 		=> Physics?.Trace( in tFrom, in to, skin: in skin ) ?? default;
 
 	public void MoveTo( in Vector3 to ) => Physics?.MoveTo( in to );
