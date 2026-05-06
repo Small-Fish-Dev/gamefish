@@ -18,9 +18,14 @@ public class BodyPhysics : ControllerPhysics
 		if ( !Scene.IsValid() )
 			return default;
 
+		var rb = Rigidbody;
+
+		if ( !rb.IsValid() )
+			return default;
+
 		var tr = Scene.Trace
 			.IgnoreGameObjectHierarchy( GameObject )
-			.Body( Rigidbody, Origin.Position )
+			.Body( rb, Origin.Position )
 			.WithCollisionRules( TraceTags )
 			.Rotated( WorldRotation );
 

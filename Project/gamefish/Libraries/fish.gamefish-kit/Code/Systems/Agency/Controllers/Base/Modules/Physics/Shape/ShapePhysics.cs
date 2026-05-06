@@ -33,6 +33,13 @@ public abstract class ShapePhysics : ControllerPhysics
 	/// </summary>
 	public abstract void RenderShape();
 
+	protected override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+
+		UpdateCollider();
+	}
+
 	protected override void SetupPhysics()
 	{
 		base.SetupPhysics();
@@ -58,13 +65,6 @@ public abstract class ShapePhysics : ControllerPhysics
 				Roll = true
 			};
 		}
-	}
-
-	protected override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-
-		UpdateCollider();
 	}
 
 	/// <summary>
