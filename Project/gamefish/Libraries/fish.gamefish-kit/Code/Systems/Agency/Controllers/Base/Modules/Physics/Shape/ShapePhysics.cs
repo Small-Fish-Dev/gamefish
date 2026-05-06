@@ -44,6 +44,9 @@ public abstract class ShapePhysics : ControllerPhysics
 			// Gravity is manually applied.
 			rb.Gravity = false;
 
+			// TEMP: Prevent double movement.
+			rb.MotionEnabled = false;
+
 			// Fuck this garbage default.
 			rb.EnableImpactDamage = false;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace GameFish;
 
@@ -18,6 +19,16 @@ public abstract partial class ControllerPhysics : ControllerModule
 	public Vector3 Down => -Up;
 
 	public override Vector3 Center => Pawn?.Center ?? Controller?.Center ?? WorldPosition;
+
+	[Property]
+	[JsonIgnore]
+	[Title( "Is Stuck" )]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected bool InspectorIsStuck => IsStuck;
+
+	[Sync]
+	public bool IsStuck { get; protected set; }
 
 	[Sync]
 	public Vector3 Velocity
@@ -39,6 +50,11 @@ public abstract partial class ControllerPhysics : ControllerModule
 	}
 
 	protected Vector3 _vel;
+
+	/// <summary>
+	/// The last velocity we had while not stuck.
+	/// </summary>
+	protected Vector3? LastVelocity;
 
 	protected virtual Vector3 GetVelocity()
 	{

@@ -70,8 +70,8 @@ partial class ControllerPhysics
 		=> Trace( skin: skin ).FromTo( tFrom, to );
 
 	/// <returns> If that space is free. </returns>
-	public bool IsEmpty( in Vector3 pos, out SceneTraceResult trEmpty, in float skin = 0f )
-		=> IsEmpty( Origin.WithPosition( pos ), out trEmpty, skin: skin );
+	protected bool IsEmpty( out SceneTraceResult trEmpty, in float skin, ProjectedResult result )
+		=> IsEmpty( in result.Point, out trEmpty, in skin );
 
 	/// <returns> If that space is free. </returns>
 	public virtual bool IsEmpty( in Transform tSpace, out SceneTraceResult trEmpty, in float skin = 0f )
@@ -87,20 +87,12 @@ partial class ControllerPhysics
 		return true;
 	}
 
-	/// <returns> The trace used for iterating movement projection. </returns>
-	protected virtual SceneTraceResult ProjectionTrace()
-	{
-		var dest = Result.Position + (Direction * Distance);
-
-		return Trace( in Result, in dest, skin: SkinWidth ).Run();
-	}
-
-	protected virtual SceneTraceResult GroundTrace( float dist )
+	protected virtual SceneTraceResult GroundTrace( in Transform tStart, float dist )
 	{
 		dist = (dist + SkinWidth).Max( SkinWidth );
 
-		var endPos = Result.Position + (Down * dist);
-		var tr = Trace( in Result, in endPos, skin: -SkinWidth );
+		var endPos = tStart.Position + (Down * dist);
+		var tr = Trace( in tStart, in endPos, skin: -SkinWidth );
 
 		return tr.Run();
 	}

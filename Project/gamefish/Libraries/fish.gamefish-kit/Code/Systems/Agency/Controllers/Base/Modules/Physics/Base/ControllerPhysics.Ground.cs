@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 partial class ControllerPhysics
@@ -19,6 +21,13 @@ partial class ControllerPhysics
 	[Range( 0f, 32f, clamped: false )]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public virtual float GroundDistance { get; set; } = 16f;
+
+	[Property]
+	[JsonIgnore]
+	[Title( "Is Grounded" )]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( PAWN ), Group( COLLISION )]
+	protected bool InspectorIsGrounded => IsGrounded;
 
 	[Sync]
 	public bool IsGrounded
