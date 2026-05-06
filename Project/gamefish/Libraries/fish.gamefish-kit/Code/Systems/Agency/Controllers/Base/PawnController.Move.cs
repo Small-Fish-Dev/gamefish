@@ -8,22 +8,6 @@ partial class PawnController
 
 	public float SkinWidth => Physics?.SkinWidth ?? 0f;
 
-	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
-
-	/// <summary>
-	/// The rotation that we use for movement direction and such.
-	/// </summary>
-	public virtual Rotation Perspective => WorldRotation * Rotation.FromYaw( LocalEyeRotation.Yaw() );
-
-	public Vector3 Up => Perspective.Up;
-	public Vector3 Down => Perspective.Down;
-
-	public Vector3 Left => Perspective.Left;
-	public Vector3 Right => Perspective.Right;
-
-	public Vector3 Back => Perspective.Backward;
-	public Vector3 Forward => Perspective.Forward;
-
 	/// <summary>
 	/// Should this be able to input its movement?
 	/// </summary>

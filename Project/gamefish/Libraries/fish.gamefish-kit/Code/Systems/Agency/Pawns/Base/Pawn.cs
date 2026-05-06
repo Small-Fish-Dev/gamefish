@@ -22,9 +22,12 @@ public abstract partial class Pawn : DynamicEntity
 	}
 
 	/// <summary>
-	/// A position between our aim and feet.
+	/// A position between our feet and aim.
 	/// </summary>
-	public override Vector3 Center => WorldPosition.LerpTo( EyePosition, 0.5f );
+	public override Vector3 Center => Controller?.Center ?? WorldPosition.LerpTo( EyePosition, 0.5f );
+
+	public Vector3 Bottom => Controller?.Bottom ?? WorldPosition;
+	public Vector3 Top => Controller?.Bottom ?? EyePosition;
 
 	/// <summary>
 	/// Is this actively owned by a valid player client?

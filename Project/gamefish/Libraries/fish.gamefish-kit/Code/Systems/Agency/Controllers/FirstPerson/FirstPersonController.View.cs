@@ -19,29 +19,43 @@ partial class FirstPersonController
 
 	protected override void UpdateEyePosition( in float deltaTime )
 	{
-		base.UpdateEyePosition( deltaTime );
+		var currentPos = LocalEyePosition;
+		var eyeTargetPos = GetLocalEyeTargetPosition();
 
-		if ( ViewCollisionEnabled )
-			UpdateEyeCollision( in deltaTime );
+		// Move smoothly to the destination.
+		var localDest = currentPos;
+
+		localDest = Vector3.SmoothDamp( in localDest, in eyeTargetPos,
+			ref _eyeVel, EyeMoveSmoothing, EyeMoveSpeed * deltaTime );
+
+		// Test for collisions.
+		localDest = TestEyeCollision( in currentPos, localDest, in deltaTime );
+
+		// Apply the position.
+		LocalEyePosition = localDest;
 	}
 
-	protected virtual void UpdateEyeCollision( in float deltaTime )
+	protected virtual Vector3 TestEyeCollision( in Vector3 currentPos, Vector3 localDest, in float deltaTime )
 	{
+		if ( !ViewCollisionEnabled )
+			return localDest;
+
 		var radius = ViewCollisionRadius * WorldScale.x;
-		var skin = SkinWidth;
 
 		var tWorld = WorldTransform;
-		var vUp = Up;
+		var worldDest = tWorld.PointToWorld( localDest );
 
-		var zMin = radius + skin; //.Max( EyeHeightDuck );
-		var startPos = WorldPosition + (vUp * zMin);
-		var eyePos = tWorld.PointToWorld( LocalEyePosition );
-
-		var trHead = Trace( startPos, eyePos )
+		var trHead = Trace( Center, worldDest )
 			.Radius( radius )
 			.Run();
 
+		// If both are stuck then don't move.
+		if ( trHead.StartedSolid )
+			return currentPos;
+
 		if ( trHead.Hit )
-			LocalEyePosition = tWorld.PointToLocal( trHead.EndPosition );
+			localDest = tWorld.PointToLocal( trHead.EndPosition );
+
+		return localDest;
 	}
 }

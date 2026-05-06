@@ -23,6 +23,40 @@ public abstract partial class PawnController : PawnModule
 	public PawnView View => Pawn?.View;
 
 	/// <summary>
+	/// The force of gravity for this controller.
+	/// </summary>
+	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
+
+	protected virtual Vector3 LocalBottom => Vector3.Zero;
+	protected virtual Vector3 LocalTop => Vector3.Up * GetLocalEyeTargetPosition();
+
+	public Vector3 Bottom => WorldTransform.PointToWorld( LocalBottom );
+	public Vector3 Top => WorldTransform.PointToWorld( LocalTop );
+
+	public override Vector3 Center => WorldTransform.PointToWorld( LocalBottom.LerpTo( LocalTop, 0.5f ) );
+
+	/// <summary>
+	/// The rotation that we use for movement direction and such.
+	/// </summary>
+	public virtual Rotation Perspective => WorldRotation * Rotation.FromYaw( LocalEyeRotation.Yaw() );
+
+	/// <summary> The upward direction from our current perspective. </summary>
+	public Vector3 Up => Perspective.Up;
+	/// <summary> The downward direction from our current perspective. </summary>
+	public Vector3 Down => Perspective.Down;
+
+	/// <summary> East from our current perspective. </summary>
+	public Vector3 Left => Perspective.Left;
+	/// <summary> West from our current perspective. </summary>
+	public Vector3 Right => Perspective.Right;
+
+	/// <summary> South from our current perspective. </summary>
+	public Vector3 Back => Perspective.Backward;
+	/// <summary> North from our current perspective. </summary>
+	public Vector3 Forward => Perspective.Forward;
+
+
+	/// <summary>
 	/// Movement/collision logic tries to stay this far away
 	/// from surfaces to prevent getting stuck in them.
 	/// </summary>
