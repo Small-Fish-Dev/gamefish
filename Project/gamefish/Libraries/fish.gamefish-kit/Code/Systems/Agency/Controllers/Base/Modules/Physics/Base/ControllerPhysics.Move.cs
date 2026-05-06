@@ -155,6 +155,8 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void OnFreeMove( in SceneTraceResult trMove, ProjectedMovement move )
 	{
+		move.IsStuck = false;
+
 		move.Position = trMove.EndPosition;
 		move.Distance = 0f;
 
@@ -253,8 +255,7 @@ partial class ControllerPhysics
 
 	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedMovement move )
 	{
-		if ( trStuck.StartedSolid )
-			move.IsStuck = true;
+		move.IsStuck = trStuck.StartedSolid;
 
 		if ( !move.IsStuck )
 			return true;
