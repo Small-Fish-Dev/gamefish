@@ -67,7 +67,7 @@ partial class ControllerPhysics
 		var dist = move.IsGrounded ? GroundDistance.Positive() : 0f;
 		dist = dist.Max( SkinWidth * 2f ).Max( 1f );
 
-		var dest = move.Position + (Down * dist);
+		var dest = move.Position + (Gravity.Normal * dist);
 		var tr = move.Trace( in move.Point, in dest, skin: false );
 
 		return tr.Run();
