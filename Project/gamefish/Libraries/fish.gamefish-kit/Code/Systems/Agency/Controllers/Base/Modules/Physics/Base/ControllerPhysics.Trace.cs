@@ -70,7 +70,7 @@ partial class ControllerPhysics
 		=> Trace( skin: skin ).FromTo( tFrom, to );
 
 	/// <returns> If that space is free. </returns>
-	protected bool IsEmpty( out SceneTraceResult trEmpty, in float skin, ProjectedResult result )
+	protected bool IsEmpty( out SceneTraceResult trEmpty, in float skin, ProjectedMovement result )
 		=> IsEmpty( in result.Point, out trEmpty, in skin );
 
 	/// <returns> If that space is free. </returns>

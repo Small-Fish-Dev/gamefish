@@ -61,7 +61,7 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Perform our movement/collision algorithm according to parameters.
 	/// </summary>
-	protected virtual void Run( ProjectedResult move )
+	protected virtual void Run( ProjectedMovement move )
 	{
 		for ( var i = 0; i < MaxIterations; i++ )
 		{
@@ -80,7 +80,7 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Finalize movement projection.
 	/// </summary>
-	protected virtual void End( ProjectedResult move )
+	protected virtual void End( ProjectedMovement move )
 	{
 		if ( !IsStuck )
 			LastVelocity = Velocity;
@@ -91,7 +91,7 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Applies projection results such as position/rotation.
 	/// </summary>
-	protected virtual void Apply( ProjectedResult move )
+	protected virtual void Apply( ProjectedMovement move )
 	{
 		Velocity = move.Velocity;
 
@@ -112,7 +112,7 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Move our hypothetical position/rotation and resolve collisions.
 	/// </summary>
-	protected virtual void Project( ProjectedResult move )
+	protected virtual void Project( ProjectedMovement move )
 	{
 		if ( move is null )
 			return;
@@ -127,14 +127,12 @@ partial class ControllerPhysics
 		if ( IsStuck && !TryUnstuck( in trStuck, move ) )
 			return;
 
-		var to = move.Position + (move.Direction * move.Distance);
-		var tDest = move.WithPosition( to );
-
-		var trBase = Trace( in move.Point, in to, skin: 0f ).Run();
+		var tProj = move.Projected();
+		var trBase = Trace( in move.Point, tProj.Position, skin: 0f ).Run();
 
 		if ( !trBase.Hit )
 		{
-			move.Point = tDest;
+			move.Point = tProj;
 			move.Distance = 0f;
 			return;
 		}
@@ -145,7 +143,7 @@ partial class ControllerPhysics
 	/// <summary>
 	/// Responds to hits from projected movement.
 	/// </summary>
-	protected virtual void OnProjectedCollision( in SceneTraceResult trHit, ProjectedResult move )
+	protected virtual void OnProjectedCollision( in SceneTraceResult trHit, ProjectedMovement move )
 	{
 		var isGround = IsGround( in trHit.Normal );
 
@@ -163,7 +161,7 @@ partial class ControllerPhysics
 			Slide( in trHit.Normal, move );
 	}
 
-	protected virtual bool TryUnstuck( in Transform tStuck, ProjectedResult move )
+	protected virtual bool TryUnstuck( in Transform tStuck, ProjectedMovement move )
 	{
 		if ( IsEmpty( in tStuck, out var trStuck, skin: 0f ) )
 		{
@@ -174,7 +172,7 @@ partial class ControllerPhysics
 		return TryUnstuck( in trStuck, move );
 	}
 
-	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedResult move )
+	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedMovement move )
 	{
 		move.IsStuck = trStuck.StartedSolid;
 
@@ -186,8 +184,8 @@ partial class ControllerPhysics
 
 		if ( LastVelocity is Vector3 lastVel )
 		{
-			vSkin = -lastVel.Normal;
-			tAddSkin = move.WithPosition( trStuck.EndPosition - vSkin );
+			vSkin = -lastVel.Normal * SkinWidth;
+			tAddSkin = move.Project( vSkin );
 
 			if ( IsEmpty( tAddSkin, out _, 0f ) )
 			{
@@ -200,11 +198,11 @@ partial class ControllerPhysics
 
 		/*
 		vSkin = trStuck.Normal * SkinWidth;
-		tAddSkin = move.Transform.WithPosition( trStuck.EndPosition + vSkin );
+		tAddSkin = move.WithPosition( trStuck.EndPosition + vSkin );
 
 		if ( IsEmpty( in tAddSkin, out _, 0f ) )
 		{
-			move.Transform = tAddSkin;
+			move.Point = tAddSkin;
 			move.IsStuck = false;
 
 			return true;
@@ -214,7 +212,7 @@ partial class ControllerPhysics
 		return move.IsStuck;
 	}
 
-	protected virtual void SnapTo( in SceneTraceResult trMove, ProjectedResult move )
+	protected virtual void SnapTo( in SceneTraceResult trMove, ProjectedMovement move )
 	{
 		var tSnapTo = move.Point.WithPosition( trMove.EndPosition );
 
@@ -225,7 +223,7 @@ partial class ControllerPhysics
 		}
 	}
 
-	protected virtual void StickToGround( ProjectedResult move )
+	protected virtual void StickToGround( ProjectedMovement move )
 	{
 		if ( !GroundingEnabled )
 		{
@@ -254,7 +252,7 @@ partial class ControllerPhysics
 	/// </summary>
 	/// <param name="normal"> The direction of the surface to slide along. </param>
 	/// <param name="move"> The current movement projection. </param>
-	protected virtual void Slide( in Vector3 normal, ProjectedResult move )
+	protected virtual void Slide( in Vector3 normal, ProjectedMovement move )
 	{
 		if ( move.Direction == default || normal == default )
 			return;

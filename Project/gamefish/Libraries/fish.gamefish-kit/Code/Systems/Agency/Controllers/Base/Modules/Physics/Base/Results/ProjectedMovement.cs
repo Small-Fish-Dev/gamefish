@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public class ProjectedResult
+public class ProjectedMovement
 {
 	/// <summary>
 	/// What position the movement started at.
@@ -63,7 +63,7 @@ public class ProjectedResult
 		set => Point.Rotation = value;
 	}
 
-	public ProjectedResult( in Transform tStart, in Offset delta, in Vector3 dir, in float dist, in Vector3 vel )
+	public ProjectedMovement( in Transform tStart, in Offset delta, in Vector3 dir, in float dist, in Vector3 vel )
 	{
 		Start = tStart;
 		Point = tStart;
