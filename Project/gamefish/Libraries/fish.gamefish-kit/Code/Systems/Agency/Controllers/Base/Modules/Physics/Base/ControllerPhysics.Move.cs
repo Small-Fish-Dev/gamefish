@@ -62,6 +62,7 @@ partial class ControllerPhysics
 
 		var move = new ProjectedMovement( in trBase, in trSkin, in tStart, in delta, in dir, in dist )
 		{
+			IsStuck = IsStuck,
 			Velocity = Velocity,
 			IsGrounded = IsGrounded && GroundingEnabled,
 			GroundNormal = GroundNormal,
@@ -94,7 +95,7 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void End( ProjectedMovement move )
 	{
-		if ( !IsStuck )
+		if ( !move.IsStuck )
 			LastVelocity = Velocity;
 
 		Apply( move );
@@ -243,7 +244,7 @@ partial class ControllerPhysics
 	{
 		if ( IsEmpty( in tStuck, out var trStuck, skin: 0f ) )
 		{
-			IsStuck = false;
+			move.IsStuck = false;
 			return true;
 		}
 
@@ -261,12 +262,28 @@ partial class ControllerPhysics
 		Vector3 vSkin;
 		Transform tEmpty;
 
-		if ( LastVelocity is Vector3 lastVel )
+		for ( var i = 0; i < MaxUnstuckTries; i++ )
 		{
-			vSkin = -lastVel.Normal * SkinWidth;
+			// Where were we coming from?
+			if ( LastVelocity is Vector3 lastVel )
+			{
+				vSkin = -lastVel.Normal * SkinWidth * i;
+				tEmpty = move.Project( vSkin );
+
+				if ( IsEmpty( tEmpty, out _, skin: 0f ) )
+				{
+					move.Point = tEmpty;
+					move.IsStuck = false;
+
+					return true;
+				}
+			}
+
+			// What are we touching?
+			vSkin = trStuck.Normal * SkinWidth * i;
 			tEmpty = move.Project( vSkin );
 
-			if ( IsEmpty( tEmpty, out _, skin: 0f ) )
+			if ( IsEmpty( in tEmpty, out _, skin: 0f ) )
 			{
 				move.Point = tEmpty;
 				move.IsStuck = false;
@@ -275,18 +292,7 @@ partial class ControllerPhysics
 			}
 		}
 
-		vSkin = trStuck.Normal * SkinWidth;
-		tEmpty = move.Project( vSkin );
-
-		if ( IsEmpty( in tEmpty, out _, skin: 0f ) )
-		{
-			move.Point = tEmpty;
-			move.IsStuck = false;
-
-			return true;
-		}
-
-		return move.IsStuck;
+		return !move.IsStuck;
 	}
 
 	/// <summary>
