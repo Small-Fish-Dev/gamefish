@@ -22,15 +22,6 @@ public class CylinderPhysics : ShapePhysics
 
 	public override Collider ShapeCollider => CylinderCollider;
 
-	public override SceneTrace Trace( in float skin = 0f )
-	{
-		var tr = base.Trace( skin: skin )
-			.Cylinder( Height + (skin * 2), Radius + skin )
-			.IgnoreGameObjectHierarchy( GameObject );
-
-		return tr;
-	}
-
 	public override void RenderShape()
 	{
 		var tOrigin = Origin.WithOffset( TraceOffset );
@@ -62,5 +53,14 @@ public class CylinderPhysics : ShapePhysics
 		CylinderCollider.Radius2 = Radius;
 
 		CylinderCollider.Type = HullCollider.PrimitiveType.Cylinder;
+	}
+
+	public override SceneTrace Trace( in float skin = 0f )
+	{
+		var tr = base.Trace( skin: skin )
+			.Cylinder( Height + skin, Radius + (skin * .5f) )
+			.IgnoreGameObjectHierarchy( GameObject );
+
+		return tr;
 	}
 }
