@@ -140,7 +140,7 @@
         "SprintInput": "Run",
         "SprintMultiplier": 1.5,
         "ViewCollisionEnabled": true,
-        "ViewCollisionRadius": 10
+        "ViewCollisionRadius": 8
       },
       {
         "__type": "GameFish.CylinderPhysics",
@@ -162,6 +162,7 @@
         "IsClass": false,
         "IsNetworkingForced": true,
         "MaxIterations": 8,
+        "MaxUnstuckTries": 32,
         "NetworkAutomatically": true,
         "NetworkId": "1c916bfd-7441-4512-84be-645850788ad1",
         "NetworkingMode": "Object",
@@ -183,40 +184,6 @@
           "Position": "0,0,35",
           "Rotation": "0,0,0,1"
         }
-      },
-      {
-        "__type": "Sandbox.Rigidbody",
-        "__guid": "bc1459d3-266c-4225-b91c-1d7da3a828ed",
-        "__enabled": true,
-        "Flags": 0,
-        "AngularDamping": 0,
-        "EnableImpactDamage": false,
-        "EnhancedCcd": false,
-        "Gravity": false,
-        "GravityScale": 1,
-        "ImpactDamage": 0,
-        "LinearDamping": 0,
-        "Locking": {
-          "X": false,
-          "Y": false,
-          "Z": false,
-          "Pitch": true,
-          "Yaw": true,
-          "Roll": true
-        },
-        "MassCenterOverride": "0,0,0",
-        "MassOverride": 0,
-        "MinImpactDamageSpeed": 500,
-        "MotionEnabled": true,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "OverrideMassCenter": false,
-        "RigidbodyFlags": "DisableCollisionSounds",
-        "StartAsleep": false
       }
     ],
     "Children": [
@@ -629,7 +596,7 @@
             "Children": []
           },
           {
-            "__guid": "9c901fce-f612-43d6-94a4-3ef24119fe7b",
+            "__guid": "152fd630-0b67-4613-a6bc-a9de85997a01",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -646,7 +613,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2e32cf1f-9e0d-499e-8baa-e911be131dac",
+                "__guid": "47f4982f-9c08-4f11-b024-1b3cc222d896",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
