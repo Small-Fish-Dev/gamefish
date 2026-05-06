@@ -158,8 +158,7 @@ partial class ControllerPhysics
 		move.Distance = 0f;
 
 		// Look for ground again in case we're floating.
-		if ( move.IsGrounded )
-			move.IsGrounded = IsGround( GroundTrace( move ) );
+		move.IsGrounded = IsGround( GroundTrace( move ) );
 	}
 
 	/// <summary>
