@@ -59,6 +59,19 @@ partial class ControllerPhysics
 	protected Vector3 _groundNormal = Vector3.Up;
 
 	[Sync]
+	public GameObject GroundObject
+	{
+		get => _groundObject;
+		set
+		{
+			_groundObject = value;
+			OnSetGroundObject( value );
+		}
+	}
+
+	protected GameObject _groundObject;
+
+	[Sync]
 	public Collider GroundCollider
 	{
 		get => _groundCollider;
@@ -72,17 +85,17 @@ partial class ControllerPhysics
 	protected Collider _groundCollider;
 
 	[Sync]
-	public GameObject GroundObject
+	public Rigidbody GroundBody
 	{
-		get => _groundObject;
+		get => _groundBody;
 		set
 		{
-			_groundObject = value;
-			OnSetGroundObject( value );
+			_groundBody = value;
+			OnSetGroundBody( value );
 		}
 	}
 
-	protected GameObject _groundObject;
+	protected Rigidbody _groundBody;
 
 	/// <summary>
 	/// Called when <see cref="IsGrounded"/> is toggled.
@@ -103,14 +116,19 @@ partial class ControllerPhysics
 		Controller?.OnSetGroundNormal( in vNormal );
 	}
 
+	protected virtual void OnSetGroundObject( GameObject obj )
+	{
+		Controller?.OnSetGroundObject( obj );
+	}
+
 	protected virtual void OnSetGroundCollider( Collider c )
 	{
 		Controller?.OnSetGroundCollider( c );
 	}
 
-	protected virtual void OnSetGroundObject( GameObject obj )
+	protected virtual void OnSetGroundBody( Rigidbody rb )
 	{
-		Controller?.OnSetGroundObject( obj );
+		Controller?.OnSetGroundBody( rb );
 	}
 
 	public virtual bool IsGround( in SceneTraceResult trGround )

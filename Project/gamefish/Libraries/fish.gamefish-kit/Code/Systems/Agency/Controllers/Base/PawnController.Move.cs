@@ -115,13 +115,18 @@ partial class PawnController
 	{
 	}
 
+	/// <inheritdoc cref="ControllerPhysics.OnSetGroundObject"/>
+	public virtual void OnSetGroundObject( GameObject obj )
+	{
+	}
+
 	/// <inheritdoc cref="ControllerPhysics.OnSetGroundCollider"/>
 	public virtual void OnSetGroundCollider( Collider c )
 	{
 	}
 
-	/// <inheritdoc cref="ControllerPhysics.OnSetGroundObject"/>
-	public virtual void OnSetGroundObject( GameObject obj )
+	/// <inheritdoc cref="ControllerPhysics.OnSetGroundBody"/>
+	public virtual void OnSetGroundBody( Rigidbody rb )
 	{
 	}
 

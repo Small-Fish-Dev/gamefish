@@ -40,10 +40,14 @@ public class ProjectedMovement
 	/// </summary>
 	public float Skin = 0f;
 
-	public bool IsStuck { get; set; }
+	public bool IsStuck;
 
-	public bool IsGrounded { get; set; }
-	public Vector3 GroundNormal { get; set; }
+	public bool IsGrounded;
+	public Vector3 GroundNormal;
+
+	public GameObject GroundObject;
+	public Collider GroundCollider;
+	public Rigidbody GroundBody;
 
 	/// <summary>
 	/// The position the projection at.
@@ -83,6 +87,10 @@ public class ProjectedMovement
 
 		IsGrounded = move.IsGrounded;
 		GroundNormal = move.GroundNormal;
+
+		GroundObject = move.GroundObject;
+		GroundCollider = move.GroundCollider;
+		GroundBody = move.GroundBody;
 	}
 
 	public ProjectedMovement( in SceneTrace trBase, in SceneTrace trSkin, in Transform tStart, in Offset delta, in Vector3 dir, in float dist )
@@ -127,6 +135,10 @@ public class ProjectedMovement
 
 		IsGrounded = phys.IsGrounded && phys.GroundingEnabled;
 		GroundNormal = phys.GroundNormal;
+
+		GroundObject = phys.GroundObject;
+		GroundCollider = phys.GroundCollider;
+		GroundBody = phys.GroundBody;
 	}
 
 	protected SceneTrace GetTrace( in bool withSkin )
