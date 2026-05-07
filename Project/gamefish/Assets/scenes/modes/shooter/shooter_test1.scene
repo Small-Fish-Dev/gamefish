@@ -15990,14 +15990,6 @@
           {
             "Target": {
               "Type": "GameObject",
-              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
-            },
-            "Property": "Flags",
-            "Value": 0
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
               "IdValue": "46cb635a-025e-430d-8582-34ffaf775422"
             },
             "Property": "Rotation",
@@ -16026,6 +16018,94 @@
             },
             "Property": "Rotation",
             "Value": "0,0,0,1"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "5b6a8023-5f33-4d77-87bb-af083cd764e7"
+            },
+            "Property": "Name",
+            "Value": "Velocity"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
+            },
+            "Property": "Position",
+            "Value": "3008,128.000488,-768"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
+            },
+            "Property": "Rotation",
+            "Value": "0,0,-0.707106709,0.707106829"
+          },
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
+            },
+            "Property": "Scale",
+            "Value": "1.14999998,1,10"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "CylinderSides",
+            "Value": 3
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "Drag",
+            "Value": true
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "LinearContinuousNegationScale",
+            "Value": 25
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "LinearMethod",
+            "Value": "Continuous"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "LinearNegation",
+            "Value": "None"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
+            },
+            "Property": "LinearVelocity",
+            "Value": "0,0,1000"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "294d49f2-7611-4580-8597-a996e4bd829f"
+            },
+            "Property": "Slices",
+            "Value": 3
           }
         ],
         "MovedObjects": []
@@ -16076,7 +16156,12 @@
         "7b750222-efdf-47eb-8834-2e838a5cac70": "1f18390f-2370-4566-8cf2-0bcecb3b54f5",
         "73bbcb28-05aa-4516-8261-c21811f8735b": "a9a52c46-43eb-4717-bc57-aaee9b1b8ce4",
         "5d4f6f0d-b627-4ca6-808b-3278bd46922b": "da35f760-51eb-4901-b240-8d2cd650a785",
-        "dc598be8-b0d5-427c-a4c5-b60b4eb09a8b": "107ab465-995f-49bd-a2f4-86b10e0507a7"
+        "dc598be8-b0d5-427c-a4c5-b60b4eb09a8b": "107ab465-995f-49bd-a2f4-86b10e0507a7",
+        "65f2cb17-4080-4b42-9979-140c1919bd88": "428b613e-ddf7-42c2-a50c-95e0a2d4270a",
+        "893947f6-0e94-4073-b9d0-a9e567f200f3": "54dbe23e-f7a5-4414-ad11-2492595097ac",
+        "283ea2a4-295a-4851-885d-bcb2dcda95e5": "a3449b13-7a5e-486a-9896-be84ed7709d8",
+        "ae08544e-0faa-4654-871c-d5c83ee650b1": "e3a61e7b-daae-4585-b5c5-8caf1f3a12cf",
+        "294d49f2-7611-4580-8597-a996e4bd829f": "4d3057a0-906e-4ea2-843d-f91ea7a79e08"
       }
     }
   ],
@@ -16112,13 +16197,13 @@
           "$blob": "1908353f-7069-467e-b315-45c13181a07d"
         }
       },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       }
     }
   },
