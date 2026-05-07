@@ -11,14 +11,6 @@ partial class ControllerPhysics
 	public int MaxIterations { get; set; } = 8;
 
 	/// <summary>
-	/// The limit of attempts to get us unstuck before giving up.
-	/// </summary>
-	[Property]
-	[Range( 1, 64, clamped: false )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
-	public int MaxUnstuckTries { get; set; } = 32;
-
-	/// <summary>
 	/// Allow projecting momentum along surfaces?
 	/// </summary>
 	[Property]
@@ -213,74 +205,6 @@ partial class ControllerPhysics
 			return false;
 
 		OnGrounded( in trGround, move );
-		return true;
-	}
-
-	protected virtual bool TrySnapTo( in SceneTraceResult trMove, ProjectedMovement move )
-	{
-		if ( trMove.StartedSolid )
-			return false;
-
-		move.Position = trMove.EndPosition;
-		return true;
-	}
-
-	protected virtual bool TryUnstuck( in SceneTraceResult trStuck, ProjectedMovement move )
-	{
-		move.IsStuck = trStuck.StartedSolid;
-
-		if ( !move.IsStuck )
-			return true;
-
-		Vector3 vSkin;
-		Vector3 pos = move.Position;
-
-		for ( var i = 1; i <= MaxUnstuckTries; i++ )
-		{
-			// What are we touching?
-			if ( trStuck.Hit )
-			{
-				vSkin = trStuck.Normal * SkinWidth * i;
-				pos = move.Position + vSkin;
-
-				if ( IsEmpty( pos, false, move, out _ ) )
-				{
-					move.IsStuck = false;
-					// this.Log( "hit normal skin" );
-					break;
-				}
-			}
-
-			// Where were we coming from?
-			if ( LastVelocity is Vector3 lastVel && lastVel != default )
-			{
-				vSkin = -lastVel.Normal * SkinWidth * i;
-				pos = move.Position + vSkin;
-
-				if ( IsEmpty( pos, false, move, out _ ) )
-				{
-					move.IsStuck = false;
-					// this.Log( $"vel: {lastVel}" );
-					break;
-				}
-			}
-
-			// Pick a random place.
-			vSkin = Vector3.Random.Normal * i;
-			pos = move.Position + vSkin;
-
-			if ( IsEmpty( pos, false, move, out _ ) )
-			{
-				move.IsStuck = false;
-				// this.Log( "random" );
-				break;
-			}
-		}
-
-		if ( move.IsStuck )
-			return false;
-
-		move.Position = pos;
 		return true;
 	}
 
