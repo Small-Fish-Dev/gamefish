@@ -23,11 +23,39 @@ partial class ControllerPhysics
 	public virtual float GroundDistance { get; set; } = 16f;
 
 	[Property]
-	[JsonIgnore]
+	[JsonIgnore, ReadOnly]
 	[Title( "Is Grounded" )]
+	[Feature( PAWN ), Group( DEBUG )]
 	[ShowIf( nameof( InGame ), true )]
-	[Feature( PAWN ), Group( COLLISION )]
 	protected bool InspectorIsGrounded => IsGrounded;
+
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Title( "Ground Normal" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	[ShowIf( nameof( InGame ), true )]
+	protected Vector3 InspectorGroundNormal => GroundNormal;
+
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Title( "Ground Object" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	[ShowIf( nameof( InGame ), true )]
+	protected GameObject InspectorGroundObject => GroundObject;
+
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Title( "Ground Collider" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	[ShowIf( nameof( InGame ), true )]
+	protected Collider InspectorGroundCollider => GroundCollider;
+
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Title( "Ground Body" )]
+	[Feature( PAWN ), Group( DEBUG )]
+	[ShowIf( nameof( InGame ), true )]
+	protected Rigidbody InspectorGroundBody => GroundBody;
 
 	[Sync]
 	public bool IsGrounded
