@@ -58,8 +58,7 @@ public class CylinderPhysics : ShapePhysics
 	public override SceneTrace Trace( in float skin = 0f )
 	{
 		var tr = base.Trace( skin: skin )
-			.Cylinder( Height + skin, Radius + (skin * .5f) )
-			.IgnoreGameObjectHierarchy( GameObject );
+			.Cylinder( Height + skin, Radius + (skin * .5f) );
 
 		return tr;
 	}

@@ -1,6 +1,6 @@
 namespace GameFish;
 
-public abstract class ShapePhysics : ControllerPhysics
+public abstract class ShapePhysics : BodyPhysics
 {
 	/// <summary>
 	/// Render the shape in the editor?
@@ -20,6 +20,19 @@ public abstract class ShapePhysics : ControllerPhysics
 
 	public abstract Collider ShapeCollider { get; }
 
+	public override SceneTrace Trace( in float skin = 0f )
+	{
+		if ( !Scene.IsValid() )
+			return default;
+
+		var tr = Scene.Trace
+			.IgnoreGameObjectHierarchy( GameObject )
+			.WithCollisionRules( TraceTags )
+			.Rotated( WorldRotation );
+
+		return tr;
+	}
+
 	protected override void DrawGizmos()
 	{
 		base.DrawGizmos();
@@ -38,33 +51,6 @@ public abstract class ShapePhysics : ControllerPhysics
 		base.UpdatePhysics();
 
 		UpdateCollider();
-	}
-
-	protected override void SetupPhysics()
-	{
-		base.SetupPhysics();
-
-		var rb = Rigidbody;
-
-		if ( rb.IsValid() )
-		{
-			// Gravity is manually applied.
-			rb.Gravity = false;
-
-			// TEMP: Prevent double movement.
-			rb.MotionEnabled = false;
-
-			// Fuck this garbage default.
-			rb.EnableImpactDamage = false;
-
-			// Prevent rotating from the physics engine.
-			rb.Locking = rb.Locking with
-			{
-				Pitch = true,
-				Yaw = true,
-				Roll = true
-			};
-		}
 	}
 
 	/// <summary>
@@ -106,9 +92,6 @@ public abstract class ShapePhysics : ControllerPhysics
 			return;
 
 		ShapeCollider.LocalTransform = TraceOffset;
-
-		// Prevent negation of gravity from pushing into walls.
-		ShapeCollider.Friction = 0f;
 	}
 
 	[Button( "Create" )]
