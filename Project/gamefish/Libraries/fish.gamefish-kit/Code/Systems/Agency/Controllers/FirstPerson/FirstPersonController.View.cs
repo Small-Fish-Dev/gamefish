@@ -3,6 +3,16 @@ namespace GameFish;
 partial class FirstPersonController
 {
 	[Property]
+	[Title( "Standing Height" )]
+	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	public virtual float EyeHeightStand { get; set; } = 64f;
+
+	[Property]
+	[Title( "Ducked Height" )]
+	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	public virtual float EyeHeightDuck { get; set; } = 32f;
+
+	[Property]
 	[Feature( VIEW ), Group( COLLISION )]
 	[ToggleGroup( nameof( ViewCollisionEnabled ), Label = COLLISION )]
 	public bool ViewCollisionEnabled { get; set; } = true;

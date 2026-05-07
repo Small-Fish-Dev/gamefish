@@ -4,163 +4,14 @@ namespace GameFish;
 /// A very basic controller with sprinting, ducking and jumping. <br />
 /// Ideal for use with first-person shooters.
 /// </summary>
-public abstract partial class FirstPersonController : PawnController
+public partial class FirstPersonController : PawnController
 {
-	/// <summary>
-	/// Should this be able to toggle increasing its speed?
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
-	[ToggleGroup( nameof( SprintingEnabled ), Label = SPRINTING )]
-	public virtual bool SprintingEnabled { get; set; } = true;
-
-	/// <summary>
-	/// The input to hold for sprinting.
-	/// </summary>
-	[Property]
-	[InputAction]
-	[Title( "Input" )]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
-	[ToggleGroup( nameof( SprintingEnabled ) )]
-	public string SprintInput { get; set; } = "Run";
-
-	/// <summary>
-	/// The move speed multiplier applied while sprinting.
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
-	[ToggleGroup( nameof( SprintingEnabled ) )]
-	[Range( 0f, 3f, clamped: false ), Step( 0.01f )]
-	public virtual float SprintMultiplier { get; set; } = 1.5f;
-
-	/// <summary>
-	/// If true: sprinting is on when not held and is toggled off instead.
-	/// </summary>
-	[Property]
-	[Title( "Starts Enabled" )]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
-	[ToggleGroup( nameof( SprintingEnabled ) )]
-	public virtual bool IsSprintDefault { get; set; } = false;
-
-	/// <summary>
-	/// Should this be able to crouch?
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
-	[ToggleGroup( nameof( DuckingEnabled ), Label = DUCKING )]
-	public bool DuckingEnabled { get; set; } = true;
-
-	[Property]
-	[InputAction]
-	[Title( "Input" )]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
-	[ToggleGroup( nameof( DuckingEnabled ) )]
-	public string DuckInput { get; set; } = "Duck";
-
-	[Property]
-	[Title( "Move Speed" )]
-	[Range( 0f, 1000f, clamped: false )]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
-	[ToggleGroup( nameof( DuckingEnabled ) )]
-	public virtual float MoveSpeedDucked { get; set; } = 120f;
-
-	/// <summary>
-	/// Should this be able to jump?
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
-	[ToggleGroup( nameof( JumpingEnabled ), Label = JUMPING )]
-	public bool JumpingEnabled { get; set; } = true;
-
-	/// <summary>
-	/// The button to let you jump. <br />
-	/// Set this to blank/null to disable it.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Title( "Input" )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
-	[ToggleGroup( nameof( JumpingEnabled ) )]
-	public InputSetting JumpInput { get; set; } = new( "Jump", InputMode.Pressed );
-
-	/// <summary>
-	/// The sudden force from jumping.
-	/// </summary>
-	[Property]
-	[Title( "Impulse" )]
-	[Range( 0f, 1000f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
-	[ToggleGroup( nameof( JumpingEnabled ) )]
-	public virtual float JumpImpulse { get; set; } = 400f;
-
-	/// <summary>
-	/// Extra horizontal speed from movement direction upon jumping.
-	/// </summary>
-	[Property]
-	[Title( "Leap Speed" )]
-	[Range( 0f, 250f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
-	[ToggleGroup( nameof( JumpingEnabled ) )]
-	public virtual float JumpLeap { get; set; } = 0f;
-
-	/// <summary>
-	/// The incline of a slope adds horizontal velocity to jumps by this much.
-	/// </summary>
-	[Property]
-	[Title( "Slope Factor" )]
-	[Range( 0f, 2f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
-	[ToggleGroup( nameof( JumpingEnabled ) )]
-	public virtual float JumpSlopeFactor { get; set; } = 1f;
-
-	[Property]
-	[Title( "Standing Height" )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
-	public virtual float EyeHeightStand { get; set; } = 64f;
-
-	[Property]
-	[Title( "Ducked Height" )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
-	public virtual float EyeHeightDuck { get; set; } = 32f;
-
-	[Sync]
-	public bool IsDucking
+	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{
-		get => _isDucking;
-		set
-		{
-			if ( _isDucking == value )
-				return;
+		if ( ShouldJump() )
+			Jump();
 
-			_isDucking = value;
-			OnSetIsDucking( value );
-		}
-	}
-
-	protected bool _isDucking = false;
-
-	[Sync]
-	public bool IsSprinting
-	{
-		get => _isSprinting;
-		set
-		{
-			if ( _isSprinting == value )
-				return;
-
-			_isSprinting = value;
-			OnSetIsSprinting( value );
-		}
-	}
-
-	protected bool _isSprinting = false;
-
-	protected virtual void OnSetIsDucking( in bool isDucking )
-	{
-	}
-
-	protected virtual void OnSetIsSprinting( in bool isSprinting )
-	{
+		base.Simulate( deltaTime, isFixedUpdate );
 	}
 
 	protected override void UpdateInput( in float deltaTime )
@@ -172,42 +23,6 @@ public abstract partial class FirstPersonController : PawnController
 		IsDucking = isAlive && ShouldDuck();
 		IsSprinting = isAlive && ShouldSprint();
 	}
-
-	/// <returns> If ducking is currently intended. </returns>
-	protected virtual bool IsWishingDuck()
-		=> Input.Down( DuckInput );
-
-	/// <returns> If sprinting is currently intended. </returns>
-	protected virtual bool IsWishingSprint()
-		=> Input.Down( SprintInput ) == !IsSprintDefault;
-
-	/// <returns> If jumping is currently intended. </returns>
-	protected virtual bool IsWishingJump()
-		=> JumpInput.IsActive;
-
-	/// <returns> If ducking should be active. </returns>
-	protected virtual bool ShouldDuck()
-	{
-		if ( !DuckingEnabled )
-			return false;
-
-		return IsWishingDuck();
-	}
-
-	/// <returns> If sprinting should be active. </returns>
-	protected virtual bool ShouldSprint()
-	{
-		if ( !SprintingEnabled )
-			return false;
-
-		if ( !IsGrounded )
-			return false;
-
-		return IsWishingSprint();
-	}
-
-	public virtual float GetSprintSpeed( in float? speed = null )
-		=> (speed ?? MoveSpeed) * SprintMultiplier;
 
 	public override float GetMovementSpeed()
 	{
@@ -224,57 +39,5 @@ public abstract partial class FirstPersonController : PawnController
 			moveSpeed = GetSprintSpeed( moveSpeed );
 
 		return moveSpeed;
-	}
-
-	/// <returns> If we should jump this frame(such as if pressed). </returns>
-	protected virtual bool ShouldJump()
-	{
-		if ( !JumpingEnabled )
-			return false;
-
-		if ( !IsGrounded )
-			return false;
-
-		return IsWishingJump();
-	}
-
-	/// <returns> The velocity to add from jumping. </returns>
-	public virtual Vector3 GetJumpVelocity()
-	{
-		var vel = Up * JumpImpulse;
-
-		if ( JumpLeap != 0f )
-		{
-			var wishDir = WishVelocity.Normal.Horizontal( Up );
-			vel += wishDir * JumpLeap;
-		}
-
-		if ( !IsGrounded || GroundNormal == default )
-			return vel;
-
-		var hSlope = (GroundNormal * JumpImpulse).Horizontal( Up );
-		vel += hSlope * JumpSlopeFactor;
-
-		return vel;
-	}
-
-	/// <summary>
-	/// Performs a jump with optional velocity override.
-	/// </summary>
-	public virtual void Jump( in Vector3? jumpVel = null )
-	{
-		var impulse = jumpVel ?? GetJumpVelocity();
-
-		if ( impulse.AlmostEqual( 0f ) )
-			return;
-
-		Velocity.Separate( Up, out var upVel, out var hVel );
-
-		// Prevent staggered jumps by negating downward velocity.
-		var upDot = upVel.Dot( Up );
-		upVel = Up * upDot.Positive();
-
-		IsGrounded = false;
-		Velocity = hVel + upVel + impulse;
 	}
 }

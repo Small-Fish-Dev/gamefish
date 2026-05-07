@@ -18,9 +18,6 @@ public partial class ShooterController : FirstPersonController
 	{
 		base.Simulate( deltaTime, isFixedUpdate );
 
-		if ( ShouldJump() )
-			Jump();
-
 		UpdateGravityBoots();
 	}
 
