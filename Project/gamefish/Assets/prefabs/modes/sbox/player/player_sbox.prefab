@@ -83,25 +83,14 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 15,
-        "AirAcceleration": 2500,
+        "AirAcceleration": 10,
         "AllowAiming": true,
         "AllowSliding": true,
         "AllowWallRunning": true,
-        "BodyCylinder": {
-          "_type": "component",
-          "component_id": "7017452f-aa63-4a19-b2e8-fe2900ce1cdb",
-          "go": "ab1c453b-c49b-4391-b35a-6dd13d354419",
-          "component_type": "HullCollider"
-        },
         "ClassId": "player_sbox",
         "ClassName": null,
-        "DebugLogUnstuck": false,
-        "DebugRenderTraces": false,
         "DuckingEnabled": true,
-        "DuckInput": {
-          "Action": "Duck",
-          "Mode": "Held"
-        },
+        "DuckInput": "Duck",
         "EyeHeightDuck": 32,
         "EyeHeightStand": 64,
         "EyeMoveSmoothing": 0.15,
@@ -112,15 +101,6 @@
         },
         "GravityFloating": 0.7,
         "GravitySinking": 2,
-        "GroundAngle": 50,
-        "GroundCheckDistance": 2,
-        "GroundStickDistance": 32,
-        "HeadSphere": {
-          "_type": "component",
-          "component_id": "96a51b9a-b19c-4754-910c-ed88a12c23dc",
-          "go": "c7940f4a-01f9-44ae-ac6b-cb0c6c507901",
-          "component_type": "SphereCollider"
-        },
         "InspectorGroundNormal": "0,0,1",
         "InspectorIsGrounded": false,
         "IsClass": false,
@@ -133,6 +113,8 @@
           "Action": "Jump",
           "Mode": "Pressed"
         },
+        "JumpLeap": 0,
+        "JumpSlopeFactor": 1,
         "MovementEnabled": true,
         "MoveSpeed": 250,
         "MoveSpeedDucked": 120,
@@ -159,7 +141,6 @@
           "Min": -89.9,
           "Max": 89.9
         },
-        "Radius": 12,
         "SlideAcceleration": 1500,
         "SlideMinSpeed": 400,
         "SlideStopSpeed": 250,
@@ -229,6 +210,8 @@
         "SprintingEnabled": true,
         "SprintInput": "Run",
         "SprintMultiplier": 1.7,
+        "ViewCollisionEnabled": true,
+        "ViewCollisionRadius": 8,
         "WallRunGravity": 0.5,
         "WallRunJumpSpeed": "750,300",
         "WallRunPitchRange": {
@@ -244,8 +227,14 @@
         "Flags": 0,
         "ClassId": "player_sbox",
         "ClassName": null,
+        "GroundAngle": 45,
+        "GroundDistance": 16,
+        "GroundingEnabled": true,
         "IsClass": false,
         "IsNetworkingForced": true,
+        "MaxIterations": 8,
+        "MaxUnstuckLength": 16,
+        "MaxUnstuckTries": 32,
         "NetworkAutomatically": true,
         "NetworkId": "f09be569-b333-48c8-b967-16f51b174cca",
         "NetworkingMode": "Object",
@@ -258,7 +247,12 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "SkinWidth": 0.5
+        "SkinWidth": 0.5,
+        "SlidingEnabled": true,
+        "TraceOffset": {
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1"
+        }
       },
       {
         "__type": "Sandbox.Rigidbody",
@@ -707,7 +701,7 @@
             "Children": []
           },
           {
-            "__guid": "17549872-8111-4a0c-a4ab-4579c38446f8",
+            "__guid": "4165059c-7fb3-4f6f-b004-933226af0689",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -724,7 +718,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "356174ce-9228-4a2d-968d-ed5c462fd239",
+                "__guid": "13802aa1-0856-4b79-a07c-6bc6f8df2a6f",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
