@@ -105,6 +105,7 @@ partial class FishboxController
 			|| (surface.Tags?.Contains( TAG_SLIPPERY ) ?? false);
 	}
 
+	/*
 	protected virtual void DoSliding( in float deltaTime )
 	{
 		if ( !AllowSliding )
@@ -197,4 +198,5 @@ partial class FishboxController
 		// GroundAcceleration = Acceleration * 420f;
 		// GroundDeceleration = Friction.Value * 420f;
 	}
+	*/
 }

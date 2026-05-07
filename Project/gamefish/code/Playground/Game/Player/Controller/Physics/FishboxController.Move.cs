@@ -19,10 +19,20 @@ partial class FishboxController
 	[Sync]
 	public TimeUntil NextJump { get; set; }
 
-	protected override void Move( in float deltaTime )
+	protected override void PreMove( in float deltaTime )
 	{
-		PreMove( in deltaTime );
-		PostMove( in deltaTime );
+		base.PreMove( in deltaTime );
+
+		DoAbilities( in deltaTime );
+	}
+
+	protected override void PostMove( in float deltaTime )
+	{
+		base.PostMove( in deltaTime );
+
+		FollowParent();
+
+		UpdateUpDirection( in deltaTime );
 	}
 
 	protected virtual void DoAbilities( in float deltaTime )
@@ -30,28 +40,14 @@ partial class FishboxController
 		if ( !Pawn.IsValid() && !Pawn.IsAlive )
 			return;
 
-		DoJumping( in deltaTime );
-		DoGravity( in deltaTime );
+		// DoGravity( in deltaTime );
 
-		DoGroundMovement( in deltaTime );
-		DoAirMovement( in deltaTime );
+		// DoGroundMovement( in deltaTime );
 		// DoStrafing( in deltaTime );
 
 		// DoSliding( in deltaTime );
 
-		DoWallRunning( in deltaTime );
-	}
-
-	protected override void PreMove( in float deltaTime )
-	{
-		DoAbilities( in deltaTime );
-	}
-
-	protected override void PostMove( in float deltaTime )
-	{
-		FollowParent();
-
-		UpdateUpDirection( in deltaTime );
+		// DoWallRunning( in deltaTime );
 	}
 
 	protected virtual void UpdateUpDirection( in float deltaTime )
@@ -65,14 +61,14 @@ partial class FishboxController
 
 		if ( vUp.AlmostEqual( upDirDest ) )
 		{
-			if ( vUp != upDirDest )
-				SetUpDirection( upDirDest );
+			// if ( vUp != upDirDest )
+				// SetUpDirection( upDirDest );
 
 			return;
 		}
 
 		// SetUpDirection( vUp.SlerpTo( upDirDest, deltaTime ) );
-		SetUpDirection( upDirDest );
+		// SetUpDirection( upDirDest );
 	}
 
 	public override float GetMovementSpeed()
@@ -88,26 +84,6 @@ partial class FishboxController
 		return speed;
 	}
 
-	public override Vector3 CalculateWishDirection( in Vector3? inputDir = null )
-	{
-		if ( inputDir is not Vector3 moveInput )
-			return default;
-
-		var up = -GravityDirection;
-
-		var flatAim = Vector3.VectorPlaneProject( EyeForward, up );
-		var rMove = Rotation.LookAt( flatAim, up );
-
-		return rMove * moveInput;
-	}
-
-	public override Vector3 CalculateWishVelocity( in Vector3? inputDir = null )
-	{
-		var wishVel = base.CalculateWishVelocity( inputDir );
-
-		return wishVel;
-	}
-
 	protected override bool ShouldJump()
 	{
 		if ( !JumpingEnabled )
@@ -117,70 +93,6 @@ partial class FishboxController
 			return false;
 
 		return IsWishingJump();
-	}
-
-	public override Vector3 GetJumpVelocity()
-		=> GroundNormal * JumpImpulse;
-
-	protected virtual void DoJumping( in float deltaTime )
-	{
-		if ( !ShouldJump() )
-			return;
-
-		if ( IsWallRunning )
-		{
-			if ( JumpInput.IsPressed )
-				DoWallRunJump();
-
-			return;
-		}
-
-		if ( !IsGrounded || GroundNormal.AlmostEqual( 0f ) )
-			return;
-
-		if ( IsSlipping )
-			return;
-
-		IsSliding = false;
-		IsGrounded = false;
-
-		NextGround = 0.1f;
-
-		// Negate downwards velocity.
-		var jumpVel = GetJumpVelocity();
-		var jumpDir = jumpVel.Normal;
-
-		Velocity.Separate( jumpDir, out var upVel, out var hVel );
-
-		var vSpeed = jumpDir.Dot( upVel )
-			.Max( jumpVel.Length )
-			.Positive();
-
-		upVel = jumpDir * vSpeed;
-
-		Velocity = hVel + upVel;
-	}
-
-	protected virtual void DoAirMovement( in float deltaTime )
-	{
-		if ( IsGrounded )
-			return;
-
-		var wishDir = WishVelocity.Normal;
-
-		if ( wishDir.AlmostEqual( 0f ) )
-			return;
-
-		// Split the horizontal and vertical speeds.
-		Velocity.Separate( Up, out var upVel, out var sideVel );
-
-		// Respect their existing speed relative to the direction we're trying to move.
-		var speedLimit = sideVel.Length.Max( MoveSpeed );
-
-		var airMove = wishDir * AirAcceleration * deltaTime;
-		sideVel = (sideVel + airMove).ClampLength( speedLimit );
-
-		Velocity = sideVel + upVel;
 	}
 
 	/// <summary>

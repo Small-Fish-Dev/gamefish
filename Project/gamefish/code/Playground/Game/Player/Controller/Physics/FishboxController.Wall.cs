@@ -213,6 +213,7 @@ partial class FishboxController
 		Velocity = upVel + hVel;
 	}
 
+	/*
 	protected virtual void DoWallRunning( in float deltaTime )
 	{
 		// Stop wall running if grounded somehow.
@@ -289,4 +290,5 @@ partial class FishboxController
 		// Negate into-wall velocity.
 		Velocity = Velocity.Horizontal( WallRunNormal );
 	}
+	*/
 }

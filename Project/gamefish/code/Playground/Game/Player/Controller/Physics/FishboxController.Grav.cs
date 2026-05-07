@@ -85,7 +85,7 @@ partial class FishboxController
 			{
 				IsGrounded = false;
 				GravityDirection = -trEye.Normal;
-				SetUpDirection( -GravityDirection );
+				// SetUpDirection( -GravityDirection );
 			}
 		}
 
@@ -107,82 +107,5 @@ partial class FishboxController
 		}
 
 		Velocity += grav * deltaTime;
-	}
-
-	public virtual void UpdateGround()
-	{
-		if ( !NextGround )
-			return;
-
-		if ( !TryGetGroundNormal( out var vNormal ) )
-			return;
-
-		var checkDist = IsGrounded
-			? GroundStickDistance
-			: GroundCheckDistance;
-
-		checkDist *= Scale;
-
-		GroundTrace = TraceDelta( WorldPosition, -vNormal * checkDist );
-
-		// DebugOverlay.Trace( GroundTrace.BodyTrace );
-
-		if ( !GroundTrace.Hit )
-		{
-			if ( IsGrounded )
-				IsGrounded = false;
-
-			return;
-		}
-
-		var upVel = Velocity.Forward( vNormal );
-		var upSpeed = vNormal.Dot( upVel );
-		var isRamping = upSpeed >= 300f;
-
-		IsGrounded = !isRamping && IsValidGround( GroundTrace );
-
-		if ( !IsGrounded )
-			return;
-
-		GroundNormal = GroundTrace.Normal;
-		GroundCollider = GroundTrace.Collider;
-		GroundObject = GroundTrace.GameObject;
-
-		if ( GroundObject.IsValid() )
-			FollowObject = GroundObject;
-
-		TryStickToSurface( GroundTrace );
-	}
-
-	protected virtual void DoGroundMovement( in float deltaTime )
-	{
-		if ( !IsGrounded )
-			return;
-
-		ApplyFriction( in deltaTime );
-
-		var wishDir = WishVelocity.Normal;
-
-		if ( wishDir.AlmostEqual( 0f ) )
-			return;
-
-		if ( !TryGetGroundNormal( out var vNormal ) )
-		{
-			DoAirMovement( in deltaTime );
-			return;
-		}
-
-		Velocity.Separate( vNormal, out var upVel, out var hVel );
-
-		var wishSpeed = GetMovementSpeed();
-		var speedLimit = hVel.Length.Max( wishSpeed );
-
-		var speed = Acceleration * wishSpeed;
-		var vMove = wishDir * speed * deltaTime;
-
-		hVel = (hVel + vMove).ClampLength( speedLimit );
-		hVel = hVel.ProjectAndScale( vNormal );
-
-		Velocity = hVel + upVel;
 	}
 }

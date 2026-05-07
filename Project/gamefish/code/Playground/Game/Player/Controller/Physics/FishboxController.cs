@@ -1,6 +1,4 @@
 using GameFish;
-using ShrimpleCharacterController;
-
 namespace Fishbox;
 
 public partial class FishboxController : FirstPersonController
@@ -21,8 +19,6 @@ public partial class FishboxController : FirstPersonController
 
 		if ( !Rigidbody.IsValid() )
 			this.Warn( $"needs a {typeof( Rigidbody )} to function!" );
-
-		UpdateCollision();
 	}
 
 	protected override void OnPreRender()
@@ -67,13 +63,7 @@ public partial class FishboxController : FirstPersonController
 		return target;
 	}
 
-	protected override void OnSetLocalEyePosition( in Vector3 pos )
-	{
-		base.OnSetLocalEyePosition( pos );
-
-		UpdateCollision();
-	}
-
+	/*
 	protected virtual void RenderColliders( in float? totalHeight = null, Transform? tWorld = null )
 	{
 		var height = totalHeight ?? GetTotalHeight();
@@ -94,4 +84,5 @@ public partial class FishboxController : FirstPersonController
 			tWorld: tHead
 		);
 	}
+	*/
 }

@@ -45,7 +45,7 @@ partial class FishboxController
 			if ( oldFollow.IsValid() && TryGetGroundNormal( out var vUp ) )
 			{
 				GravityDirection = -vUp;
-				SetUpDirection( vUp );
+				// SetUpDirection( vUp );
 			}
 
 			return;
@@ -97,9 +97,6 @@ partial class FishboxController
 		FollowLastWorldTransform = tParent;
 		FollowLastOffset = tParent.ToLocal( tDest );
 
-		SetPhysicsTransform( tDest );
-
-		// var trUnder = TraceDelta( tDest.Position + (Up * 16 * Scale), tDest.Position + (Up * 1f) );
-		// TryStickToSurface( trUnder );
+		WorldTransform = tDest;
 	}
 }
