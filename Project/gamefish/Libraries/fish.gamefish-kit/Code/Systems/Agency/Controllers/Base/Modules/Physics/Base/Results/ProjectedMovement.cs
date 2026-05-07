@@ -66,6 +66,25 @@ public class ProjectedMovement
 	protected SceneTrace _trBase;
 	protected SceneTrace _trSkin;
 
+	public ProjectedMovement( ProjectedMovement move )
+	{
+		_trBase = move._trBase;
+		_trSkin = move._trSkin;
+
+		Start = move.Start;
+		Point = move.Point;
+
+		Delta = move.Delta;
+
+		Direction = move.Direction;
+		Distance = move.Distance;
+
+		Velocity = move.Velocity;
+
+		IsGrounded = move.IsGrounded;
+		GroundNormal = move.GroundNormal;
+	}
+
 	public ProjectedMovement( in SceneTrace trBase, in SceneTrace trSkin, in Transform tStart, in Offset delta, in Vector3 dir, in float dist )
 	{
 		_trBase = trBase;
@@ -78,6 +97,36 @@ public class ProjectedMovement
 
 		Direction = dir;
 		Distance = dist;
+	}
+
+	public ProjectedMovement( ControllerPhysics phys, in Transform tFrom, in Vector3 to )
+	{
+		if ( phys is null )
+			return;
+
+		_trBase = phys.Trace( skin: 0f );
+		_trSkin = phys.Trace( skin: -phys.SkinWidth );
+
+		var dir = tFrom.Position.Direction( in to );
+		var dist = tFrom.Position.Distance( in to );
+
+		var tStart = tFrom.WithOffset( phys.TraceOffset );
+		Offset delta = tStart.ToLocal( tFrom );
+
+		Start = tStart;
+		Point = tStart;
+
+		Delta = delta;
+
+		Direction = dir;
+		Distance = dist;
+
+		IsStuck = phys.IsStuck;
+
+		Velocity = phys.Velocity;
+
+		IsGrounded = phys.IsGrounded && phys.GroundingEnabled;
+		GroundNormal = phys.GroundNormal;
 	}
 
 	protected SceneTrace GetTrace( in bool withSkin )

@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace GameFish;
 
 partial class ControllerPhysics
@@ -51,22 +49,7 @@ partial class ControllerPhysics
 	/// </summary>
 	public virtual void Move( in Transform tFrom, in Vector3 to )
 	{
-		var trBase = Trace( skin: 0f );
-		var trSkin = Trace( skin: -SkinWidth );
-
-		var dir = tFrom.Position.Direction( in to );
-		var dist = tFrom.Position.Distance( in to );
-
-		var tStart = tFrom.WithOffset( TraceOffset );
-		Offset delta = tStart.ToLocal( tFrom );
-
-		var move = new ProjectedMovement( in trBase, in trSkin, in tStart, in delta, in dir, in dist )
-		{
-			IsStuck = IsStuck,
-			Velocity = Velocity,
-			IsGrounded = IsGrounded && GroundingEnabled,
-			GroundNormal = GroundNormal,
-		};
+		var move = new ProjectedMovement( this, in tFrom, in to );
 
 		Run( move );
 	}
