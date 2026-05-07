@@ -184,6 +184,40 @@
           "Position": "0,0,35",
           "Rotation": "0,0,0,1"
         }
+      },
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "c2224937-18b6-423a-b54b-25c4440975e5",
+        "__enabled": true,
+        "Flags": 0,
+        "AngularDamping": 0,
+        "EnableImpactDamage": false,
+        "EnhancedCcd": false,
+        "Gravity": false,
+        "GravityScale": 1,
+        "ImpactDamage": 0,
+        "LinearDamping": 0,
+        "Locking": {
+          "X": false,
+          "Y": false,
+          "Z": false,
+          "Pitch": true,
+          "Yaw": true,
+          "Roll": true
+        },
+        "MassCenterOverride": "0,0,0",
+        "MassOverride": 0,
+        "MinImpactDamageSpeed": 500,
+        "MotionEnabled": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OverrideMassCenter": false,
+        "RigidbodyFlags": 0,
+        "StartAsleep": false
       }
     ],
     "Children": [
@@ -596,7 +630,7 @@
             "Children": []
           },
           {
-            "__guid": "152fd630-0b67-4613-a6bc-a9de85997a01",
+            "__guid": "b2ea81dc-105e-4d34-92c4-8376f3a7ae46",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -613,7 +647,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "47f4982f-9c08-4f11-b024-1b3cc222d896",
+                "__guid": "fd207926-f058-4133-a01a-c2374140362d",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
