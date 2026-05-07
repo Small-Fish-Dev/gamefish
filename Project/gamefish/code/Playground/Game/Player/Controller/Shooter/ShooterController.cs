@@ -31,20 +31,40 @@ public partial class ShooterController : FirstPersonController
 
 		var tr = Pawn.GetEyeTrace( 8096f ).Run();
 
+		TrySetPerspective( in tr );
+	}
+
+	protected bool TrySetPerspective( in SceneTraceResult tr )
+	{
 		if ( !tr.Hit )
-			return;
+			return false;
+
+		var rUp = Rotation.LookAt( tr.Normal, EyeForward );
+		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
+
+		return TrySetPerspective( in rForward );
+	}
+
+	protected bool TrySetPerspective( in Rotation rForward )
+	{
+		if ( !ITransform.IsValid( in rForward ) )
+			return false;
+
+		if ( !Pawn.IsValid() )
+			return false;
 
 		var oldCenter = Center;
 
 		var rEye = Pawn.EyeRotation;
 		var eyePos = Pawn.EyePosition;
 
-		var rUp = Rotation.LookAt( tr.Normal, tr.Direction );
-		WorldRotation = Rotation.LookAt( rUp.Up, rUp.Forward );
-
-		Pawn.WorldPosition += oldCenter - Center;
+		Pawn.WorldRotation = rForward;
 
 		Pawn.EyeRotation = rEye;
 		Pawn.EyePosition = eyePos;
+
+		Pawn.WorldPosition += oldCenter - Center;
+
+		return true;
 	}
 }
