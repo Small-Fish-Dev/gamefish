@@ -99,4 +99,12 @@ public abstract partial class ControllerPhysics : ControllerModule
 	protected virtual void UpdatePhysics()
 	{
 	}
+
+	public virtual void ApplyGravity( in Vector3 vel, in float deltaTime )
+	{
+		if ( vel == default )
+			return;
+
+		Velocity += vel * deltaTime;
+	}
 }

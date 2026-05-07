@@ -24,15 +24,6 @@ public partial class ShooterController : FirstPersonController
 		UpdateGravityBoots();
 	}
 
-	protected override void PostMove( in float deltaTime )
-	{
-		base.PostMove( deltaTime );
-
-		// Gravity.
-		if ( !IsGrounded )
-			Velocity += Gravity * deltaTime;
-	}
-
 	protected virtual void UpdateGravityBoots()
 	{
 		if ( !Pawn.IsValid() )

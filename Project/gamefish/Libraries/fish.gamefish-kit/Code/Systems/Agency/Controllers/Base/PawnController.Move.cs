@@ -165,6 +165,7 @@ partial class PawnController
 	/// </summary>
 	protected virtual void PostMove( in float deltaTime )
 	{
+		ApplyGravity( in deltaTime );
 	}
 
 	/// <summary>
@@ -207,6 +208,11 @@ partial class PawnController
 		upVel += upAdd;
 
 		Velocity = hVel + upVel;
+	}
+
+	protected virtual void ApplyGravity( in float deltaTime )
+	{
+		Physics?.ApplyGravity( Gravity, in deltaTime );
 	}
 
 	public SceneTrace TracePhysics( in float skin = 0f )
