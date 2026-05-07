@@ -1,5 +1,4 @@
 using GameFish;
-using ShrimpleCharacterController;
 
 namespace Fishbox;
 

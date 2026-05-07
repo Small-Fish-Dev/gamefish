@@ -347,11 +347,11 @@ public sealed class MoveHelper
 		}
 
 		if ( IsGround( normal ) )
-			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
+			Velocity = Velocity.PlaneProject( Up );
 		else
-			Velocity = Vector3.VectorPlaneProject( Velocity, normal );
+			Velocity = Velocity.PlaneProject( in normal );
 
-		var vProject = Vector3.VectorPlaneProject( in moveDir, in normal );
+		var vProject = moveDir.PlaneProject( in normal );
 
 		Direction = vProject.Normal;
 		Distance *= vProject.Length;
@@ -404,7 +404,7 @@ public sealed class MoveHelper
 			SnapTo( trGround );
 
 			GroundNormal = trGround.Normal;
-			Velocity = Vector3.VectorPlaneProject( Velocity, Up );
+			Velocity = Velocity.PlaneProject( Up );
 		}
 	}
 }

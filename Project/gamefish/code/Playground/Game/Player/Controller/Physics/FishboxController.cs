@@ -1,4 +1,5 @@
 using GameFish;
+
 namespace Fishbox;
 
 public partial class FishboxController : FirstPersonController

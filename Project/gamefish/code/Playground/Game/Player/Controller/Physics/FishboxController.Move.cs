@@ -1,6 +1,4 @@
-using Boxfish.Utility;
 using GameFish;
-using ShrimpleCharacterController;
 
 namespace Fishbox;
 

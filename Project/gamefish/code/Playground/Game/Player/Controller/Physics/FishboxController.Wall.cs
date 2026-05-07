@@ -1,7 +1,6 @@
-using System.Diagnostics;
-using System.Text.Json.Serialization;
 using GameFish;
 using ShrimpleCharacterController;
+using System.Text.Json.Serialization;
 
 namespace Fishbox;
 
@@ -162,7 +161,7 @@ partial class FishboxController
 
 		IsWallRunning = false;
 
-		var upWall = Vector3.VectorPlaneProject( Up, WallRunNormal );
+		var upWall = Up.PlaneProject( WallRunNormal ).Normal;
 
 		Velocity.Separate( upWall, out var upVel, out var hVel );
 

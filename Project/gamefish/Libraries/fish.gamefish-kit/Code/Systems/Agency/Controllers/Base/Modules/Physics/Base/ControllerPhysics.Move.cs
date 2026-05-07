@@ -236,7 +236,7 @@ partial class ControllerPhysics
 			return;
 
 		// Affect direction/distance.
-		var vProject = Vector3.VectorPlaneProject( in move.Direction, in normal );
+		var vProject = move.Direction.PlaneProject( in normal );
 
 		move.Direction = vProject.Normal;
 		move.Distance *= vProject.Length;
@@ -249,13 +249,11 @@ partial class ControllerPhysics
 		if ( IsGround( normal ) )
 		{
 			var flatSpeed = vel.Horizontal( in normal ).Length;
-			var planeVel = Vector3.VectorPlaneProject( in vel, in normal );
-
-			move.Velocity = planeVel.Normal * flatSpeed;
+			move.Velocity = vel.PlaneProject( in normal, in flatSpeed );
 		}
 		else
 		{
-			move.Velocity = Vector3.VectorPlaneProject( in vel, in normal );
+			move.Velocity = vel.PlaneProject( in normal );
 		}
 	}
 }

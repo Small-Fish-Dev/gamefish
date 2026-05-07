@@ -12,9 +12,9 @@ partial class ControllerPhysics
 			return false;
 
 		// Align the movement axis along the hit normal.
-		var vForward = Vector3.VectorPlaneProject( vMove, Up ).Normal;
-		var vUpward = Vector3.VectorPlaneProject( Up, vForward ).Normal;
-		hDist = Vector3.VectorPlaneProject( vMove, vUpward ).Length;
+		var vForward = vMove.PlaneProject( Up ).Normal;
+		var vUpward = Up.PlaneProject( vForward ).Normal;
+		hDist = vMove.PlaneProject( vUpward ).Length;
 
 		var trUpward = TraceDelta( startPos, vUpward * stepHeight );
 
