@@ -83,7 +83,7 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
-        "AirAcceleration": 5,
+        "AirAcceleration": 3,
         "AllowAiming": true,
         "ClassId": "player_shooter",
         "ClassName": null,
