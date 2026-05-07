@@ -36,14 +36,14 @@ partial class PawnController
 	[Property]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
-	public virtual bool PitchClamping { get; set; } = true;
+	public virtual bool AimPitchClamping { get; set; } = true;
 
 	[Property]
 	[Range( 0, 180 )]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
-	[ShowIf( nameof( PitchClamping ), true )]
-	public virtual FloatRange PitchRange { get; set; } = new( -89.9f, 89.9f );
+	[ShowIf( nameof( AimPitchClamping ), true )]
+	public virtual FloatRange AimPitchRange { get; set; } = new( -89.9f, 89.9f );
 
 	/// <summary>
 	/// The local(relative) eye angles.
@@ -52,21 +52,11 @@ partial class PawnController
 	[Title( "Eye Angles" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
-	protected virtual Angles InspectorLocalEyeAngles
-	{
-		get => LocalEyeAngles;
-		set => LocalEyeAngles = value;
-	}
-
-	protected virtual Angles LocalEyeAngles
+	protected Angles InspectorLocalEyeAngles
 	{
 		get => LocalEyeRotation;
-		set => LocalEyeRotation = PitchClamping
-			? value.WithPitch( value.pitch.Clamp( PitchRange ) )
-			: value;
+		set => LocalEyeRotation = value;
 	}
-
-	protected Rotation _viewRotation = Rotation.Identity;
 
 	[Sync( SyncFlags.Interpolate )]
 	public Vector3 LocalEyePosition
@@ -82,7 +72,7 @@ partial class PawnController
 		}
 	}
 
-	protected Vector3 _localEyePos;
+	protected Vector3 _localEyePos = default;
 
 	[Sync( SyncFlags.Interpolate )]
 	public Rotation LocalEyeRotation
@@ -102,18 +92,15 @@ partial class PawnController
 
 	public Vector3 EyeForward => Pawn?.EyeForward ?? WorldTransform.RotationToWorld( LocalEyeRotation ).Forward.Normal;
 
-
 	public virtual void SetLocalEyePosition( Vector3 pos )
 		=> LocalEyePosition = pos;
 
 	protected virtual void OnSetLocalEyePosition( in Vector3 pos ) { }
 
-
 	public virtual void SetLocalEyeRotation( Rotation value )
 		=> LocalEyeRotation = value;
 
 	protected virtual void OnSetLocalEyeRotation( in Rotation r ) { }
-
 
 	/// <summary>
 	/// The vertical eye offset.
@@ -127,7 +114,6 @@ partial class PawnController
 	/// <returns> The position the eye wants to be. </returns>
 	public virtual Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Zero;
-
 
 	/// <summary>
 	/// Initializes the view.
@@ -179,14 +165,14 @@ partial class PawnController
 	{
 		Angles angLook = rLook;
 
-		if ( PitchClamping )
+		if ( AimPitchClamping )
 		{
-			Angles angAim = LocalEyeAngles;
+			Angles angAim = LocalEyeRotation;
 
-			angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( PitchRange );
+			angAim.pitch = (angAim.pitch + angLook.pitch).Clamp( AimPitchRange );
 			angAim.yaw += angLook.yaw;
 
-			LocalEyeAngles = angAim;
+			LocalEyeRotation = angAim;
 		}
 		else
 		{
