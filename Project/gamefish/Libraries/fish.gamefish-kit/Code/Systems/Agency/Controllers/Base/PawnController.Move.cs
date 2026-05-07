@@ -30,7 +30,7 @@ partial class PawnController
 	/// How quickly maximum speed is reached while grounded.
 	/// </summary>
 	[Property]
-	[Range( 0f, 100f, clamped: false )]
+	[Range( 0f, 50f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
 	public virtual float Acceleration { get; set; } = 10f;
@@ -39,10 +39,10 @@ partial class PawnController
 	/// How quickly maximum speed is reached while airborne.
 	/// </summary>
 	[Property]
-	[Range( 0f, 100f, clamped: false )]
+	[Range( 0f, 20f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
 	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
-	public virtual float AirAcceleration { get; set; } = 5f;
+	public virtual float AirAcceleration { get; set; } = 3f;
 
 	/// <summary>
 	/// Slows their speed down over time.
