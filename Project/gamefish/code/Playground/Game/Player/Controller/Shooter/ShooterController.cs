@@ -47,7 +47,7 @@ public partial class ShooterController : FirstPersonController
 		if ( !Pawn.IsValid() )
 			return;
 
-		if ( !Input.Down( "Item" ) )
+		if ( !Input.Pressed( "Item" ) )
 			return;
 
 		var tr = Pawn.GetEyeTrace( 8096f ).Run();
