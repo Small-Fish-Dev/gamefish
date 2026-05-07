@@ -85,6 +85,9 @@ partial class ControllerPhysics
 			LastVelocity = move.Velocity;
 		}
 
+		if ( !move.IsGrounded )
+			ClearGround( move );
+
 		Apply( move );
 	}
 
@@ -99,6 +102,10 @@ partial class ControllerPhysics
 
 		IsGrounded = move.IsGrounded && GroundingEnabled;
 		GroundNormal = move.IsGrounded ? move.GroundNormal : -Gravity.Normal;
+
+		GroundObject = move.GroundObject;
+		GroundCollider = move.GroundCollider;
+		GroundBody = move.GroundBody;
 
 		if ( !Pawn.IsValid() )
 			return;
@@ -158,7 +165,7 @@ partial class ControllerPhysics
 			return;
 
 		// Don't act like we're grounded if stuck in something.
-		move.IsGrounded = false;
+		ClearGround( move );
 	}
 
 	/// <summary>
@@ -189,6 +196,10 @@ partial class ControllerPhysics
 
 		move.IsGrounded = true;
 		move.GroundNormal = trGround.Normal;
+
+		move.GroundObject = trGround.GameObject;
+		move.GroundCollider = trGround.Collider;
+		move.GroundBody = trGround.Collider?.Rigidbody;
 
 		ClipVelocity( trGround.Normal, move );
 	}

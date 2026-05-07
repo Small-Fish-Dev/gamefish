@@ -182,4 +182,14 @@ partial class ControllerPhysics
 
 		return upSpeed < 300f;
 	}
+
+	protected virtual void ClearGround( ProjectedMovement move )
+	{
+		move.IsGrounded = false;
+		move.GroundNormal = Up;
+
+		move.GroundObject = null;
+		move.GroundCollider = null;
+		move.GroundBody = null;
+	}
 }
