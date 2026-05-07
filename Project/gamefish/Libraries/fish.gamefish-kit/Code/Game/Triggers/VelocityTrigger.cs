@@ -242,24 +242,6 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 		AffectVelocity( obj, instant: true );
 	}
 
-	public virtual void AffectVelocity( GameObject obj, bool instant )
-	{
-		if ( !obj.IsValid() )
-			return;
-
-		if ( TryGetRigidbody( obj, out var rb ) )
-		{
-			SetVelocity( rb,
-				GetLinearVelocity( rb.Velocity, rb.WorldRotation, instant: instant ),
-				GetAngularVelocity( rb.AngularVelocity, rb.WorldRotation, instant: instant )
-			);
-		}
-		else if ( TryGetController( obj, out var c ) )
-		{
-			SetVelocity( c, GetLinearVelocity( c.Velocity, c.WorldRotation, instant: instant ) );
-		}
-	}
-
 	protected virtual Rotation GetForceRotation( in Rotation baseRotation, in VelocityRelation relEnum )
 		=> relEnum switch
 		{
@@ -369,31 +351,26 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 		return angVel;
 	}
 
-	protected static bool TryGetRigidbody( GameObject obj, out Rigidbody rb )
+	public virtual void AffectVelocity( GameObject obj, bool instant )
 	{
 		if ( !obj.IsValid() )
+			return;
+
+		if ( TryGetPawn( obj, out var c ) )
 		{
-			rb = null;
-			return false;
+			SetVelocity( c, GetLinearVelocity( c.Velocity, c.WorldRotation, instant: instant ) );
 		}
-
-		return obj.Components.TryGet( out rb, FindMode.EnabledInSelf | FindMode.InAncestors );
-	}
-
-	protected static bool TryGetController( GameObject obj, out PawnController c )
-	{
-
-		if ( !obj.IsValid() )
+		else if ( TryGetRigidbody( obj, out var rb ) )
 		{
-			c = null;
-			return false;
+			SetVelocity( rb,
+				GetLinearVelocity( rb.Velocity, rb.WorldRotation, instant: instant ),
+				GetAngularVelocity( rb.AngularVelocity, rb.WorldRotation, instant: instant )
+			);
 		}
-
-		return obj.Components.TryGet( out c, FindMode.EnabledInSelf | FindMode.InAncestors );
 	}
 
 	/// <summary>
-	/// Directly modifies the velocity of <paramref name="rb"/>.
+	/// Directly modifies the velocity of a <see cref="Rigidbody"/>.
 	/// </summary>
 	public virtual void SetVelocity( Rigidbody rb, in Vector3 linear, in Vector3 angular )
 	{
@@ -405,22 +382,44 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 	}
 
 	/// <summary>
-	/// Directly modifies the velocity of <paramref name="c"/>.
+	/// Directly modifies the velocity of a <see cref="Pawn"/>.
 	/// </summary>
-	public virtual void SetVelocity( PawnController c, in Vector3 linear )
+	public virtual void SetVelocity( Pawn pawn, in Vector3 linear )
 	{
-		if ( c.IsValid() )
-			c.Velocity = linear;
+		if ( pawn.IsValid() )
+			pawn.Velocity = linear;
 	}
 
 	/// <summary>
-	/// Directly modifies velocities of the object's <see cref="Rigidbody"/>(if any).
+	/// Directly modifies velocities of the object.
 	/// </summary>
-	public void SetVelocity( GameObject obj, in Vector3 linear, in Vector3 angular )
+	public virtual void SetVelocity( GameObject obj, in Vector3 linear, in Vector3 angular )
 	{
-		if ( TryGetRigidbody( obj, out var rb ) )
+		if ( TryGetPawn( obj, out var pawn ) )
+			SetVelocity( pawn, in linear );
+		else if ( TryGetRigidbody( obj, out var rb ) )
 			SetVelocity( rb, in linear, in angular );
-		else if ( TryGetController( obj, out var c ) )
-			SetVelocity( c, in linear );
+	}
+
+	protected static bool TryGetRigidbody( GameObject obj, out Rigidbody rb )
+	{
+		if ( !obj.IsValid() )
+		{
+			rb = null;
+			return false;
+		}
+
+		return obj.Components.TryGet( out rb, FindMode.EnabledInSelf | FindMode.InAncestors );
+	}
+
+	protected static bool TryGetPawn( GameObject obj, out Pawn pawn )
+	{
+		if ( !obj.IsValid() )
+		{
+			pawn = null;
+			return false;
+		}
+
+		return obj.Components.TryGet( out pawn, FindMode.EnabledInSelf | FindMode.InAncestors );
 	}
 }
