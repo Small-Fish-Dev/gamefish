@@ -14,8 +14,27 @@ partial class Library
 	/// <param name="v"></param>
 	/// <param name="isNormal"> Should this be normalized afterwards? </param>
 	/// <returns> A vector flattened as if 2D. </returns>
-	public static Vector3 Flatten( this Vector3 v, bool isNormal = false )
+	public static Vector3 Flatten( this Vector3 v, in bool isNormal = false )
 		=> isNormal ? v.WithZ( 0f ).Normal : v.WithZ( 0f );
+
+	/// <summary>
+	/// Projects a vector onto a plane's normal.
+	/// </summary>
+	/// <param name="v"></param>
+	/// <param name="planeNormal"> The plane's normal that the vector will lay flat on. </param>
+	/// <returns> A vector projected against a normal with a specific length. </returns>
+	public static Vector3 PlaneProject( this Vector3 v, in Vector3 planeNormal )
+		=> Vector3.VectorPlaneProject( in v, in planeNormal );
+
+	/// <summary>
+	/// Projects a vector onto a plane's normal then normalizes and scales it.
+	/// </summary>
+	/// <param name="v"></param>
+	/// <param name="planeNormal"> The plane's normal that the vector will lay flat on. </param>
+	/// <param name="length"> The resulting length of the vector(if it's not zero). </param>
+	/// <returns> A vector projected against a normal with a specific length. </returns>
+	public static Vector3 PlaneProject( this Vector3 v, in Vector3 planeNormal, in float length )
+		=> v.PlaneProject( in planeNormal ).Normal * length;
 
 	/// <summary>
 	/// Separate a vector into its forward/sideways components using the direction specified.
