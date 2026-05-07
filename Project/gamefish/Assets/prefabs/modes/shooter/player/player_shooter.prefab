@@ -162,6 +162,7 @@
         "IsClass": false,
         "IsNetworkingForced": true,
         "MaxIterations": 8,
+        "MaxUnstuckLength": 16,
         "MaxUnstuckTries": 32,
         "NetworkAutomatically": true,
         "NetworkId": "1c916bfd-7441-4512-84be-645850788ad1",
@@ -630,7 +631,7 @@
             "Children": []
           },
           {
-            "__guid": "b2ea81dc-105e-4d34-92c4-8376f3a7ae46",
+            "__guid": "a57a748d-3ad2-4be7-ad21-e177e85d7bc3",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -647,7 +648,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "fd207926-f058-4133-a01a-c2374140362d",
+                "__guid": "284c5ed9-86cb-4c95-9cfe-6b90cd1fc181",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
