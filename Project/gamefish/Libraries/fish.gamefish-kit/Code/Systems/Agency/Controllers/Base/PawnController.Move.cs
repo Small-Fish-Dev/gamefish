@@ -141,6 +141,9 @@ partial class PawnController
 	protected virtual void Move( in float deltaTime )
 	{
 		PreMove( in deltaTime );
+
+		Physics?.Simulate( in deltaTime );
+
 		PostMove( in deltaTime );
 	}
 

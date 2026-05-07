@@ -33,15 +33,6 @@ public partial class ShooterController : FirstPersonController
 			Velocity += Gravity * deltaTime;
 	}
 
-	protected override void Move( in float deltaTime )
-	{
-		PreMove( in deltaTime );
-
-		Physics?.Simulate( in deltaTime );
-
-		PostMove( in deltaTime );
-	}
-
 	protected virtual void UpdateGravityBoots()
 	{
 		if ( !Pawn.IsValid() )
