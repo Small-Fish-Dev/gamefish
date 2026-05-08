@@ -34,13 +34,6 @@ partial class PawnController
 	public virtual bool AllowAiming { get; set; } = true;
 
 	[Property]
-	[Title( "Roll Reset Speed" )]
-	[Range( 1f, 10f, clamped: false )]
-	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
-	public virtual float AimRollResetSpeed { get; set; } = 10f;
-
-	[Property]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	public virtual bool AimPitchClamping { get; set; } = true;
@@ -51,6 +44,13 @@ partial class PawnController
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	[ShowIf( nameof( AimPitchClamping ), true )]
 	public virtual FloatRange AimPitchRange { get; set; } = new( -89.9f, 89.9f );
+
+	[Property]
+	[Title( "Anti-Roll Speed" )]
+	[Range( 1f, 10f, clamped: false )]
+	[ToggleGroup( nameof( AllowAiming ) )]
+	[Feature( VIEW ), Order( AIMING_ORDER )]
+	public virtual float AimRollResetSpeed { get; set; } = 10f;
 
 	/// <summary>
 	/// The local(relative) eye angles.

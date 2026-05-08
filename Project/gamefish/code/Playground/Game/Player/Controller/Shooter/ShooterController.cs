@@ -12,16 +12,25 @@ public partial class ShooterController : FirstPersonController
 	protected const string BADASS = "😎 Badass";
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
+	[Property]
+	[Range( 0f, 2f, clamped: false )]
+	[Title( "Anti-Roll Speed (free)" )]
+	[ToggleGroup( nameof( AllowAiming ) )]
+	[Feature( VIEW ), Order( AIMING_ORDER )]
+	public virtual float AimRollFreeResetSpeed { get; set; } = 0.3f;
+
 	public override bool AimPitchClamping => false;
 
 	public override Vector3 Gravity => Down * base.Gravity.Length;
+
+	protected bool IsFreeLooking => JumpInput.IsHeld;
 
 	public override bool TryAim( in Rotation rLook, in float deltaTime )
 	{
 		if ( !ITransform.IsValid( in rLook ) )
 			return false;
 
-		if ( !IsGrounded )
+		if ( IsFreeLooking )
 		{
 			LocalEyeRotation *= rLook;
 			return true;
@@ -38,12 +47,19 @@ public partial class ShooterController : FirstPersonController
 		return true;
 	}
 
+	protected override void UpdateEyeRotation( in float deltaTime )
+	{
+		var rollSpeed = IsFreeLooking
+			? AimRollFreeResetSpeed
+			: AimRollResetSpeed;
+
+		ResetEyeRoll( in rollSpeed, in deltaTime );
+	}
+
 	protected override void ResetEyeRoll( in float speed, in float deltaTime )
 	{
 		var tEye = EyeTransform;
-
-		var rollSpeed = IsGrounded ? speed : speed / 5f;
-		var newUp = tEye.Up.SlerpTo( Up, rollSpeed * deltaTime );
+		var newUp = tEye.Up.SlerpTo( Up, speed * deltaTime );
 
 		EyeRotation = Rotation.LookAt( tEye.Forward, newUp );
 	}
@@ -63,7 +79,7 @@ public partial class ShooterController : FirstPersonController
 		if ( !Input.Pressed( "Item" ) )
 			return;
 
-		var tr = Pawn.GetEyeTrace( 8096f ).Run();
+		var tr = Pawn.GetEyeTrace( 16384f ).Run();
 
 		TrySetPerspective( in tr );
 	}

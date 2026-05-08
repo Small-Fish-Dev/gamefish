@@ -87,7 +87,8 @@
           "Min": -89.9,
           "Max": 89.9
         },
-        "AimRollResetSpeed": 2,
+        "AimRollFreeResetSpeed": 0.5,
+        "AimRollResetSpeed": 5,
         "AirAcceleration": 3,
         "AllowAiming": true,
         "ClassId": "player_shooter",
