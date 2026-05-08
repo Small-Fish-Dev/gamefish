@@ -47,6 +47,7 @@
         "ClassId": "mode_shooter",
         "ClassName": null,
         "FocusTimeScale": 0.4,
+        "FocusTimeSpeed": 8,
         "IsClass": false,
         "IsNetworkingForced": true,
         "NetworkAutomatically": true,

@@ -11,6 +11,15 @@ public class ShooterSlowMotion : Module
 	[Feature( BADASS ), Order( BADASS_ORDER )]
 	public float FocusTimeScale { get; set; } = 0.4f;
 
+	/// <summary>
+	/// How quickly
+	/// </summary>
+	[Property]
+	[Title( "Time Scale Speed" )]
+	[Range( 5f, 20f, clamped: false )]
+	[Feature( BADASS ), Order( BADASS_ORDER )]
+	public float FocusTimeSpeed { get; set; } = 8f;
+
 	public override bool IsParent( ModuleEntity comp )
 		=> comp is ShooterMode;
 
@@ -28,7 +37,7 @@ public class ShooterSlowMotion : Module
 		var focusScale = FocusTimeScale.Max( 0.01f );
 		var targetTimeScale = anyFocus ? focusScale : 1f;
 
-		var speed = RealTime.SmoothDelta * 5f;
+		var speed = RealTime.SmoothDelta * FocusTimeSpeed;
 
 		Scene.TimeScale = Scene.TimeScale.LerpTo( targetTimeScale, speed );
 	}
