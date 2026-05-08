@@ -93,13 +93,11 @@ public partial class ShooterController : FirstPersonController
 		// Stick to what's beneath us.
 		if ( Input.Down( "Run" ) )
 		{
-			var eyeDown = EyeRotation.Down;
-			var tr = Pawn.GetEyeTrace( 1024f, dir: eyeDown ).Run();
+			var dir = EyeRotation.Down;
+			var tr = Pawn.GetEyeTrace( 1024f, dir: dir ).Run();
 
 			if ( tr.Hit )
 				TrySetPerspective( in tr );
-			else
-				TrySetPerspective( EyeRotation );
 		}
 
 		// Stick to where we're looking.
