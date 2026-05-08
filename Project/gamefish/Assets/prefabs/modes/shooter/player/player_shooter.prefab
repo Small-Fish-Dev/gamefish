@@ -801,6 +801,59 @@
           }
         ],
         "Children": []
+      },
+      {
+        "__guid": "034de347-3092-4509-a6f2-95d63f33817d",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Grappling Hook",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "GameFish.PlayerGrappleModule",
+            "__guid": "74688587-62a4-4d0a-87f0-fea5d4cc0074",
+            "__enabled": true,
+            "Flags": 0,
+            "ClassId": null,
+            "ClassName": null,
+            "Elasticity": 10,
+            "ExtendButton": "Duck",
+            "ExtendSpeed": 500,
+            "HookButton": "Hook",
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "LengthRange": {
+              "Min": 16,
+              "Max": 4096
+            },
+            "NetworkAutomatically": true,
+            "NetworkId": "74688587-62a4-4d0a-87f0-fea5d4cc0074",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RetractButton": "Jump",
+            "RetractSpeed": 500,
+            "SlackLimit": 1,
+            "SwingSpeed": 1
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {
