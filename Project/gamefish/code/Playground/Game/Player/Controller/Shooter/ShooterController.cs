@@ -93,11 +93,10 @@ public partial class ShooterController : FirstPersonController
 		var eyePos = Pawn.EyePosition;
 
 		Pawn.WorldRotation = rForward;
-
 		Pawn.EyeRotation = rEye;
-		Pawn.EyePosition = eyePos;
 
 		Pawn.WorldPosition += oldCenter - Center;
+		Pawn.EyePosition = eyePos;
 
 		return true;
 	}
