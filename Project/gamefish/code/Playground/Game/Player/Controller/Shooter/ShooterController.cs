@@ -76,12 +76,24 @@ public partial class ShooterController : FirstPersonController
 		if ( !Pawn.IsValid() )
 			return;
 
-		if ( !Input.Pressed( "Item" ) )
-			return;
+		// Stick to what's beneath us.
+		if ( Input.Down( "Run" ) )
+		{
+			var eyeDown = EyeRotation.Down;
+			var tr = Pawn.GetEyeTrace( 1024f, dir: eyeDown ).Run();
 
-		var tr = Pawn.GetEyeTrace( 16384f ).Run();
+			if ( tr.Hit )
+				TrySetPerspective( in tr );
+			else
+				TrySetPerspective( EyeRotation );
+		}
 
-		TrySetPerspective( in tr );
+		// Stick to where we're looking.
+		if ( Input.Pressed( "Item" ) )
+		{
+			var tr = Pawn.GetEyeTrace( 16384f ).Run();
+			TrySetPerspective( in tr );
+		}
 	}
 
 	protected bool TrySetPerspective( in SceneTraceResult tr )
