@@ -7,7 +7,7 @@ namespace GameFish;
 [EditorHandle( Icon = "🏹" )]
 public partial class Equipment : DynamicEntity
 {
-	protected const int EQUIP_ORDER = DEFAULT_ORDER - 71144;
+	protected const int EQUIP_ORDER = DEFAULT_ORDER - 1000;
 
 	protected const string SLOT = "Slot";
 

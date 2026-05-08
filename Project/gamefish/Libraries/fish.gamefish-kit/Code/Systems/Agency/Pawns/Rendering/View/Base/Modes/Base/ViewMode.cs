@@ -116,6 +116,6 @@ public abstract class ViewMode : Module
 		if ( !AllowFirstPerson || !View.IsValid() )
 			return false;
 
-		return View.DistanceFromEye <= 5f;
+		return View.DistanceFromEye <= 10f;
 	}
 }

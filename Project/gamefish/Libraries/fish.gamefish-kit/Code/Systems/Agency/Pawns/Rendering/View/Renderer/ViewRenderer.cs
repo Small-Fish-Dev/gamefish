@@ -59,10 +59,7 @@ public partial class ViewRenderer : Module, ISkinned
 			_offset = value;
 
 			if ( this.InGame() )
-			{
 				OnSetOffset( in value );
-				UpdateTransform();
-			}
 		}
 	}
 
@@ -75,11 +72,15 @@ public partial class ViewRenderer : Module, ISkinned
 	[InlineEditor]
 	[Order( VIEW_ORDER )]
 	[JsonIgnore, ReadOnly]
+	[Title( "Target Offset" )]
 	[Feature( VIEW ), Group( GROUP_OFFSETS )]
 	protected Offset InspectorTargetOffset => TargetOffset;
 
 	[Sync]
 	public Offset TargetOffset { get; protected set; } = new();
+
+	protected Pawn Pawn => View?.ParentPawn;
+	protected Equipment ActiveEquip => Pawn?.ActiveEquip;
 
 	protected override void OnEnabled()
 	{
@@ -89,20 +90,33 @@ public partial class ViewRenderer : Module, ISkinned
 		Offset = TargetOffset;
 	}
 
-	public virtual void UpdateTransform()
+	public virtual void OnSetOffset( in Offset newOffset )
 	{
-		this.SetOffset( Offset );
+		UpdateTransform();
 	}
 
 	/// <summary>
-	/// Sets <see cref="Offset"/> to <see cref="TargetOffset"/>.
+	/// Determines the target offset and transitions the current offset to it.
 	/// </summary>
 	public virtual void UpdateOffset( in float deltaTime )
 	{
+		// What's the current equipment's offset?
+		var equip = ActiveEquip;
+
+		if ( equip.IsValid() )
+		{
+			var target = equip.GetViewRendererOffset();
+
+			if ( ITransform.IsValid( target ) )
+				TargetOffset = target;
+		}
+
+		// Transition to it.
 		Offset = Offset.LerpTo( TargetOffset, Speed * deltaTime );
 	}
 
-	public virtual void OnSetOffset( in Offset newOffset )
+	public virtual void UpdateTransform()
 	{
+		this.SetOffset( Offset );
 	}
 }
