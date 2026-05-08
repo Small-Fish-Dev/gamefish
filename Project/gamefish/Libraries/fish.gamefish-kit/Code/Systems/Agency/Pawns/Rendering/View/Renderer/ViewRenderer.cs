@@ -8,9 +8,9 @@ namespace GameFish;
 [Icon( "sports_mma" )]
 public partial class ViewRenderer : Module, ISkinned
 {
-	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
+	public const string OFFSETS = "Offsets";
 
-	public const string GROUP_OFFSETS = "Offsets";
+	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
 
 	public override bool IsParent( ModuleEntity comp )
 		=> comp is PawnView;
@@ -37,86 +37,34 @@ public partial class ViewRenderer : Module, ISkinned
 	public SkinnedModelRenderer SkinRenderer { get => ModelRenderer; set => _wr = value; }
 
 	/// <summary>
-	/// How quickly to affect the view model's orientation towards its destination.
+	/// The default offset transition speed.
 	/// </summary>
 	[Property]
+	[Title( "Speed" )]
 	[Order( VIEW_ORDER )]
-	[Feature( VIEW ), Group( GROUP_OFFSETS )]
-	public virtual float Speed { get; set; } = 15f;
-
-	/// <summary>
-	/// The current orientation. <br />
-	/// Setting this automatically sets the transform.
-	/// </summary>
-	[Order( VIEW_ORDER )]
-	[Property, ReadOnly, InlineEditor]
-	[Feature( VIEW ), Group( GROUP_OFFSETS )]
-	public virtual Offset Offset
-	{
-		get => _offset;
-		set
-		{
-			_offset = value;
-
-			if ( this.InGame() )
-				OnSetOffset( in value );
-		}
-	}
-
-	protected Offset _offset;
-
-	/// <summary>
-	/// Where this view model should be moved towards over time.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Order( VIEW_ORDER )]
-	[JsonIgnore, ReadOnly]
-	[Title( "Target Offset" )]
-	[Feature( VIEW ), Group( GROUP_OFFSETS )]
-	protected Offset InspectorTargetOffset => TargetOffset;
-
-	[Sync]
-	public Offset TargetOffset { get; protected set; } = new();
+	[Feature( VIEW ), Group( OFFSETS )]
+	public virtual float OffsetSpeed { get; set; } = 15f;
 
 	protected Pawn Pawn => View?.ParentPawn;
 	protected Equipment ActiveEquip => Pawn?.ActiveEquip;
 
-	protected override void OnEnabled()
-	{
-		base.OnEnabled();
-
-		// Snap to the destination.
-		Offset = TargetOffset;
-	}
-
-	public virtual void OnSetOffset( in Offset newOffset )
-	{
-		UpdateTransform();
-	}
+	public virtual void UpdateOffset( in Offset offset )
+		=> this.SetOffset( in offset );
 
 	/// <summary>
 	/// Determines the target offset and transitions the current offset to it.
 	/// </summary>
 	public virtual void UpdateOffset( in float deltaTime )
 	{
-		// What's the current equipment's offset?
+		// What's the current equipment's view offset?
 		var equip = ActiveEquip;
 
-		if ( equip.IsValid() )
-		{
-			var target = equip.GetViewRendererOffset();
+		if ( !equip.IsValid() )
+			return;
 
-			if ( ITransform.IsValid( target ) )
-				TargetOffset = target;
-		}
+		equip.UpdateOffset( OffsetSpeed, in deltaTime );
 
-		// Transition to it.
-		Offset = Offset.LerpTo( TargetOffset, Speed * deltaTime );
-	}
-
-	public virtual void UpdateTransform()
-	{
-		this.SetOffset( Offset );
+		// Apply it.
+		UpdateOffset( equip.Offset );
 	}
 }
