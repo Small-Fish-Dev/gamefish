@@ -83,6 +83,11 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
+        "AimPitchRange": {
+          "Min": -89.9,
+          "Max": 89.9
+        },
+        "AimRollResetSpeed": 2,
         "AirAcceleration": 3,
         "AllowAiming": true,
         "ClassId": "player_shooter",
@@ -130,11 +135,6 @@
           "component_id": "1c916bfd-7441-4512-84be-645850788ad1",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
           "component_type": "CylinderPhysics"
-        },
-        "PitchClamping": true,
-        "PitchRange": {
-          "Min": -89.9,
-          "Max": 89.9
         },
         "SprintingEnabled": true,
         "SprintInput": "Run",
@@ -631,7 +631,7 @@
             "Children": []
           },
           {
-            "__guid": "a57a748d-3ad2-4be7-ad21-e177e85d7bc3",
+            "__guid": "998d5241-df45-4976-b0e1-c2f9f9b04ab3",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -648,7 +648,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "284c5ed9-86cb-4c95-9cfe-6b90cd1fc181",
+                "__guid": "1e3e8e6a-5fc3-4d8a-bc10-6caace9a7292",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

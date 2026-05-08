@@ -12,7 +12,41 @@ public partial class ShooterController : FirstPersonController
 	protected const string BADASS = "😎 Badass";
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
+	public override bool AimPitchClamping => false;
+
 	public override Vector3 Gravity => Down * base.Gravity.Length;
+
+	public override bool TryAim( in Rotation rLook, in float deltaTime )
+	{
+		if ( !ITransform.IsValid( in rLook ) )
+			return false;
+
+		if ( !IsGrounded )
+		{
+			LocalEyeRotation *= rLook;
+			return true;
+		}
+
+		var rAim = LocalEyeRotation;
+		var rInverse = rAim.Inverse;
+
+		rAim *= Rotation.FromAxis( rInverse.Up, rLook.Yaw() );
+		rAim *= Rotation.FromPitch( rLook.Pitch() );
+
+		LocalEyeRotation = rAim;
+
+		return true;
+	}
+
+	protected override void ResetEyeRoll( in float speed, in float deltaTime )
+	{
+		var tEye = EyeTransform;
+
+		var rollSpeed = IsGrounded ? speed : speed / 5f;
+		var newUp = tEye.Up.SlerpTo( Up, rollSpeed * deltaTime );
+
+		EyeRotation = Rotation.LookAt( tEye.Forward, newUp );
+	}
 
 	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{
