@@ -71,8 +71,10 @@ public partial class ViewRenderer : Module, ISkinned
 	/// <summary>
 	/// Where this view model should be moved towards over time.
 	/// </summary>
+	[Property]
+	[InlineEditor]
 	[Order( VIEW_ORDER )]
-	[Property, ReadOnly, InlineEditor]
+	[JsonIgnore, ReadOnly]
 	[Feature( VIEW ), Group( GROUP_OFFSETS )]
 	protected Offset InspectorTargetOffset => TargetOffset;
 
