@@ -12,13 +12,6 @@ public partial class ShooterController : FirstPersonController
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
 	[Property]
-	[Range( 0f, 2f, clamped: false )]
-	[Title( "Anti-Roll Speed (free)" )]
-	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
-	public virtual float AimRollFreeResetSpeed { get; set; } = 0.3f;
-
-	[Property]
 	[InputAction]
 	[Title( "Input" )]
 	[Feature( BADASS ), Group( FOCUS )]
@@ -73,11 +66,8 @@ public partial class ShooterController : FirstPersonController
 
 	protected override void UpdateEyeRotation( in float deltaTime )
 	{
-		var rollSpeed = IsFreeLooking
-			? AimRollFreeResetSpeed
-			: AimRollResetSpeed;
-
-		ResetEyeRoll( in rollSpeed, in deltaTime );
+		if ( !IsFreeLooking )
+			ResetEyeRoll( AimRollResetSpeed, in deltaTime );
 	}
 
 	protected override void ResetEyeRoll( in float speed, in float deltaTime )
