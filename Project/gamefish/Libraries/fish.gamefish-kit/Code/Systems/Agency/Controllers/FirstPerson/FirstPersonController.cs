@@ -24,6 +24,14 @@ public partial class FirstPersonController : PawnController
 		IsSprinting = isAlive && ShouldSprint();
 	}
 
+	protected override void ResetInput()
+	{
+		base.ResetInput();
+
+		IsDucking = false;
+		IsSprinting = false;
+	}
+
 	public override float GetMovementSpeed()
 	{
 		float moveSpeed;
