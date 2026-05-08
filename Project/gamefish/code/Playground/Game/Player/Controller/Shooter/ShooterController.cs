@@ -17,14 +17,47 @@ public partial class ShooterController : FirstPersonController
 	[Feature( BADASS ), Group( FOCUS )]
 	public virtual string FocusInput { get; set; } = "Attack2";
 
+	/// <summary>
+	/// Multiplier of gravity while holding jump.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Gravity (float)" )]
+	[Feature( BADASS ), Group( FORCES )]
+	[Range( 0.2f, 1.0f, clamped: false )]
+	public virtual float JumpGravityScale { get; set; } = 0.7f;
+
+	/// <summary>
+	/// Multiplier of gravity while holding duck.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Gravity (sink)" )]
+	[Feature( BADASS ), Group( FORCES )]
+	[Range( 1.0f, 3.0f, clamped: false )]
+	public virtual float DuckGravityScale { get; set; } = 2f;
+
 	public override bool AimPitchClamping => false;
 
-	public override Vector3 Gravity => Down * base.Gravity.Length;
+	public override Vector3 Gravity => Down * base.Gravity.Length * GravityMultiplier();
 
 	protected bool IsFreeLooking => IsFocusing;
 
 	[Sync]
 	public bool IsFocusing { get; protected set; }
+
+	protected virtual float GravityMultiplier()
+	{
+		var mult = 1f;
+
+		if ( JumpInput.IsHeld )
+			mult *= JumpGravityScale;
+
+		if ( Input.Down( DuckInput ) )
+			mult *= DuckGravityScale;
+
+		return mult;
+	}
 
 	protected override void UpdateInput( in float deltaTime )
 	{

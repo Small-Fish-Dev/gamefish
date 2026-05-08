@@ -93,12 +93,14 @@
         "AllowAiming": true,
         "ClassId": "player_shooter",
         "ClassName": null,
+        "DuckGravityScale": 2,
         "DuckingEnabled": true,
         "DuckInput": "Duck",
         "EyeHeightDuck": 32,
         "EyeHeightStand": 56,
         "EyeMoveSmoothing": 0.15,
         "EyeMoveSpeed": 1,
+        "FocusInput": "Attack2",
         "Friction": {
           "Value": 10,
           "StopSpeed": 80
@@ -108,6 +110,7 @@
         "IsClass": false,
         "IsNetworkingForced": true,
         "IsSprintDefault": false,
+        "JumpGravityScale": 0.7,
         "JumpImpulse": 400,
         "JumpingEnabled": true,
         "JumpInput": {
