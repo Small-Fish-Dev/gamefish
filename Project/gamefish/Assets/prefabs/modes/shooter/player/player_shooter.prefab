@@ -830,7 +830,7 @@
             "ClassName": null,
             "Elasticity": 10,
             "ExtendButton": "Duck",
-            "ExtendSpeed": 500,
+            "ExtendSpeed": 0,
             "HookButton": "Hook",
             "IsClass": false,
             "IsNetworkingForced": true,
