@@ -116,7 +116,7 @@
           "Action": "Jump",
           "Mode": "Held"
         },
-        "JumpLeap": 50,
+        "JumpLeap": 100,
         "JumpSlopeFactor": 1,
         "MovementEnabled": true,
         "MoveSpeed": 350,
@@ -220,7 +220,7 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideMassCenter": false,
-        "RigidbodyFlags": 0,
+        "RigidbodyFlags": "DisableCollisionSounds",
         "StartAsleep": false
       }
     ],
@@ -848,7 +848,7 @@
             "Flags": 0,
             "ClassId": null,
             "ClassName": null,
-            "Elasticity": 10,
+            "Elasticity": 1,
             "ExtendButton": "Duck",
             "ExtendSpeed": 0,
             "HookButton": "Hook",
@@ -873,7 +873,7 @@
             "RetractButton": "Jump",
             "RetractSpeed": 500,
             "SlackLimit": 1,
-            "SwingSpeed": 1
+            "SwingSpeed": 0.7
           }
         ],
         "Children": []
