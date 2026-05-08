@@ -85,15 +85,50 @@ public partial class PawnView : PawnModule, ISimulate
 			return;
 
 		UpdatePawn();
+		UpdateViewRenderer();
 	}
 
 	public virtual void FrameSimulate( in float deltaTime )
 	{
+		if ( !this.InGame() )
+			return;
+
 		HandleInput();
 
 		UpdateTransition( deltaTime );
 
 		UpdateViewMode( deltaTime );
+	}
+
+	/// <returns> If we are looking through this view. </returns>
+	public virtual bool IsViewing()
+	{
+		var pawn = ParentPawn;
+
+		if ( !pawn.IsValid() )
+			return false;
+
+		if ( pawn.AllowInput() )
+			return true;
+
+		var specView = (Client.Local?.Pawn as Spectator)?.View as SpectatorView;
+
+		if ( !specView.IsValid() )
+			return false;
+
+		return specView.TargetPawn == pawn;
+	}
+
+	protected virtual void UpdateViewRenderer()
+	{
+		if ( !IsViewing() )
+		{
+			ToggleViewRenderer( false );
+			return;
+		}
+
+		var isFirstPerson = Mode?.InFirstPerson() is true;
+		ToggleViewRenderer( isFirstPerson );
 	}
 
 	/// <summary>

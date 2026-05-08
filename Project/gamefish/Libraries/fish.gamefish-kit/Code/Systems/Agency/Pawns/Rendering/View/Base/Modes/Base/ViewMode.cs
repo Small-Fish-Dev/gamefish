@@ -7,7 +7,12 @@ namespace GameFish;
 [Icon( "remove_red_eye" )]
 public abstract class ViewMode : Module
 {
-	protected const int VIEW_ORDER = DEFAULT_ORDER - 999;
+	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
+
+	[Property]
+	[Title( "In First Person" )]
+	[Feature( VIEW ), Group( DEBUG )]
+	protected bool InspectorInFirstPerson => InFirstPerson() is true;
 
 	/// <summary>
 	/// Should this bother calculating if we're in first person?
@@ -87,14 +92,10 @@ public abstract class ViewMode : Module
 	/// <param name="deltaTime"></param>
 	public virtual void UpdateViewRenderer( in float deltaTime )
 	{
-		if ( View.IsValid() )
+		if ( !View.IsValid() )
 			return;
 
-		var inFirstPerson = InFirstPerson();
-
-		View.ToggleViewRenderer( inFirstPerson );
-
-		if ( inFirstPerson && ViewRenderer.IsValid() )
+		if ( InFirstPerson() )
 			OnViewRender( in deltaTime );
 	}
 

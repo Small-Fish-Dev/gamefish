@@ -8,6 +8,8 @@ namespace GameFish;
 [Icon( "sports_mma" )]
 public partial class ViewRenderer : Module, ISkinned
 {
+	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
+
 	public const string GROUP_OFFSETS = "Offsets";
 
 	public override bool IsParent( ModuleEntity comp )
@@ -19,6 +21,7 @@ public partial class ViewRenderer : Module, ISkinned
 
 	[Property]
 	[Feature( VIEW )]
+	[Order( VIEW_ORDER )]
 	[Title( "Renderer" )]
 	public SkinnedModelRenderer ModelRenderer
 	{
@@ -37,6 +40,7 @@ public partial class ViewRenderer : Module, ISkinned
 	/// How quickly to affect the view model's orientation towards its destination.
 	/// </summary>
 	[Property]
+	[Order( VIEW_ORDER )]
 	[Feature( VIEW ), Group( GROUP_OFFSETS )]
 	public virtual float Speed { get; set; } = 15f;
 
@@ -44,6 +48,7 @@ public partial class ViewRenderer : Module, ISkinned
 	/// The current orientation. <br />
 	/// Setting this automatically sets the transform.
 	/// </summary>
+	[Order( VIEW_ORDER )]
 	[Property, ReadOnly, InlineEditor]
 	[Feature( VIEW ), Group( GROUP_OFFSETS )]
 	public virtual Offset Offset
@@ -55,8 +60,8 @@ public partial class ViewRenderer : Module, ISkinned
 
 			if ( this.InGame() )
 			{
-				UpdateTransform();
 				OnSetOffset( in value );
+				UpdateTransform();
 			}
 		}
 	}
@@ -66,16 +71,13 @@ public partial class ViewRenderer : Module, ISkinned
 	/// <summary>
 	/// Where this view model should be moved towards over time.
 	/// </summary>
-	[Sync]
+	[Order( VIEW_ORDER )]
 	[Property, ReadOnly, InlineEditor]
 	[Feature( VIEW ), Group( GROUP_OFFSETS )]
-	public Offset TargetOffset
-	{
-		get => _targetOffset;
-		set => _targetOffset = value;
-	}
+	protected Offset InspectorTargetOffset => TargetOffset;
 
-	protected Offset _targetOffset;
+	[Sync]
+	public Offset TargetOffset { get; protected set; } = new();
 
 	protected override void OnEnabled()
 	{
@@ -95,7 +97,7 @@ public partial class ViewRenderer : Module, ISkinned
 	/// </summary>
 	public virtual void UpdateOffset( in float deltaTime )
 	{
-		Offset = Offset.LerpTo( in _targetOffset, Speed * deltaTime );
+		Offset = Offset.LerpTo( TargetOffset, Speed * deltaTime );
 	}
 
 	public virtual void OnSetOffset( in Offset newOffset )

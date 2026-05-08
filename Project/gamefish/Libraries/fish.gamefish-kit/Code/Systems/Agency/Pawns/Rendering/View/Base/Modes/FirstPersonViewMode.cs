@@ -8,13 +8,11 @@ public partial class FirstPersonViewMode : ViewMode
 
 	public override void OnModeUpdate( in float deltaTime )
 	{
-		base.OnModeUpdate( deltaTime );
-
 		if ( !TargetPawn.IsValid() )
 			return;
 
 		Relative = new();
 
-		UpdateViewRenderer( in deltaTime );
+		base.OnModeUpdate( deltaTime );
 	}
 }
