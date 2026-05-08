@@ -1,0 +1,98 @@
+{
+  "RootObject": {
+    "__guid": "8dc589b3-c73c-4649-b55d-505b29f7115f",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "pistol",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Fishbox.ShooterEquipment",
+        "__guid": "352a40fb-67f2-4746-91d4-84dccd7a50f4",
+        "__enabled": true,
+        "Flags": 0,
+        "AimingOffset": {
+          "Position": "10,0,-2",
+          "Rotation": "0,0,0,1"
+        },
+        "ClassId": "pistol",
+        "ClassName": null,
+        "DebugDamage": 25,
+        "DefaultOffset": {
+          "Position": "15,-6,-2.5",
+          "Rotation": "0,0,0,1"
+        },
+        "DefaultSlot": "None",
+        "DeployOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,0,1"
+        },
+        "Health": 100,
+        "HolsterOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,-0.382683456,0.923879504"
+        },
+        "Icon": null,
+        "IsAlive": true,
+        "IsClass": false,
+        "IsDestructible": false,
+        "IsNetworkingForced": true,
+        "MaxHealth": 100,
+        "NetworkAutomatically": true,
+        "NetworkId": "352a40fb-67f2-4746-91d4-84dccd7a50f4",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PrimaryFunction": null,
+        "Slot": 0,
+        "ViewModel": null,
+        "WorldRenderer": null
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

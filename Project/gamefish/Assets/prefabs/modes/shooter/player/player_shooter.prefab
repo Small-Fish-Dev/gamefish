@@ -31,7 +31,7 @@
         "ClassName": null,
         "Controller": {
           "_type": "component",
-          "component_id": "2a022d9c-24db-43de-855c-294928665af5",
+          "component_id": "7ed82c84-eae8-4f04-86d0-e3bdf8eeb417",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
           "component_type": "ShooterController"
         },
@@ -74,12 +74,12 @@
           "_type": "component",
           "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
           "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ViewRenderer"
+          "component_type": "ShooterViewRenderer"
         }
       },
       {
         "__type": "Fishbox.ShooterController",
-        "__guid": "2a022d9c-24db-43de-855c-294928665af5",
+        "__guid": "7ed82c84-eae8-4f04-86d0-e3bdf8eeb417",
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
@@ -87,7 +87,6 @@
           "Min": -89.9,
           "Max": 89.9
         },
-        "AimRollFreeResetSpeed": 0.4,
         "AimRollResetSpeed": 4,
         "AirAcceleration": 3,
         "AllowAiming": true,
@@ -123,7 +122,7 @@
         "MoveSpeed": 350,
         "MoveSpeedDucked": 200,
         "NetworkAutomatically": true,
-        "NetworkId": "2a022d9c-24db-43de-855c-294928665af5",
+        "NetworkId": "7ed82c84-eae8-4f04-86d0-e3bdf8eeb417",
         "NetworkingMode": "Object",
         "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
@@ -294,7 +293,7 @@
               "_type": "component",
               "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
               "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-              "component_type": "ViewRenderer"
+              "component_type": "ShooterViewRenderer"
             }
           }
         ],
@@ -303,7 +302,7 @@
             "__guid": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
             "__version": 2,
             "Flags": 0,
-            "Name": "View Model",
+            "Name": "View Renderer",
             "Position": "0,0,0",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
@@ -316,7 +315,7 @@
             "OwnerTransfer": 1,
             "Components": [
               {
-                "__type": "GameFish.ViewRenderer",
+                "__type": "Fishbox.ShooterViewRenderer",
                 "__guid": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
                 "__enabled": true,
                 "Flags": 0,
@@ -341,59 +340,74 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "Speed": 15,
-                "TargetOffset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
-                }
-              },
-              {
-                "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "c0cb14a1-7686-432d-94de-c976c79fb5c4",
-                "__enabled": true,
-                "Flags": 0,
-                "AnimationGraph": null,
-                "BodyGroups": 18446744073709551615,
-                "BoneMergeTarget": null,
-                "CreateAttachments": false,
-                "CreateBoneObjects": false,
-                "LodOverride": null,
-                "MaterialGroup": null,
-                "MaterialOverride": null,
-                "Materials": null,
-                "Model": "models/vidya/none.vmdl",
-                "Morphs": {},
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "Parameters": {
-                  "bools": {},
-                  "ints": {},
-                  "floats": {},
-                  "vectors": {},
-                  "rotations": {}
-                },
-                "PlaybackRate": 1,
-                "RenderOptions": {
-                  "GameLayer": false,
-                  "OverlayLayer": true,
-                  "BloomLayer": false,
-                  "AfterUILayer": false
-                },
-                "RenderType": "On",
-                "Sequence": {
-                  "Name": null,
-                  "Looping": true,
-                  "Blending": false
-                },
-                "Tint": "1,1,1,1",
-                "UseAnimGraph": true
+                "Speed": 15
               }
             ],
-            "Children": []
+            "Children": [
+              {
+                "__guid": "65ae3fd4-4887-4796-a582-2b2e2245e10a",
+                "__version": 2,
+                "__Prefab": "prefabs/modes/shooter/equips/models/box_pistol.prefab",
+                "__PrefabInstancePatch": {
+                  "AddedObjects": [],
+                  "RemovedObjects": [],
+                  "PropertyOverrides": [
+                    {
+                      "Target": {
+                        "Type": "GameObject",
+                        "IdValue": "166c429c-dddd-414e-88b9-5a372a2e5d5d"
+                      },
+                      "Property": "Rotation",
+                      "Value": "0,0,0,1"
+                    },
+                    {
+                      "Target": {
+                        "Type": "GameObject",
+                        "IdValue": "bc3753e0-3f55-4b01-953e-8cbf06077bd9"
+                      },
+                      "Property": "Rotation",
+                      "Value": "0,0,0,1"
+                    },
+                    {
+                      "Target": {
+                        "Type": "GameObject",
+                        "IdValue": "3ec52c04-3967-4c33-945b-0e7693a8fe31"
+                      },
+                      "Property": "Rotation",
+                      "Value": "0,0,0,1"
+                    }
+                  ],
+                  "MovedObjects": []
+                },
+                "__PrefabIdToInstanceId": {
+                  "166c429c-dddd-414e-88b9-5a372a2e5d5d": "65ae3fd4-4887-4796-a582-2b2e2245e10a",
+                  "62e9a963-9d9c-48be-982c-2251903773b6": "b67f3e0c-6ef2-4a6a-bbb0-3fe1d6834941",
+                  "996bb672-45ed-489b-86a0-fdd25d4e1050": "d39e6cd7-cd47-4629-ae25-c232b845be83",
+                  "bc3753e0-3f55-4b01-953e-8cbf06077bd9": "9a7c5438-34a9-4076-b0c1-2244319c94f0",
+                  "15cb565b-5ce5-44d3-af28-31ef729172f8": "52c9ee4c-7cd0-406c-83d1-7c6ba331a793",
+                  "3ec52c04-3967-4c33-945b-0e7693a8fe31": "6327089d-346e-451c-b9e4-99c194a05f40",
+                  "e640e196-446e-407b-a5e0-035281e06d22": "369c9c9c-85f6-47a3-adef-aa8e5335be74",
+                  "2d461288-5dc7-4033-95ce-1fca9dcd72b4": "96872a19-8153-4f3b-b3d6-48c5cd85bbed",
+                  "85da4840-ea41-41e2-b0db-687bc79acecd": "c772ffbf-80f4-4124-b7b2-a02e84c8c16d",
+                  "a780f028-f05d-405a-a71a-7c253dca4ed6": "da8661cb-81d5-4def-ac00-b727aa2ac620",
+                  "2b7199ce-c2d3-4694-a7fd-30f54a6dc51d": "f2c912e0-2a03-460f-9a4a-b9d59bb942f3",
+                  "15bcb893-43a5-49ea-9a12-f10cd48c06a6": "a43f43a0-413d-4690-bbd6-452382d094e8",
+                  "f7431c7c-9f7c-491d-885b-3e953a514272": "ff85c143-6b65-4f9e-b740-b63d6174e4f4",
+                  "d296b019-bb38-46a6-ad6f-60c8ddda267b": "6d88b516-9302-407e-90d8-df69c7eebda6",
+                  "e7509cd0-e1bb-4c39-aa5a-1d61b39f7292": "0a94412a-0d18-468e-9877-97c725cbe6c8",
+                  "366a77b4-2103-4ebd-832c-d24dc39226ae": "06a46728-1ebf-41b5-af12-b9a22785f82e",
+                  "71a73d95-f52e-4690-a2c5-e6d4a31ab538": "f9aa7dec-c020-49c0-9ec0-b708bd390029",
+                  "052fa9ef-fdbd-477a-84a4-fd688b580a9c": "8f42066c-64e5-4c36-8d76-e6bacd805c3b",
+                  "0af33766-73da-4dcf-94a2-cf8773bb034b": "2a124bf0-78fd-4d14-8501-9f6c3cb4e0d4",
+                  "67ccb8c4-3145-4eaf-8a42-8b0754704e73": "40902523-2993-4bcc-b8b6-8b2f55ed32de",
+                  "7c0077ad-3e0c-47ec-8989-5516f73e3d58": "e3ed0894-d1ab-4310-9fd7-9ee546579bc0",
+                  "9b2948ee-6978-47af-a790-e32a41ad25bd": "78c82b8e-94a4-44ac-9d64-94bb7a997214",
+                  "e845e09a-2dd8-40bd-9ecd-415ffac10ea4": "a58fde26-5371-42cf-886c-673cc21ce498",
+                  "18e4ae66-5b51-4e8c-919a-369f76fb6ec7": "fd60a024-9e62-42ff-8fa8-97a14ddbd93e",
+                  "3042fe07-f321-440c-91a2-d9f6a5548b26": "0f05e301-4a02-4443-bb6e-21ad93fe16d4"
+                }
+              }
+            ]
           },
           {
             "__guid": "0d477140-245e-4027-8796-e93691384711",
@@ -419,6 +433,7 @@
                 "AllowFirstPerson": true,
                 "ClassId": null,
                 "ClassName": null,
+                "InspectorInFirstPerson": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
                 "NetworkAutomatically": true,
@@ -635,7 +650,7 @@
             "Children": []
           },
           {
-            "__guid": "11268af1-84a3-4df9-a0db-25b579950173",
+            "__guid": "f64ba8b4-d0d2-424d-a697-043837ed1aeb",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -652,7 +667,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "264ddce7-af60-4410-84bb-ac16a4f253c3",
+                "__guid": "bc476300-72ba-4e21-b9a7-dbbbf9ff677b",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -733,7 +748,12 @@
             "InputPrefix": "Slot",
             "IsClass": false,
             "IsNetworkingForced": true,
-            "Loadout": [],
+            "Loadout": [
+              {
+                "Prefab": "prefabs/modes/shooter/equips/pistol.prefab",
+                "Slot": "Primary"
+              }
+            ],
             "NetworkAutomatically": true,
             "NetworkId": "41565e7f-493f-4aa8-802e-130a36e10531",
             "NetworkingMode": "Object",
@@ -886,8 +906,6 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [
-    "vidya.model-none#64068"
-  ],
+  "__references": [],
   "__version": 2
 }
