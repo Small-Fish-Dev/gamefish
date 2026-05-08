@@ -202,6 +202,7 @@ public static partial class Strings
 
 	public const string PLAYER = "😎 Player";
 	public const string PLAYERS = "😎 Players";
+	public const string BADASS = "😎 Badass";
 
 	public const string ENEMY = "😡 Enemy";
 	public const string ENEMIES = "😡 Enemies";
@@ -243,6 +244,9 @@ public static partial class Strings
 	public const string DUCKING = "🦆 Ducking";
 	public const string JUMP = "🦘 Jump";
 	public const string JUMPING = "🦘 Jumping";
+
+	public const string FOCUS = "💊 Focus";
+	public const string FOCUSING = "💊 Focusing";
 
 	public const string UPGRADE = "🤯 Upgrade";
 	public const string UPGRADES = "🤯 Upgrades";
