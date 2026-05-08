@@ -87,8 +87,8 @@
           "Min": -89.9,
           "Max": 89.9
         },
-        "AimRollFreeResetSpeed": 0.5,
-        "AimRollResetSpeed": 5,
+        "AimRollFreeResetSpeed": 0.4,
+        "AimRollResetSpeed": 4,
         "AirAcceleration": 3,
         "AllowAiming": true,
         "ClassId": "player_shooter",
@@ -632,7 +632,7 @@
             "Children": []
           },
           {
-            "__guid": "998d5241-df45-4976-b0e1-c2f9f9b04ab3",
+            "__guid": "11268af1-84a3-4df9-a0db-25b579950173",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -649,7 +649,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "1e3e8e6a-5fc3-4d8a-bc10-6caace9a7292",
+                "__guid": "264ddce7-af60-4410-84bb-ac16a4f253c3",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
