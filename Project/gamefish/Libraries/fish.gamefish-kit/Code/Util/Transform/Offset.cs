@@ -10,7 +10,7 @@ namespace GameFish;
 /// </summary>
 public partial struct Offset : IValid
 {
-	[Hide]
+	[Hide, JsonIgnore]
 	public readonly bool IsValid => ITransform.IsValid( in _pos ) && ITransform.IsValid( in _r );
 
 	[InlineEditor]
