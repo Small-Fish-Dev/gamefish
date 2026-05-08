@@ -10,7 +10,8 @@ namespace GameFish;
 /// </summary>
 public partial struct Offset : IValid
 {
-	public readonly bool IsValid => ITransform.IsValid( in _pos ) && ITransform.IsValid( _r );
+	[Hide]
+	public readonly bool IsValid => ITransform.IsValid( in _pos ) && ITransform.IsValid( in _r );
 
 	[InlineEditor]
 	public Vector3 Position { readonly get => _pos; set { _pos = value; } }
