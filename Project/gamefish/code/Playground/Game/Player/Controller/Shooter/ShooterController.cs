@@ -14,6 +14,7 @@ public partial class ShooterController : FirstPersonController
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
+	[Order( BADASS_ORDER )]
 	[Feature( BADASS ), Group( FOCUS )]
 	public virtual string FocusInput { get; set; } = "Attack2";
 
@@ -22,6 +23,7 @@ public partial class ShooterController : FirstPersonController
 	/// </summary>
 	[Property]
 	[InputAction]
+	[Order( BADASS_ORDER )]
 	[Title( "Gravity (float)" )]
 	[Feature( BADASS ), Group( FORCES )]
 	[Range( 0.2f, 1.0f, clamped: false )]
@@ -32,6 +34,7 @@ public partial class ShooterController : FirstPersonController
 	/// </summary>
 	[Property]
 	[InputAction]
+	[Order( BADASS_ORDER )]
 	[Title( "Gravity (sink)" )]
 	[Feature( BADASS ), Group( FORCES )]
 	[Range( 1.0f, 3.0f, clamped: false )]
