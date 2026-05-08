@@ -3,13 +3,12 @@ using GameFish;
 namespace Fishbox;
 
 /// <summary>
-/// A badass player controller. <br />
-/// Shout out to <b>Cyber-Ninja: Ascension</b>.
+/// /// A badass player controller. <br />
+/// /// Shout out to <b>Cyber-Ninja: Ascension</b>.
 /// </summary>
 [Icon( "sports_esports" )]
 public partial class ShooterController : FirstPersonController
 {
-	protected const string BADASS = "😎 Badass";
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
 	[Property]
@@ -19,11 +18,36 @@ public partial class ShooterController : FirstPersonController
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	public virtual float AimRollFreeResetSpeed { get; set; } = 0.3f;
 
+	[Property]
+	[InputAction]
+	[Title( "Input" )]
+	[Feature( BADASS ), Group( FOCUS )]
+	public virtual string FocusInput { get; set; } = "Attack2";
+
 	public override bool AimPitchClamping => false;
 
 	public override Vector3 Gravity => Down * base.Gravity.Length;
 
-	protected bool IsFreeLooking => JumpInput.IsHeld;
+	protected bool IsFreeLooking => IsFocusing;
+
+	[Sync]
+	public bool IsFocusing { get; protected set; }
+
+	protected override void UpdateInput( in float deltaTime )
+	{
+		base.UpdateInput( deltaTime );
+
+		var isAlive = Pawn?.IsAlive is true;
+
+		IsFocusing = isAlive && Input.Down( FocusInput );
+	}
+
+	protected override void ResetInput()
+	{
+		base.ResetInput();
+
+		IsFocusing = false;
+	}
 
 	public override bool TryAim( in Rotation rLook, in float deltaTime )
 	{
