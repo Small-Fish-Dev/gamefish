@@ -195,14 +195,19 @@ public partial class PlayerGrappleModule : PlayerModule
 		// We're at or outside of our length.
 		var dirToPoint = origin.Direction( worldPoint );
 
-		Player.Velocity.Separate( dirToPoint, out var fwdVel, out var hVel );
+		var vel = Player.Velocity;
+
+		vel.Separate( dirToPoint, out var fwdVel, out var hVel );
 
 		// Swing along the radius.
-		var vRight = Rotation.LookAt( fwdVel ).Right;
-		var cross = Vector3.Cross( fwdVel.Normal, vRight );
+		if ( vel.Dot( dirToPoint ) <= 0f )
+		{
+			var vRight = Rotation.LookAt( fwdVel ).Right;
+			var cross = Vector3.Cross( fwdVel.Normal, vRight );
 
-		var swing = cross * fwdVel.Length * deltaTime;
-		hVel += swing * SwingSpeed;
+			var swing = cross * fwdVel.Length * deltaTime;
+			hVel += swing * SwingSpeed;
+		}
 
 		// Elasticity towards the point.
 		var slack = (pointDist - Length).Positive();
