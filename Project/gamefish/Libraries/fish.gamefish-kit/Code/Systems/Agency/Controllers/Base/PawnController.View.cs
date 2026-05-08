@@ -34,6 +34,13 @@ partial class PawnController
 	public virtual bool AllowAiming { get; set; } = true;
 
 	[Property]
+	[Title( "Roll Reset Speed" )]
+	[Range( 1f, 10f, clamped: false )]
+	[ToggleGroup( nameof( AllowAiming ) )]
+	[Feature( VIEW ), Order( AIMING_ORDER )]
+	public virtual float AimRollResetSpeed { get; set; } = 10f;
+
+	[Property]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	public virtual bool AimPitchClamping { get; set; } = true;
@@ -150,9 +157,15 @@ partial class PawnController
 	/// Performs automatic eye rotation such as resetting roll over time.
 	/// </summary>
 	protected virtual void UpdateEyeRotation( in float deltaTime )
+		=> ResetEyeRoll( AimRollResetSpeed, in deltaTime );
+
+	/// <summary>
+	/// Resets the eye rotation's roll over time.
+	/// </summary>
+	protected virtual void ResetEyeRoll( in float speed, in float deltaTime )
 	{
 		var fRoll = LocalEyeRotation.Roll();
-		fRoll = (fRoll * deltaTime * -10f).Clamp( -fRoll, fRoll );
+		fRoll = -(fRoll * deltaTime * speed).Clamp( -fRoll, fRoll );
 
 		LocalEyeRotation *= Rotation.FromRoll( fRoll );
 	}
