@@ -1,6 +1,6 @@
 ﻿namespace GameFish;
 
-public interface IHasPawn
+public interface IPawn
 {
 	Pawn Pawn { get; }
 }
