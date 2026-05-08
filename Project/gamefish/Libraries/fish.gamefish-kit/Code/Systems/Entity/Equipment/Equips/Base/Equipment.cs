@@ -41,6 +41,10 @@ public partial class Equipment : DynamicEntity
 	public Transform AimTransform => new( AimPosition, AimRotation, AimScale );
 	public Vector3 AimDirection => AimRotation.Forward;
 
+	public PawnView View => Pawn?.View;
+	public PawnController Controller => Pawn?.Controller;
+	public ControllerPhysics Physics => Controller?.Physics;
+
 	public override string ToString()
 		=> ClassId.IsBlank() || ClassName.IsBlank() ? base.ToString() : $"{ClassId}|{ClassName}";
 
