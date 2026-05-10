@@ -26,18 +26,24 @@ partial class PawnController
 	protected Vector3 _eyeVel = Vector3.Zero;
 
 	/// <summary>
-	/// Should the owner's look input rotate their eye angles?
+	/// If enabled: owner input rotates local eye angles.
 	/// </summary>
 	[Property]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	[ToggleGroup( value: nameof( AllowAiming ), Label = "Aiming" )]
 	public virtual bool AllowAiming { get; set; } = true;
 
+	/// <summary>
+	/// If enabled: limits the local eye rotation's pitch/yaw.
+	/// </summary>
 	[Property]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	public virtual bool AimPitchClamping { get; set; } = true;
 
+	/// <summary>
+	/// If enabled: the maximum pitch/yaw allowed for local eye rotation.
+	/// </summary>
 	[Property]
 	[Range( 0, 180 )]
 	[ToggleGroup( nameof( AllowAiming ) )]
@@ -45,6 +51,9 @@ partial class PawnController
 	[ShowIf( nameof( AimPitchClamping ), true )]
 	public virtual FloatRange AimPitchRange { get; set; } = new( -89.9f, 89.9f );
 
+	/// <summary>
+	/// How quickly should we try to negate roll on local eye rotation?
+	/// </summary>
 	[Property]
 	[Title( "Anti-Roll Speed" )]
 	[Range( 1f, 10f, clamped: false )]
@@ -174,14 +183,26 @@ partial class PawnController
 		=> ResetEyeRoll( AimRollResetSpeed, in deltaTime );
 
 	/// <summary>
-	/// Resets the eye rotation's roll over time.
+	/// Negates eye roll over time.
 	/// </summary>
 	protected virtual void ResetEyeRoll( in float speed, in float deltaTime )
 	{
-		var fRoll = LocalEyeRotation.Roll();
-		fRoll = -(fRoll * deltaTime * speed).Clamp( -fRoll, fRoll );
+		var objUp = (Pawn?.WorldRotation ?? WorldRotation).Up;
 
-		LocalEyeRotation *= Rotation.FromRoll( fRoll );
+		ResetEyeRotation( EyeForward, in objUp, in speed, in deltaTime );
+	}
+
+	/// <summary>
+	/// Angles our current eye rotation towards the specified up/forward over time.
+	/// </summary>
+	protected virtual void ResetEyeRotation( in Vector3 toForward, in Vector3 toUp, in float speed, in float deltaTime )
+	{
+		var rEye = EyeRotation;
+
+		var vUp = rEye.Up.SlerpTo( in toUp, speed * deltaTime );
+		var vForward = rEye.Forward.SlerpTo( in toForward, speed * deltaTime );
+
+		EyeRotation = Rotation.LookAt( vForward, vUp );
 	}
 
 	/// <summary>
