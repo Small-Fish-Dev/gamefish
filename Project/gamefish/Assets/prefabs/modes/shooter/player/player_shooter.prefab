@@ -330,17 +330,13 @@
                 "NetworkOrphanedMode": "ClearOwner",
                 "NetworkOwner": null,
                 "NetworkTransferMode": "Fixed",
-                "Offset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
-                },
+                "OffsetSpeed": 15,
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "Speed": 15
+                "OnComponentUpdate": null
               }
             ],
             "Children": [
@@ -650,7 +646,7 @@
             "Children": []
           },
           {
-            "__guid": "f64ba8b4-d0d2-424d-a697-043837ed1aeb",
+            "__guid": "7b23535c-2744-48d3-896c-9094d15f0796",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -667,7 +663,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "bc476300-72ba-4e21-b9a7-dbbbf9ff677b",
+                "__guid": "39d51cfd-7152-4ef3-9cbb-ffb0fe28bb82",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -848,14 +844,14 @@
             "Flags": 0,
             "ClassId": null,
             "ClassName": null,
-            "Elasticity": 1,
+            "Elasticity": 10,
             "ExtendButton": "Duck",
             "ExtendSpeed": 0,
             "HookButton": "Hook",
             "IsClass": false,
             "IsNetworkingForced": true,
             "LengthRange": {
-              "Min": 16,
+              "Min": 0,
               "Max": 4096
             },
             "NetworkAutomatically": true,
@@ -871,9 +867,9 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "RetractButton": "Jump",
-            "RetractSpeed": 500,
-            "SlackLimit": 1,
-            "SwingSpeed": 0.7
+            "RetractSpeed": 10000,
+            "SlackLimit": 8,
+            "SwingSpeed": 1
           }
         ],
         "Children": []
