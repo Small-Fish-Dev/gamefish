@@ -141,7 +141,13 @@ public class ProjectedMovement
 		GroundBody = phys.GroundBody;
 	}
 
-	protected SceneTrace GetTrace( in bool withSkin )
+	public ProjectedMovement Finalize()
+	{
+		Point = Point.ToWorld( Delta );
+		return this;
+	}
+
+	public SceneTrace GetTrace( in bool withSkin )
 		=> withSkin ? _trSkin : _trBase;
 
 	/// <returns> A trace from the current position to the projected destination. </returns>

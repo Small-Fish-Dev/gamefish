@@ -117,9 +117,33 @@ partial class ControllerPhysics
 	}
 
 	/// <summary>
+	/// Tells you what you'd hit from where you're at to that far ahead.
+	/// </summary>
+	/// <returns> The projected movement result. </returns>
+	public ProjectedMovement Project( in Vector3 dir, in float dist )
+	{
+		var tFrom = Origin;
+		var to = tFrom.Position + (dir * dist);
+
+		return Project( in tFrom, to );
+	}
+
+	/// <summary>
+	/// Tells you what you'd hit from one place to another.
+	/// </summary>
+	/// <returns> The projected movement result. </returns>
+	public virtual ProjectedMovement Project( in Transform tFrom, in Vector3 to )
+	{
+		var move = new ProjectedMovement( this, in tFrom, in to );
+		move = Project( move );
+
+		return move.Finalize();
+	}
+
+	/// <summary>
 	/// Move our hypothetical position/rotation and resolve collisions.
 	/// </summary>
-	protected virtual void Project( ProjectedMovement move )
+	protected virtual ProjectedMovement Project( ProjectedMovement move )
 	{
 		var trMove = move.ProjectedTrace( skin: false ).Run();
 
@@ -137,10 +161,9 @@ partial class ControllerPhysics
 		{
 			// Moving without obstruction.
 			OnFreeMove( in trMove, move );
-
-			if ( move.Distance <= 0 )
-				return;
 		}
+
+		return move;
 	}
 
 	/// <summary>
