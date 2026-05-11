@@ -115,6 +115,8 @@
           }
         },
         "DebugRenderTraces": false,
+        "EmptySound": null,
+        "FireSound": "sounds/luger pistol fire.sound",
         "FunctionDescription": "Fires a bullet.",
         "FunctionName": "Shoot",
         "IdealRange": {
@@ -181,6 +183,8 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [],
+  "__references": [
+    "drakefruit.lugerpistolfire#91245"
+  ],
   "__version": 2
 }
