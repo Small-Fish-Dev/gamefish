@@ -18,12 +18,18 @@ partial class Pawn
 	protected PawnView _view;
 
 	[Property]
+	[Title( "View Renderer" )]
 	[Feature( PAWN ), Group( VIEW )]
+	protected ViewRenderer InspectorViewRenderer => ViewRenderer;
+
 	public virtual ViewRenderer ViewRenderer => View?.ViewRenderer;
 
 	/// <summary> The base vision trace will ignore objects with these tags. </summary>
 	[Property]
+	[Title( "Eye Trace Ignore" )]
 	[Feature( PAWN ), Group( VIEW )]
+	protected TagSet InspectorEyeTraceIgnore => EyeTraceIgnore;
+
 	public virtual TagSet EyeTraceIgnore { get; set; } = ["water"];
 
 	/// <summary>

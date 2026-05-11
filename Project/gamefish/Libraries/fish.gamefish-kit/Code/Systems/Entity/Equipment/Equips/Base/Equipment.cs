@@ -42,6 +42,7 @@ public partial class Equipment : DynamicEntity
 	public Vector3 AimDirection => AimRotation.Forward;
 
 	public PawnView View => Pawn?.View;
+	public ViewRenderer ViewRenderer => Pawn?.ViewRenderer;
 	public PawnController Controller => Pawn?.Controller;
 	public ControllerPhysics Physics => Controller?.Physics;
 
