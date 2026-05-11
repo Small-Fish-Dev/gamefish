@@ -6,48 +6,52 @@ namespace GameFish;
 /// 🔫 Shoots bullets.
 /// </summary>
 [Icon( "clear_all" )]
+[Title( "Bullet Shooter" )]
 public partial class BulletEquipFunction : EquipFunction
 {
+	protected const int BULLET_ORDER = MODULE_ORDER - 1000;
+	protected const int BULLET_DEBUG_ORDER = BULLET_ORDER - 10;
+
+	[Property]
+	[Title( "Render Traces" )]
+	[Order( BULLET_DEBUG_ORDER )]
+	[Feature( BULLET ), Group( DEBUG )]
+	public bool DebugRenderTraces { get; set; } = false;
+
 	/// <summary>
 	/// The maximum distance the bullet trace will travel.
 	/// </summary>
-	[Title( "Max Distance" )]
-	[Property, Feature( BULLET )]
-	public float Distance { get; set; } = 4096f;
+	[Property]
+	[Order( BULLET_ORDER )]
+	[Feature( BULLET ), Group( TRACING )]
+	public virtual float TraceDistance { get; set; } = 4096f;
 
 	/// <summary>
 	/// The base damage of the weapon.
 	/// </summary>
-	[Title( "Base Damage" )]
-	[Property, Feature( BULLET )]
-	public float Damage { get; set; } = 25f;
-
-	/// <summary>
-	/// Multiplies weapon damage over distance.
-	/// </summary>
-	[Title( "Damage Range" )]
-	[Property, Feature( BULLET )]
-	public Curve DamageFalloff { get; set; } = new Curve( new( 0, 1 ), new( 0.3f, 1 ), new( 1, 0 ) )
+	[Property]
+	[Title( "Damage" )]
+	[Order( BULLET_ORDER )]
+	[InlineEditor, WideMode]
+	[Feature( BULLET ), Group( HEALTH )]
+	public DamageSettings DamageSettings { get; protected set; } = new()
 	{
-		TimeRange = new( 0f, 5000f ),
-		ValueRange = new( 0f, 1f )
-	};
+		BaseDamage = 25f,
 
-	/// <summary>
-	/// Scales damage based on any specified <see cref="Hitbox"/> tag.
-	/// </summary>
-	[Title( "Hitbox Damage" )]
-	[Property, Feature( BULLET )]
-	public Dictionary<string, float> DamageScaling { get; set; } = new()
-	{
-		["head"] = 2f,
+		Impulse = 1f,
+		ScaleForces = true,
+		EnableForces = true,
+
+		EnableHitboxes = true,
+		HitboxMultipliers = { ["head"] = 2f },
 	};
 
 	/// <summary>
 	/// If it's a cone or box or whatever.
 	/// </summary>
+	[Property]
 	[Title( "Shape" )]
-	[Property, Feature( BULLET ), Group( SPREAD )]
+	[Feature( BULLET ), Group( SPREAD )]
 	public virtual SpreadShape SpreadShape { get; set; }
 
 	/// <summary>
@@ -71,9 +75,8 @@ public partial class BulletEquipFunction : EquipFunction
 	/// <summary>
 	/// The current angle(in degrees) of active bullet spread.
 	/// </summary>
-	protected Vector2 GetSpread()
+	protected virtual Vector2 GetSpread()
 		=> Equip?.GetCurrentSpread( SpreadCone, this ) ?? SpreadCone;
-
 
 	/// <returns> The start position of the bullet. </returns>
 	public virtual Vector3 GetBulletOrigin()
@@ -89,19 +92,31 @@ public partial class BulletEquipFunction : EquipFunction
 			: AimRotation;
 	}
 
+	public SceneTrace GetBulletTrace( in Transform t )
+		=> GetBulletTrace( t.Position, t.Rotation.Forward );
+
 	public virtual SceneTrace GetBulletTrace( in Vector3 origin, in Vector3 dir )
 	{
 		if ( !Pawn.IsValid() )
 			return default;
 
-		return Pawn.GetEyeTrace( origin, origin + (dir * Distance) );
+		return Pawn.GetEyeTrace( origin, origin + (dir * TraceDistance) );
 	}
 
-	public SceneTrace GetBulletTrace( in Transform t )
-		=> GetBulletTrace( t.Position, t.Rotation.Forward );
+	protected virtual DamageData GetDamage( in SceneTraceResult tr )
+		=> DamageData.FromBullet( DamageSettings, in tr, Equip );
 
 	protected override void Activate()
 	{
-		// TODO: Bullet shooting with tracer effects.
+		var tr = GetBulletTrace( AimTransform ).Run();
+
+		if ( DebugRenderTraces )
+			DebugOverlay.Trace( tr, duration: 1f );
+
+		// TODO: Tracer effects.
+		if ( !tr.Hit || !tr.GameObject.IsValid() )
+			return;
+
+		tr.GameObject.TryDamage( GetDamage( in tr ) );
 	}
 }
