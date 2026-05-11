@@ -15990,122 +15990,10 @@
           {
             "Target": {
               "Type": "GameObject",
-              "IdValue": "46cb635a-025e-430d-8582-34ffaf775422"
+              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
             },
-            "Property": "Rotation",
-            "Value": "0,0,0,1"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "c3325dcc-6ac1-475a-bdd2-751eb8f6bcff"
-            },
-            "Property": "Rotation",
-            "Value": "0,0,0,1"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "1090c852-d556-414e-8567-52465f03291d"
-            },
-            "Property": "Rotation",
-            "Value": "0,0,0,1"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "9c3e31f3-23cd-440e-abb5-9fb12a772ff9"
-            },
-            "Property": "Rotation",
-            "Value": "0,0,0,1"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "5b6a8023-5f33-4d77-87bb-af083cd764e7"
-            },
-            "Property": "Name",
-            "Value": "Velocity"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
-            },
-            "Property": "Position",
-            "Value": "3008,128.000488,-768"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
-            },
-            "Property": "Rotation",
-            "Value": "0,0,-0.707106709,0.707106829"
-          },
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
-            },
-            "Property": "Scale",
-            "Value": "1.14999998,1,10"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "CylinderSides",
-            "Value": 3
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "Drag",
-            "Value": true
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "LinearContinuousNegationScale",
-            "Value": 25
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "LinearMethod",
-            "Value": "Continuous"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "LinearNegation",
-            "Value": "None"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            },
-            "Property": "LinearVelocity",
-            "Value": "0,0,1000"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "294d49f2-7611-4580-8597-a996e4bd829f"
-            },
-            "Property": "Slices",
-            "Value": 3
+            "Property": "Flags",
+            "Value": 0
           }
         ],
         "MovedObjects": []
@@ -16160,8 +16048,10 @@
         "65f2cb17-4080-4b42-9979-140c1919bd88": "428b613e-ddf7-42c2-a50c-95e0a2d4270a",
         "893947f6-0e94-4073-b9d0-a9e567f200f3": "54dbe23e-f7a5-4414-ad11-2492595097ac",
         "283ea2a4-295a-4851-885d-bcb2dcda95e5": "a3449b13-7a5e-486a-9896-be84ed7709d8",
-        "ae08544e-0faa-4654-871c-d5c83ee650b1": "e3a61e7b-daae-4585-b5c5-8caf1f3a12cf",
-        "294d49f2-7611-4580-8597-a996e4bd829f": "4d3057a0-906e-4ea2-843d-f91ea7a79e08"
+        "294d49f2-7611-4580-8597-a996e4bd829f": "4d3057a0-906e-4ea2-843d-f91ea7a79e08",
+        "3ab1ca00-4552-4142-8152-4842ba36f1b9": "29d44bb6-1c4a-46ab-a6aa-c483feab5ddf",
+        "b12db19c-fdcc-4e7d-8712-2ae2c871fbb5": "0e6aeea8-cf74-4434-8db8-0e5f36e7414b",
+        "8b77f8ab-9369-4ccf-bebc-8980834cf52b": "9265c93c-79a4-457a-a8c3-68f4be3ca3c9"
       }
     }
   ],
@@ -16194,16 +16084,16 @@
     "GameObjectSystems": {
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "1908353f-7069-467e-b315-45c13181a07d"
+          "$blob": "e15eb5d3-1dc8-461c-a0d1-e7ea2c34c714"
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },
