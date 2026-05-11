@@ -22,6 +22,7 @@ partial class ControllerPhysics
 	public virtual ITagSet TraceTags => Tags;
 
 	public Transform Origin => Pawn?.WorldTransform ?? WorldTransform;
+	public Transform TraceOrigin => Origin.WithOffset( TraceOffset );
 
 	/// <summary>
 	/// This is where solid object filters and such go.
