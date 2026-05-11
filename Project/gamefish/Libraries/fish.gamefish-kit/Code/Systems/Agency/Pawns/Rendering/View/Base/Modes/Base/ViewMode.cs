@@ -95,8 +95,8 @@ public abstract class ViewMode : Module
 		if ( !View.IsValid() )
 			return;
 
-		if ( InFirstPerson() )
-			OnViewRender( in deltaTime );
+		// if ( InFirstPerson() )
+		OnViewRender( in deltaTime );
 	}
 
 	/// <summary>

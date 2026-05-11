@@ -48,7 +48,7 @@ public partial class ViewRenderer : Module, ISkinned
 	protected Pawn Pawn => View?.ParentPawn;
 	protected Equipment ActiveEquip => Pawn?.ActiveEquip;
 
-	public virtual void UpdateOffset( in Offset offset )
+	public virtual void SetRendererOffset( in Offset offset )
 		=> this.SetOffset( in offset );
 
 	/// <summary>
@@ -65,6 +65,6 @@ public partial class ViewRenderer : Module, ISkinned
 		equip.UpdateOffset( OffsetSpeed, in deltaTime );
 
 		// Apply it.
-		UpdateOffset( equip.Offset );
+		SetRendererOffset( equip.Offset );
 	}
 }
