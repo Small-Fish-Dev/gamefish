@@ -15,8 +15,10 @@ public partial class BulletEquipFunction : EquipFunction
 
 	protected const int BULLET_SOUNDS_ORDER = BULLET_ORDER + 10;
 	protected const int BULLET_SPREAD_ORDER = BULLET_ORDER + 20;
-	protected const int BULLET_TRACING_ORDER = BULLET_ORDER + 30;
-	protected const int BULLET_HEALTH_ORDER = BULLET_ORDER + 40;
+	protected const int BULLET_PREFABS_ORDER = BULLET_ORDER + 30;
+	protected const int BULLET_EFFECTS_ORDER = BULLET_ORDER + 40;
+	protected const int BULLET_TRACING_ORDER = BULLET_ORDER + 50;
+	protected const int BULLET_HEALTH_ORDER = BULLET_ORDER + 60;
 
 	[Property]
 	[Title( "Render Traces" )]
@@ -47,6 +49,14 @@ public partial class BulletEquipFunction : EquipFunction
 	[Feature( BULLET ), Group( SOUNDS )]
 	public virtual SoundEvent EmptySound { get; set; }
 
+	/*
+	[Property]
+	[Title( "Tracer" )]
+	[Order( BULLET_PREFABS_ORDER )]
+	[Feature( BULLET ), Group( PREFABS )]
+	public virtual GameObject TracerPrefab { get; set; }
+	*/
+
 	/// <summary>
 	/// The maximum distance the bullet trace will travel.
 	/// </summary>
@@ -55,6 +65,24 @@ public partial class BulletEquipFunction : EquipFunction
 	[Order( BULLET_TRACING_ORDER )]
 	[Feature( BULLET ), Group( TRACING )]
 	public virtual float TraceDistance { get; set; } = 4096f;
+
+	[Property]
+	[Title( "Tracer Width" )]
+	[Order( BULLET_EFFECTS_ORDER )]
+	[Feature( BULLET ), Group( EFFECTS )]
+	public virtual float TracerWidth { get; set; } = 0.5f;
+
+	[Property]
+	[Title( "Tracer Width" )]
+	[Order( BULLET_EFFECTS_ORDER )]
+	[Feature( BULLET ), Group( EFFECTS )]
+	public virtual float TracerDuration { get; set; } = 0.25f;
+
+	[Property]
+	[Title( "Tracer Width" )]
+	[Order( BULLET_EFFECTS_ORDER )]
+	[Feature( BULLET ), Group( EFFECTS )]
+	public virtual Color TracerColor { get; set; } = Color.White.WithAlpha( 0.12f );
 
 	/// <summary>
 	/// The base damage of the weapon.
@@ -136,6 +164,67 @@ public partial class BulletEquipFunction : EquipFunction
 		BroadcastSound( FireSound, tOrigin.Position );
 	}
 
+	public virtual Transform GetTracerOrigin()
+	{
+		if ( !IsProxy )
+		{
+			var r = Pawn?.View?.ViewRenderer;
+
+			if ( r.IsValid() )
+				return r.WorldTransform;
+		}
+
+		return AimTransform;
+	}
+
+	[Rpc.Broadcast( NetFlags.SendImmediate | NetFlags.Reliable | NetFlags.OwnerOnly )]
+	protected void RpcTracerEffect( Vector3 endPos )
+		=> PlayTracerEffect( in endPos );
+
+	protected virtual void PlayTracerEffect( in Vector3 endPos )
+	{
+		var tFrom = GetTracerOrigin();
+
+		/*
+		if ( !TracerPrefab.IsValid() )
+			return;
+
+		var objTracer = TracerPrefab.Clone( tFrom );
+
+		if ( !objTracer.IsValid() )
+			return;
+
+		if ( !objTracer.Components.TryGet<LineRenderer>( out var lr ) )
+		{
+			objTracer.DestroyImmediate();
+			return;
+		}
+		*/
+
+		var obj = Scene?.CreateObject( enabled: true );
+
+		if ( !obj.IsValid() )
+			return;
+
+		obj.WorldTransform = tFrom;
+
+		var lr = obj.Components.Create<LineRenderer>();
+
+		if ( !lr.IsValid() )
+			obj.DestroyImmediate();
+
+		lr.UseVectorPoints = true;
+		lr.VectorPoints = [tFrom.Position, endPos];
+
+		lr.Opaque = false;
+
+		lr.Width = TracerWidth;
+		lr.Color = TracerColor;
+
+		// HACK: Add LineTracer component later.
+		lr.Invoke( TracerDuration, lr.DestroyGameObject );
+	}
+
 	protected override void Activate()
 	{
 		var tAim = AimTransform;
@@ -146,6 +235,8 @@ public partial class BulletEquipFunction : EquipFunction
 
 		if ( DebugRenderTraces )
 			DebugOverlay.Trace( tr, duration: 1f );
+
+		RpcTracerEffect( tr.EndPosition );
 
 		// TODO: Tracer effects.
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
