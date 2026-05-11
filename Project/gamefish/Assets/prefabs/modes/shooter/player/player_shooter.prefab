@@ -43,8 +43,14 @@
           "go": "4392db66-be79-4a96-9f50-66fb797af589",
           "component_type": "PawnEquipment"
         },
-        "EyeTraceIgnore": "water",
         "Health": 100,
+        "InspectorEyeTraceIgnore": "water",
+        "InspectorViewRenderer": {
+          "_type": "component",
+          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
+          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+          "component_type": "ShooterViewRenderer"
+        },
         "IsAlive": true,
         "IsClass": false,
         "IsDestructible": true,
@@ -69,12 +75,6 @@
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
           "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
           "component_type": "PawnView"
-        },
-        "ViewRenderer": {
-          "_type": "component",
-          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
-          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ShooterViewRenderer"
         }
       },
       {
@@ -338,7 +338,15 @@
                 "OnComponentEnabled": null,
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
-                "OnComponentUpdate": null
+                "OnComponentUpdate": null,
+                "ViewSwayEnabled": true,
+                "ViewSwayVelocityEnabled": true,
+                "ViewSwayVelocityExponent": 0.7,
+                "ViewSwayVelocityLength": 150,
+                "ViewSwayVelocityRange": {
+                  "Min": 10,
+                  "Max": 1000
+                }
               }
             ],
             "Children": [

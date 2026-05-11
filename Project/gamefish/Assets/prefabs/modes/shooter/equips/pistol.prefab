@@ -20,27 +20,11 @@
         "__guid": "352a40fb-67f2-4746-91d4-84dccd7a50f4",
         "__enabled": true,
         "Flags": 0,
-        "AimingOffset": {
-          "Position": "10,0,-2",
-          "Rotation": "0,0,0,1"
-        },
         "ClassId": "pistol",
         "ClassName": null,
         "DebugDamage": 25,
-        "DefaultOffset": {
-          "Position": "15,-6,-2.5",
-          "Rotation": "0,0,0,1"
-        },
         "DefaultSlot": "None",
-        "DeployOffset": {
-          "Position": "0,0,-70",
-          "Rotation": "0,0,0,1"
-        },
         "Health": 100,
-        "HolsterOffset": {
-          "Position": "0,0,-70",
-          "Rotation": "0,0,-0.382683456,0.923879504"
-        },
         "Icon": null,
         "IsAlive": true,
         "IsClass": false,
@@ -59,10 +43,114 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "PrimaryFunction": null,
+        "PrimaryFunction": {
+          "_type": "component",
+          "component_id": "9fe88800-78c4-49cf-896a-e35e10a0ce60",
+          "go": "8dc589b3-c73c-4649-b55d-505b29f7115f",
+          "component_type": "BulletEquipFunction"
+        },
         "Slot": 0,
+        "ViewAimingOffset": {
+          "Position": "10,0,-2",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewDefaultOffset": {
+          "Position": "15,-6,-2.5",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewDeployOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewHolsterOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,-0.382683456,0.923879504"
+        },
         "ViewModel": null,
+        "ViewOffset": {
+          "Position": "0,0,0",
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
         "WorldRenderer": null
+      },
+      {
+        "__type": "GameFish.BulletEquipFunction",
+        "__guid": "9fe88800-78c4-49cf-896a-e35e10a0ce60",
+        "__enabled": true,
+        "Flags": 0,
+        "Ammo": null,
+        "AmmoCost": 1,
+        "ClassId": "pistol",
+        "ClassName": null,
+        "DamageSettings": {
+          "BaseDamage": 25,
+          "Types": null,
+          "EnableForces": true,
+          "ScaleForces": true,
+          "Impulse": 10,
+          "EnableRange": false,
+          "Range": {
+            "rangex": "0,2000",
+            "frames": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ]
+          },
+          "EnableHitboxes": true,
+          "HitboxMultipliers": {
+            "head": 2
+          }
+        },
+        "DebugRenderTraces": false,
+        "FunctionDescription": "Fires a bullet.",
+        "FunctionName": "Shoot",
+        "IdealRange": {
+          "Min": 200,
+          "Max": 1000
+        },
+        "InspectorInput": {
+          "Setting": {
+            "Action": "Attack1",
+            "Mode": "Pressed"
+          },
+          "Cooldown": 0.15
+        },
+        "InspectorIsInputEnabled": true,
+        "IsClass": false,
+        "IsCombatFunction": true,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "9fe88800-78c4-49cf-896a-e35e10a0ce60",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "SpreadCone": 1,
+        "SpreadShape": "Cone",
+        "TraceDistance": 4096,
+        "UsableRange": {
+          "Min": 0,
+          "Max": 2048
+        }
       }
     ],
     "Children": [],
