@@ -45,6 +45,21 @@ public partial class Equipment : DynamicEntity
 	public PawnController Controller => Pawn?.Controller;
 	public ControllerPhysics Physics => Controller?.Physics;
 
+	[Sync]
+	public bool IsAiming
+	{
+		get => _isAiming;
+		set
+		{
+			var oldValue = _isAiming;
+			_isAiming = value;
+
+			OnSetIsAiming( _isAiming, oldValue );
+		}
+	}
+
+	protected bool _isAiming = false;
+
 	public override string ToString()
 		=> ClassId.IsBlank() || ClassName.IsBlank() ? base.ToString() : $"{ClassId}|{ClassName}";
 
@@ -93,4 +108,8 @@ public partial class Equipment : DynamicEntity
 	/// <returns> The current angles(in degrees) of spread applied to bullets and such. </returns>
 	public virtual Vector2 GetCurrentSpread( in Vector2 baseSpread, EquipFunction func )
 		=> baseSpread;
+
+	protected virtual void OnSetIsAiming( in bool isAiming, in bool wasAiming )
+	{
+	}
 }
