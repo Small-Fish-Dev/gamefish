@@ -260,7 +260,7 @@ public partial class PlayerGrappleModule : PlayerModule
 
 			var newSpeed = vel.Dot( dirToPoint );
 
-			if ( newSpeed > PullSpeed )
+			if ( newSpeed > PullSpeedLimit )
 				fwdVel = fwdVel.Normal * oldSpeed;
 		}
 
