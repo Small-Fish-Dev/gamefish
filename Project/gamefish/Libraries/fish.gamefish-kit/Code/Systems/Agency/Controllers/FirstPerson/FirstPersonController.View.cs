@@ -50,12 +50,16 @@ partial class FirstPersonController
 		if ( !ViewCollisionEnabled )
 			return localDest;
 
+		if ( !Pawn.IsValid() )
+			return localDest;
+
 		var radius = ViewCollisionRadius * WorldScale.x;
 
 		var tWorld = WorldTransform;
 		var worldDest = tWorld.PointToWorld( localDest );
 
-		var trHead = TracePhysics( tWorld.WithPosition( Center ), worldDest )
+		var trHead = Pawn.GetEyeTrace()
+			.FromTo( tWorld.WithPosition( Center ), worldDest )
 			.Radius( radius )
 			.Run();
 

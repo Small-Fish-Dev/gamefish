@@ -73,11 +73,10 @@ public abstract partial class PawnController : PawnModule
 		set => Components?.Create( TypeLibrary.GetType( value ) );
 	}
 
-	protected bool HasValidPhysicsModule => Physics.IsValid();
+	protected virtual bool HasValidPhysicsModule => Physics.IsValid();
 
 	/// <summary>
-	/// Movement/collision logic tries to stay this far away
-	/// from surfaces to prevent getting stuck in them.
+	/// Handles interactions with the surrounding physical world.
 	/// </summary>
 	[Property]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
@@ -89,7 +88,7 @@ public abstract partial class PawnController : PawnModule
 
 	protected ControllerPhysics _phys;
 
-	public Vector3 Velocity
+	public virtual Vector3 Velocity
 	{
 		get => Physics?.Velocity ?? default;
 		set

@@ -15,17 +15,13 @@ partial class Library
 	/// <b> AFTER: </b> <c> var thing = one.AsValid() ?? two.AsValid() </c>
 	/// </remarks>
 	/// <param name="v"> :v </param>
-	/// <param name="default"> The fallback(also valid checked). </param>
-	/// <typeparam name="TValid"> Allows you to convert the type. </typeparam>
+	/// <typeparam name="TValid"> The specific type of the object. </typeparam>
 	/// <returns> The <typeparamref name="TValid"/> if it's valid(or null). </returns>
-	public static TValid AsValid<TValid>( this TValid v, TValid @default = null ) where TValid : class, IValid
+	public static TValid AsValid<TValid>( this TValid v ) where TValid : class, IValid
 	{
-		if ( v?.IsValid is true )
-			return v;
+		if ( v is null || !v.IsValid )
+			return null;
 
-		if ( @default?.IsValid is true )
-			return @default;
-
-		return null;
+		return v;
 	}
 }

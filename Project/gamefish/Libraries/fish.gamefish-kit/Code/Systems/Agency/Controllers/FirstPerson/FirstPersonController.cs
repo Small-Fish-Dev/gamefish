@@ -6,14 +6,6 @@ namespace GameFish;
 /// </summary>
 public partial class FirstPersonController : PawnController
 {
-	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
-	{
-		if ( ShouldJump() )
-			Jump();
-
-		base.Simulate( deltaTime, isFixedUpdate );
-	}
-
 	protected override void UpdateInput( in float deltaTime )
 	{
 		base.UpdateInput( deltaTime );
@@ -22,6 +14,9 @@ public partial class FirstPersonController : PawnController
 
 		IsDucking = isAlive && ShouldDuck();
 		IsSprinting = isAlive && ShouldSprint();
+
+		if ( ShouldJump() )
+			Jump();
 	}
 
 	protected override void ResetInput()

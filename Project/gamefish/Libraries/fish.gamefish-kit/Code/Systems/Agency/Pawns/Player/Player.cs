@@ -11,6 +11,8 @@ public partial class Player : Pawn
 
 	public static Player Local => Client.Local?.Pawn as Player;
 
+	public override bool IsPlayer { get; } = true;
+
 	public IEnumerable<PlayerModule> PlayerModules => GetModules<PlayerModule>();
 
 	protected override void OnEnabled()

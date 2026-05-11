@@ -43,6 +43,8 @@ partial class DynamicEntity : IPhysics
 	{
 		if ( !ITransform.IsValid( in vel ) )
 			return;
+
+		ApplyImpulse( vel );
 	}
 
 	/// <summary>

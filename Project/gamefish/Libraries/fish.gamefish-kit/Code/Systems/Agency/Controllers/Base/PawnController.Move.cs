@@ -63,7 +63,7 @@ partial class PawnController
 	[Title( "Ground Normal" )]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
-	protected Vector3 InspectorGroundNormal => Physics?.GroundNormal ?? default;
+	protected Vector3 InspectorGroundNormal => GroundNormal;
 
 	public virtual bool IsGrounded
 	{

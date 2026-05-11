@@ -175,8 +175,7 @@ partial class Agent
 			failed = true;
 			this.Warn( $"failed to find type:[{typeof( TPawn )}] on object:[{go}]" );
 		}
-
-		if ( !TryTakePawn( newPawn ) )
+		else if ( !TryTakePawn( newPawn ) )
 		{
 			failed = true;
 			this.Warn( $"failed to take pawn:[{newPawn}]" );

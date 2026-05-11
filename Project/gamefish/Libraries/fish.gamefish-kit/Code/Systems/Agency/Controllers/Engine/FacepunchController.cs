@@ -15,6 +15,8 @@ public partial class FacepunchController : PawnController
 
 	protected PlayerController _pc;
 
+	protected override bool HasValidPhysicsModule => true;
+
 	protected override void OnStart()
 	{
 		base.OnStart();
