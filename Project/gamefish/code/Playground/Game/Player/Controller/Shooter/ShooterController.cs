@@ -44,7 +44,7 @@ public partial class ShooterController : FirstPersonController
 
 	public override Vector3 Gravity => Down * base.Gravity.Length * GravityMultiplier();
 
-	protected bool IsFreeLooking => IsFocusing;
+	protected bool IsFreeLooking => IsFocusing && !IsGrounded;
 
 	[Sync]
 	public bool IsFocusing { get; protected set; }
