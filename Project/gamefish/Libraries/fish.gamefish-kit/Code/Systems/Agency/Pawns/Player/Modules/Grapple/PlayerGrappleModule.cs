@@ -37,11 +37,33 @@ public partial class PlayerGrappleModule : PlayerModule
 	[Feature( HOOK ), Group( FORCES )]
 	public float SwingSpeed { get; set; } = 0.75f;
 
+	/// <summary>
+	/// If true: getting closer while retracting lessens the length.
+	/// </summary>
+	[Property]
+	[Title( "Auto-Retraction" )]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	public bool DistanceRetraction { get; set; } = true;
+
+	/// <summary>
+	/// If true: moving further away while extending increases the length.
+	/// </summary>
+	[Property]
+	[Title( "Auto-Extension" )]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	public bool DistanceExtension { get; set; } = true;
+
+	/// <summary>
+	/// The rate at which length is reduced by input.
+	/// </summary>
 	[Property]
 	[Range( 0f, 1000f, clamped: false )]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
 	public float RetractSpeed { get; set; } = 500f;
 
+	/// <summary>
+	/// The rate at which length is increased by input.
+	/// </summary>
 	[Property]
 	[Range( 0f, 1000f, clamped: false )]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
@@ -142,23 +164,11 @@ public partial class PlayerGrappleModule : PlayerModule
 		if ( !IsHooking )
 			return;
 
-		if ( !TryGetHook( out var origin, out var worldPoint ) )
+		if ( !TryGetHook( out var origin, out var hookPoint ) )
 			return;
 
-		IsRetracting = Input.Down( RetractButton );
-		IsExtending = Input.Down( ExtendButton );
-
-		if ( IsRetracting && !IsExtending )
-		{
-			Length -= RetractSpeed * deltaTime;
-			Length = Length.Min( origin.Distance( worldPoint ) );
-		}
-		else if ( IsExtending && !IsRetracting )
-		{
-			Length += ExtendSpeed * deltaTime;
-		}
-
-		HookMove( in deltaTime );
+		UpdateLength( in deltaTime, in origin, in hookPoint );
+		UpdateMovement( in deltaTime, in origin, in hookPoint );
 	}
 
 	public virtual bool IsValidTarget( in SceneTraceResult tr )
@@ -169,19 +179,19 @@ public partial class PlayerGrappleModule : PlayerModule
 		return true;
 	}
 
-	public virtual bool TryGetHook( out Vector3 origin, out Vector3 worldPoint )
+	public virtual bool TryGetHook( out Vector3 origin, out Vector3 hookPoint )
 	{
 		if ( !HitObject.IsValid() )
 		{
 			origin = default;
-			worldPoint = default;
+			hookPoint = default;
 			return false;
 		}
 
 		origin = HookOrigin;
 
 		var tWorld = HitObject.WorldTransform;
-		worldPoint = tWorld.PointToWorld( LocalPoint );
+		hookPoint = tWorld.PointToWorld( LocalPoint );
 
 		return true;
 	}
@@ -208,15 +218,31 @@ public partial class PlayerGrappleModule : PlayerModule
 		return true;
 	}
 
-	protected virtual void HookMove( in float deltaTime )
+	protected virtual void UpdateLength( in float deltaTime, in Vector3 origin, in Vector3 hookPoint )
 	{
-		if ( !HitObject.IsValid() || !Player.IsValid() )
+		IsRetracting = Input.Down( RetractButton );
+		IsExtending = Input.Down( ExtendButton );
+
+		if ( IsRetracting && !IsExtending )
+		{
+			if ( DistanceRetraction )
+				Length = Length.Min( origin.Distance( hookPoint ) );
+
+			Length -= RetractSpeed * deltaTime;
+		}
+		else if ( IsExtending && !IsRetracting )
+		{
+			if ( DistanceExtension )
+				Length = Length.Max( origin.Distance( hookPoint ) );
+
+			Length += ExtendSpeed * deltaTime;
+		}
+	}
+
+	protected virtual void UpdateMovement( in float deltaTime, in Vector3 origin, in Vector3 hookPoint )
+	{
+		if ( !Player.IsValid() )
 			return;
-
-		var tWorld = HitObject.WorldTransform;
-
-		var origin = HookOrigin;
-		var hookPoint = tWorld.PointToWorld( LocalPoint );
 
 		var pointDist = origin.Distance( hookPoint );
 
