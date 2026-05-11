@@ -163,18 +163,6 @@ public abstract partial class EquipFunction : EquipModule
 	}
 
 	/// <summary>
-	/// Broadcasts a sound at a position.
-	/// </summary>
-	protected virtual bool TryPlaySound( in SoundEvent snd, in SoundSettings settings )
-	{
-		if ( !snd.IsValid() )
-			return false;
-
-		BroadcastSound( snd, settings );
-		return true;
-	}
-
-	/// <summary>
 	/// Plays SFX/VFX of this function when it is activated.
 	/// </summary>
 	protected virtual void PlayActivationEffect( in Transform tOrigin ) { }

@@ -10,7 +10,13 @@ namespace GameFish;
 public partial class BulletEquipFunction : EquipFunction
 {
 	protected const int BULLET_ORDER = MODULE_ORDER - 1000;
+
 	protected const int BULLET_DEBUG_ORDER = BULLET_ORDER - 10;
+
+	protected const int BULLET_SOUNDS_ORDER = BULLET_ORDER + 10;
+	protected const int BULLET_SPREAD_ORDER = BULLET_ORDER + 20;
+	protected const int BULLET_TRACING_ORDER = BULLET_ORDER + 30;
+	protected const int BULLET_HEALTH_ORDER = BULLET_ORDER + 40;
 
 	[Property]
 	[Title( "Render Traces" )]
@@ -19,10 +25,34 @@ public partial class BulletEquipFunction : EquipFunction
 	public bool DebugRenderTraces { get; set; } = false;
 
 	/// <summary>
+	/// The current angle(in degrees) of total, active bullet spread.
+	/// </summary>
+	[Property]
+	[Title( "Current" )]
+	[ReadOnly, JsonIgnore]
+	[Order( BULLET_DEBUG_ORDER )]
+	[ShowIf( nameof( InGame ), true )]
+	[Feature( BULLET ), Group( DEBUG )]
+	protected virtual Vector3 InspectorSpread => GetSpread();
+
+	[Property]
+	[Title( "Fire" )]
+	[Order( BULLET_SOUNDS_ORDER )]
+	[Feature( BULLET ), Group( SOUNDS )]
+	public virtual SoundEvent FireSound { get; set; }
+
+	[Property]
+	[Title( "Empty" )]
+	[Order( BULLET_SOUNDS_ORDER )]
+	[Feature( BULLET ), Group( SOUNDS )]
+	public virtual SoundEvent EmptySound { get; set; }
+
+	/// <summary>
 	/// The maximum distance the bullet trace will travel.
 	/// </summary>
 	[Property]
-	[Order( BULLET_ORDER )]
+	[Title( "Distance" )]
+	[Order( BULLET_TRACING_ORDER )]
 	[Feature( BULLET ), Group( TRACING )]
 	public virtual float TraceDistance { get; set; } = 4096f;
 
@@ -31,8 +61,8 @@ public partial class BulletEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Damage" )]
-	[Order( BULLET_ORDER )]
 	[InlineEditor, WideMode]
+	[Order( BULLET_HEALTH_ORDER )]
 	[Feature( BULLET ), Group( HEALTH )]
 	public DamageSettings DamageSettings { get; protected set; } = new()
 	{
@@ -51,6 +81,7 @@ public partial class BulletEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Shape" )]
+	[Order( BULLET_SPREAD_ORDER )]
 	[Feature( BULLET ), Group( SPREAD )]
 	public virtual SpreadShape SpreadShape { get; set; }
 
@@ -58,19 +89,10 @@ public partial class BulletEquipFunction : EquipFunction
 	/// The base angle(in degrees) of bullet cone spread.
 	/// </summary>
 	[Title( "Base" )]
+	[Order( BULLET_SPREAD_ORDER )]
 	[Range( 0f, 90f, clamped: false )]
 	[Property, Feature( BULLET ), Group( SPREAD )]
 	public virtual float SpreadCone { get; set; } = 1f;
-
-	/// <summary>
-	/// The current angle(in degrees) of total, active bullet spread.
-	/// </summary>
-	[Title( "Current" )]
-	[Header( "Debug" )]
-	[Property, ReadOnly, JsonIgnore]
-	[ShowIf( nameof( InGame ), true )]
-	[Feature( BULLET ), Group( SPREAD )]
-	protected virtual Vector3 InspectorSpread => GetSpread();
 
 	/// <summary>
 	/// The current angle(in degrees) of active bullet spread.
@@ -106,9 +128,21 @@ public partial class BulletEquipFunction : EquipFunction
 	protected virtual DamageData GetDamage( in SceneTraceResult tr )
 		=> DamageData.FromBullet( DamageSettings, in tr, Equip );
 
+	protected override void PlayActivationEffect( in Transform tOrigin )
+	{
+		if ( !FireSound.IsValid() )
+			return;
+
+		BroadcastSound( FireSound, tOrigin.Position );
+	}
+
 	protected override void Activate()
 	{
-		var tr = GetBulletTrace( AimTransform ).Run();
+		var tAim = AimTransform;
+
+		PlayActivationEffect( in tAim );
+
+		var tr = GetBulletTrace( in tAim ).Run();
 
 		if ( DebugRenderTraces )
 			DebugOverlay.Trace( tr, duration: 1f );
@@ -118,5 +152,15 @@ public partial class BulletEquipFunction : EquipFunction
 			return;
 
 		tr.GameObject.TryDamage( GetDamage( in tr ) );
+	}
+
+	protected override void ActivateEmpty()
+	{
+		base.ActivateEmpty();
+
+		if ( !EmptySound.IsValid() )
+			return;
+
+		BroadcastSound( EmptySound, AimPosition );
 	}
 }

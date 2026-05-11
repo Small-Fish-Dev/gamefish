@@ -9,23 +9,9 @@ namespace GameFish;
 [Title( "Projectile Shooter" )]
 public partial class ProjectileEquipFunction : EquipFunction
 {
-	protected const int PROJECTILE_ORDER = EQUIP_ORDER - 1337;
+	protected const int PROJECTILE_ORDER = MODULE_ORDER - 1000;
 
-	/// <summary>
-	/// Play this sound upon successfully firing a projectile.
-	/// </summary>
-	[Property]
-	[Title( "Sound" )]
-	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
-	public virtual SoundEvent ShootSound { get; set; }
-
-	/// <summary>
-	/// The projectile prefab to spawn.
-	/// </summary>
-	[Property]
-	[Title( "Prefab" )]
-	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
-	public virtual PrefabFile ProjectilePrefab { get; set; }
+	protected const int PROJECTILE_VELOCITY_ORDER = PROJECTILE_ORDER - 10;
 
 	/// <summary>
 	/// The projectile's velocity relative to the owner's aim. <br />
@@ -33,8 +19,27 @@ public partial class ProjectileEquipFunction : EquipFunction
 	/// </summary>
 	[Property]
 	[Title( "Velocity" )]
-	[Feature( PROJECTILE ), Order( PROJECTILE_ORDER )]
+	[Order( PROJECTILE_VELOCITY_ORDER )]
+	[Feature( PROJECTILE ), Group( FORCES )]
 	public virtual Vector3 ProjectileVelocity { get; set; } = new Vector3( 1500f, 0f, 0f );
+
+	/// <summary>
+	/// Play this sound upon successfully firing a projectile.
+	/// </summary>
+	[Property]
+	[Title( "Shoot" )]
+	[Order( PROJECTILE_ORDER )]
+	[Feature( PROJECTILE ), Group( SOUNDS )]
+	public virtual SoundEvent ShootSound { get; set; }
+
+	/// <summary>
+	/// The projectile prefab to spawn.
+	/// </summary>
+	[Property]
+	[Title( "Projectile" )]
+	[Order( PROJECTILE_ORDER )]
+	[Feature( PROJECTILE ), Group( PREFABS )]
+	public virtual PrefabFile ProjectilePrefab { get; set; }
 
 	/// <summary>
 	/// Offsets the projectile's spawning transform by this position/rotation.
@@ -133,10 +138,13 @@ public partial class ProjectileEquipFunction : EquipFunction
 
 	protected override void PlayActivationEffect( in Transform tOrigin )
 	{
+		if ( !ShootSound.IsValid() )
+			return;
+
 		var obj = Parent?.GameObject ?? GameObject;
 		var s = SoundSettings.FromWorld( obj, tOrigin.Position );
 
-		TryPlaySound( ShootSound, s );
+		BroadcastSound( ShootSound, s );
 	}
 
 	/// <summary>
