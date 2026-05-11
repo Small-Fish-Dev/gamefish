@@ -2,7 +2,6 @@ namespace GameFish;
 
 partial class Pawn : ISimulate
 {
-
 	[Property]
 	[Order( PAWN_ORDER )]
 	[Feature( PAWN ), Group( INTERACTION )]
