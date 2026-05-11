@@ -11,31 +11,39 @@ partial class Equipment
 	/// <summary>
 	/// The idle position/rotation.
 	/// </summary>
-	[Property, InlineEditor]
+	[Property]
+	[InlineEditor]
+	[Title( "Default" )]
 	[Feature( VIEW ), Group( OFFSETS )]
 	public virtual Offset ViewDefaultOffset { get; set; } = new( new Vector3( 15f, -6f, -2.5f ) );
 
 	/// <summary>
 	/// The position/rotation to go to when aiming.
 	/// </summary>
+	[Property]
+	[InlineEditor]
+	[Title( "Aiming" )]
 	[Order( VIEW_ORDER )]
-	[Property, InlineEditor]
 	[Feature( VIEW ), Group( OFFSETS )]
 	public virtual Offset ViewAimingOffset { get; set; } = new( new Vector3( 10f, 0f, -2f ) );
 
 	/// <summary>
 	/// The postion/rotation when first deploying this.
 	/// </summary>
+	[Property]
+	[InlineEditor]
 	[Order( VIEW_ORDER )]
-	[Property, InlineEditor]
+	[Title( "Deploying" )]
 	[Feature( VIEW ), Group( OFFSETS )]
 	public virtual Offset ViewDeployOffset { get; set; } = new( Vector3.Down * 70f, Rotation.Identity );
 
 	/// <summary>
 	/// The position/rotation to go to when holstering.
 	/// </summary>
+	[Property]
+	[InlineEditor]
 	[Order( VIEW_ORDER )]
-	[Property, InlineEditor]
+	[Title( "Holstering" )]
 	[Feature( VIEW ), Group( OFFSETS )]
 	public virtual Offset ViewHolsterOffset { get; set; } = new( Vector3.Down * 70f, Rotation.FromYaw( -45f ) );
 
