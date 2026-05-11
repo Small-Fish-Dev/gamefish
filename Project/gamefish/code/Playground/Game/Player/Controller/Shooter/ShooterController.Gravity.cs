@@ -91,7 +91,7 @@ partial class ShooterController
 				tr = Physics.Trace( in tFrom, in to, -SkinWidth ).Run();
 			}
 
-			if ( TrySetPerspective( in tr ) )
+			if ( TrySetPerspective( in tr ) || IsGrounded )
 				SinceBootsUsed = 0f;
 
 			// DebugOverlay.Trace( tr, duration: 5f );
