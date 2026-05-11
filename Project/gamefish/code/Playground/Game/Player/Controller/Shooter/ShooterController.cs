@@ -11,6 +11,8 @@ public partial class ShooterController : FirstPersonController
 {
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
+	protected const string BOOTS = BOOT + "s";
+
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
@@ -40,6 +42,17 @@ public partial class ShooterController : FirstPersonController
 	[Range( 1.0f, 3.0f, clamped: false )]
 	public virtual float DuckGravityScale { get; set; } = 2f;
 
+	/// <summary>
+	/// The delay after you stop using boots that they automatically detatch.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Order( BADASS_ORDER )]
+	[Title( "Auto-Detach" )]
+	[Feature( BADASS ), Group( BOOTS )]
+	[Range( 0.0f, 4.0f, clamped: false )]
+	public virtual float BootsAutoDetach { get; set; } = 1.5f;
+
 	public override bool AimPitchClamping => false;
 
 	public override Vector3 Gravity => Down * base.Gravity.Length * GravityMultiplier();
@@ -49,18 +62,14 @@ public partial class ShooterController : FirstPersonController
 	[Sync]
 	public bool IsFocusing { get; protected set; }
 
-	protected virtual float GravityMultiplier()
-	{
-		var mult = 1f;
+	// [Sync]
+	// public Rotation? TargetRotation { get; protected set; }
 
-		if ( JumpInput.IsHeld )
-			mult *= JumpGravityScale;
-
-		if ( Input.Down( DuckInput ) )
-			mult *= DuckGravityScale;
-
-		return mult;
-	}
+	/// <summary>
+	/// When do the gravity boots stop working?
+	/// </summary>
+	[Sync]
+	public TimeSince? SinceBootsUsed { get; protected set; }
 
 	protected override void UpdateInput( in float deltaTime )
 	{
@@ -118,30 +127,66 @@ public partial class ShooterController : FirstPersonController
 	{
 		base.Simulate( deltaTime, isFixedUpdate );
 
-		UpdateGravityBoots();
+		UpdateGravityBoots( in deltaTime );
 	}
 
-	protected virtual void UpdateGravityBoots()
+	protected virtual float GravityMultiplier()
+	{
+		var mult = 1f;
+
+		if ( JumpInput.IsHeld )
+			mult *= JumpGravityScale;
+
+		if ( Input.Down( DuckInput ) )
+			mult *= DuckGravityScale;
+
+		return mult;
+	}
+
+	protected virtual void UpdateGravityBoots( in float deltaTime )
 	{
 		if ( !Pawn.IsValid() )
 			return;
 
-		// Stick to what's beneath us.
-		if ( Input.Down( "Run" ) )
+		if ( Input.Down( SprintInput ) )
 		{
-			var dir = EyeRotation.Down;
-			var tr = Pawn.GetEyeTrace( 1024f, dir: dir ).Run();
+			var down = EyeRotation.Down;
 
-			if ( tr.Hit )
-				TrySetPerspective( in tr );
+			var tr = Pawn.GetEyeTrace( 512f, dir: down )
+				.Radius( ViewCollisionRadius )
+				.Run();
+
+			if ( TrySetPerspective( in tr ) )
+				SinceBootsUsed = 0f;
 		}
 
-		// Stick to where we're looking.
-		if ( Input.Pressed( "Item" ) )
+		if ( SinceBootsUsed is TimeSince sinceBoots && sinceBoots >= BootsAutoDetach )
 		{
-			var tr = Pawn.GetEyeTrace( 16384f ).Run();
-			TrySetPerspective( in tr );
+			SinceBootsUsed = null;
+
+			var fwd = EyeForward;
+			var up = -(Scene?.PhysicsWorld?.Gravity.Normal) ?? Vector3.Up;
+
+			var rUp = Rotation.LookAt( up, fwd );
+			var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
+
+			Reorient( rForward );
 		}
+
+		/*
+		if ( TargetRotation is Rotation rTarget )
+		{
+			var rWorld = Pawn.WorldRotation;
+
+			if ( rWorld == rTarget )
+				return;
+
+			var speed = deltaTime * 20f;
+			var rLerped = rWorld.LerpTo( rTarget, speed );
+
+			Reorient( in rLerped );
+		}
+		*/
 	}
 
 	protected bool TrySetPerspective( in SceneTraceResult tr )
@@ -160,8 +205,16 @@ public partial class ShooterController : FirstPersonController
 		if ( !ITransform.IsValid( in rForward ) )
 			return false;
 
+		// TargetRotation = rForward;
+		Reorient( rForward );
+
+		return true;
+	}
+
+	protected void Reorient( in Rotation rForward )
+	{
 		if ( !Pawn.IsValid() )
-			return false;
+			return;
 
 		var oldCenter = Center;
 
@@ -173,7 +226,5 @@ public partial class ShooterController : FirstPersonController
 
 		Pawn.WorldPosition += oldCenter - Center;
 		Pawn.EyePosition = eyePos;
-
-		return true;
 	}
 }
