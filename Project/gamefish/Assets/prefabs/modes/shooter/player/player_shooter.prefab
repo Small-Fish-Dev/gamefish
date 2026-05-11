@@ -90,6 +90,7 @@
         "AimRollResetSpeed": 4,
         "AirAcceleration": 3,
         "AllowAiming": true,
+        "BootsAutoDetach": 1.5,
         "ClassId": "player_shooter",
         "ClassName": null,
         "DuckGravityScale": 2,
@@ -646,7 +647,7 @@
             "Children": []
           },
           {
-            "__guid": "7b23535c-2744-48d3-896c-9094d15f0796",
+            "__guid": "386a95f6-6403-482f-8111-ecaf2ba94f87",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -663,7 +664,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "39d51cfd-7152-4ef3-9cbb-ffb0fe28bb82",
+                "__guid": "2e150c16-7df6-40b0-b5bf-7b52916e70b1",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -844,14 +845,14 @@
             "Flags": 0,
             "ClassId": null,
             "ClassName": null,
-            "Elasticity": 10,
+            "Elasticity": 500,
             "ExtendButton": "Duck",
             "ExtendSpeed": 0,
             "HookButton": "Hook",
             "IsClass": false,
             "IsNetworkingForced": true,
             "LengthRange": {
-              "Min": 0,
+              "Min": 8,
               "Max": 4096
             },
             "NetworkAutomatically": true,
@@ -866,9 +867,11 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "PullSpeed": 500,
+            "PullSpeedLimit": 500,
             "RetractButton": "Jump",
-            "RetractSpeed": 10000,
-            "SlackLimit": 8,
+            "RetractSpeed": 1000,
+            "SlackLimit": 16,
             "SwingSpeed": 1
           }
         ],

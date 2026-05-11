@@ -8,34 +8,53 @@ public partial class PlayerGrappleModule : PlayerModule
 {
 	protected const int HOOK_ORDER = PLAYER_ORDER - 500;
 
+	/// <summary>
+	/// The speed to add when retracting.
+	/// </summary>
 	[Property]
-	[Feature( HOOK ), Order( HOOK_ORDER )]
-	[Range( 1f, 100f, clamped: false )]
-	public float Elasticity { get; set; } = 20f;
-
-	[Property]
-	[Feature( HOOK ), Order( HOOK_ORDER )]
-	[Range( 1f, 128f, clamped: false )]
-	public float SlackLimit { get; set; } = 64f;
-
-	[Property]
-	[Feature( HOOK ), Order( HOOK_ORDER )]
 	[Range( 0f, 1000f, clamped: false )]
-	public float RetractSpeed { get; set; } = 500f;
+	[Feature( HOOK ), Group( FORCES )]
+	public float PullSpeed { get; set; } = 500f;
 
+	/// <summary>
+	/// Can only pull towards the hook point this fast.
+	/// </summary>
 	[Property]
-	[Feature( HOOK ), Order( HOOK_ORDER )]
-	[Range( 0f, 1000f, clamped: false )]
-	public float ExtendSpeed { get; set; } = 500f;
+	[Range( 0f, 2000f, clamped: false )]
+	[Feature( HOOK ), Group( FORCES )]
+	public float PullSpeedLimit { get; set; } = 500f;
+
+	/// <summary>
+	/// The maximum extra speed to add towards the point depending on slack length.
+	/// </summary>
+	[Property]
+	[Range( 1f, 1000f, clamped: false )]
+	[Feature( HOOK ), Group( FORCES )]
+	public float Elasticity { get; set; } = 500f;
 
 	[Property]
 	[Range( 0f, 2f, clamped: false )]
+	[Feature( HOOK ), Group( FORCES )]
+	public float SwingSpeed { get; set; } = 0.75f;
+
+	[Property]
+	[Range( 0f, 1000f, clamped: false )]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
-	public float SwingSpeed { get; set; } = 0.5f;
+	public float RetractSpeed { get; set; } = 500f;
+
+	[Property]
+	[Range( 0f, 1000f, clamped: false )]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	public float ExtendSpeed { get; set; } = 500f;
 
 	[Property]
 	[Feature( HOOK ), Order( HOOK_ORDER )]
 	public FloatRange LengthRange { get; set; } = new( 16f, 4096f );
+
+	[Property]
+	[Range( 1f, 128f, clamped: false )]
+	[Feature( HOOK ), Order( HOOK_ORDER )]
+	public float SlackLimit { get; set; } = 64f;
 
 	[Property]
 	[InputAction]
@@ -79,6 +98,12 @@ public partial class PlayerGrappleModule : PlayerModule
 
 	protected float _length;
 
+	[Sync]
+	public virtual bool IsRetracting { get; protected set; }
+
+	[Sync]
+	public virtual bool IsExtending { get; protected set; }
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -115,15 +140,15 @@ public partial class PlayerGrappleModule : PlayerModule
 		if ( !TryGetHook( out var origin, out var worldPoint ) )
 			return;
 
-		var isRetracting = Input.Down( RetractButton );
-		var isExtending = Input.Down( ExtendButton );
+		IsRetracting = Input.Down( RetractButton );
+		IsExtending = Input.Down( ExtendButton );
 
-		if ( isRetracting && !isExtending )
+		if ( IsRetracting && !IsExtending )
 		{
-			Length = (Length - RetractSpeed * deltaTime)
-				.Min( origin.Distance( worldPoint ) );
+			Length -= RetractSpeed * deltaTime;
+			Length = Length.Min( origin.Distance( worldPoint ) );
 		}
-		else if ( isExtending && !isRetracting )
+		else if ( IsExtending && !IsRetracting )
 		{
 			Length += ExtendSpeed * deltaTime;
 		}
@@ -149,6 +174,7 @@ public partial class PlayerGrappleModule : PlayerModule
 		}
 
 		origin = HookOrigin;
+
 		var tWorld = HitObject.WorldTransform;
 		worldPoint = tWorld.PointToWorld( LocalPoint );
 
@@ -185,15 +211,15 @@ public partial class PlayerGrappleModule : PlayerModule
 		var tWorld = HitObject.WorldTransform;
 
 		var origin = HookOrigin;
-		var worldPoint = tWorld.PointToWorld( LocalPoint );
+		var hookPoint = tWorld.PointToWorld( LocalPoint );
 
-		var pointDist = origin.Distance( worldPoint );
+		var pointDist = origin.Distance( hookPoint );
 
 		if ( pointDist < Length )
 			return;
 
 		// We're at or outside of our length.
-		var dirToPoint = origin.Direction( worldPoint );
+		var dirToPoint = origin.Direction( hookPoint );
 
 		var vel = Player.Velocity;
 
@@ -209,13 +235,34 @@ public partial class PlayerGrappleModule : PlayerModule
 			hVel += swing * SwingSpeed;
 		}
 
-		// Elasticity towards the point.
+		// How much slack is there?
 		var slack = (pointDist - Length).Positive();
-		fwdVel += dirToPoint * slack * Elasticity * deltaTime;
 
 		// Negate all exiting velocity past the limit.
 		if ( slack > SlackLimit )
-			fwdVel *= fwdVel.Dot( dirToPoint ).Direction().Positive();
+		{
+			var fwdDot = fwdVel.Dot( dirToPoint );
+
+			if ( fwdDot <= 0f )
+				fwdVel = default;
+		}
+
+		// Add elasticity.
+		var elasticity = slack.Remap( 0f, SlackLimit, 0f, Elasticity );
+		fwdVel += dirToPoint * elasticity * deltaTime;
+
+		// Retract pull speed.
+		if ( IsRetracting )
+		{
+			var oldSpeed = vel.Dot( dirToPoint );
+
+			fwdVel += dirToPoint * PullSpeed * deltaTime;
+
+			var newSpeed = vel.Dot( dirToPoint );
+
+			if ( newSpeed > PullSpeed )
+				fwdVel = fwdVel.Normal * oldSpeed;
+		}
 
 		Player.Velocity = hVel + fwdVel;
 	}
