@@ -108,8 +108,13 @@ public partial class PlayerGrappleModule : PlayerModule
 	{
 		base.OnUpdate();
 
-		if ( !IsProxy )
-			Simulate( Time.Delta );
+		if ( !Player.IsValid() )
+			return;
+
+		if ( IsProxy || !Player.AllowInput() )
+			return;
+
+		Simulate( Time.Delta );
 	}
 
 	protected override void OnPreRender()
