@@ -20,6 +20,13 @@ public partial class ShooterController : FirstPersonController
 	[Feature( BADASS ), Group( FOCUS )]
 	public virtual string FocusInput { get; set; } = "Attack2";
 
+	[Property]
+	[InputAction]
+	[Title( "Boots" )]
+	[Order( BADASS_ORDER )]
+	[Feature( BADASS ), Group( INPUT )]
+	public virtual string BootsInput { get; set; } = "Run";
+
 	/// <summary>
 	/// Multiplier of gravity while holding jump.
 	/// </summary>
@@ -127,7 +134,7 @@ public partial class ShooterController : FirstPersonController
 	{
 		base.Simulate( deltaTime, isFixedUpdate );
 
-		UpdateGravityBoots( in deltaTime );
+		UpdateGravity( in deltaTime );
 	}
 
 	protected virtual float GravityMultiplier()
@@ -143,12 +150,12 @@ public partial class ShooterController : FirstPersonController
 		return mult;
 	}
 
-	protected virtual void UpdateGravityBoots( in float deltaTime )
+	protected virtual void UpdateGravity( in float deltaTime )
 	{
 		if ( !Pawn.IsValid() )
 			return;
 
-		if ( Input.Down( SprintInput ) )
+		if ( Input.Down( BootsInput ) )
 		{
 			var down = EyeRotation.Down;
 
@@ -156,22 +163,11 @@ public partial class ShooterController : FirstPersonController
 				.Radius( ViewCollisionRadius )
 				.Run();
 
-			if ( TrySetPerspective( in tr ) )
+			if ( TrySetPerspective( in tr ) || IsGrounded )
 				SinceBootsUsed = 0f;
 		}
 
-		if ( SinceBootsUsed is TimeSince sinceBoots && sinceBoots >= BootsAutoDetach )
-		{
-			SinceBootsUsed = null;
-
-			var fwd = EyeForward;
-			var up = -(Scene?.PhysicsWorld?.Gravity.Normal) ?? Vector3.Up;
-
-			var rUp = Rotation.LookAt( up, fwd );
-			var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
-
-			Reorient( rForward );
-		}
+		UpdateBootsCooldown( in deltaTime );
 
 		/*
 		if ( TargetRotation is Rotation rTarget )
@@ -187,6 +183,25 @@ public partial class ShooterController : FirstPersonController
 			Reorient( in rLerped );
 		}
 		*/
+	}
+
+	protected virtual void UpdateBootsCooldown( in float deltaTime )
+	{
+		if ( SinceBootsUsed is not TimeSince sinceBoots )
+			return;
+
+		if ( sinceBoots < BootsAutoDetach )
+			return;
+
+		SinceBootsUsed = null;
+
+		var fwd = EyeForward;
+		var up = -(Scene?.PhysicsWorld?.Gravity.Normal) ?? Vector3.Up;
+
+		var rUp = Rotation.LookAt( up, fwd );
+		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
+
+		Reorient( rForward );
 	}
 
 	protected bool TrySetPerspective( in SceneTraceResult tr )
