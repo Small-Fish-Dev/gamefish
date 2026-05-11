@@ -170,7 +170,8 @@ partial class PawnController
 	/// </summary>
 	protected virtual void PostMove( in float deltaTime )
 	{
-		ApplyGravity( in deltaTime );
+		if ( !IsGrounded )
+			ApplyGravity( in deltaTime );
 	}
 
 	/// <summary>
