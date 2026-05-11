@@ -43,10 +43,15 @@ partial class ShooterController
 
 	protected bool TrySetPerspective( in SceneTraceResult tr )
 	{
-		if ( !tr.Hit )
+		if ( !tr.Hit || tr.StartedSolid )
 			return false;
 
-		var rUp = Rotation.LookAt( tr.Normal, EyeForward );
+		return TrySetPerspective( tr.Normal );
+	}
+
+	protected bool TrySetPerspective( in Vector3 up )
+	{
+		var rUp = Rotation.LookAt( up, EyeForward );
 		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
 
 		return TrySetPerspective( in rForward );

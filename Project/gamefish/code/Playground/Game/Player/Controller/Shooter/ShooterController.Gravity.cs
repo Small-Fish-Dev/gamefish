@@ -72,16 +72,29 @@ partial class ShooterController
 		if ( !Pawn.IsValid() )
 			return;
 
-		if ( Input.Down( BootsInput ) )
+		if ( Physics.IsValid() && Input.Down( BootsInput ) )
 		{
-			var down = EyeRotation.Down;
+			var moveDir = EyeRotation * Input.AnalogMove;
+			var vel = moveDir * GetMovementSpeed();
 
-			var tr = Pawn.GetEyeTrace( 512f, dir: down )
-				.Radius( ViewCollisionRadius )
-				.Run();
+			if ( vel.AlmostEqual( 0f ) )
+				vel = Velocity;
 
-			if ( TrySetPerspective( in tr ) || IsGrounded )
+			var tFrom = Physics.TraceOrigin;
+			var to = tFrom.Position + (vel * deltaTime * 1.5f);
+
+			var tr = Physics.Trace( in tFrom, in to, skin: -SkinWidth ).Run();
+
+			if ( !tr.Hit || tr.StartedSolid )
+			{
+				to = tFrom.Position + (EyeForward * 128f);
+				tr = Physics.Trace( in tFrom, in to, -SkinWidth ).Run();
+			}
+
+			if ( TrySetPerspective( in tr ) )
 				SinceBootsUsed = 0f;
+
+			// DebugOverlay.Trace( tr, duration: 5f );
 		}
 
 		UpdateBootsCooldown( in deltaTime );
