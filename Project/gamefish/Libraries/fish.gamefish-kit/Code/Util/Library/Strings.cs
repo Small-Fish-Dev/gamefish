@@ -364,6 +364,8 @@ public static partial class Strings
 
 	public const string ZOOM = "🔬 Zoom";
 	public const string ZOOMING = "🔬 Zooming";
+	public const string SWAY = "🍃 Sway";
+	public const string SWAYING = "🍃 Swaying";
 
 	public const string CHARGE = "🔋 Charge";
 	public const string CHARGES = "🔋 Charges";
