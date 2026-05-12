@@ -218,6 +218,7 @@ public partial class BulletEquipFunction : EquipFunction
 			return;
 
 		obj.WorldTransform = tFrom;
+		obj.Name = "Bullet Tracer";
 
 		var lr = obj.Components.Create<LineRenderer>();
 
