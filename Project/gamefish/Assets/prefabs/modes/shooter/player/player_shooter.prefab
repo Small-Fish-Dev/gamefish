@@ -90,7 +90,7 @@
         "AimRollResetSpeed": 4,
         "AirAcceleration": 3,
         "AllowAiming": true,
-        "BootsAutoDetach": 0.1,
+        "BootsAutoDetach": 0.05,
         "BootsInput": "Run",
         "ClassId": "player_shooter",
         "ClassName": null,
@@ -658,7 +658,7 @@
             "Children": []
           },
           {
-            "__guid": "b81b169f-7667-4c2f-8120-572d3ded0422",
+            "__guid": "d99bea76-43f5-420e-b08d-b95be66360e8",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -675,7 +675,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "65807a53-6dd8-4dcf-b55e-7a129c1ba502",
+                "__guid": "5de0ee68-6bb3-4bbd-bb40-519661caa15e",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

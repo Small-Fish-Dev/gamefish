@@ -37,7 +37,7 @@ partial class ShooterController
 	[Title( "Auto-Detach" )]
 	[Feature( BADASS ), Group( BOOTS )]
 	[Range( 0.0f, 4.0f, clamped: false )]
-	public virtual float BootsAutoDetach { get; set; } = 1.5f;
+	public virtual float BootsAutoDetach { get; set; } = 0.05f;
 
 	[Property]
 	[InputAction]
