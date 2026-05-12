@@ -264,6 +264,7 @@
               "go": "0d477140-245e-4027-8796-e93691384711",
               "component_type": "FirstPersonViewMode"
             },
+            "InspectorRecoil": "0,0,0,1",
             "IsClass": false,
             "IsNetworkingForced": true,
             "Mode": {
@@ -285,6 +286,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "RecoilResetSpeed": 30,
             "Relative": {
               "Position": "0,0,0",
               "Rotation": "0,0,0,0"
@@ -656,7 +658,7 @@
             "Children": []
           },
           {
-            "__guid": "386a95f6-6403-482f-8111-ecaf2ba94f87",
+            "__guid": "6c26cb48-8d79-4589-bd14-6e99bb955289",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -673,7 +675,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "2e150c16-7df6-40b0-b5bf-7b52916e70b1",
+                "__guid": "a4898d11-5c59-46f0-9030-cad5f0924173",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -878,7 +880,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "PullSpeed": 500,
+            "PullSpeed": 1000,
             "PullSpeedLimit": 500,
             "RetractButton": "Jump",
             "RetractSpeed": 1000,
