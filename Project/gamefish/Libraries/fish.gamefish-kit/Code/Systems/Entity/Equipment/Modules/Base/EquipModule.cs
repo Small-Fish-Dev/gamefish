@@ -26,7 +26,7 @@ public abstract class EquipModule : Module
 	public Pawn Pawn => Equip?.Pawn;
 
 	public Vector3 AimPosition => Pawn?.EyePosition ?? WorldPosition;
-	public Rotation AimRotation => Pawn?.EyeRotation ?? Rotation.Identity;
+	public Rotation AimRotation => Pawn?.EyeRotation ?? WorldRotation;
 
 	public Transform AimTransform => new( AimPosition, AimRotation, Pawn?.WorldScale ?? Vector3.One );
 	public Vector3 AimDirection => AimRotation.Forward;

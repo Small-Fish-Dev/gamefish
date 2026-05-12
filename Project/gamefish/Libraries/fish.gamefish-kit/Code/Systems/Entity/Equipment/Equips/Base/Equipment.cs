@@ -106,11 +106,14 @@ public partial class Equipment : DynamicEntity
 		SimulateModules( in deltaTime );
 	}
 
+	protected virtual void OnSetIsAiming( in bool isAiming, in bool wasAiming )
+	{
+	}
+
 	/// <returns> The current angles(in degrees) of spread applied to bullets and such. </returns>
 	public virtual Vector2 GetCurrentSpread( in Vector2 baseSpread, EquipFunction func )
 		=> baseSpread;
 
-	protected virtual void OnSetIsAiming( in bool isAiming, in bool wasAiming )
-	{
-	}
+	public virtual void AddRecoil( in Rotation rRecoil )
+		=> Pawn?.AddRecoil( in rRecoil );
 }

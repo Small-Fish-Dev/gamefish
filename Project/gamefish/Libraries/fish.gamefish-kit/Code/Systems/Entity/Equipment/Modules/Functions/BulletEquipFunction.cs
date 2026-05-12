@@ -15,10 +15,11 @@ public partial class BulletEquipFunction : EquipFunction
 
 	protected const int BULLET_SOUNDS_ORDER = BULLET_ORDER + 10;
 	protected const int BULLET_SPREAD_ORDER = BULLET_ORDER + 20;
-	protected const int BULLET_PREFABS_ORDER = BULLET_ORDER + 30;
-	protected const int BULLET_EFFECTS_ORDER = BULLET_ORDER + 40;
-	protected const int BULLET_TRACING_ORDER = BULLET_ORDER + 50;
-	protected const int BULLET_HEALTH_ORDER = BULLET_ORDER + 60;
+	protected const int BULLET_VIEW_ORDER = BULLET_ORDER + 30;
+	protected const int BULLET_PREFABS_ORDER = BULLET_ORDER + 40;
+	protected const int BULLET_EFFECTS_ORDER = BULLET_ORDER + 50;
+	protected const int BULLET_TRACING_ORDER = BULLET_ORDER + 60;
+	protected const int BULLET_HEALTH_ORDER = BULLET_ORDER + 70;
 
 	[Property]
 	[Title( "Render Traces" )]
@@ -116,11 +117,21 @@ public partial class BulletEquipFunction : EquipFunction
 	/// <summary>
 	/// The base angle(in degrees) of bullet cone spread.
 	/// </summary>
+	[Property]
 	[Title( "Base" )]
 	[Order( BULLET_SPREAD_ORDER )]
 	[Range( 0f, 90f, clamped: false )]
-	[Property, Feature( BULLET ), Group( SPREAD )]
+	[Feature( BULLET ), Group( SPREAD )]
 	public virtual float SpreadCone { get; set; } = 1f;
+
+	/// <summary>
+	/// The default recoil to add when firing.
+	/// </summary>
+	[Property]
+	[Title( "Recoil (base)" )]
+	[Order( BULLET_VIEW_ORDER )]
+	[Feature( BULLET ), Group( VIEW )]
+	public virtual Rotation RecoilBase { get; set; } = Rotation.FromPitch( -20f );
 
 	/// <summary>
 	/// The current angle(in degrees) of active bullet spread.
@@ -237,6 +248,7 @@ public partial class BulletEquipFunction : EquipFunction
 			DebugOverlay.Trace( tr, duration: 1f );
 
 		RpcTracerEffect( tr.EndPosition );
+		AddRecoil( GetRecoil() );
 
 		// TODO: Tracer effects.
 		if ( !tr.Hit || !tr.GameObject.IsValid() )
@@ -254,4 +266,7 @@ public partial class BulletEquipFunction : EquipFunction
 
 		BroadcastSound( EmptySound, AimPosition );
 	}
+
+	protected virtual Rotation GetRecoil()
+		=> RecoilBase;
 }

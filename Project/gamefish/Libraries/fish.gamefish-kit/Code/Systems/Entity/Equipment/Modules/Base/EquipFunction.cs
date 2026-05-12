@@ -219,4 +219,7 @@ public abstract partial class EquipFunction : EquipModule
 			.RotateAroundAxis( Vector3.Forward, Random.Float( 0f, 360f ) )
 			.RotateAroundAxis( Vector3.Right, Random.Float( 0f, spread ) );
 	}
+
+	protected virtual void AddRecoil( in Rotation rRecoil )
+		=> Equip?.AddRecoil( in rRecoil );
 }

@@ -95,9 +95,11 @@ public partial class PawnView : PawnModule, ISimulate
 
 		HandleInput();
 
-		UpdateTransition( deltaTime );
+		UpdateRecoil( in deltaTime );
 
-		UpdateViewMode( deltaTime );
+		UpdateTransition( in deltaTime );
+
+		UpdateViewMode( in deltaTime );
 	}
 
 	/// <returns> If we are looking through this view. </returns>

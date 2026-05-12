@@ -30,7 +30,7 @@ partial class PawnController
 	/// </summary>
 	[Property]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
-	[ToggleGroup( value: nameof( AllowAiming ), Label = "Aiming" )]
+	[ToggleGroup( value: nameof( AllowAiming ), Label = AIMING )]
 	public virtual bool AllowAiming { get; set; } = true;
 
 	/// <summary>

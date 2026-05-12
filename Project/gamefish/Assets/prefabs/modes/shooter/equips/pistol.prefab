@@ -146,9 +146,13 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "RecoilBase": "0,-0.173648179,0,0.98480773",
         "SpreadCone": 1,
         "SpreadShape": "Cone",
         "TraceDistance": 4096,
+        "TracerColor": "1,1,1,0.12",
+        "TracerDuration": 0.25,
+        "TracerWidth": 0.5,
         "UsableRange": {
           "Min": 0,
           "Max": 2048
