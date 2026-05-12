@@ -16105,13 +16105,13 @@
                 "Scale": "1,1,1",
                 "Rotation": "0,0,0,1"
               },
-              "Health": 100,
+              "Health": 420,
               "InheritScale": true,
               "IsAlive": true,
               "IsClass": false,
               "IsDestructible": true,
               "IsNetworkingForced": true,
-              "MaxHealth": 100,
+              "MaxHealth": 420,
               "NetworkAutomatically": true,
               "NetworkId": "63bcb2a3-4fba-4872-92f1-ca8abf96261b",
               "NetworkingMode": "Object",
@@ -16150,7 +16150,7 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.66789,0.20844,0.95349,1"
+              "Tint": "0.66667,0.20784,0.95686,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -16249,13 +16249,13 @@
                 "Scale": "1,1,1",
                 "Rotation": "0,0,0,1"
               },
-              "Health": 100,
+              "Health": 420,
               "InheritScale": true,
               "IsAlive": true,
               "IsClass": false,
               "IsDestructible": true,
               "IsNetworkingForced": true,
-              "MaxHealth": 100,
+              "MaxHealth": 420,
               "NetworkAutomatically": true,
               "NetworkId": "1fd4748f-49d8-4142-a66c-b71c60fbcaad",
               "NetworkingMode": "Object",
@@ -16294,7 +16294,7 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.66789,0.20844,0.95349,1"
+              "Tint": "0.66667,0.20784,0.95686,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -16393,13 +16393,13 @@
                 "Scale": "1,1,1",
                 "Rotation": "0,0,0,1"
               },
-              "Health": 100,
+              "Health": 420,
               "InheritScale": true,
               "IsAlive": true,
               "IsClass": false,
               "IsDestructible": true,
               "IsNetworkingForced": true,
-              "MaxHealth": 100,
+              "MaxHealth": 420,
               "NetworkAutomatically": true,
               "NetworkId": "56f0a2b3-0b68-4b88-90fd-678fd9179c9b",
               "NetworkingMode": "Object",
@@ -16438,7 +16438,7 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.66789,0.20844,0.95349,1"
+              "Tint": "0.66667,0.20784,0.95686,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -16537,13 +16537,13 @@
                 "Scale": "1,1,1",
                 "Rotation": "0,0,0,1"
               },
-              "Health": 100,
+              "Health": 420,
               "InheritScale": true,
               "IsAlive": true,
               "IsClass": false,
               "IsDestructible": true,
               "IsNetworkingForced": true,
-              "MaxHealth": 100,
+              "MaxHealth": 420,
               "NetworkAutomatically": true,
               "NetworkId": "6a706290-9fa9-43b0-a75a-20930a5f4b2f",
               "NetworkingMode": "Object",
@@ -16582,7 +16582,7 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.66789,0.20844,0.95349,1"
+              "Tint": "0.66667,0.20784,0.95686,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -16681,13 +16681,13 @@
                 "Scale": "1,1,1",
                 "Rotation": "0,0,0,1"
               },
-              "Health": 100,
+              "Health": 420,
               "InheritScale": true,
               "IsAlive": true,
               "IsClass": false,
               "IsDestructible": true,
               "IsNetworkingForced": true,
-              "MaxHealth": 100,
+              "MaxHealth": 420,
               "NetworkAutomatically": true,
               "NetworkId": "e02f7317-5eec-40e3-9ac8-5d3a9232781f",
               "NetworkingMode": "Object",
@@ -16726,7 +16726,7 @@
                 "AfterUILayer": false
               },
               "RenderType": "On",
-              "Tint": "0.66789,0.20844,0.95349,1"
+              "Tint": "0.66667,0.20784,0.95686,1"
             },
             {
               "__type": "Sandbox.BoxCollider",
@@ -16757,6 +16757,150 @@
             {
               "__type": "Sandbox.Rigidbody",
               "__guid": "d118f4f6-2694-4b45-9144-1ca90b138ba1",
+              "__enabled": true,
+              "Flags": 0,
+              "AngularDamping": 0,
+              "EnableImpactDamage": false,
+              "EnhancedCcd": false,
+              "Gravity": true,
+              "GravityScale": 1,
+              "ImpactDamage": 0,
+              "LinearDamping": 0,
+              "Locking": {
+                "X": false,
+                "Y": false,
+                "Z": false,
+                "Pitch": false,
+                "Yaw": false,
+                "Roll": false
+              },
+              "MassCenterOverride": "0,0,0",
+              "MassOverride": 0,
+              "MinImpactDamageSpeed": 500,
+              "MotionEnabled": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OverrideMassCenter": false,
+              "RigidbodyFlags": 0,
+              "StartAsleep": false
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "2cc31419-aa9d-4a88-8d4d-5c39dcb6e5d1",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Cube (4)",
+          "Position": "1338.47864,-179.825806,183.175186",
+          "Rotation": "0,0,0.38268292,0.923879683",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "GameFish.Breakable",
+              "__guid": "1ca42693-0c15-4d66-bbe4-71047bed498e",
+              "__enabled": true,
+              "Flags": 0,
+              "BreakPrefab": null,
+              "BreakSound": null,
+              "CenterEffects": true,
+              "ClassId": null,
+              "ClassName": null,
+              "DamagedSound": null,
+              "DebugDamage": 25,
+              "DestroyObject": true,
+              "EffectsOffset": {
+                "Position": "0,0,0",
+                "Scale": "1,1,1",
+                "Rotation": "0,0,0,1"
+              },
+              "Health": 420,
+              "InheritScale": true,
+              "IsAlive": true,
+              "IsClass": false,
+              "IsDestructible": true,
+              "IsNetworkingForced": true,
+              "MaxHealth": 420,
+              "NetworkAutomatically": true,
+              "NetworkId": "1ca42693-0c15-4d66-bbe4-71047bed498e",
+              "NetworkingMode": "Object",
+              "NetworkOrphanedMode": "ClearOwner",
+              "NetworkOwner": null,
+              "NetworkTransferMode": "Fixed",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "89f9ba36-0504-41cd-a249-323b0e711461",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.66667,0.20784,0.95686,1"
+            },
+            {
+              "__type": "Sandbox.BoxCollider",
+              "__guid": "f267d28a-a256-440a-b38b-9f3e6d1ead16",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "RollingResistance": null,
+              "Scale": "50,50,50",
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            },
+            {
+              "__type": "Sandbox.Rigidbody",
+              "__guid": "fcebf5d3-7216-41e6-b028-2610920a00ac",
               "__enabled": true,
               "Flags": 0,
               "AngularDamping": 0,
@@ -16821,6 +16965,9 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "e15eb5d3-1dc8-461c-a0d1-e7ea2c34c714"
@@ -16830,9 +16977,6 @@
         "Data": {
           "SelectionSets": []
         }
-      },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
       }
     }
   },
