@@ -116,7 +116,7 @@
         },
         "DebugRenderTraces": false,
         "EmptySound": null,
-        "FireSound": "sounds/luger pistol fire.sound",
+        "FireSound": "sounds/m4a1 shot.sound",
         "FunctionDescription": "Fires a bullet.",
         "FunctionName": "Shoot",
         "IdealRange": {
@@ -146,8 +146,8 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "RecoilBase": "0,-0.173648179,0,0.98480773",
-        "SpreadCone": 1,
+        "RecoilBase": "0,-0.258819044,0,0.965925813",
+        "SpreadCone": 0,
         "SpreadShape": "Cone",
         "TraceDistance": 4096,
         "TracerColor": "1,1,1,0.12",
@@ -188,7 +188,7 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "__references": [
-    "drakefruit.lugerpistolfire#91245"
+    "drakefruit.m4a1_shot#91284"
   ],
   "__version": 2
 }
