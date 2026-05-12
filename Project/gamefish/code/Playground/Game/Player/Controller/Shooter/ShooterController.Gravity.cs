@@ -28,13 +28,6 @@ partial class ShooterController
 	[Range( 1.0f, 3.0f, clamped: false )]
 	public virtual float DuckGravityScale { get; set; } = 2f;
 
-	[Property]
-	[InputAction]
-	[Title( "Boots" )]
-	[Order( BADASS_ORDER )]
-	[Feature( BADASS ), Group( INPUT )]
-	public virtual string BootsInput { get; set; } = "Run";
-
 	/// <summary>
 	/// The delay after you stop using boots that they automatically detatch.
 	/// </summary>
@@ -45,6 +38,13 @@ partial class ShooterController
 	[Feature( BADASS ), Group( BOOTS )]
 	[Range( 0.0f, 4.0f, clamped: false )]
 	public virtual float BootsAutoDetach { get; set; } = 1.5f;
+
+	[Property]
+	[InputAction]
+	[Title( "Input" )]
+	[Order( BADASS_ORDER )]
+	[Feature( BADASS ), Group( BOOTS )]
+	public virtual string BootsInput { get; set; } = "Run";
 
 	/// <summary>
 	/// If defined: the last time the boots stuck to something.
