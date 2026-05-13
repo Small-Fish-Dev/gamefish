@@ -6,7 +6,8 @@ partial class Library
 	/// <see cref="Vector3.Direction(in Vector3, in Vector3)"/>
 	/// </summary>
 	/// <returns> The direction from one position to another. </returns>
-	public static Vector3 Direction( this Vector3 from, in Vector3 to ) => Vector3.Direction( from, to );
+	public static Vector3 Direction( this Vector3 from, in Vector3 to )
+		=> Vector3.Direction( from, to );
 
 	/// <summary>
 	/// Zeroes out the <c>Z</c> axis.
