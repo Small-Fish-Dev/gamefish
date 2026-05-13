@@ -254,4 +254,10 @@ partial class PawnController
 
 	public void Move( in Vector3 from, in Vector3 to ) => Physics?.Move( in from, in to );
 	public void Move( in Transform tFrom, in Vector3 to ) => Physics?.Move( in tFrom, to );
+
+	public virtual bool IsGround( in SceneTraceResult tr )
+		=> Physics?.IsGround( in tr ) is true;
+
+	public virtual bool IsGround( in Vector3 normal )
+		=> Physics?.IsGround( in normal ) is true;
 }
