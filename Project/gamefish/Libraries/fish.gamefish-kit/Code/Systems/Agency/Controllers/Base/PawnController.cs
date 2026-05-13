@@ -25,7 +25,12 @@ public abstract partial class PawnController : PawnModule
 	/// <summary>
 	/// The force of gravity for this controller.
 	/// </summary>
-	public virtual Vector3 Gravity => Scene?.PhysicsWorld?.Gravity ?? default;
+	public virtual Vector3 Gravity => SceneGravity;
+
+	/// <summary>
+	/// The gravity things fall(if they do) by default.
+	/// </summary>
+	protected Vector3 SceneGravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
 	protected virtual Vector3 LocalBottom => Vector3.Zero;
 	protected virtual Vector3 LocalTop => Vector3.Up * GetLocalEyeTargetPosition();
