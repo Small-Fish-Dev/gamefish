@@ -25,6 +25,16 @@ partial class FirstPersonController
 	/// The sudden force from jumping.
 	/// </summary>
 	[Property]
+	[Title( "Cooldown" )]
+	[Range( 0f, 0.5f, clamped: false )]
+	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[ToggleGroup( nameof( JumpingEnabled ) )]
+	public virtual float JumpCooldown { get; set; } = 0.1f;
+
+	/// <summary>
+	/// The sudden force from jumping.
+	/// </summary>
+	[Property]
 	[Title( "Impulse" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[Feature( PAWN ), Order( JUMPING_ORDER )]
@@ -51,6 +61,21 @@ partial class FirstPersonController
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpSlopeFactor { get; set; } = 1f;
 
+	[Sync]
+	public TimeSince? LastJumped { get; set; }
+
+	/// <returns> If the ability to jump is not blocked somehow. </returns>
+	public virtual bool IsJumpingAllowed()
+	{
+		if ( !JumpingEnabled )
+			return false;
+
+		if ( LastJumped is not TimeSince sinceJump )
+			return true;
+
+		return sinceJump >= JumpCooldown;
+	}
+
 	/// <returns> If jumping is currently intended. </returns>
 	protected virtual bool IsWishingJump()
 		=> JumpInput.IsActive;
@@ -64,10 +89,10 @@ partial class FirstPersonController
 	/// <returns> If we should jump this frame(such as if pressed). </returns>
 	protected virtual bool ShouldJump()
 	{
-		if ( !JumpingEnabled )
+		if ( !IsGrounded )
 			return false;
 
-		if ( !IsGrounded )
+		if ( !IsJumpingAllowed() )
 			return false;
 
 		return IsWishingJump();
@@ -108,6 +133,8 @@ partial class FirstPersonController
 		// Prevent staggered jumps by negating downward velocity.
 		var upDot = upVel.Dot( Up );
 		upVel = Up * upDot.Positive();
+
+		LastJumped = 0f;
 
 		IsGrounded = false;
 		Velocity = hVel + upVel + impulse;
