@@ -40,6 +40,19 @@ public class ProjectedMovement
 	/// </summary>
 	public float Skin = 0f;
 
+	/// <summary>
+	/// Has this movement projection hit at all?
+	/// </summary>
+	public bool Hit => Hits?.Count > 0;
+
+	/// <summary>
+	/// The trace results of each collision.
+	/// </summary>
+	public List<SceneTraceResult> Hits = [];
+
+	/// <summary>
+	/// Is this projected movement stuck in something?
+	/// </summary>
 	public bool IsStuck;
 
 	public bool IsGrounded;
@@ -82,6 +95,10 @@ public class ProjectedMovement
 
 		Direction = move.Direction;
 		Distance = move.Distance;
+
+		Hits = move.Hits;
+
+		IsStuck = move.IsStuck;
 
 		Velocity = move.Velocity;
 
@@ -128,6 +145,8 @@ public class ProjectedMovement
 
 		Direction = dir;
 		Distance = dist;
+
+		Hits = [];
 
 		IsStuck = phys.IsStuck;
 

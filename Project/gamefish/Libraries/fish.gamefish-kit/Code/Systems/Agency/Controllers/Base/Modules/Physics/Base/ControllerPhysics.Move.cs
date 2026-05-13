@@ -196,8 +196,14 @@ partial class ControllerPhysics
 	/// </summary>
 	protected virtual void OnCollide( in SceneTraceResult trHit, ProjectedMovement move )
 	{
+		if ( !trHit.Hit )
+			return;
+
 		if ( move.IsStuck || trHit.StartedSolid )
 			return;
+
+		move.Hits ??= [];
+		move.Hits.Add( trHit );
 
 		move.Position = trHit.EndPosition;
 		move.Distance -= trHit.Distance;
