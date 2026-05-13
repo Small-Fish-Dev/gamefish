@@ -64,7 +64,7 @@ partial class FirstPersonController
 	[Sync]
 	public TimeSince? LastJumped { get; set; }
 
-	/// <returns> If the ability to jump is not blocked somehow. </returns>
+	/// <returns> If the ability to jump is not blocked somehow(such as a cooldown). </returns>
 	public virtual bool IsJumpingAllowed()
 	{
 		if ( !JumpingEnabled )
@@ -134,9 +134,17 @@ partial class FirstPersonController
 		var upDot = upVel.Dot( Up );
 		upVel = Up * upDot.Positive();
 
-		LastJumped = 0f;
+		OnPreJump();
 
-		IsGrounded = false;
 		Velocity = hVel + upVel + impulse;
+	}
+
+	/// <summary>
+	/// Prepares us for leaving the ground before applying jump velocity.
+	/// </summary>
+	protected virtual void OnPreJump()
+	{
+		LastJumped = 0f;
+		IsGrounded = false;
 	}
 }
