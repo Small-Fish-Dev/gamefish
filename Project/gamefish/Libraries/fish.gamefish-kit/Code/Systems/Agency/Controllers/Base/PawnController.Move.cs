@@ -65,6 +65,8 @@ partial class PawnController
 	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
 	protected Vector3 InspectorGroundNormal => GroundNormal;
 
+	public virtual bool IsStuck => Physics?.IsStuck is true;
+
 	public virtual bool IsGrounded
 	{
 		get => Physics?.IsGrounded is true;

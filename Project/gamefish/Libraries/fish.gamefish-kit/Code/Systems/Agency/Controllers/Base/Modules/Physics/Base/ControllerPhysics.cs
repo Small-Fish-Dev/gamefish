@@ -17,7 +17,18 @@ public abstract partial class ControllerPhysics : ControllerModule
 	public Vector3 Up => Controller?.Up ?? WorldRotation.Up;
 	public Vector3 Down => -Up;
 
-	public override Vector3 Center => Pawn?.Center ?? Controller?.Center ?? WorldPosition;
+	public override Vector3 Center => Controller?.Center ?? TraceOrigin.Position;
+
+	/// <inheritdoc cref="PawnController.Origin" />
+	public Transform Origin
+	{
+		get => Controller?.Origin ?? Pawn?.WorldTransform ?? WorldTransform;
+		set
+		{
+			if ( Controller.IsValid() )
+				Controller.Origin = value;
+		}
+	}
 
 	[Property]
 	[JsonIgnore]

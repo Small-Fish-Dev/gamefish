@@ -22,6 +22,9 @@ public abstract partial class PawnController : PawnModule
 
 	public PawnView View => Pawn?.View;
 
+	/// <inheritdocs cref="DynamicEntity.IsAlive" />
+	public bool IsAlive => Pawn?.IsAlive is true;
+
 	/// <summary>
 	/// The force of gravity for this controller.
 	/// </summary>
@@ -35,10 +38,23 @@ public abstract partial class PawnController : PawnModule
 	protected virtual Vector3 LocalBottom => Vector3.Zero;
 	protected virtual Vector3 LocalTop => Vector3.Up * GetLocalEyeTargetPosition();
 
-	public Vector3 Bottom => WorldTransform.PointToWorld( LocalBottom );
-	public Vector3 Top => WorldTransform.PointToWorld( LocalTop );
+	public Vector3 Bottom => Origin.PointToWorld( LocalBottom );
+	public Vector3 Top => Origin.PointToWorld( LocalTop );
 
-	public override Vector3 Center => WorldTransform.PointToWorld( LocalBottom.LerpTo( LocalTop, 0.5f ) );
+	public override Vector3 Center => Origin.PointToWorld( LocalBottom.LerpTo( LocalTop, 0.5f ) );
+
+	/// <summary>
+	/// The parent pawn's transform.
+	/// </summary>
+	public Transform Origin
+	{
+		get => Pawn?.WorldTransform ?? WorldTransform;
+		set
+		{
+			if ( Pawn.IsValid() )
+				Pawn.WorldTransform = value;
+		}
+	}
 
 	/// <summary>
 	/// The rotation that we use for movement direction and such.

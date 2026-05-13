@@ -21,7 +21,9 @@ partial class ControllerPhysics
 
 	public virtual ITagSet TraceTags => Tags;
 
-	public Transform Origin => Pawn?.WorldTransform ?? WorldTransform;
+	/// <summary>
+	/// The transform that the physics traces originate from.
+	/// </summary>
 	public Transform TraceOrigin => Origin.WithOffset( TraceOffset );
 
 	/// <summary>
