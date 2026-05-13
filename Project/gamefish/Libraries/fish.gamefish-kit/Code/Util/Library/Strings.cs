@@ -255,6 +255,7 @@ public static partial class Strings
 	public const string CONSTRAINT = "🧲 Constraint";
 	public const string CONSTRAINTS = "🧲 Constraints";
 	public const string PHYSICS = "🍎 Physics";
+	public const string GRAVITY = "🍏 Gravity";
 	public const string MOMENTUM = "➡ Momentum";
 	public const string LINEAR = "➡ Linear";
 	public const string FORCE = "💨 Force";
