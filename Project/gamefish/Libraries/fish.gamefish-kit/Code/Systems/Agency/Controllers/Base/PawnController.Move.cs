@@ -221,11 +221,31 @@ partial class PawnController
 		Physics?.ApplyGravity( Gravity, in deltaTime );
 	}
 
-	public SceneTrace TracePhysics( in float skin = 0f )
-		=> Physics?.Trace( skin: in skin ) ?? default;
+	public SceneTrace TracePhysics( in Vector3 to, in float skin = 0f )
+	{
+		if ( !Pawn.IsValid() )
+			return default;
+
+		return TracePhysics( Pawn.WorldTransform, in to, skin: in skin );
+	}
+
+	public SceneTrace TracePhysics( in Vector3 from, in Vector3 to, in float skin = 0f )
+	{
+		if ( !Pawn.IsValid() )
+			return default;
+
+		var tOrigin = Pawn.WorldTransform.WithPosition( in from );
+
+		return TracePhysics( in tOrigin, in to, skin: in skin );
+	}
 
 	public SceneTrace TracePhysics( in Transform tFrom, in Vector3 to, in float skin = 0f )
-		=> Physics?.Trace( in tFrom, in to, skin: in skin ) ?? default;
+	{
+		if ( !Physics.IsValid() )
+			return default;
+
+		return Physics.Trace( in tFrom, in to, skin: in skin );
+	}
 
 	public void MoveTo( in Vector3 to ) => Physics?.MoveTo( in to );
 	public void MoveDelta( in Vector3 delta ) => Physics?.MoveDelta( in delta );
