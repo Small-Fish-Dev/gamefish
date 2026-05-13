@@ -22,8 +22,17 @@ partial class Library
 	/// Projects a vector onto a plane's normal.
 	/// </summary>
 	/// <param name="v"></param>
+	/// <param name="planeNormal"> The plane's normal that the vector will reflect against. </param>
+	/// <returns> A vector reflected against a normal. </returns>
+	public static Vector3 Reflect( this Vector3 v, in Vector3 planeNormal )
+		=> Vector3.Reflect( in v, in planeNormal );
+
+	/// <summary>
+	/// Projects a vector onto a plane's normal.
+	/// </summary>
+	/// <param name="v"></param>
 	/// <param name="planeNormal"> The plane's normal that the vector will lay flat on. </param>
-	/// <returns> A vector projected against a normal with a specific length. </returns>
+	/// <returns> A vector projected against a normal. </returns>
 	public static Vector3 PlaneProject( this Vector3 v, in Vector3 planeNormal )
 		=> Vector3.VectorPlaneProject( in v, in planeNormal );
 
