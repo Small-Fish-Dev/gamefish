@@ -4,12 +4,12 @@ partial class FirstPersonController
 {
 	[Property]
 	[Title( "Standing Height" )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
 	public virtual float EyeHeightStand { get; set; } = 64f;
 
 	[Property]
 	[Title( "Ducked Height" )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
 	public virtual float EyeHeightDuck { get; set; } = 32f;
 
 	[Property]

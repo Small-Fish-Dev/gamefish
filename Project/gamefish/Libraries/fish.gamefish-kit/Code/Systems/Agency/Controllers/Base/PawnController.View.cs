@@ -10,7 +10,7 @@ partial class PawnController
 	[Property]
 	[Title( "Speed" )]
 	[Range( 0.1f, 5f, clamped: false ), Step( 0.01f )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
 	public virtual float EyeMoveSpeed { get; set; } = 1f;
 
 	/// <summary>
@@ -20,7 +20,7 @@ partial class PawnController
 	[Property]
 	[Title( "Smoothing" )]
 	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
-	[Feature( VIEW ), Group( EYE_POS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
 	public virtual float EyeMoveSmoothing { get; set; } = 0.15f;
 
 	protected Vector3 _eyeVel = Vector3.Zero;

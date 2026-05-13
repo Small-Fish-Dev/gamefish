@@ -216,15 +216,15 @@ public static partial class Strings
 	public const string MIND = "🧠 Mind";
 	public const string MINDS = "🧠 Minds";
 
-	public const string DETECTION = "🔍 Detection";
-	public const string HEARING = "👂 Hearing";
-	public const string VISION = "👁 Vision";
 	public const string SMELL = "👃 Smell";
+	public const string VISION = "👁 Vision";
+	public const string HEARING = "👂 Hearing";
+	public const string DETECTION = "🔍 Detection";
 
-	public const string MOVEMENT = "🏃 Movement";
-	public const string EVASION = "🐱‍👤 Evasion";
 	public const string FLYING = "🦅 Flying";
 	public const string FLIGHT = "🦅 Flight";
+	public const string EVASION = "🐱‍👤 Evasion";
+	public const string MOVEMENT = "🏃 Movement";
 
 	public const string AIM = "👓 Aim";
 	public const string AIMING = "👓 Aiming";
@@ -237,13 +237,19 @@ public static partial class Strings
 
 	public const string EYE = "👁 Eye";
 	public const string EYES = "👁 Eyes";
-	public const string EYE_POS = "👁 Eye Position";
+	public const string EYEPOS = "👁 Eye Position";
 	public const string SPRINT = "💨 Sprint";
 	public const string SPRINTING = "💨 Sprinting";
 	public const string DUCK = "🦆 Duck";
 	public const string DUCKING = "🦆 Ducking";
 	public const string JUMP = "🦘 Jump";
 	public const string JUMPING = "🦘 Jumping";
+
+	public const string WALL = "🧱 Wall";
+	public const string PARKOUR = "🏙 Parkour";
+	public const string MOUNTING = "🧗 Mounting";
+	public const string CLIMBING = "🧗 Climbing";
+	public const string WALLRUNNING = "🧗 Wall Running";
 
 	public const string FOCUS = "💊 Focus";
 	public const string FOCUSING = "💊 Focusing";

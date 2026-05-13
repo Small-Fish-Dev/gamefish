@@ -10,10 +10,8 @@ public partial class FirstPersonController : PawnController
 	{
 		base.UpdateInput( deltaTime );
 
-		var isAlive = Pawn?.IsAlive is true;
-
-		IsDucking = isAlive && ShouldDuck();
-		IsSprinting = isAlive && ShouldSprint();
+		IsDucking = IsAlive && ShouldDuck();
+		IsSprinting = IsAlive && ShouldSprint();
 
 		if ( ShouldJump() )
 			Jump();
