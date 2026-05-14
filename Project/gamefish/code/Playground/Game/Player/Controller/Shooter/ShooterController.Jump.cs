@@ -27,20 +27,20 @@ partial class ShooterController
 	public virtual float AirJumpRechargeDelay { get; set; } = 3.0f;
 
 	[Property]
-	[Title( "Jump (up)" )]
-	[Order( BADASS_ORDER )]
-	[Feature( BADASS ), Group( AIRJUMP )]
-	[Range( 100f, 500f, clamped: false )]
-	[ToggleGroup( nameof( AirJumpEnabled ) )]
-	public virtual float AirJumpUp { get; set; } = 400f;
-
-	[Property]
 	[Title( "Cooldown" )]
 	[Order( BADASS_ORDER )]
 	[Range( 0.1f, 1f, clamped: false )]
 	[Feature( BADASS ), Group( AIRJUMP )]
 	[ToggleGroup( nameof( AirJumpEnabled ) )]
 	public virtual float AirJumpCooldown { get; set; } = 0.25f;
+
+	[Property]
+	[Title( "Jump (up)" )]
+	[Order( BADASS_ORDER )]
+	[Feature( BADASS ), Group( AIRJUMP )]
+	[Range( 100f, 500f, clamped: false )]
+	[ToggleGroup( nameof( AirJumpEnabled ) )]
+	public virtual float AirJumpUp { get; set; } = 400f;
 
 	[Sync]
 	public int AirJumpsRemaining { get; set; } = 0;
@@ -57,6 +57,10 @@ partial class ShooterController
 			return false;
 
 		if ( !NextAirJump )
+			return false;
+
+		// Can't air jump while grappling.
+		if ( GrapplingHook?.IsHooking is true )
 			return false;
 
 		return AirJumpsRemaining > 0;
