@@ -672,7 +672,7 @@
             "Children": []
           },
           {
-            "__guid": "40e6ae78-5342-4bd9-b623-39d859b6ba37",
+            "__guid": "42fec674-2cfc-4cef-bd5f-1ba1b3eabe8c",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -689,7 +689,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "318fb414-0e86-41b2-a67a-543644181ba8",
+                "__guid": "ddcd4877-7ad1-4244-9741-2f015f3b6caf",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -864,7 +864,7 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "GameFish.PlayerGrappleModule",
+            "__type": "GameFish.PawnGrapplingHook",
             "__guid": "74688587-62a4-4d0a-87f0-fea5d4cc0074",
             "__enabled": true,
             "Flags": 0,

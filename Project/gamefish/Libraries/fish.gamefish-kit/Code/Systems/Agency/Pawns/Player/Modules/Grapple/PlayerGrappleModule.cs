@@ -1,35 +1,41 @@
+using System;
+
 namespace GameFish;
 
+[Hide, Obsolete( $"Use {nameof( PawnGrapplingHook )} instead." )]
+public partial class PlayerGrappleModule : PawnGrapplingHook;
+
 /// <summary>
-/// Lets players use a grappling hook.
+/// Gives a pawn a grappling hook. Works for players by default.
 /// </summary>
+[Icon( "phishing" )]
 [Title( "Grappling Hook" )]
-public partial class PlayerGrappleModule : PlayerModule
+public partial class PawnGrapplingHook : PawnModule
 {
-	protected const int HOOK_ORDER = PLAYER_ORDER - 500;
+	protected const int HOOK_ORDER = PAWN_ORDER - 1000;
 
 	/// <summary>
 	/// The speed to add when retracting.
 	/// </summary>
 	[Property]
-	[Range( 0f, 1000f, clamped: false )]
 	[Feature( HOOK ), Group( FORCES )]
+	[Range( 0f, 1000f, clamped: false )]
 	public float PullSpeed { get; set; } = 500f;
 
 	/// <summary>
 	/// Can only pull towards the hook point this fast.
 	/// </summary>
 	[Property]
-	[Range( 0f, 2000f, clamped: false )]
 	[Feature( HOOK ), Group( FORCES )]
+	[Range( 0f, 2000f, clamped: false )]
 	public float PullSpeedLimit { get; set; } = 500f;
 
 	/// <summary>
 	/// The maximum extra speed to add towards the point depending on slack length.
 	/// </summary>
 	[Property]
-	[Range( 1f, 1000f, clamped: false )]
 	[Feature( HOOK ), Group( FORCES )]
+	[Range( 1f, 1000f, clamped: false )]
 	public float Elasticity { get; set; } = 500f;
 
 	[Property]
@@ -93,7 +99,7 @@ public partial class PlayerGrappleModule : PlayerModule
 	[Feature( HOOK ), Group( INPUT )]
 	public string ExtendButton { get; set; } = "Duck";
 
-	public virtual Vector3 HookOrigin => Player.IsValid() ? Player.Center : WorldPosition;
+	public virtual Vector3 HookOrigin => Pawn.IsValid() ? Pawn.Center : WorldPosition;
 
 	public virtual bool IsHooking
 	{
@@ -130,27 +136,49 @@ public partial class PlayerGrappleModule : PlayerModule
 	{
 		base.OnUpdate();
 
-		if ( !Player.IsValid() )
-			return;
-
-		if ( IsProxy || !Player.AllowInput() )
-			return;
-
-		Simulate( Time.Delta );
+		AutoSimulate();
 	}
 
 	protected override void OnPreRender()
 	{
 		base.OnPreRender();
 
-		if ( !HitObject.IsValid() || !Player.IsValid() )
+		UpdateVisuals();
+	}
+
+	/// <summary>
+	/// The module simulating itself if we own it.
+	/// </summary>
+	protected virtual void AutoSimulate()
+	{
+		if ( IsProxy )
+			return;
+
+		if ( !Pawn.IsValid() || !Pawn.AllowInput() )
+			return;
+
+		Simulate( Time.Delta );
+	}
+
+	protected virtual void UpdateVisuals()
+		=> RenderDebug();
+
+	protected virtual void RenderDebug()
+	{
+		if ( !Pawn.IsValid() )
+			return;
+
+		if ( !HitObject.IsValid() )
+			return;
+
+		if ( !ITransform.IsValid( LocalPoint ) )
 			return;
 
 		var origin = HookOrigin;
 		var tWorld = HitObject.WorldTransform;
 		var worldPoint = tWorld.PointToWorld( LocalPoint );
 
-		this.DrawArrow( origin + Player.EyeForward * 10f, worldPoint,
+		this.DrawArrow( origin + Pawn.EyeForward * 10f, worldPoint,
 			Color.Black, th: 4f, tWorld: global::Transform.Zero );
 	}
 
@@ -196,15 +224,15 @@ public partial class PlayerGrappleModule : PlayerModule
 		return true;
 	}
 
-	protected virtual bool TryHook()
+	public virtual bool TryHook()
 	{
 		if ( IsHooking )
 			return true;
 
-		if ( !Player.IsValid() )
+		if ( !Pawn.IsValid() )
 			return false;
 
-		var tr = Player.GetEyeTrace( dir: Player.EyeForward, distance: LengthRange.Max ).Run();
+		var tr = Pawn.GetEyeTrace( dir: Pawn.EyeForward, distance: LengthRange.Max ).Run();
 
 		if ( !IsValidTarget( in tr ) )
 			return false;
@@ -241,7 +269,7 @@ public partial class PlayerGrappleModule : PlayerModule
 
 	protected virtual void UpdateMovement( in float deltaTime, in Vector3 origin, in Vector3 hookPoint )
 	{
-		if ( !Player.IsValid() )
+		if ( !Pawn.IsValid() )
 			return;
 
 		var pointDist = origin.Distance( hookPoint );
@@ -252,7 +280,7 @@ public partial class PlayerGrappleModule : PlayerModule
 		// We're at or outside of our length.
 		var dirToPoint = origin.Direction( hookPoint );
 
-		var vel = Player.Velocity;
+		var vel = Pawn.Velocity;
 
 		vel.Separate( dirToPoint, out var fwdVel, out var hVel );
 
@@ -295,6 +323,6 @@ public partial class PlayerGrappleModule : PlayerModule
 				fwdVel = fwdVel.Normal * oldSpeed.Max( PullSpeedLimit );
 		}
 
-		Player.Velocity = hVel + fwdVel;
+		Pawn.Velocity = hVel + fwdVel;
 	}
 }
