@@ -88,7 +88,7 @@
           "Max": 89.9
         },
         "AimRollResetSpeed": 4,
-        "AirAcceleration": 3,
+        "AirAcceleration": 5,
         "AllowAiming": true,
         "BootsAutoDetach": 0.05,
         "BootsInput": "Run",
