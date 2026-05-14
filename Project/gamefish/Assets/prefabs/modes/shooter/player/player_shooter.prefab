@@ -155,7 +155,7 @@
         "ViewCollisionRadius": 8,
         "WallRunAngle": 35,
         "WallRunGravityScale": 0.25,
-        "WallRunJumpAngle": 75,
+        "WallRunJumpAngle": 65,
         "WallRunJumpSpeed": {
           "Min": 700,
           "Max": 400
@@ -677,7 +677,7 @@
             "Children": []
           },
           {
-            "__guid": "42fec674-2cfc-4cef-bd5f-1ba1b3eabe8c",
+            "__guid": "c9f19be8-df47-4b65-8093-ba119f6565ef",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -694,7 +694,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "ddcd4877-7ad1-4244-9741-2f015f3b6caf",
+                "__guid": "dbe146f2-3e74-4347-bb98-98fc100abf22",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
