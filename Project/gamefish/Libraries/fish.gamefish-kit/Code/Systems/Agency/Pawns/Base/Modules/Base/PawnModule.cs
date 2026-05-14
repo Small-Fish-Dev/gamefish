@@ -14,4 +14,17 @@ public abstract partial class PawnModule : Module
 		=> comp is Pawn;
 
 	public Pawn Pawn => Parent as Pawn;
+
+	/// <summary>
+	/// The parent pawn's transform.
+	/// </summary>
+	public Transform Origin
+	{
+		get => Pawn?.WorldTransform ?? WorldTransform;
+		set
+		{
+			if ( Pawn.IsValid() )
+				Pawn.WorldTransform = value;
+		}
+	}
 }

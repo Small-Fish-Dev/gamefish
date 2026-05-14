@@ -44,19 +44,6 @@ public abstract partial class PawnController : PawnModule
 	public override Vector3 Center => Origin.PointToWorld( LocalBottom.LerpTo( LocalTop, 0.5f ) );
 
 	/// <summary>
-	/// The parent pawn's transform.
-	/// </summary>
-	public Transform Origin
-	{
-		get => Pawn?.WorldTransform ?? WorldTransform;
-		set
-		{
-			if ( Pawn.IsValid() )
-				Pawn.WorldTransform = value;
-		}
-	}
-
-	/// <summary>
 	/// The rotation that we use for movement direction and such.
 	/// </summary>
 	public virtual Rotation Perspective => WorldRotation * Rotation.FromYaw( LocalEyeRotation.Yaw() );
