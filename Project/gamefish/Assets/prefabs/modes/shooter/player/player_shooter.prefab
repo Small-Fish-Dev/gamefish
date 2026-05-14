@@ -149,7 +149,7 @@
         "ViewCollisionEnabled": true,
         "ViewCollisionRadius": 8,
         "WallRunAngle": 35,
-        "WallRunGravityScale": 0.75,
+        "WallRunGravityScale": 0.25,
         "WallRunJumpAngle": 75,
         "WallRunJumpSpeed": {
           "Min": 600,
