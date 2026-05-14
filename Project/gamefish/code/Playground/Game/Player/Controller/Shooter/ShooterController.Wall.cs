@@ -152,7 +152,8 @@ partial class ShooterController
 		upVel += upDir * WallRunJumpSpeed.Max;
 
 		OnPreJump();
-		ResetAirJumps();
+
+		RechargeAirJumps( count: 1 );
 
 		Velocity = hVel + upVel;
 	}

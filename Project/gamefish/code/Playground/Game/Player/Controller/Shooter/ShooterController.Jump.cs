@@ -11,22 +11,38 @@ partial class ShooterController
 	public bool AirJumpEnabled { get; set; } = true;
 
 	[Property]
+	[Title( "Limit" )]
+	[Order( BADASS_ORDER )]
+	[Range( 1, 5, clamped: false )]
+	[Feature( BADASS ), Group( AIRJUMP )]
+	[ToggleGroup( nameof( AirJumpEnabled ) )]
+	public virtual int AirJumpsLimit { get; set; } = 1;
+
+	[Property]
 	[Title( "Jump (up)" )]
 	[Order( BADASS_ORDER )]
 	[Feature( BADASS ), Group( AIRJUMP )]
 	[Range( 100f, 500f, clamped: false )]
 	[ToggleGroup( nameof( AirJumpEnabled ) )]
-	public float AirJumpUp { get; set; } = 400f;
+	public virtual float AirJumpUp { get; set; } = 400f;
+
+	[Property]
+	[Order( BADASS_ORDER )]
+	[Title( "Recharge Delay" )]
+	[Range( 1f, 5f, clamped: false )]
+	[Feature( BADASS ), Group( AIRJUMP )]
+	[ToggleGroup( nameof( AirJumpEnabled ) )]
+	public virtual float AirJumpRechargeDelay { get; set; } = 3.0f;
 
 	[Sync]
 	public int AirJumpsRemaining { get; set; } = 0;
 
+	[Sync]
+	public TimeUntil NextAirJumpRecharge { get; set; }
+
 	public virtual bool IsAirJumpingAllowed()
 	{
 		if ( !AirJumpEnabled )
-			return false;
-
-		if ( Velocity.Dot( Up ) >= AirJumpUp )
 			return false;
 
 		return AirJumpsRemaining > 0;
@@ -35,8 +51,6 @@ partial class ShooterController
 	protected virtual void DoAirJump()
 	{
 		AirJumpsRemaining--;
-
-		OnPreJump();
 
 		var upDir = Up;
 
@@ -48,7 +62,27 @@ partial class ShooterController
 
 		upVel = upDir * upSpeed;
 
+		OnPreJump();
+
 		Velocity = hVel + upVel;
+	}
+
+	public virtual void RechargeAirJumps( in int? count = null )
+	{
+		NextAirJumpRecharge = AirJumpRechargeDelay;
+
+		if ( count is null )
+		{
+			AirJumpsRemaining = AirJumpsLimit;
+			return;
+		}
+
+		int add = count ?? 0;
+
+		var jumps = AirJumpsRemaining.Max( 0 );
+		jumps = (jumps + add).Clamp( 1, AirJumpsLimit );
+
+		AirJumpsRemaining = jumps;
 	}
 
 	public override void OnSetIsGrounded( in bool isGrounded )
@@ -56,17 +90,23 @@ partial class ShooterController
 		base.OnSetIsGrounded( isGrounded );
 
 		if ( isGrounded )
-			ResetAirJumps();
+			RechargeAirJumps();
 	}
 
 	protected virtual void UpdateAirJumping( in float deltaTime )
 	{
+		if ( !AirJumpEnabled )
+			return;
+
+		if ( AirJumpsRemaining >= AirJumpsLimit )
+			return;
+
+		if ( !NextAirJumpRecharge )
+			return;
+
+		RechargeAirJumps( count: 1 );
 	}
 
-	public virtual void ResetAirJumps()
-	{
-		AirJumpsRemaining = 1;
-	}
 
 	protected override bool IsWishingJump()
 	{
@@ -101,6 +141,8 @@ partial class ShooterController
 		base.OnPreJump();
 
 		StopWallRunning();
+
+		NextAirJumpRecharge = AirJumpRechargeDelay;
 	}
 
 	public override void Jump( in Vector3? jumpVel = null )
