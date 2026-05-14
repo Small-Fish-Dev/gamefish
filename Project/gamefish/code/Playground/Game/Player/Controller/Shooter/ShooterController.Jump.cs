@@ -19,6 +19,14 @@ partial class ShooterController
 	public virtual int AirJumpsLimit { get; set; } = 1;
 
 	[Property]
+	[Order( BADASS_ORDER )]
+	[Title( "Recharge Delay" )]
+	[Range( 1f, 5f, clamped: false )]
+	[Feature( BADASS ), Group( AIRJUMP )]
+	[ToggleGroup( nameof( AirJumpEnabled ) )]
+	public virtual float AirJumpRechargeDelay { get; set; } = 3.0f;
+
+	[Property]
 	[Title( "Jump (up)" )]
 	[Order( BADASS_ORDER )]
 	[Feature( BADASS ), Group( AIRJUMP )]
@@ -27,12 +35,12 @@ partial class ShooterController
 	public virtual float AirJumpUp { get; set; } = 400f;
 
 	[Property]
+	[Title( "Cooldown" )]
 	[Order( BADASS_ORDER )]
-	[Title( "Recharge Delay" )]
-	[Range( 1f, 5f, clamped: false )]
+	[Range( 0.1f, 1f, clamped: false )]
 	[Feature( BADASS ), Group( AIRJUMP )]
 	[ToggleGroup( nameof( AirJumpEnabled ) )]
-	public virtual float AirJumpRechargeDelay { get; set; } = 3.0f;
+	public virtual float AirJumpCooldown { get; set; } = 0.25f;
 
 	[Sync]
 	public int AirJumpsRemaining { get; set; } = 0;
@@ -40,9 +48,15 @@ partial class ShooterController
 	[Sync]
 	public TimeUntil NextAirJumpRecharge { get; set; }
 
+	[Sync]
+	public TimeUntil NextAirJump { get; set; }
+
 	public virtual bool IsAirJumpingAllowed()
 	{
 		if ( !AirJumpEnabled )
+			return false;
+
+		if ( !NextAirJump )
 			return false;
 
 		return AirJumpsRemaining > 0;
@@ -142,6 +156,7 @@ partial class ShooterController
 
 		StopWallRunning();
 
+		NextAirJump = AirJumpCooldown;
 		NextAirJumpRecharge = AirJumpRechargeDelay;
 	}
 

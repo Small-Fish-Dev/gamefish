@@ -89,6 +89,7 @@
         },
         "AimRollResetSpeed": 4,
         "AirAcceleration": 5,
+        "AirJumpCooldown": 0.25,
         "AirJumpEnabled": true,
         "AirJumpRechargeDelay": 2.5,
         "AirJumpsLimit": 1,
