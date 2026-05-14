@@ -59,44 +59,6 @@ partial class ShooterController
 		return base.GetMovementSpeed();
 	}
 
-	protected override bool IsWishingJump()
-	{
-		if ( IsWallRunning( out _ ) )
-			return JumpInput.IsPressed;
-
-		return base.IsWishingJump();
-	}
-
-	protected override bool ShouldJump()
-	{
-		if ( !IsJumpingAllowed() )
-			return false;
-
-		if ( !IsGrounded && !IsWallRunning( out _ ) )
-			return false;
-
-		return IsWishingJump();
-	}
-
-	protected override void OnPreJump()
-	{
-		base.OnPreJump();
-
-		StopWallRunning();
-	}
-
-	public override void Jump( in Vector3? jumpVel = null )
-	{
-		// Jumping off the wall you're running on.
-		if ( IsWallRunning( out var normal ) )
-		{
-			DoWallRunJump( in normal );
-			return;
-		}
-
-		base.Jump( jumpVel );
-	}
-
 	protected override void PreMove( in float deltaTime )
 	{
 		base.PreMove( deltaTime );

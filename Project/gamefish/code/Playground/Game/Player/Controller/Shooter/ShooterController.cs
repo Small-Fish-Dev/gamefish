@@ -16,6 +16,7 @@ public partial class ShooterController : FirstPersonController
 		base.Simulate( deltaTime, isFixedUpdate );
 
 		UpdateGravity( in deltaTime );
+		UpdateAirJumping( in deltaTime );
 	}
 
 	protected override void UpdateInput( in float deltaTime )
