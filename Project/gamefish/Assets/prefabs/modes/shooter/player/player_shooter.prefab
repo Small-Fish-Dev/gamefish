@@ -101,6 +101,7 @@
         "EyeHeightStand": 56,
         "EyeMoveSmoothing": 0.15,
         "EyeMoveSpeed": 1,
+        "FocusEnabled": true,
         "FocusInput": "Attack2",
         "Friction": {
           "Value": 10,
@@ -111,6 +112,7 @@
         "IsClass": false,
         "IsNetworkingForced": true,
         "IsSprintDefault": false,
+        "JumpCooldown": 0.1,
         "JumpGravityScale": 0.7,
         "JumpImpulse": 400,
         "JumpingEnabled": true,
@@ -145,7 +147,19 @@
         "SprintInput": "Run",
         "SprintMultiplier": 1.5,
         "ViewCollisionEnabled": true,
-        "ViewCollisionRadius": 8
+        "ViewCollisionRadius": 8,
+        "WallRunAngle": 35,
+        "WallRunGravityScale": 0.75,
+        "WallRunJumpAngle": 75,
+        "WallRunJumpSpeed": {
+          "Min": 600,
+          "Max": 400
+        },
+        "WallRunLean": {
+          "Value": 0.2
+        },
+        "WallRunMoveSpeed": 100,
+        "WallRunStickDistance": 32
       },
       {
         "__type": "GameFish.CylinderPhysics",
@@ -658,7 +672,7 @@
             "Children": []
           },
           {
-            "__guid": "d99bea76-43f5-420e-b08d-b95be66360e8",
+            "__guid": "40e6ae78-5342-4bd9-b623-39d859b6ba37",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -675,7 +689,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "5de0ee68-6bb3-4bbd-bb40-519661caa15e",
+                "__guid": "318fb414-0e86-41b2-a67a-543644181ba8",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
