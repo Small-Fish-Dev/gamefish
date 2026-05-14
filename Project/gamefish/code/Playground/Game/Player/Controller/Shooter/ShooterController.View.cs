@@ -35,6 +35,14 @@ partial class ShooterController
 
 	protected override void UpdateEyeRotation( in float deltaTime )
 	{
+		// Wall run leaning.
+		if ( IsWallRunning( out var normal ) )
+		{
+			UpdateWallRunView( in normal, in deltaTime );
+			return;
+		}
+
+		// Don't interrupt that John Woo action flow.
 		if ( IsFreeLooking )
 			return;
 
