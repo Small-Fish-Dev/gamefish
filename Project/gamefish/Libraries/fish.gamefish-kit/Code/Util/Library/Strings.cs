@@ -251,6 +251,10 @@ public static partial class Strings
 	public const string CLIMBING = "🧗 Climbing";
 	public const string WALLRUNNING = "🧗 Wall Running";
 
+	public const string AIR = "☁ Air";
+	public const string AIRJUMP = "☁ Air Jump";
+	public const string AIRJUMPING = "☁ Air Jumping";
+
 	public const string FOCUS = "💊 Focus";
 	public const string FOCUSING = "💊 Focusing";
 
