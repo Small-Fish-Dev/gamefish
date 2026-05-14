@@ -229,7 +229,14 @@ partial class ShooterController
 	/// </summary>
 	protected virtual void UpdateWallRunVelocity( in Vector3 normal )
 	{
-		Velocity = Velocity.Horizontal( in normal );
+		var upDir = GetWallRunUp();
+
+		Velocity.Separate( in upDir, out var upVel, out var hVel );
+
+		hVel = hVel.PlaneProject( in normal ).PlaneProject( upDir, hVel.Length );
+		upVel = upVel.PlaneProject( in normal );
+
+		Velocity = (hVel + upVel).Horizontal( in normal );
 	}
 
 	/// <summary>
