@@ -15994,30 +15994,6 @@
             },
             "Property": "Flags",
             "Value": 0
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b12db19c-fdcc-4e7d-8712-2ae2c871fbb5"
-            },
-            "Property": "CustomColor",
-            "Value": "0.22579,0.9907,0.59549,1"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b12db19c-fdcc-4e7d-8712-2ae2c871fbb5"
-            },
-            "Property": "DebugGizmoSolidAlpha",
-            "Value": 0.05
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "b12db19c-fdcc-4e7d-8712-2ae2c871fbb5"
-            },
-            "Property": "UseCustomColor",
-            "Value": true
           }
         ],
         "MovedObjects": []
@@ -16989,11 +16965,6 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "e15eb5d3-1dc8-461c-a0d1-e7ea2c34c714"
@@ -17001,6 +16972,11 @@
       },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
+        }
       }
     }
   },
