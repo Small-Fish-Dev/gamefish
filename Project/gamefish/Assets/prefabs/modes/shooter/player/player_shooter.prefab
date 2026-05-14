@@ -152,7 +152,7 @@
         "WallRunGravityScale": 0.25,
         "WallRunJumpAngle": 75,
         "WallRunJumpSpeed": {
-          "Min": 600,
+          "Min": 700,
           "Max": 400
         },
         "WallRunLean": {
@@ -895,7 +895,7 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "PullSpeed": 1000,
-            "PullSpeedLimit": 500,
+            "PullSpeedLimit": 700,
             "RetractButton": "Jump",
             "RetractSpeed": 1000,
             "SlackLimit": 16,
