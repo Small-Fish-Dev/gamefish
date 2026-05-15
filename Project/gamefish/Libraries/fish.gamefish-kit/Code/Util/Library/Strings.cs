@@ -230,6 +230,13 @@ public static partial class Strings
 	public const string AIMING = "👓 Aiming";
 	public const string COMBAT = "⚔ Combat";
 
+	public const string NINJA = "🐱‍👤 Ninja";
+	public const string NINJAS = "🐱‍👤 Ninjas";
+	public const string KNIGHT = "🛡 Knight";
+	public const string KNIGHTS = "🛡 Knights";
+	public const string PIRATE = "🦜 Pirate";
+	public const string PIRATES = "🦜 Pirates";
+
 	public const string SEAT = "💺 Seat";
 	public const string SEATS = "💺 Seats";
 	public const string VEHICLE = "🚙 Vehicle";
