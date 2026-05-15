@@ -141,10 +141,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 		if ( !ShootSound.IsValid() )
 			return;
 
-		var obj = Parent?.GameObject ?? GameObject;
-		var s = SoundSettings.FromWorld( obj, tOrigin.Position );
-
-		BroadcastSound( ShootSound, s );
+		BroadcastSound( ShootSound );
 	}
 
 	/// <summary>

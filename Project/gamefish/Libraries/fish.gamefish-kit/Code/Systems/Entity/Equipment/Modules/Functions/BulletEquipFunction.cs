@@ -172,7 +172,7 @@ public partial class BulletEquipFunction : EquipFunction
 		if ( !FireSound.IsValid() )
 			return;
 
-		BroadcastSound( FireSound, tOrigin.Position );
+		BroadcastSound( FireSound );
 	}
 
 	public virtual Transform GetTracerOrigin()
