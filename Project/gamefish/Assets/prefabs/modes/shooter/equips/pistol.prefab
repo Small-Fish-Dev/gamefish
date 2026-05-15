@@ -116,7 +116,7 @@
         },
         "DebugRenderTraces": false,
         "EmptySound": null,
-        "FireSound": "sounds/m4a1 shot.sound",
+        "FireSound": "sound/vidya/weapons/pistol/pistol_shoot.sound",
         "FunctionDescription": "Fires a bullet.",
         "FunctionName": "Shoot",
         "IdealRange": {
@@ -188,7 +188,7 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "__references": [
-    "drakefruit.m4a1_shot#91284"
+    "vidya.pistol-shoot#241540"
   ],
   "__version": 2
 }
