@@ -15863,7 +15863,6 @@
         "38cfffd2-985c-4c18-a0be-bf1e6c10006b": "86557ece-60c2-4a4b-a7fa-582cf0c69edf",
         "57200d65-e7ae-4303-8afb-fe63c15701e7": "23f2fc44-3821-4921-b728-3f6dc110df64",
         "b66de47f-7752-4298-9b58-2135840e19c5": "bf10dba6-cacc-4e12-9f6a-df5467791714",
-        "d7c07978-c42d-4fb8-9158-0a6258ef2caf": "6b00bbe9-49e2-4fb7-b60b-4080c81bd05a",
         "55f9b7a8-a37b-479e-8021-36954f062edf": "4daa105c-0a1d-4fb5-8f03-50765277ddbb",
         "05f7c621-e286-4076-aa31-7907043cffb3": "018eee5c-aeb0-4316-930c-6db3c3030566",
         "88e97451-85d7-4fc1-85eb-daf204c717a4": "36b88daa-bb2f-459c-82e4-bb90d370f906",
@@ -15881,7 +15880,6 @@
         "147e093e-7650-4a9c-824e-755eb02371af": "81416fb8-5452-4aa1-af43-e837717b95db",
         "7dc3a854-7f50-47ea-8528-96a1153a9af5": "9264d5ef-92cd-4d69-9fd1-37bf03789409",
         "834e4d5d-e1ee-43e4-a5f6-277957ce3768": "dd7858c4-d8a7-404c-a3e0-049395e0c23b",
-        "b2465232-0a13-4172-8a4b-2abb745083e4": "9aefb5d4-0af7-4c63-af2c-315bfb4f6464",
         "f18ef2b4-6d25-4b1d-a32c-cd3ca7e490d8": "605adbc2-7496-4330-9d62-14346151d0c6",
         "04d49a5c-54b7-444d-a4e4-3f3339daa2fe": "f27923ec-4ad5-41f2-b69d-283e354d8f44",
         "791836fd-12bc-4829-aec3-acf77d3e5db7": "3a27af39-1aac-4d4d-90d9-1f07b8d57f86",
@@ -15895,7 +15893,13 @@
         "bcf074d8-c05b-4696-b2d2-5b2070a8f4b9": "e31da50d-bda8-4575-943c-8d50bbd479a7",
         "339a854e-cdc2-4e20-bd88-218dc2d09584": "5fea771c-6ae8-429d-9551-b79b78f8d7c4",
         "566a2c71-74e6-48e2-ac1d-09dc39079319": "32c87454-0caf-401b-b1b5-3762c08bacdb",
-        "3d0b5d80-3272-4a80-a7d4-dad9d9a8151b": "fe3166ae-0baf-4949-9e80-86ae4327953b"
+        "3d0b5d80-3272-4a80-a7d4-dad9d9a8151b": "fe3166ae-0baf-4949-9e80-86ae4327953b",
+        "ff25a50e-a091-472a-a8f4-72b6b78b66f2": "1133448b-0cba-4f40-ab61-7611f6f99b39",
+        "dc190695-411f-46fa-aaeb-7526961ca1ad": "064c6cf3-9887-404f-a7b1-32f75cb368a9",
+        "d46f3ab6-0b18-44dd-b90b-8955a1b73801": "503e54cf-69e0-4fbb-93d8-ee7cd3d256d4",
+        "ed0a257d-ed8f-433a-b3fb-9f29da8c276c": "6f8f4b31-80f5-4b68-8680-25265a11e296",
+        "82fa1518-f0ac-4815-baa7-5a771bf40bae": "1ebbc920-e5f4-4c29-ac4b-44adc235759e",
+        "9c002897-5db3-42aa-9b85-b7666316b5a6": "9f9b362c-5777-4db5-9b8c-8a274633a1e2"
       }
     },
     {
@@ -16053,7 +16057,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16197,7 +16203,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16341,7 +16349,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16485,7 +16495,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16629,7 +16641,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16773,7 +16787,9 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
+              "SleepThreshold": 2,
               "StartAsleep": false
             }
           ],
@@ -16809,13 +16825,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },
