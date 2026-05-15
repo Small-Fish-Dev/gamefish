@@ -23,20 +23,8 @@
         "ClassId": "rocket_launcher",
         "ClassName": null,
         "DebugDamage": 25,
-        "DefaultOffset": {
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1"
-        },
         "DefaultSlot": "None",
-        "DeployedOffset": {
-          "Position": "0,0,-70",
-          "Rotation": "0,0,0,1"
-        },
         "Health": 100,
-        "HolsteringOffset": {
-          "Position": "0,0,-70",
-          "Rotation": "0,0,-0.382683486,0.923879504"
-        },
         "Icon": null,
         "IsAlive": true,
         "IsClass": false,
@@ -62,7 +50,28 @@
           "component_type": "ProjectileEquipFunction"
         },
         "Slot": 0,
+        "ViewAimingOffset": {
+          "Position": "10,0,-2",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewDefaultOffset": {
+          "Position": "15,-6,-2.5",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewDeployOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,0,1"
+        },
+        "ViewHolsterOffset": {
+          "Position": "0,0,-70",
+          "Rotation": "0,0,-0.382683456,0.923879504"
+        },
         "ViewModel": null,
+        "ViewOffset": {
+          "Position": "0,0,0",
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
         "WorldRenderer": null
       }
     ],
@@ -120,8 +129,8 @@
             "OnComponentUpdate": null,
             "ReloadCooldown": 0.2,
             "ReloadDuration": 1,
-            "ReloadFinishSound": "sounds/kenney/ui/ui.upvote.sound",
-            "ReloadStartSound": "sounds/kenney/ui/ui.downvote.sound",
+            "ReloadFinishSound": "sound/vidya/weapons/reload_mag_in.sound",
+            "ReloadStartSound": "sound/vidya/weapons/reload_mag_out.sound",
             "StartingAmmo": 6,
             "StartingReserve": 0
           }
@@ -198,7 +207,7 @@
             "ProjectilePrefab": "prefabs/equips/fps/projectiles/magnum_bullet.prefab",
             "ProjectileScale": "1,1,1",
             "ProjectileVelocity": "5000,0,0",
-            "ShootSound": null,
+            "ShootSound": "sound/vidya/weapons/revolver/revolver_shoot.sound",
             "UsableRange": {
               "Min": 0,
               "Max": 2048
@@ -235,6 +244,9 @@
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "__references": [],
+  "__references": [
+    "vidya.reload-mag-out#241530",
+    "vidya.revolver-shoot#241539"
+  ],
   "__version": 2
 }
