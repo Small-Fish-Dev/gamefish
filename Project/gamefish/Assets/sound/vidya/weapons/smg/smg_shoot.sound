@@ -1,0 +1,69 @@
+{
+  "UI": false,
+  "Volume": "0.400000006",
+  "Pitch": "0.699999988 0.850000024",
+  "Decibels": 70,
+  "SelectionMode": "RandomExclusive",
+  "Sounds": [
+    "sound/vidya/weapons/smg/smg_shoot_1.vsnd"
+  ],
+  "Occlusion": true,
+  "AirAbsorption": false,
+  "Transmission": true,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "Distance": 7000,
+  "Falloff": {
+    "rangex": "-1.49011612E-08,0.999999821",
+    "frames": [
+      {
+        "x": 0,
+        "y": 1,
+        "in": 0.022278102,
+        "out": -0.022278102,
+        "mode": "Mirrored"
+      },
+      {
+        "x": 0.0060000126,
+        "y": 0.994,
+        "in": 2.6191661,
+        "out": -2.6191661,
+        "mode": "Mirrored"
+      },
+      {
+        "x": 0.03697229,
+        "y": 0.559,
+        "in": 5.7687807,
+        "out": -5.7687807,
+        "mode": "Mirrored"
+      },
+      {
+        "x": 0.12808871,
+        "y": 0.27722806,
+        "in": 1.4467095,
+        "out": -1.4467095,
+        "mode": "Mirrored"
+      },
+      {
+        "x": 0.3279096,
+        "y": 0.09964049,
+        "in": 0.36854893,
+        "out": -0.36854893,
+        "mode": "Mirrored"
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "in": 0.028571403,
+        "out": -0.028571403,
+        "mode": "Mirrored"
+      }
+    ]
+  },
+  "DefaultMixer": {
+    "Name": "game",
+    "Id": "c2f14e79-df78-46a8-a6d5-08e3560f8bba"
+  },
+  "__references": [],
+  "__version": 1
+}

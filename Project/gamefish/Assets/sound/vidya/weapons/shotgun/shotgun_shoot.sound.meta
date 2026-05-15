@@ -1,0 +1,21 @@
+{
+  "publish": {
+    "Enabled": true,
+    "ProjectConfig": {
+      "Title": "Shotgun - Shoot",
+      "Type": "sound",
+      "Org": "vidya",
+      "Ident": "shotgun-shoot",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "sound/vidya/weapons/shotgun/shotgun_shoot.sound"
+      }
+    }
+  }
+}
