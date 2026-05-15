@@ -97,6 +97,7 @@
         "AllowAiming": true,
         "BootsAutoDetach": 0.05,
         "BootsInput": "Run",
+        "CeilingAngle": 35,
         "ClassId": "player_shooter",
         "ClassName": null,
         "DuckGravityScale": 2,
@@ -153,7 +154,6 @@
         "SprintMultiplier": 1.5,
         "ViewCollisionEnabled": true,
         "ViewCollisionRadius": 8,
-        "WallRunAngle": 35,
         "WallRunGravityScale": 0.25,
         "WallRunJumpAngle": 65,
         "WallRunJumpSpeed": {
@@ -179,7 +179,7 @@
           "go": "9402846a-55d8-449f-a8ac-4ad77cec0251",
           "component_type": "HullCollider"
         },
-        "GroundAngle": 45,
+        "GroundAngle": 46,
         "GroundDistance": 16,
         "GroundingEnabled": true,
         "Height": 70,
@@ -241,7 +241,9 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideMassCenter": false,
+        "PreciseContacts": false,
         "RigidbodyFlags": "DisableCollisionSounds",
+        "SleepThreshold": 2,
         "StartAsleep": false
       }
     ],
@@ -677,7 +679,7 @@
             "Children": []
           },
           {
-            "__guid": "c9f19be8-df47-4b65-8093-ba119f6565ef",
+            "__guid": "e28829eb-a57f-47a6-969b-2dd7281e58cd",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -694,7 +696,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "dbe146f2-3e74-4347-bb98-98fc100abf22",
+                "__guid": "63112149-ceaa-4a87-9700-0fd5515ac3d5",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

@@ -56,7 +56,7 @@ partial class ShooterController
 		if ( !AirJumpEnabled )
 			return false;
 
-		if ( !NextAirJump )
+		if ( IsGrounded || !NextAirJump )
 			return false;
 
 		// Can't air jump while grappling.

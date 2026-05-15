@@ -5,6 +5,16 @@ namespace Fishbox;
 partial class ShooterController
 {
 	/// <summary>
+	/// The maximum angle from the direction of gravity that it's a ceiling.
+	/// </summary>
+	[Property]
+	[Order( BADASS_ORDER )]
+	[Title( "Ceiling Angle" )]
+	[Range( 20f, 40f, clamped: false )]
+	[Feature( BADASS ), Group( WALLRUNNING )]
+	public virtual float CeilingAngle { get; set; } = 35f;
+
+	/// <summary>
 	/// Walls must be this angle away from a perfectly upright wall.
 	/// </summary>
 	[Property]
@@ -19,16 +29,6 @@ partial class ShooterController
 	[Range( 0f, 250f, clamped: false )]
 	[Feature( BADASS ), Group( WALLRUNNING )]
 	public virtual float WallRunMoveSpeed { get; set; } = 100f;
-
-	/// <summary>
-	/// Walls must be this angle away from a perfectly upright wall.
-	/// </summary>
-	[Property]
-	[Order( BADASS_ORDER )]
-	[Title( "Wall Angle" )]
-	[Range( 20f, 40f, clamped: false )]
-	[Feature( BADASS ), Group( WALLRUNNING )]
-	public virtual float WallRunAngle { get; set; } = 35f;
 
 	/// <summary>
 	/// The limit for the angle of jumps away from the wall's face.
@@ -190,9 +190,11 @@ partial class ShooterController
 			return false;
 
 		var upDir = GetWallRunUp();
-		var wallAngle = upDir.Angle( in hitNormal ) - 90f;
+		var downDir = -upDir;
 
-		return wallAngle <= WallRunAngle;
+		var angle = downDir.Angle( in hitNormal );
+
+		return angle > (CeilingAngle / 2f);
 	}
 
 	/// <summary>
