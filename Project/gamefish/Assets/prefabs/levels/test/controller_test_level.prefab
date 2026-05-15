@@ -1667,11 +1667,11 @@
             "Children": []
           },
           {
-            "__guid": "d7c07978-c42d-4fb8-9158-0a6258ef2caf",
+            "__guid": "55f9b7a8-a37b-479e-8021-36954f062edf",
             "__version": 2,
             "Flags": 0,
             "Name": "Point Light",
-            "Position": "-4480,-3392,-512",
+            "Position": "-4032,-4032,63.9999657",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "light_point,light",
@@ -1684,7 +1684,7 @@
             "Components": [
               {
                 "__type": "Sandbox.PointLight",
-                "__guid": "b2465232-0a13-4172-8a4b-2abb745083e4",
+                "__guid": "f18ef2b4-6d25-4b1d-a32c-cd3ca7e490d8",
                 "__enabled": true,
                 "Flags": 0,
                 "Attenuation": 0.2,
@@ -1706,11 +1706,11 @@
             "Children": []
           },
           {
-            "__guid": "55f9b7a8-a37b-479e-8021-36954f062edf",
+            "__guid": "ff25a50e-a091-472a-a8f4-72b6b78b66f2",
             "__version": 2,
             "Flags": 0,
             "Name": "Point Light",
-            "Position": "-3392,-4480,-512",
+            "Position": "5056,-4032,64.000061",
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "light_point,light",
@@ -1723,7 +1723,85 @@
             "Components": [
               {
                 "__type": "Sandbox.PointLight",
-                "__guid": "f18ef2b4-6d25-4b1d-a32c-cd3ca7e490d8",
+                "__guid": "ed0a257d-ed8f-433a-b3fb-9f29da8c276c",
+                "__enabled": true,
+                "Flags": 0,
+                "Attenuation": 0.2,
+                "FogMode": "Enabled",
+                "FogStrength": 1,
+                "LightColor": "0.91373,0.98039,1,1",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Radius": 2048,
+                "ShadowBias": 0.0005,
+                "ShadowHardness": 1,
+                "Shadows": false
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "dc190695-411f-46fa-aaeb-7526961ca1ad",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Point Light",
+            "Position": "5056,4160,64.000061",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "light_point,light",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.PointLight",
+                "__guid": "82fa1518-f0ac-4815-baa7-5a771bf40bae",
+                "__enabled": true,
+                "Flags": 0,
+                "Attenuation": 0.2,
+                "FogMode": "Enabled",
+                "FogStrength": 1,
+                "LightColor": "0.91373,0.98039,1,1",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Radius": 2048,
+                "ShadowBias": 0.0005,
+                "ShadowHardness": 1,
+                "Shadows": false
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "d46f3ab6-0b18-44dd-b90b-8955a1b73801",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Point Light",
+            "Position": "-4032,4160,64.000061",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "light_point,light",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.PointLight",
+                "__guid": "9c002897-5db3-42aa-9b85-b7666316b5a6",
                 "__enabled": true,
                 "Flags": 0,
                 "Attenuation": 0.2,
