@@ -128,7 +128,7 @@ partial class ShooterController
 
 	protected override bool IsWishingJump()
 	{
-		if ( IsWallRunning( out _ ) )
+		if ( IsWallRunning() )
 			return JumpInput.IsPressed;
 
 		if ( !IsGrounded )
@@ -145,7 +145,7 @@ partial class ShooterController
 		if ( !IsJumpingAllowed() )
 			return false;
 
-		if ( IsGrounded || IsWallRunning( out _ ) )
+		if ( IsGrounded || IsWallRunning() )
 			return true;
 
 		if ( IsAirJumpingAllowed() )
@@ -158,7 +158,7 @@ partial class ShooterController
 	{
 		base.OnPreJump();
 
-		StopWallRunning();
+		StopParkour();
 
 		NextAirJump = AirJumpCooldown;
 		NextAirJumpRecharge = AirJumpRechargeDelay;
@@ -167,9 +167,9 @@ partial class ShooterController
 	public override void Jump( in Vector3? jumpVel = null )
 	{
 		// Jumping off the wall you're running on.
-		if ( IsWallRunning( out var normal ) )
+		if ( IsWallRunning() )
 		{
-			DoWallRunJump( in normal );
+			DoWallRunJump( SurfaceNormal );
 			return;
 		}
 

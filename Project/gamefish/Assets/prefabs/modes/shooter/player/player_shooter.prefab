@@ -95,9 +95,7 @@
         "AirJumpsLimit": 1,
         "AirJumpUp": 400,
         "AllowAiming": true,
-        "BootsAutoDetach": 0.05,
-        "BootsInput": "Run",
-        "CeilingAngle": 35,
+        "CeilingAngle": 30,
         "ClassId": "player_shooter",
         "ClassName": null,
         "DuckGravityScale": 2,
@@ -137,6 +135,7 @@
         "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
         "NetworkTransferMode": "Fixed",
+        "NinjaRunInput": "Run",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -679,7 +678,7 @@
             "Children": []
           },
           {
-            "__guid": "e28829eb-a57f-47a6-969b-2dd7281e58cd",
+            "__guid": "095f7d64-801e-4313-ad47-ee0830ea2ef0",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -696,7 +695,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "63112149-ceaa-4a87-9700-0fd5515ac3d5",
+                "__guid": "83d01995-f7de-49cf-972c-6aa4d616af4f",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

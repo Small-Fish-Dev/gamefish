@@ -33,7 +33,7 @@ partial class ShooterController
 	[Range( 0.2f, 1.0f, clamped: false )]
 	public virtual float WallRunGravityScale { get; set; } = 0.8f;
 
-	public override Vector3 Gravity => Down * base.Gravity.Length * GravityMultiplier();
+	public override Vector3 Gravity => SceneGravity * GravityMultiplier();
 
 	protected virtual float GravityMultiplier()
 	{
@@ -45,7 +45,7 @@ partial class ShooterController
 		if ( Input.Down( DuckInput ) )
 			mult *= DuckGravityScale;
 
-		if ( IsWallRunning( out _ ) )
+		if ( IsWallRunning() )
 			mult *= WallRunGravityScale;
 
 		return mult;
@@ -53,7 +53,7 @@ partial class ShooterController
 
 	public override float GetMovementSpeed()
 	{
-		if ( IsWallRunning( out _ ) )
+		if ( IsWallRunning() )
 			return WallRunMoveSpeed;
 
 		return base.GetMovementSpeed();
@@ -63,6 +63,6 @@ partial class ShooterController
 	{
 		base.PreMove( deltaTime );
 
-		UpdateWallRunning( in deltaTime );
+		UpdateParkour( in deltaTime );
 	}
 }

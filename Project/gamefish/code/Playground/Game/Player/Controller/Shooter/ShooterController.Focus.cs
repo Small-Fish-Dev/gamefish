@@ -37,4 +37,12 @@ partial class ShooterController
 	protected virtual void OnSetIsFocusing( in bool isFocusing )
 	{
 	}
+
+	public virtual bool ShouldFocus()
+	{
+		if ( !IsAlive )
+			return false;
+
+		return Input.Down( FocusInput );
+	}
 }

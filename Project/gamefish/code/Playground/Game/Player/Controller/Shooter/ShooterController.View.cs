@@ -36,9 +36,9 @@ partial class ShooterController
 	protected override void UpdateEyeRotation( in float deltaTime )
 	{
 		// Wall run leaning.
-		if ( IsWallRunning( out var normal ) )
+		if ( IsWallRunning() )
 		{
-			UpdateWallRunView( in normal, in deltaTime );
+			UpdateWallRunView( SurfaceNormal, in deltaTime );
 			return;
 		}
 
@@ -49,23 +49,23 @@ partial class ShooterController
 		ResetEyeRoll( AimRollResetSpeed, in deltaTime );
 	}
 
-	protected bool TrySetPerspective( in SceneTraceResult tr )
+	protected bool TryReorient( in SceneTraceResult tr )
 	{
 		if ( !tr.Hit || tr.StartedSolid )
 			return false;
 
-		return TrySetPerspective( tr.Normal );
+		return TryReorient( tr.Normal );
 	}
 
-	protected bool TrySetPerspective( in Vector3 up )
+	protected bool TryReorient( in Vector3 up )
 	{
 		var rUp = Rotation.LookAt( up, EyeForward );
 		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
 
-		return TrySetPerspective( in rForward );
+		return TryReorient( in rForward );
 	}
 
-	protected bool TrySetPerspective( in Rotation rForward )
+	protected bool TryReorient( in Rotation rForward )
 	{
 		if ( !ITransform.IsValid( in rForward ) )
 			return false;
@@ -91,5 +91,37 @@ partial class ShooterController
 
 		Pawn.WorldPosition += oldCenter - Center;
 		Pawn.EyePosition = eyePos;
+	}
+
+	protected void ResetOrientation()
+	{
+		var fwd = EyeForward;
+		var up = -Gravity.Normal;
+
+		if ( up == default )
+			up = Vector3.Up;
+
+		var rUp = Rotation.LookAt( up, fwd );
+		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
+
+		Reorient( in rForward );
+	}
+
+	protected virtual void UpdateWallRunView( in Vector3 normal, in float deltaTime )
+	{
+		Vector3 upDir;
+
+		if ( IsCeiling( in normal ) )
+		{
+			upDir = normal;
+		}
+		else
+		{
+			upDir = Up.SlerpTo( in normal, WallRunLean );
+		}
+
+		var speed = AimRollResetSpeed * 2f;
+
+		ResetEyeRotation( EyeForward, in upDir, in speed, in deltaTime );
 	}
 }

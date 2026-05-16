@@ -11,13 +11,14 @@ public partial class ShooterController : FirstPersonController
 {
 	protected const int BADASS_ORDER = PAWN_ORDER - 1000;
 
+	protected const int NINJA_ORDER = BADASS_ORDER + 100;
+
 	public PawnGrapplingHook GrapplingHook => Pawn?.GetModule<PawnGrapplingHook>();
 
 	public override void Simulate( in float deltaTime, in bool isFixedUpdate )
 	{
 		base.Simulate( deltaTime, isFixedUpdate );
 
-		UpdateGravity( in deltaTime );
 		UpdateAirJumping( in deltaTime );
 	}
 
@@ -25,7 +26,8 @@ public partial class ShooterController : FirstPersonController
 	{
 		base.UpdateInput( deltaTime );
 
-		IsFocusing = IsAlive && Input.Down( FocusInput );
+		IsFocusing = ShouldFocus();
+		IsNinjaRunning = ShouldParkour();
 	}
 
 	protected override void ResetInput()
@@ -33,5 +35,6 @@ public partial class ShooterController : FirstPersonController
 		base.ResetInput();
 
 		IsFocusing = false;
+		IsNinjaRunning = false;
 	}
 }

@@ -1,83 +1,185 @@
+using System.Text.Json.Serialization;
 using GameFish;
 
 namespace Fishbox;
 
 partial class ShooterController
 {
-	protected const string BOOTS = BOOT + "s";
-
+	/// <summary>
+	/// The button that enables wall/ceiling running.
+	/// </summary>
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
 	[Order( BADASS_ORDER )]
-	[Feature( BADASS ), Group( BOOTS )]
-	public virtual string BootsInput { get; set; } = "Run";
+	[Feature( NINJA ), Group( MOVEMENT )]
+	public virtual string ParkourInput { get; set; } = "Run";
 
-	/// <summary>
-	/// The delay after you stop using boots that they automatically detatch.
-	/// </summary>
 	[Property]
-	[Order( BADASS_ORDER )]
-	[Title( "Auto-Detach" )]
-	[Feature( BADASS ), Group( BOOTS )]
-	[Range( 0.0f, 4.0f, clamped: false )]
-	public virtual float BootsAutoDetach { get; set; } = 0.05f;
-
-	/// <summary>
-	/// If defined: the last time the boots stuck to something.
-	/// </summary>
-	[Sync]
-	public TimeSince? SinceBootsUsed { get; protected set; }
-
-	protected virtual void UpdateGravity( in float deltaTime )
+	[JsonIgnore]
+	[Title( "Parkour State" )]
+	[Feature( NINJA ), Group( DEBUG )]
+	protected ParkourType InspectorParkourState
 	{
-		if ( !Pawn.IsValid() )
-			return;
-
-		if ( Physics.IsValid() && Input.Down( BootsInput ) )
-		{
-			var moveDir = EyeRotation * Input.AnalogMove;
-			var vel = moveDir * GetMovementSpeed();
-
-			if ( vel.AlmostEqual( 0f ) )
-				vel = Velocity;
-
-			var tFrom = Physics.TraceOrigin;
-			var to = tFrom.Position + (vel * deltaTime * 1.5f);
-
-			var tr = Physics.Trace( in tFrom, in to, skin: -SkinWidth ).Run();
-
-			if ( !tr.Hit || tr.StartedSolid )
-			{
-				to = tFrom.Position + (EyeForward * 128f);
-				tr = TracePhysics( in tFrom, in to, -SkinWidth ).Run();
-			}
-
-			if ( TrySetPerspective( in tr ) || IsGrounded )
-				SinceBootsUsed = 0f;
-
-			// DebugOverlay.Trace( tr, duration: 5f );
-		}
-
-		UpdateBootsCooldown( in deltaTime );
+		get => ParkourState;
+		set => ParkourState = value;
 	}
 
-	protected virtual void UpdateBootsCooldown( in float deltaTime )
+	/// <summary>
+	/// If true: auto-parkour onto stuff.
+	/// </summary>
+	[Sync]
+	public bool IsNinjaRunning { get; protected set; }
+
+	[Sync]
+	public ParkourType ParkourState
 	{
-		if ( SinceBootsUsed is not TimeSince sinceBoots )
+		get => _parkourState; set
+		{
+			if ( _parkourState == value )
+				return;
+
+			_parkourState = value;
+			OnSetParkour( in value );
+		}
+	}
+
+	protected ParkourType _parkourState = ParkourType.None;
+
+	/// <summary>
+	/// The normal of the surface we're sticking to.
+	/// </summary>
+	[Sync]
+	public Vector3 SurfaceNormal
+	{
+		get => _surfaceNormal;
+		set
+		{
+			var oldNormal = _surfaceNormal;
+			_surfaceNormal = value;
+
+			OnSetSurfaceNormal( in _surfaceNormal, in oldNormal );
+		}
+	}
+
+	protected Vector3 _surfaceNormal = Vector3.Up;
+
+	protected virtual void OnSetParkour( in ParkourType state )
+	{
+		this.Log( state );
+
+		if ( state is ParkourType.None )
+			ResetOrientation();
+	}
+
+	protected virtual void OnSetSurfaceNormal( in Vector3 normal, in Vector3 old )
+	{
+		// this.Log( $"Wall run started on normal:[{normal}]" );
+		UpdateWallRunVelocity( in normal, deltaTime: 0f );
+	}
+
+	public virtual void StopParkour()
+	{
+		SurfaceNormal = default;
+		ParkourState = ParkourType.None;
+	}
+
+	public virtual bool IsParkourAllowed()
+	{
+		if ( !IsAlive )
+			return false;
+
+		if ( IsStuck )
+			return false;
+
+		return true;
+	}
+
+	protected virtual bool IsWishingParkour()
+		=> Input.Down( ParkourInput );
+
+	protected virtual bool ShouldParkour()
+	{
+		if ( !IsParkourAllowed() )
+			return false;
+
+		return IsWishingParkour();
+	}
+
+	/// <summary>
+	/// Are we truly wall running actively(such as also being alive)?
+	/// </summary>
+	/// <returns> If we're supposed to be running on a wall. </returns>
+	public virtual bool IsWallRunning()
+	{
+		if ( !IsParkourAllowed() )
+			return false;
+
+		if ( SurfaceNormal == default )
+			return false;
+
+		return ParkourState is ParkourType.WallRiding or ParkourType.Sticky;
+	}
+
+	protected virtual void UpdateParkour( in float deltaTime )
+	{
+		if ( !IsParkourAllowed() )
+		{
+			StopParkour();
 			return;
+		}
 
-		if ( sinceBoots < BootsAutoDetach )
-			return;
+		switch ( ParkourState )
+		{
+			case ParkourType.None:
 
-		SinceBootsUsed = null;
+				// Try to start a new wall run.
+				if ( !IsWishingParkour() )
+					break;
 
-		var fwd = EyeForward;
-		var up = -(Scene?.PhysicsWorld?.Gravity.Normal) ?? Vector3.Up;
+				if ( TryStick( Velocity, deltaTime * 1.5f, out var trHit ) )
+				{
+					SurfaceNormal = trHit.Normal;
+					UpdateWallRunMount( in deltaTime );
+				}
 
-		var rUp = Rotation.LookAt( up, fwd );
-		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
+				break;
 
-		Reorient( rForward );
+			case ParkourType.WallRiding:
+			case ParkourType.Sticky:
+				UpdateWallRunning( in deltaTime );
+				break;
+		}
+	}
+
+	/// <summary>
+	/// Attempts to stick to a wall in that direction.
+	/// </summary>
+	/// <returns> If the wall was stuck to. </returns>
+	protected virtual bool TryStick( in Vector3 dir, in float dist, out SceneTraceResult trHit )
+	{
+		var move = Physics.Project( in dir, in dist );
+		trHit = move.Hits?.FirstOrDefault() ?? default;
+
+		if ( !move.Hit || move.IsStuck )
+			return false;
+
+		if ( !IsWallRunnable( in trHit ) )
+			return false;
+
+		SurfaceNormal = trHit.Normal;
+
+		MoveTo( move.Position );
+
+		return true;
+	}
+
+	public virtual bool IsCeiling( in Vector3 normal )
+	{
+		if ( normal == default )
+			return false;
+
+		var angle = Down.Angle( in normal );
+		return angle <= (CeilingAngle / 2f);
 	}
 }
