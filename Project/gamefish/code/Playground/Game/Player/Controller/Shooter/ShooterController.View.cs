@@ -114,7 +114,7 @@ partial class ShooterController
 	{
 		var upDir = DefaultUp;
 
-		if ( ParkourState is ParkourType.Sticky )
+		if ( ParkourState is ParkourType.Sticking )
 		{
 			upDir = normal;
 

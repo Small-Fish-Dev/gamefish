@@ -26,7 +26,7 @@ partial class ShooterController
 		/// Sticking to a surface while redirecting gravity.
 		/// </summary>
 		[Icon( "⬇" )]
-		Sticky,
+		Sticking,
 
 		/// <summary>
 		/// Pulling self up a ledge.

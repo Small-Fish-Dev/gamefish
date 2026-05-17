@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using GameFish;
 
 namespace Fishbox;
@@ -74,11 +75,12 @@ partial class ShooterController
 			return;
 		}
 
+		var trySticky = StickingEnabled && IsWishingParkour();
+
 		// Always riding walls if not holding the button.
-		if ( IsWishingParkour() && IsLookingIntoWall( SurfaceNormal ) )
+		if ( trySticky && IsWallStickable( SurfaceNormal ) )
 		{
-			// Always sticking if it's a ceiling.
-			ParkourState = ParkourType.Sticky;
+			ParkourState = ParkourType.Sticking;
 		}
 		else if ( !IsGrounded )
 		{
@@ -136,6 +138,9 @@ partial class ShooterController
 		if ( normal == default )
 			return false;
 
+		if ( ParkourState is ParkourType.Sticking )
+			return true;
+
 		if ( IsGround( in normal ) )
 			return false;
 
@@ -168,7 +173,7 @@ partial class ShooterController
 
 		var aimDir = EyeForward;
 
-		if ( IsCeiling( normal ) || IsLookingIntoWall( in normal ) )
+		if ( IsCeiling( normal ) || IsLookingAtWall( in normal ) )
 		{
 			Velocity = Velocity.PlaneProject( in normal, Velocity.Length );
 

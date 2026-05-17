@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text.Json.Serialization;
 using GameFish;
 
@@ -5,15 +6,27 @@ namespace Fishbox;
 
 partial class ShooterController
 {
+	protected const int NINJA_MOVEMENT_ORDER = NINJA_ORDER - 1;
+
 	/// <summary>
-	/// The button that enables wall/ceiling running.
+	/// The button that enables auto-parkour.
 	/// </summary>
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
-	[Order( BADASS_ORDER )]
+	[Order( NINJA_MOVEMENT_ORDER )]
 	[Feature( NINJA ), Group( MOVEMENT )]
 	public virtual string ParkourInput { get; set; } = "Run";
+
+	/// <summary>
+	/// If true: you can parkour straight up walls and on ceilings.. if that weren't broken currently.
+	/// </summary>
+	[Property]
+	[InputAction]
+	[Title( "Sticking" )]
+	[Order( NINJA_MOVEMENT_ORDER )]
+	[Feature( NINJA ), Group( MOVEMENT )]
+	public virtual bool StickingEnabled { get; set; } = false;
 
 	[Property]
 	[JsonIgnore]
@@ -118,7 +131,7 @@ partial class ShooterController
 		if ( SurfaceNormal == default )
 			return false;
 
-		return ParkourState is ParkourType.Riding or ParkourType.Sticky;
+		return ParkourState is ParkourType.Riding or ParkourType.Sticking;
 	}
 
 	protected virtual void UpdateParkour( in float deltaTime )
@@ -138,15 +151,12 @@ partial class ShooterController
 
 				// Try to start a new wall run.
 				if ( TryStick( Velocity, deltaTime * 1.5f, out var trHit ) )
-				{
-					SurfaceNormal = trHit.Normal;
 					UpdateWallRunMount( in deltaTime );
-				}
 
 				break;
 
 			case ParkourType.Riding:
-			case ParkourType.Sticky:
+			case ParkourType.Sticking:
 				UpdateWallRunning( in deltaTime );
 				break;
 		}
@@ -183,7 +193,7 @@ partial class ShooterController
 		return angle <= (CeilingAngle / 2f);
 	}
 
-	public virtual bool IsLookingIntoWall( in Vector3 normal, in float? maxAngle = null )
+	public virtual bool IsLookingAtWall( in Vector3 normal, in float? maxAngle = null )
 	{
 		var upDir = DefaultUp;
 
@@ -199,5 +209,20 @@ partial class ShooterController
 		var yaw = hAimDir.Angle( -hWallDir );
 
 		return yaw <= (maxAngle ?? 10f);
+	}
+
+	public virtual bool IsWallStickable( in Vector3 normal )
+	{
+		// TEMP: Sticky until you let go.
+		if ( ParkourState is ParkourType.Sticking )
+			return true;
+
+		if ( IsGround( in normal ) )
+			return false;
+
+		if ( IsCeiling( in normal ) )
+			return true;
+
+		return IsLookingAtWall( normal, 10f );
 	}
 }
