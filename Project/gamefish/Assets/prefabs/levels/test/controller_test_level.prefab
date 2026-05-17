@@ -19,7 +19,7 @@
       {
         "__guid": "b41db84f-8ebe-4598-a9e8-cc768d816cba",
         "__version": 2,
-        "Flags": 0,
+        "Flags": 32,
         "Name": "Map",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
@@ -39,7 +39,7 @@
             "Flags": 0,
             "__version": 1,
             "EnableCollision": true,
-            "MapName": "maps/gamefish/gamefish_example1.vmap",
+            "MapName": "maps/shared/gamefish_example1.vmap",
             "NoOrigin": false,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,

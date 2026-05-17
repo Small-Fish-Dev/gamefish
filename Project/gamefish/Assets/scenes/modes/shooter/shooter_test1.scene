@@ -15802,24 +15802,7 @@
       "__PrefabInstancePatch": {
         "AddedObjects": [],
         "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
-            },
-            "Property": "Flags",
-            "Value": 0
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "81d2dd29-83b0-499e-8db8-3cbdb489278f"
-            },
-            "Property": "MapName",
-            "Value": "maps/shared/gamefish_example1.vmap"
-          }
-        ],
+        "PropertyOverrides": [],
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {

@@ -75,32 +75,19 @@ partial class ShooterController
 		}
 
 		// Always riding walls if not holding the button.
-		if ( !IsWishingParkour() )
-			goto Riding;
-
-		// Always sticking if it's a ceiling.
-		if ( IsCeiling( SurfaceNormal ) )
+		if ( IsWishingParkour() && IsLookingIntoWall( SurfaceNormal ) )
 		{
+			// Always sticking if it's a ceiling.
 			ParkourState = ParkourType.Sticky;
-			return;
 		}
-
-		var upDir = -Gravity.Normal;
-		var hAimDir = EyeForward.PlaneProject( in upDir ).Normal;
-		var hWallDir = SurfaceNormal.PlaneProject( in upDir ).Normal;
-
-		if ( hAimDir == default || hWallDir == default )
-			goto Riding;
-
-		if ( hAimDir.Angle( -hWallDir ) <= 10f )
+		else if ( !IsGrounded )
 		{
-			ParkourState = ParkourType.Sticky;
-			return;
+			ParkourState = ParkourType.Riding;
 		}
-
-		Riding:
-
-		ParkourState = ParkourType.WallRiding;
+		else
+		{
+			ParkourState = ParkourType.None;
+		}
 	}
 
 	protected virtual void DoWallRunJump( in Vector3 normal )
@@ -180,27 +167,16 @@ partial class ShooterController
 			goto Side;
 
 		var aimDir = EyeForward;
-		var aimFlat = aimDir.PlaneProject( in normal ).Normal;
 
-		if ( IsCeiling( normal ) )
-			Velocity = Velocity.PlaneProject( in normal, Velocity.Length );
-
-		if ( aimFlat != default )
+		if ( IsCeiling( normal ) || IsLookingIntoWall( in normal ) )
 		{
-			var hAimDir = aimFlat.PlaneProject( in upDir ).Normal;
-			var hWallDir = normal.PlaneProject( in upDir ).Normal;
-
-			if ( hAimDir == default || hWallDir == default )
-				goto Side;
-
-			var aimYaw = hAimDir.Angle( -hWallDir );
-
-			if ( aimYaw > 10f )
-				goto Side;
+			Velocity = Velocity.PlaneProject( in normal, Velocity.Length );
 
 			var vel = Velocity;
 			var ninjaSpeed = 2000f;
 			var runSpeed = vel.Length.Max( 100f );
+
+			var aimFlat = aimDir.PlaneProject( in normal ).Normal;
 
 			vel += aimFlat * ninjaSpeed * deltaTime;
 

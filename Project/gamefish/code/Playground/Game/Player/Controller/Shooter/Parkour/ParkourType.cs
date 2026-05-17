@@ -17,7 +17,7 @@ partial class ShooterController
 		/// Running along the side of walls.
 		/// </summary>
 		[Icon( "🐱‍👤" )]
-		WallRiding,
+		Riding,
 
 		/// <summary>
 		/// Sticking to a surface while redirecting gravity.
@@ -29,6 +29,6 @@ partial class ShooterController
 		/// Pulling self up a ledge.
 		/// </summary>
 		[Icon( "🧗" )]
-		LedgeMantling,
+		Mantling,
 	}
 }

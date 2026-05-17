@@ -118,7 +118,7 @@ partial class ShooterController
 		if ( SurfaceNormal == default )
 			return false;
 
-		return ParkourState is ParkourType.WallRiding or ParkourType.Sticky;
+		return ParkourState is ParkourType.Riding or ParkourType.Sticky;
 	}
 
 	protected virtual void UpdateParkour( in float deltaTime )
@@ -133,10 +133,10 @@ partial class ShooterController
 		{
 			case ParkourType.None:
 
-				// Try to start a new wall run.
 				if ( !IsWishingParkour() )
 					break;
 
+				// Try to start a new wall run.
 				if ( TryStick( Velocity, deltaTime * 1.5f, out var trHit ) )
 				{
 					SurfaceNormal = trHit.Normal;
@@ -145,7 +145,7 @@ partial class ShooterController
 
 				break;
 
-			case ParkourType.WallRiding:
+			case ParkourType.Riding:
 			case ParkourType.Sticky:
 				UpdateWallRunning( in deltaTime );
 				break;
@@ -181,5 +181,23 @@ partial class ShooterController
 
 		var angle = Down.Angle( in normal );
 		return angle <= (CeilingAngle / 2f);
+	}
+
+	public virtual bool IsLookingIntoWall( in Vector3 normal, in float? maxAngle = null )
+	{
+		var upDir = DefaultUp;
+
+		if ( upDir == default )
+			return false;
+
+		var hAimDir = EyeForward.PlaneProject( in upDir ).Normal;
+		var hWallDir = SurfaceNormal.PlaneProject( in upDir ).Normal;
+
+		if ( hAimDir == default || hWallDir == default )
+			return false;
+
+		var yaw = hAimDir.Angle( -hWallDir );
+
+		return yaw <= (maxAngle ?? 10f);
 	}
 }

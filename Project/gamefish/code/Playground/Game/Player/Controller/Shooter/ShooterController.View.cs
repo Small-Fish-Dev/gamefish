@@ -6,12 +6,9 @@ partial class ShooterController
 {
 	public override bool AimPitchClamping => false;
 
-	protected bool IsFreeLooking => IsFocusing && !IsGrounded;
+	protected virtual bool IsFreeLooking => IsFocusing && !IsGrounded;
 
-	public virtual Vector3 DefaultUp => -Gravity.Normal;
-
-	// [Sync]
-	// public Rotation? TargetRotation { get; protected set; }
+	public virtual Vector3 DefaultUp => Gravity == default ? Vector3.Up : -Gravity.Normal;
 
 	public override bool TryAim( in Rotation rLook, in float deltaTime )
 	{
@@ -115,19 +112,17 @@ partial class ShooterController
 
 	protected virtual void UpdateWallRunView( in Vector3 normal, in float deltaTime )
 	{
-		Vector3 upDir;
+		var upDir = DefaultUp;
 
-		if ( IsCeiling( in normal ) )
+		if ( ParkourState is ParkourType.Sticky )
 		{
 			upDir = normal;
 
 			if ( Up != upDir )
 				TryReorient( in normal );
 		}
-		else
+		else if ( ParkourState is ParkourType.Riding )
 		{
-			upDir = DefaultUp;
-
 			if ( Up != upDir )
 				TryReorient( in upDir );
 
