@@ -138,14 +138,14 @@ partial class ShooterController
 		if ( normal == default )
 			return false;
 
-		if ( ParkourState is ParkourType.Sticking )
-			return true;
+		if ( ParkourState is not ParkourType.Sticking )
+		{
+			if ( IsGround( in normal ) )
+				return false;
 
-		if ( IsGround( in normal ) )
-			return false;
-
-		if ( IsCeiling( in normal ) )
-			return false;
+			if ( IsCeiling( in normal ) )
+				return false;
+		}
 
 		return true;
 	}

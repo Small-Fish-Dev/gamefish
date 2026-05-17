@@ -223,6 +223,6 @@ partial class ShooterController
 		if ( IsCeiling( in normal ) )
 			return true;
 
-		return IsLookingAtWall( normal, 10f );
+		return IsLookingAtWall( in normal, 10f );
 	}
 }
