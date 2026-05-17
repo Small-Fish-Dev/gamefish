@@ -15802,7 +15802,24 @@
       "__PrefabInstancePatch": {
         "AddedObjects": [],
         "RemovedObjects": [],
-        "PropertyOverrides": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
+            },
+            "Property": "Flags",
+            "Value": 0
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "81d2dd29-83b0-499e-8db8-3cbdb489278f"
+            },
+            "Property": "MapName",
+            "Value": "maps/shared/gamefish_example1.vmap"
+          }
+        ],
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
@@ -15899,7 +15916,15 @@
         "d46f3ab6-0b18-44dd-b90b-8955a1b73801": "503e54cf-69e0-4fbb-93d8-ee7cd3d256d4",
         "ed0a257d-ed8f-433a-b3fb-9f29da8c276c": "6f8f4b31-80f5-4b68-8680-25265a11e296",
         "82fa1518-f0ac-4815-baa7-5a771bf40bae": "1ebbc920-e5f4-4c29-ac4b-44adc235759e",
-        "9c002897-5db3-42aa-9b85-b7666316b5a6": "9f9b362c-5777-4db5-9b8c-8a274633a1e2"
+        "9c002897-5db3-42aa-9b85-b7666316b5a6": "9f9b362c-5777-4db5-9b8c-8a274633a1e2",
+        "4b1b1e38-f3fc-43e1-81a8-faeac017420b": "490e62cf-c2c6-49bf-9b07-8ceb09b57443",
+        "a9373044-9745-42de-abd3-0206d0dfedbf": "0fa94f97-222a-42cf-8b1d-4f956e117a1c",
+        "01cc24d1-2f2b-4414-a167-2a81361bbd7a": "6c72aaeb-1925-4576-92c7-0b5035370673",
+        "e2dfed9a-b5e2-4b2c-a4e7-ee17e160cf2b": "083c0737-8319-4b8e-867e-45b5e9fbef66",
+        "c3402e21-3e54-4cec-8801-f5b04185e59e": "f582754e-d6f0-42bc-8c9b-6385d859dd95",
+        "e32032e7-a20e-4024-8c4a-faf805ff1f01": "07ac0b9f-e090-41eb-9550-c8d0c8e1b409",
+        "1d0152ea-9fb6-4bd9-8315-884b94373679": "8cb1f826-6922-4cab-b458-bb89ce9a3d54",
+        "c3302ced-aa92-4758-9df3-52a49bcc0a2f": "056e8dc7-87d1-45b6-9808-0ca7663242f9"
       }
     },
     {
@@ -16825,13 +16850,18 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "14b2c703-672b-4c92-8ed7-a7cda10b32a3"
         }
       },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
+        }
       }
     }
   },
