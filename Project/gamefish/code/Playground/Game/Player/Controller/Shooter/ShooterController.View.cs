@@ -8,6 +8,8 @@ partial class ShooterController
 
 	protected bool IsFreeLooking => IsFocusing && !IsGrounded;
 
+	public virtual Vector3 DefaultUp => -Gravity.Normal;
+
 	// [Sync]
 	// public Rotation? TargetRotation { get; protected set; }
 
@@ -96,12 +98,16 @@ partial class ShooterController
 	protected void ResetOrientation()
 	{
 		var fwd = EyeForward;
-		var up = -Gravity.Normal;
+		var up = DefaultUp;
 
 		if ( up == default )
 			up = Vector3.Up;
 
+		if ( Up == up )
+			return;
+
 		var rUp = Rotation.LookAt( up, fwd );
+
 		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );
 
 		Reorient( in rForward );
@@ -114,10 +120,18 @@ partial class ShooterController
 		if ( IsCeiling( in normal ) )
 		{
 			upDir = normal;
+
+			if ( Up != upDir )
+				TryReorient( in normal );
 		}
 		else
 		{
-			upDir = Up.SlerpTo( in normal, WallRunLean );
+			upDir = DefaultUp;
+
+			if ( Up != upDir )
+				TryReorient( in upDir );
+
+			upDir = upDir.SlerpTo( in normal, WallRunLean );
 		}
 
 		var speed = AimRollResetSpeed * 2f;
