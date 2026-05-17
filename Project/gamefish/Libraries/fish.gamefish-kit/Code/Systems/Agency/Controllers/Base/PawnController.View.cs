@@ -37,6 +37,7 @@ partial class PawnController
 	/// If enabled: limits the local eye rotation's pitch/yaw.
 	/// </summary>
 	[Property]
+	[Title( "Pitch Clamping" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	public virtual bool AimPitchClamping { get; set; } = true;
@@ -46,6 +47,7 @@ partial class PawnController
 	/// </summary>
 	[Property]
 	[Range( 0, 180 )]
+	[Title( "Pitch Range" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
 	[Feature( VIEW ), Order( AIMING_ORDER )]
 	[ShowIf( nameof( AimPitchClamping ), true )]

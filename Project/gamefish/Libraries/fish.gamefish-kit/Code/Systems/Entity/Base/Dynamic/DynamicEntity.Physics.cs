@@ -38,10 +38,45 @@ partial class DynamicEntity : IPhysics
 		}
 	}
 
-	[Rpc.Owner( NetFlags.Unreliable | NetFlags.SendImmediate )]
-	public void RpcImpulse( Vector3 vel )
+	public virtual bool CanImpulse( in Vector3 vel, in Vector3? point = null )
 	{
-		if ( !ITransform.IsValid( in vel ) )
+		if ( vel == default || !ITransform.IsValid( vel ) )
+			return false;
+
+		var rb = Rigidbody;
+
+		if ( rb.IsValid() )
+		{
+			if ( !rb.MotionEnabled )
+				return false;
+
+			if ( rb.PhysicsBody?.BodyType is PhysicsBodyType.Static )
+				return false;
+		}
+
+		return true;
+	}
+
+	public virtual bool TryImpulse( in Vector3 vel, in Vector3? point = null )
+	{
+		if ( !GameObject.IsValid() )
+			return false;
+
+		if ( !CanImpulse( in vel ) )
+			return false;
+
+		if ( IsProxy )
+			RpcImpulse( vel, point );
+		else
+			ApplyImpulse( vel, point );
+
+		return true;
+	}
+
+	[Rpc.Owner( NetFlags.Unreliable | NetFlags.SendImmediate )]
+	protected void RpcImpulse( Vector3 vel, Vector3? point = null )
+	{
+		if ( !CanImpulse( in vel, in point ) )
 			return;
 
 		ApplyImpulse( vel );
@@ -52,8 +87,11 @@ partial class DynamicEntity : IPhysics
 	/// <br /> <br />
 	/// <b> NOTE: </b> May be called by others with <see cref="RpcImpulse"/>.
 	/// </summary>
-	public virtual void ApplyImpulse( Vector3 vel )
+	protected virtual void ApplyImpulse( Vector3 vel, Vector3? point = null )
 	{
+		if ( !ITransform.IsValid( in vel ) )
+			return;
+
 		Velocity += vel;
 	}
 

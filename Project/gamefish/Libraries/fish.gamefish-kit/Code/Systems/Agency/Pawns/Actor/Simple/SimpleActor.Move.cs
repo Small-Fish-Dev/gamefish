@@ -28,12 +28,12 @@ partial class SimpleActor
 	{
 		base.UpdateNavigation( deltaTime );
 
-		if ( GetDestination() is Vector3 dest )
+		if ( CalculateDestination() is Vector3 dest )
 			TrySetDestination( dest );
 	}
 
 	/// <returns> The exact goal position(or null). </returns>
-	protected virtual Vector3? GetDestination()
+	protected virtual Vector3? CalculateDestination()
 	{
 		if ( !IsTargeting() )
 			return null;
@@ -79,7 +79,10 @@ partial class SimpleActor
 
 	public override Vector3 CalculateWishVelocity()
 	{
-		if ( !IsAlive || Destination is null )
+		if ( !IsAlive )
+			return default;
+
+		if ( Destination is not Vector3 dest )
 			return default;
 
 		var c = Controller;
@@ -87,7 +90,6 @@ partial class SimpleActor
 		if ( !c.IsValid() )
 			return default;
 
-		var dest = Destination.Value;
 		var moveDir = WorldPosition.Direction( dest );
 		var moveSpeed = c.GetMovementSpeed();
 

@@ -10,7 +10,7 @@ partial class Pawn : IMove
 	[Feature( PAWN ), Group( MOVEMENT )]
 	public virtual PawnController Controller
 	{
-		get => this.GetCached( ref _controller );
+		get => this?.GetCached( ref _controller );
 		protected set => _controller = value;
 	}
 

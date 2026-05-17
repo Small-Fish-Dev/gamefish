@@ -346,6 +346,8 @@ public static partial class Strings
 	public const string BREAKABLE = "💥 Breakable";
 
 	public const string ART = "🖼 Art";
+	public const string SPRITE = "🎨 Sprite";
+	public const string SPRITES = "🎨 Sprites";
 	public const string PAINT = "🖌 Paint";
 	public const string PAINTS = "🖌 Paints";
 	public const string PAINTING = "🖌 Painting";

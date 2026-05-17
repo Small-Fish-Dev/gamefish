@@ -11,17 +11,5 @@ public interface IVelocity
 	/// Attempts to push this physics object.
 	/// </summary>
 	/// <returns> If we were allowed to send this impulse. </returns>
-	public virtual bool TryImpulse( in Vector3 vel )
-	{
-		if ( !ITransform.IsValid( in vel ) )
-			return false;
-
-		RpcImpulse( vel );
-		return true;
-	}
-
-	/// <summary>
-	/// Networks impulse velocity to the owner.
-	/// </summary>
-	public void RpcImpulse( Vector3 vel );
+	public bool TryImpulse( in Vector3 vel, in Vector3? point = null );
 }

@@ -12,6 +12,8 @@ partial class DynamicEntity : IHealth
 		get => _isAlive;
 		protected set
 		{
+			Tags?.Set( TAG_DEAD, state: !value );
+
 			if ( _isAlive == value )
 				return;
 
@@ -142,12 +144,18 @@ partial class DynamicEntity : IHealth
 
 	public virtual void OnDeath()
 	{
+		if ( !InGame )
+			return;
+
 		foreach ( var m in DamageModules )
 			m.OnDeath();
 	}
 
 	public virtual void OnAlive()
 	{
+		if ( !InGame )
+			return;
+
 		foreach ( var m in DamageModules )
 			m.OnAlive();
 	}

@@ -64,7 +64,7 @@ public partial class FacepunchController : PawnController
 	protected override void OnSetLocalEyeRotation( in Rotation r )
 	{
 		if ( PlayerController.IsValid() )
-			PlayerController.EyeAngles = r;
+			PlayerController.EyeAngles = EyeRotation;
 	}
 
 	// The engine's controller handles this stuff.
