@@ -151,6 +151,7 @@
         "SprintingEnabled": true,
         "SprintInput": "Run",
         "SprintMultiplier": 1.5,
+        "StickingEnabled": false,
         "ViewCollisionEnabled": true,
         "ViewCollisionRadius": 8,
         "WallRunGravityScale": 0.25,
@@ -678,7 +679,7 @@
             "Children": []
           },
           {
-            "__guid": "095f7d64-801e-4313-ad47-ee0830ea2ef0",
+            "__guid": "bb5151f9-6557-4f2b-9a62-1876f8a565ef",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -695,7 +696,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "83d01995-f7de-49cf-972c-6aa4d616af4f",
+                "__guid": "c1b1267c-0150-4eb6-8d92-d60c68a347df",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
