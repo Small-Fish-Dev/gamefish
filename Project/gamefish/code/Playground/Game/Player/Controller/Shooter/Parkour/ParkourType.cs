@@ -4,6 +4,9 @@ partial class ShooterController
 {
 	public enum ParkourType
 	{
+		/// <summary>
+		/// Hoofing it around like a fat cow.
+		/// </summary>
 		[Icon( "🐄" )]
 		None,
 
