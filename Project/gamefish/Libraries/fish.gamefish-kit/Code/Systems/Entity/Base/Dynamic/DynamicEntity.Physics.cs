@@ -33,8 +33,10 @@ partial class DynamicEntity : IPhysics
 		get => Rigidbody?.Velocity ?? Vector3.Zero;
 		set
 		{
-			if ( Rigidbody.IsValid() )
-				Rigidbody.Velocity = value;
+			var rb = Rigidbody;
+
+			if ( rb.IsValid() && rb.MotionEnabled )
+				rb.Velocity = value;
 		}
 	}
 
