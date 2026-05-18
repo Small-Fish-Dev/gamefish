@@ -5,7 +5,8 @@ namespace GameFish;
 /// <br /> <br />
 /// <b> NOTE: </b> Very useful for planets.
 /// </summary>
-[Icon( "nat" )]
+[Icon( "arrow_circle_down" )]
+[EditorHandle( Icon = "🌌" )]
 public partial class GravityField : ModuleEntity, Component.ITriggerListener
 {
 	protected const int GRAVITY_ORDER = ENTITY_ORDER - 1000;
@@ -32,12 +33,12 @@ public partial class GravityField : ModuleEntity, Component.ITriggerListener
 	[Feature( GRAVITY )]
 	[Order( GRAVITY_ORDER )]
 	[Range( 0, 1000, clamped: false )]
-	public int Priority { get; set; } = 0;
+	protected virtual int Priority { get; set; } = 0;
 
 	[Property]
 	[Feature( GRAVITY )]
 	[Order( GRAVITY_ORDER )]
-	public float Force { get; set; } = 600f;
+	protected virtual float Force { get; set; } = 600f;
 
 	/// <summary>
 	/// If true: if this is the primary field it will block the effects of other fields.
@@ -56,6 +57,14 @@ public partial class GravityField : ModuleEntity, Component.ITriggerListener
 	/// <returns> What force to apply(per second) from that point. </returns>
 	public virtual Vector3 GetForce( Vector3 point )
 		=> point.Direction( Center ) * Force;
+
+	/// <summary>
+	/// Allows this field to override others.
+	/// </summary>
+	/// <param name="g"> The object that entered this field. </param>
+	/// <returns> A number that if highest gets priority. </returns>
+	public virtual float GetPriority( GravityModule g )
+		=> Priority;
 
 	protected static bool TryFindGravityModule( GameObject obj, out GravityModule g )
 	{

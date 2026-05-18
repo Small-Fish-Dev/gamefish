@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// Applies gravitational pull from gravity fields.
+/// Manages gravity related to gravity fields.
 /// </summary>
 [Icon( "balance" )]
 public class GravityModule : Module
@@ -36,14 +36,6 @@ public class GravityModule : Module
 	[Order( GRAVITY_ORDER )]
 	public bool UseDefault { get; set; } = true;
 
-	/// <summary>
-	/// If defined: toggles gravity on the parent entity's <see cref="Rigidbody"/>.
-	/// </summary>
-	[Property]
-	[Feature( GRAVITY )]
-	[Order( GRAVITY_ORDER )]
-	public bool? BodyGravity { get; set; } = false;
-
 	protected virtual Vector3 Velocity
 	{
 		get => Entity?.Velocity ?? default;
@@ -74,14 +66,6 @@ public class GravityModule : Module
 	[Sync]
 	public NetList<GravityField> Within { get; set; }
 
-	protected override void OnStart()
-	{
-		base.OnStart();
-
-		if ( BodyGravity is bool isEnabled )
-			ToggleGravity( isEnabled );
-	}
-
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -90,16 +74,26 @@ public class GravityModule : Module
 			ApplyGravity( Time.Delta );
 	}
 
-	protected virtual void ToggleGravity( in bool isEnabled )
+	protected virtual bool TrySetBodyGravity( in bool isEnabled )
 	{
 		var rb = Entity?.Rigidbody;
 
-		if ( rb.IsValid() )
-			rb.Gravity = isEnabled;
+		if ( !rb.IsValid() )
+			return false;
+
+		rb.Gravity = isEnabled;
+		return true;
 	}
 
 	public virtual void ApplyGravity( in float deltaTime )
 	{
+		var bBodyGrav = !Field.IsValid() && UseDefault;
+
+		// Rigidbody gravity is smarter.
+		if ( TrySetBodyGravity( bBodyGrav ) )
+			if ( bBodyGrav )
+				return;
+
 		var grav = GetGravity();
 
 		if ( grav != default )
