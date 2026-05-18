@@ -279,7 +279,7 @@
             "__guid": "c7391ef4-d529-4db4-9b20-71271e0abec5",
             "__enabled": true,
             "Flags": 0,
-            "AllowCyclingMode": true,
+            "AllowCyclingMode": false,
             "ClassId": null,
             "ClassName": null,
             "CollideOwned": false,
@@ -298,9 +298,9 @@
             "IsNetworkingForced": true,
             "Mode": {
               "_type": "component",
-              "component_id": "adffe648-f1ff-4c0f-9f3f-07447c18d139",
-              "go": "0d477140-245e-4027-8796-e93691384711",
-              "component_type": "FirstPersonViewMode"
+              "component_id": "2bc406d4-ba4f-4bd0-b3ab-da5b3306153e",
+              "go": "28cab812-e461-4266-a3c2-617253315063",
+              "component_type": "ThirdPersonViewMode"
             },
             "ModeDebugLogging": false,
             "NetworkAutomatically": true,
@@ -322,12 +322,7 @@
             },
             "TransitionSmoothing": 0.35,
             "TransitionSpeed": 3,
-            "ViewRenderer": {
-              "_type": "component",
-              "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
-              "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-              "component_type": "ShooterViewRenderer"
-            }
+            "ViewRenderer": null
           }
         ],
         "Children": [
@@ -340,7 +335,7 @@
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "",
-            "Enabled": true,
+            "Enabled": false,
             "NetworkMode": 1,
             "NetworkFlags": 0,
             "NetworkOrphaned": 3,
@@ -455,7 +450,7 @@
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "",
-            "Enabled": true,
+            "Enabled": false,
             "NetworkMode": 1,
             "NetworkFlags": 0,
             "NetworkOrphaned": 3,
@@ -485,6 +480,57 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
+                "ShowViewRenderer": true
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "28cab812-e461-4266-a3c2-617253315063",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Third Person Mode",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 1,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 3,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "GameFish.ThirdPersonViewMode",
+                "__guid": "2bc406d4-ba4f-4bd0-b3ab-da5b3306153e",
+                "__enabled": true,
+                "Flags": 0,
+                "AllowFirstPerson": true,
+                "ClassId": null,
+                "ClassName": null,
+                "DistanceRange": {
+                  "Min": 0,
+                  "Max": 500
+                },
+                "InitialDistance": 0,
+                "InspectorInFirstPerson": false,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "2bc406d4-ba4f-4bd0-b3ab-da5b3306153e",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "ScrollSensitivity": 25,
+                "ScrollSpeed": 5,
                 "ShowViewRenderer": true
               }
             ],
@@ -687,7 +733,7 @@
             "Children": []
           },
           {
-            "__guid": "c34ffd97-5eb7-49b2-af17-67eb713c95e7",
+            "__guid": "c3fa7773-8944-44a9-8052-57b1b4a7ed70",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -704,7 +750,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "d738531a-56d3-42ee-bed2-56354996bf62",
+                "__guid": "42530c0e-4da6-4028-ab62-396b5a31b9bd",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -941,7 +987,6 @@
             "__enabled": true,
             "Flags": 0,
             "AutoApply": true,
-            "BodyGravity": false,
             "ClassId": null,
             "ClassName": null,
             "IsClass": false,
