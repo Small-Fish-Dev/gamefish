@@ -100,10 +100,21 @@ public class GravityModule : Module
 
 	public virtual void ApplyGravity( in float deltaTime )
 	{
+		var grav = GetGravity();
+
+		if ( grav != default )
+			Velocity += grav * deltaTime;
+	}
+
+	public virtual Vector3 GetGravity()
+	{
 		if ( Field.IsValid() )
-			Velocity += Field.GetForce( Center ) * deltaTime;
-		else if ( UseDefault )
-			Velocity += DefaultGravity * deltaTime;
+			return Field.GetForce( Center );
+
+		if ( UseDefault )
+			return DefaultGravity;
+
+		return default;
 	}
 
 	public virtual void OnEnter( GravityField field )
