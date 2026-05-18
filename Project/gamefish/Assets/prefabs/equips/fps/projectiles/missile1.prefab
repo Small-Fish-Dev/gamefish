@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "97b2a4ba-afc3-4048-99f3-86823a80adea",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "missile1",
     "Position": "0,0,0",
@@ -10,7 +10,7 @@
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
@@ -19,6 +19,7 @@
         "__type": "GameFish.Projectile",
         "__guid": "5a584143-fc35-4def-8f74-ccbc72193b59",
         "__enabled": true,
+        "Flags": 0,
         "ClassId": "missile1",
         "ClassName": null,
         "DebugDamage": 25,
@@ -61,13 +62,47 @@
         "FireSound": null,
         "HasImpact": false,
         "Health": 100,
-        "HomingDistance": {
-          "Min": 250,
-          "Max": 1500
+        "HomingGravitation": {
+          "rangex": "0,2000",
+          "rangey": "0,1000",
+          "frames": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
         },
-        "HomingSpeed": {
-          "Min": 0,
-          "Max": 1000
+        "HomingModes": "None",
+        "HomingPrediction": true,
+        "HomingRedirection": {
+          "rangex": "0,2000",
+          "rangey": "0,1000",
+          "frames": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ]
         },
         "IgnoreTeam": true,
         "ImpactDamage": {
@@ -114,7 +149,7 @@
         "NetworkAutomatically": false,
         "NetworkId": "5a584143-fc35-4def-8f74-ccbc72193b59",
         "NetworkingMode": "Object",
-        "NetworkOrphanedMode": "Destroy",
+        "NetworkOrphanedMode": "ClearOwner",
         "NetworkOwner": null,
         "NetworkTransferMode": "Fixed",
         "OnComponentDestroy": null,
@@ -123,13 +158,17 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "ProxyCollision": false,
+        "RotateTowardsVelocity": false,
+        "RotationOffset": "0,0,0,1",
         "SelfDestructDelay": 10,
+        "Team": null,
         "TraceSettings": {
           "Shape": "Box",
           "ShapeRotation": "0,0,0,1",
           "Box": {
-            "Mins": "-19,-5,-5",
-            "Maxs": "19,5,5"
+            "Mins": "-18.7999992,-5.0999999,-5.0999999",
+            "Maxs": "18.7999992,5.0999999,5.0999999"
           },
           "Radius": 8,
           "Height": 32,
@@ -138,23 +177,23 @@
             "CenterB": "-12,0,0",
             "Radius": 8
           },
-          "Filter": "data/filters/projectiles.trfilter"
+          "Filter": "data/traces/projectile.trfilter"
         }
       }
     ],
     "Children": [
       {
         "__guid": "5e2a48ab-1e73-47f1-8bf6-3a86fafe5e3f",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "Model",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
-        "Scale": "0.75,0.2,0.2",
+        "Scale": "0.75,0.200000003,0.200000003",
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -163,6 +202,7 @@
             "__type": "Sandbox.ModelRenderer",
             "__guid": "7ca44a5e-8c5c-4a2c-8517-5e8d237fc024",
             "__enabled": true,
+            "Flags": 0,
             "BodyGroups": 18446744073709551615,
             "CreateAttachments": false,
             "LodOverride": null,
@@ -198,13 +238,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []
