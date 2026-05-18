@@ -56,7 +56,7 @@ partial class ShooterController
 		return TryReorient( tr.Normal );
 	}
 
-	protected bool TryReorient( in Vector3 up )
+	public bool TryReorient( in Vector3 up )
 	{
 		var rUp = Rotation.LookAt( up, EyeForward );
 		var rForward = Rotation.LookAt( rUp.Up, rUp.Forward );

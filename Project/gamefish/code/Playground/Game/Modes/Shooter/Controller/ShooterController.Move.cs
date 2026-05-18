@@ -33,7 +33,7 @@ partial class ShooterController
 	[Range( 0.2f, 1.0f, clamped: false )]
 	public virtual float WallRunGravityScale { get; set; } = 0.8f;
 
-	public override Vector3 Gravity => SceneGravity * GravityMultiplier();
+	public override Vector3 Gravity => Down * SceneGravity.Length * GravityMultiplier();
 
 	protected virtual float GravityMultiplier()
 	{

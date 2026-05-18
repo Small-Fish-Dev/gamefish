@@ -120,6 +120,7 @@
           "Value": 10,
           "StopSpeed": 80
         },
+        "GravityEnabled": false,
         "InspectorGroundNormal": "0,0,1",
         "InspectorIsGrounded": false,
         "IsClass": false,
@@ -686,7 +687,7 @@
             "Children": []
           },
           {
-            "__guid": "cd60226a-457f-422a-b47f-8468b7792c36",
+            "__guid": "c34ffd97-5eb7-49b2-af17-67eb713c95e7",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -703,7 +704,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "22e7b627-d5d7-4fb5-bd87-119c3ba39dbb",
+                "__guid": "d738531a-56d3-42ee-bed2-56354996bf62",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -914,6 +915,50 @@
             "RetractSpeed": 1000,
             "SlackLimit": 16,
             "SwingSpeed": 1
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "6e96fd56-afbe-4ef7-9a2c-e83490300adc",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Gravity Module",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Fishbox.ShooterGravityModule",
+            "__guid": "043b07aa-337b-4da1-b28d-c9cf98d07d2f",
+            "__enabled": true,
+            "Flags": 0,
+            "AutoApply": true,
+            "BodyGravity": false,
+            "ClassId": null,
+            "ClassName": null,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "043b07aa-337b-4da1-b28d-c9cf98d07d2f",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "UseDefault": true
           }
         ],
         "Children": []
