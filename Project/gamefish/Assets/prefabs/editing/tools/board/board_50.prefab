@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "e558bd31-93d8-435b-88ef-75b1818da075",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "board_50",
     "Position": "0,0,0",
@@ -10,13 +10,13 @@
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Playground.EditorObject",
+        "__type": "Fishbox.EditorObject",
         "__guid": "f727c9a4-b933-40a9-abb5-973355b7b83c",
         "__enabled": true,
         "Flags": 0,
@@ -27,6 +27,7 @@
         "IsAlive": true,
         "IsClass": false,
         "IsDestructible": true,
+        "Island": null,
         "IsNetworkingForced": true,
         "MaxHealth": 100,
         "NetworkAutomatically": true,
@@ -50,7 +51,7 @@
         "AngularDamping": 0,
         "EnableImpactDamage": false,
         "EnhancedCcd": false,
-        "Gravity": true,
+        "Gravity": false,
         "GravityScale": 1,
         "ImpactDamage": 0,
         "LinearDamping": 0,
@@ -73,7 +74,9 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideMassCenter": false,
+        "PreciseContacts": false,
         "RigidbodyFlags": 0,
+        "SleepThreshold": 2,
         "StartAsleep": false
       },
       {
@@ -128,6 +131,31 @@
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "GameFish.GravityModule",
+        "__guid": "4c2fa057-513e-4f5d-8d16-ce66bef97a59",
+        "__enabled": true,
+        "Flags": 0,
+        "AutoApply": true,
+        "BodyGravity": false,
+        "ClassId": "board_50",
+        "ClassName": null,
+        "IsClass": false,
+        "IsNetworkingForced": true,
+        "NetworkAutomatically": true,
+        "NetworkId": "4c2fa057-513e-4f5d-8d16-ce66bef97a59",
+        "NetworkingMode": "Object",
+        "NetworkOrphanedMode": "ClearOwner",
+        "NetworkOwner": null,
+        "NetworkTransferMode": "Fixed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "UseDefault": true
       }
     ],
     "Children": [],
@@ -140,13 +168,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []

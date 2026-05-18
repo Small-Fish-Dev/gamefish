@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "6b1cdeb5-84f0-4bd0-8fba-ec94965d0eb5",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "ae86",
     "Position": "0,0,0",
@@ -10,13 +10,13 @@
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 1,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 1,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Playground.EditorObject",
+        "__type": "Fishbox.EditorObject",
         "__guid": "f049abec-f55f-4ff9-8331-4dc3c016d52a",
         "__enabled": true,
         "Flags": 0,
@@ -47,16 +47,16 @@
     "Children": [
       {
         "__guid": "e526cbae-f21f-45ce-8619-f8c86a198d4f",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "car_body",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
-        "Scale": "0.45,0.45,0.45",
-        "Tags": "",
+        "Scale": "0.449999988,0.449999988,0.449999988",
+        "Tags": "dead",
         "Enabled": true,
         "NetworkMode": 1,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 1,
         "NetworkTransmit": true,
         "OwnerTransfer": 0,
@@ -69,7 +69,7 @@
             "AngularDamping": 0,
             "EnableImpactDamage": false,
             "EnhancedCcd": false,
-            "Gravity": true,
+            "Gravity": false,
             "GravityScale": 1,
             "ImpactDamage": 0,
             "LinearDamping": 0,
@@ -92,7 +92,9 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "OverrideMassCenter": false,
+            "PreciseContacts": false,
             "RigidbodyFlags": 0,
+            "SleepThreshold": 2,
             "StartAsleep": false
           },
           {
@@ -166,7 +168,7 @@
             "NetworkAutomatically": true,
             "NetworkId": "026d5eb7-bdb0-4396-9643-b6c0d04ab5de",
             "NetworkingMode": "Object",
-            "NetworkOrphanedMode": "Destroy",
+            "NetworkOrphanedMode": "ClearOwner",
             "NetworkOwner": null,
             "NetworkTransferMode": "Fixed",
             "OnComponentDestroy": null,
@@ -177,12 +179,37 @@
             "OnComponentUpdate": null,
             "SteeringAxis": "0,0,1",
             "SteeringTorque": 6
+          },
+          {
+            "__type": "GameFish.GravityModule",
+            "__guid": "ce710fda-cd93-459a-bad4-4576072454df",
+            "__enabled": true,
+            "Flags": 0,
+            "AutoApply": true,
+            "BodyGravity": false,
+            "ClassId": null,
+            "ClassName": null,
+            "IsClass": false,
+            "IsNetworkingForced": true,
+            "NetworkAutomatically": true,
+            "NetworkId": "ce710fda-cd93-459a-bad4-4576072454df",
+            "NetworkingMode": "Object",
+            "NetworkOrphanedMode": "ClearOwner",
+            "NetworkOwner": null,
+            "NetworkTransferMode": "Fixed",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "UseDefault": true
           }
         ],
         "Children": [
           {
             "__guid": "cc58ec92-56f7-4898-a7d7-dcc9710e5af0",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "Seats",
             "Position": "0,0,0",
@@ -191,7 +218,7 @@
             "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 3,
             "NetworkTransmit": true,
             "OwnerTransfer": 0,
@@ -199,16 +226,16 @@
             "Children": [
               {
                 "__guid": "b5512442-37cb-4752-96dc-e38d3690b519",
-                "__version": 1,
+                "__version": 2,
                 "Flags": 0,
                 "Name": "Driver Seat",
-                "Position": "44.44445,42.22223,35.55556",
+                "Position": "44.4444504,42.222229,35.5555611",
                 "Rotation": "0,0,0,1",
                 "Scale": "1,1,1",
                 "Tags": "seat",
                 "Enabled": true,
                 "NetworkMode": 1,
-                "NetworkInterpolation": true,
+                "NetworkFlags": 0,
                 "NetworkOrphaned": 3,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
@@ -231,7 +258,7 @@
                     "NetworkAutomatically": true,
                     "NetworkId": "e4d71557-b2dd-4ba2-8c19-d836b345de17",
                     "NetworkingMode": "Object",
-                    "NetworkOrphanedMode": "Destroy",
+                    "NetworkOrphanedMode": "ClearOwner",
                     "NetworkOwner": null,
                     "NetworkTransferMode": "Fixed",
                     "OnComponentDestroy": null,
@@ -246,16 +273,16 @@
               },
               {
                 "__guid": "9e13e58c-53d4-4562-bd41-c8d413a7c5cc",
-                "__version": 1,
+                "__version": 2,
                 "Flags": 0,
                 "Name": "Passenger Seat",
-                "Position": "44.44445,-42.22223,35.55556",
+                "Position": "44.4444504,-42.222229,35.5555611",
                 "Rotation": "0,0,0,1",
                 "Scale": "1,1,1",
                 "Tags": "seat",
                 "Enabled": true,
                 "NetworkMode": 1,
-                "NetworkInterpolation": true,
+                "NetworkFlags": 0,
                 "NetworkOrphaned": 3,
                 "NetworkTransmit": true,
                 "OwnerTransfer": 1,
@@ -278,7 +305,7 @@
                     "NetworkAutomatically": true,
                     "NetworkId": "17efa651-71d1-4497-941b-cee2eb9ff246",
                     "NetworkingMode": "Object",
-                    "NetworkOrphanedMode": "Destroy",
+                    "NetworkOrphanedMode": "ClearOwner",
                     "NetworkOwner": null,
                     "NetworkTransferMode": "Fixed",
                     "OnComponentDestroy": null,
@@ -295,16 +322,16 @@
           },
           {
             "__guid": "57fb4402-cbef-4a01-87b6-7bceed590e8e",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "Front Left Axle",
-            "Position": "191.1108,75.55535,-48.88889",
+            "Position": "191.110794,75.5553513,-48.8888893",
             "Rotation": "0.5,0.5,-0.5,0.5",
-            "Scale": "2.222222,2.222222,2.222222",
+            "Scale": "2.22222209,2.22222209,2.22222209",
             "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 0,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
@@ -313,16 +340,16 @@
           },
           {
             "__guid": "bb78b0dd-3ded-48d9-a57d-3378391a9cae",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "Front Right Axle",
-            "Position": "191.1108,-75.55571,-48.88889",
+            "Position": "191.110794,-75.5557098,-48.8888893",
             "Rotation": "0.5,0.5,-0.5,0.5",
             "Scale": "1,1,1",
             "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 0,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
@@ -331,16 +358,16 @@
           },
           {
             "__guid": "de4ee1d2-65b7-4d81-901b-93e45a9f1636",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "Back Left Axle",
-            "Position": "-111.1114,75.55547,-48.88889",
+            "Position": "-111.111397,75.5554733,-48.8888893",
             "Rotation": "0.5,0.5,-0.5,0.5",
             "Scale": "1,1,1",
             "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 0,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
@@ -349,16 +376,16 @@
           },
           {
             "__guid": "01961657-a376-4b24-af6e-6869cac4d366",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "Back Right Axle",
-            "Position": "-111.1114,-75.55579,-48.88889",
+            "Position": "-111.111397,-75.5557938,-48.8888893",
             "Rotation": "0.5,0.5,-0.5,0.5",
             "Scale": "1,1,1",
             "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 0,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
@@ -369,10 +396,52 @@
       },
       {
         "__guid": "906ac1a1-d7e6-46eb-96e9-72c078ea1cd5",
-        "__version": 1,
+        "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [],
+          "AddedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "aaf3837f-5dd9-42a4-9431-88daab129503"
+              },
+              "Parent": {
+                "Type": "GameObject",
+                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
+              },
+              "PreviousElement": {
+                "Type": "Component",
+                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
+              },
+              "ContainerProperty": "Components",
+              "IsContainerArray": true,
+              "Data": {
+                "__type": "GameFish.GravityModule",
+                "__guid": "aaf3837f-5dd9-42a4-9431-88daab129503",
+                "__enabled": true,
+                "Flags": 0,
+                "AutoApply": true,
+                "BodyGravity": false,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "aaf3837f-5dd9-42a4-9431-88daab129503",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "UseDefault": true
+              }
+            }
+          ],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -389,7 +458,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Position",
-              "Value": "85.99995,35.99994,-14"
+              "Value": "85.9999466,35.999939,-14"
             },
             {
               "Target": {
@@ -397,7 +466,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Rotation",
-              "Value": "0,0,1,0.0000001490116"
+              "Value": "0,0,1,1.49011598E-07"
             },
             {
               "Target": {
@@ -427,10 +496,52 @@
       },
       {
         "__guid": "bff60717-ea09-453d-ab95-da83c4d13fa1",
-        "__version": 1,
+        "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [],
+          "AddedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe"
+              },
+              "Parent": {
+                "Type": "GameObject",
+                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
+              },
+              "PreviousElement": {
+                "Type": "Component",
+                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
+              },
+              "ContainerProperty": "Components",
+              "IsContainerArray": true,
+              "Data": {
+                "__type": "GameFish.GravityModule",
+                "__guid": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe",
+                "__enabled": true,
+                "Flags": 0,
+                "AutoApply": true,
+                "BodyGravity": false,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "UseDefault": true
+              }
+            }
+          ],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -447,7 +558,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Position",
-              "Value": "86,-36.00019,-14"
+              "Value": "86,-36.0001907,-14"
             },
             {
               "Target": {
@@ -455,7 +566,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Rotation",
-              "Value": "-0.000000000000003552714,0.00000001053673,0.0000004470348,-0.9999999"
+              "Value": "-3.5527141E-15,1.05367297E-08,4.47034807E-07,-0.999999881"
             },
             {
               "Target": {
@@ -485,10 +596,52 @@
       },
       {
         "__guid": "31ed87b9-6f93-4405-8173-b4438cbbe1b6",
-        "__version": 1,
+        "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [],
+          "AddedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8"
+              },
+              "Parent": {
+                "Type": "GameObject",
+                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
+              },
+              "PreviousElement": {
+                "Type": "Component",
+                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
+              },
+              "ContainerProperty": "Components",
+              "IsContainerArray": true,
+              "Data": {
+                "__type": "GameFish.GravityModule",
+                "__guid": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8",
+                "__enabled": true,
+                "Flags": 0,
+                "AutoApply": true,
+                "BodyGravity": false,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "UseDefault": true
+              }
+            }
+          ],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -505,7 +658,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Position",
-              "Value": "-50.00009,35.99996,-14"
+              "Value": "-50.0000916,35.9999619,-14"
             },
             {
               "Target": {
@@ -513,7 +666,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Rotation",
-              "Value": "0,0,1,0.0000001192093"
+              "Value": "0,0,1,1.19209304E-07"
             },
             {
               "Target": {
@@ -543,10 +696,52 @@
       },
       {
         "__guid": "71a201ea-8231-47b1-8258-7c6c055187e3",
-        "__version": 1,
+        "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [],
+          "AddedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "4641d740-3e06-4b67-a931-a71f525ebf9e"
+              },
+              "Parent": {
+                "Type": "GameObject",
+                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
+              },
+              "PreviousElement": {
+                "Type": "Component",
+                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
+              },
+              "ContainerProperty": "Components",
+              "IsContainerArray": true,
+              "Data": {
+                "__type": "GameFish.GravityModule",
+                "__guid": "4641d740-3e06-4b67-a931-a71f525ebf9e",
+                "__enabled": true,
+                "Flags": 0,
+                "AutoApply": true,
+                "BodyGravity": false,
+                "ClassId": null,
+                "ClassName": null,
+                "IsClass": false,
+                "IsNetworkingForced": true,
+                "NetworkAutomatically": true,
+                "NetworkId": "4641d740-3e06-4b67-a931-a71f525ebf9e",
+                "NetworkingMode": "Object",
+                "NetworkOrphanedMode": "ClearOwner",
+                "NetworkOwner": null,
+                "NetworkTransferMode": "Fixed",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "UseDefault": true
+              }
+            }
+          ],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -563,7 +758,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Position",
-              "Value": "-49.99979,-36.00016,-14"
+              "Value": "-49.9997902,-36.0001602,-14"
             },
             {
               "Target": {
@@ -571,7 +766,7 @@
                 "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
               },
               "Property": "Rotation",
-              "Value": "-0.000000000000003552714,0.00000001053673,0.0000004768372,-0.9999999"
+              "Value": "-3.5527141E-15,1.05367297E-08,4.76837215E-07,-0.999999881"
             },
             {
               "Target": {
@@ -609,13 +804,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []
