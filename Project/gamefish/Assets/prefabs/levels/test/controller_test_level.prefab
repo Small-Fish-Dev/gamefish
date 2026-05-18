@@ -19,7 +19,7 @@
       {
         "__guid": "b41db84f-8ebe-4598-a9e8-cc768d816cba",
         "__version": 2,
-        "Flags": 32,
+        "Flags": 0,
         "Name": "Map",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
@@ -2486,6 +2486,30 @@
             "Children": []
           }
         ]
+      },
+      {
+        "__guid": "4ac6e705-ad54-4a6b-8c74-993cab38f5c0",
+        "__version": 2,
+        "__Prefab": "prefabs/editing/tools/voxel/voxel_world.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [],
+          "RemovedObjects": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "GameObject",
+                "IdValue": "2d0ddc99-76b3-4bc1-881a-109a9bd26b02"
+              },
+              "Property": "Name",
+              "Value": "Voxel World"
+            }
+          ],
+          "MovedObjects": []
+        },
+        "__PrefabIdToInstanceId": {
+          "2d0ddc99-76b3-4bc1-881a-109a9bd26b02": "4ac6e705-ad54-4a6b-8c74-993cab38f5c0",
+          "a96e820a-e828-4478-9dea-97964fde0e5d": "7952fa89-06af-43d1-9130-b2abe31447a1"
+        }
       }
     ],
     "__properties": {
