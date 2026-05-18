@@ -19,7 +19,7 @@ public abstract partial class ControllerPhysics : ControllerModule
 
 	public override Vector3 Center => Controller?.Center ?? TraceOrigin.Position;
 
-	/// <inheritdoc cref="PawnController.Origin" />
+	/// <inheritdoc cref="PawnModule.Origin" />
 	public Transform Origin
 	{
 		get => Controller?.Origin ?? Pawn?.WorldTransform ?? WorldTransform;

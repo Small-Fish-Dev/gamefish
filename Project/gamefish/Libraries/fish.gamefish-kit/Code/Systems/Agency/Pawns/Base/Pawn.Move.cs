@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class Pawn : IMove
+partial class Pawn : IMove, IGravity
 {
 	/// <summary>
 	/// The component responsible for using input to aim and move.
@@ -15,6 +15,8 @@ partial class Pawn : IMove
 	}
 
 	protected PawnController _controller;
+
+	public virtual Vector3 Gravity => Controller?.Gravity ?? default;
 
 	public override Vector3 Velocity
 	{
