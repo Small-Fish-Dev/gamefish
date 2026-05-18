@@ -69,7 +69,7 @@
             "AngularDamping": 0,
             "EnableImpactDamage": false,
             "EnhancedCcd": false,
-            "Gravity": false,
+            "Gravity": true,
             "GravityScale": 1,
             "ImpactDamage": 0,
             "LinearDamping": 0,
@@ -186,7 +186,6 @@
             "__enabled": true,
             "Flags": 0,
             "AutoApply": true,
-            "BodyGravity": false,
             "ClassId": null,
             "ClassName": null,
             "IsClass": false,
@@ -399,49 +398,7 @@
         "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [
-            {
-              "Id": {
-                "Type": "Component",
-                "IdValue": "aaf3837f-5dd9-42a4-9431-88daab129503"
-              },
-              "Parent": {
-                "Type": "GameObject",
-                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
-              },
-              "PreviousElement": {
-                "Type": "Component",
-                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
-              },
-              "ContainerProperty": "Components",
-              "IsContainerArray": true,
-              "Data": {
-                "__type": "GameFish.GravityModule",
-                "__guid": "aaf3837f-5dd9-42a4-9431-88daab129503",
-                "__enabled": true,
-                "Flags": 0,
-                "AutoApply": true,
-                "BodyGravity": false,
-                "ClassId": null,
-                "ClassName": null,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "aaf3837f-5dd9-42a4-9431-88daab129503",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "UseDefault": true
-              }
-            }
-          ],
+          "AddedObjects": [],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -476,7 +433,7 @@
               "Property": "Body",
               "Value": {
                 "_type": "gameobject",
-                "go": "57fb4402-cbef-4a01-87b6-7bceed590e8e"
+                "go": "e526cbae-f21f-45ce-8619-f8c86a198d4f"
               }
             }
           ],
@@ -491,7 +448,9 @@
           "3db00fd6-e4c5-4ba7-be27-3a0adf3f53ed": "ce5b85b8-43af-4073-979a-12945d06d37b",
           "bb150ebc-c854-4c08-aa51-b1df61fe0f75": "0de66367-11bc-4afc-900e-a55742689b6b",
           "2611741f-26f6-4008-9602-59e476a19d66": "7839bb97-7447-432e-a036-dbeb95814444",
-          "abee01bf-2a16-4179-9e7b-108d43bf902f": "15b428d9-a536-4d7b-9908-3fd26bafc4b0"
+          "abee01bf-2a16-4179-9e7b-108d43bf902f": "15b428d9-a536-4d7b-9908-3fd26bafc4b0",
+          "8ef66961-2fa5-4fbe-97d5-2f82a134b577": "72a65a19-4c54-4df7-80b8-7619b1b270ae",
+          "fb738def-4e37-4b39-9bd0-ed6600ea460b": "28d47bd1-fd32-42c4-a527-e2aae22ff336"
         }
       },
       {
@@ -499,49 +458,7 @@
         "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [
-            {
-              "Id": {
-                "Type": "Component",
-                "IdValue": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe"
-              },
-              "Parent": {
-                "Type": "GameObject",
-                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
-              },
-              "PreviousElement": {
-                "Type": "Component",
-                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
-              },
-              "ContainerProperty": "Components",
-              "IsContainerArray": true,
-              "Data": {
-                "__type": "GameFish.GravityModule",
-                "__guid": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe",
-                "__enabled": true,
-                "Flags": 0,
-                "AutoApply": true,
-                "BodyGravity": false,
-                "ClassId": null,
-                "ClassName": null,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "6947b0c7-bc72-4762-bd04-fbb673ad8bbe",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "UseDefault": true
-              }
-            }
-          ],
+          "AddedObjects": [],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -576,7 +493,7 @@
               "Property": "Body",
               "Value": {
                 "_type": "gameobject",
-                "go": "bb78b0dd-3ded-48d9-a57d-3378391a9cae"
+                "go": "e526cbae-f21f-45ce-8619-f8c86a198d4f"
               }
             }
           ],
@@ -591,7 +508,9 @@
           "3db00fd6-e4c5-4ba7-be27-3a0adf3f53ed": "56ae84cd-bdf2-4c9a-819d-2b2589c5e082",
           "bb150ebc-c854-4c08-aa51-b1df61fe0f75": "f5426f1b-4945-4daa-a67d-170e281f11ba",
           "2611741f-26f6-4008-9602-59e476a19d66": "a0c30214-6b8c-459b-b984-f268346473b4",
-          "abee01bf-2a16-4179-9e7b-108d43bf902f": "7df3bf71-4050-439e-a2e6-ce632d3e026f"
+          "abee01bf-2a16-4179-9e7b-108d43bf902f": "7df3bf71-4050-439e-a2e6-ce632d3e026f",
+          "8ef66961-2fa5-4fbe-97d5-2f82a134b577": "1918ec5f-509c-403a-9911-605e36b2cb91",
+          "fb738def-4e37-4b39-9bd0-ed6600ea460b": "97ad4b7e-4e05-4bfb-8954-eddcae01c9d1"
         }
       },
       {
@@ -599,49 +518,7 @@
         "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [
-            {
-              "Id": {
-                "Type": "Component",
-                "IdValue": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8"
-              },
-              "Parent": {
-                "Type": "GameObject",
-                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
-              },
-              "PreviousElement": {
-                "Type": "Component",
-                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
-              },
-              "ContainerProperty": "Components",
-              "IsContainerArray": true,
-              "Data": {
-                "__type": "GameFish.GravityModule",
-                "__guid": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8",
-                "__enabled": true,
-                "Flags": 0,
-                "AutoApply": true,
-                "BodyGravity": false,
-                "ClassId": null,
-                "ClassName": null,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "14e7b955-1148-41f7-b5e4-ec7416ddfdf8",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "UseDefault": true
-              }
-            }
-          ],
+          "AddedObjects": [],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -676,7 +553,7 @@
               "Property": "Body",
               "Value": {
                 "_type": "gameobject",
-                "go": "de4ee1d2-65b7-4d81-901b-93e45a9f1636"
+                "go": "e526cbae-f21f-45ce-8619-f8c86a198d4f"
               }
             }
           ],
@@ -691,7 +568,9 @@
           "3db00fd6-e4c5-4ba7-be27-3a0adf3f53ed": "4dafbc2f-c77a-44fc-97a8-19d269ef2cb6",
           "bb150ebc-c854-4c08-aa51-b1df61fe0f75": "eb80f189-0037-48d2-b4e2-d7e01007c0a5",
           "2611741f-26f6-4008-9602-59e476a19d66": "e7452c49-1e90-4306-888c-e7d6693e754d",
-          "abee01bf-2a16-4179-9e7b-108d43bf902f": "fe9f9586-a4f9-45fe-8003-c84047b5a49c"
+          "abee01bf-2a16-4179-9e7b-108d43bf902f": "fe9f9586-a4f9-45fe-8003-c84047b5a49c",
+          "8ef66961-2fa5-4fbe-97d5-2f82a134b577": "ddca2b3b-a38a-4b40-b37e-1193ab172600",
+          "fb738def-4e37-4b39-9bd0-ed6600ea460b": "2d5a99d8-2b96-4dcb-9d90-6a395bd3a91c"
         }
       },
       {
@@ -699,49 +578,7 @@
         "__version": 2,
         "__Prefab": "prefabs/editing/tools/vehicle/wheel_default.prefab",
         "__PrefabInstancePatch": {
-          "AddedObjects": [
-            {
-              "Id": {
-                "Type": "Component",
-                "IdValue": "4641d740-3e06-4b67-a931-a71f525ebf9e"
-              },
-              "Parent": {
-                "Type": "GameObject",
-                "IdValue": "ce3e6000-c043-4f80-b619-8e2bc06507b3"
-              },
-              "PreviousElement": {
-                "Type": "Component",
-                "IdValue": "f0009f33-4a6e-4dc3-ba18-1423baaf3c89"
-              },
-              "ContainerProperty": "Components",
-              "IsContainerArray": true,
-              "Data": {
-                "__type": "GameFish.GravityModule",
-                "__guid": "4641d740-3e06-4b67-a931-a71f525ebf9e",
-                "__enabled": true,
-                "Flags": 0,
-                "AutoApply": true,
-                "BodyGravity": false,
-                "ClassId": null,
-                "ClassName": null,
-                "IsClass": false,
-                "IsNetworkingForced": true,
-                "NetworkAutomatically": true,
-                "NetworkId": "4641d740-3e06-4b67-a931-a71f525ebf9e",
-                "NetworkingMode": "Object",
-                "NetworkOrphanedMode": "ClearOwner",
-                "NetworkOwner": null,
-                "NetworkTransferMode": "Fixed",
-                "OnComponentDestroy": null,
-                "OnComponentDisabled": null,
-                "OnComponentEnabled": null,
-                "OnComponentFixedUpdate": null,
-                "OnComponentStart": null,
-                "OnComponentUpdate": null,
-                "UseDefault": true
-              }
-            }
-          ],
+          "AddedObjects": [],
           "RemovedObjects": [],
           "PropertyOverrides": [
             {
@@ -776,7 +613,7 @@
               "Property": "Body",
               "Value": {
                 "_type": "gameobject",
-                "go": "01961657-a376-4b24-af6e-6869cac4d366"
+                "go": "e526cbae-f21f-45ce-8619-f8c86a198d4f"
               }
             }
           ],
@@ -791,7 +628,9 @@
           "3db00fd6-e4c5-4ba7-be27-3a0adf3f53ed": "1daff1ca-310e-4b04-8164-636696e14d66",
           "bb150ebc-c854-4c08-aa51-b1df61fe0f75": "7324a55b-de67-4579-8768-ac4971281526",
           "2611741f-26f6-4008-9602-59e476a19d66": "47fafd6c-631b-43c5-9b19-8e344073ee9a",
-          "abee01bf-2a16-4179-9e7b-108d43bf902f": "f346c452-60ae-4860-9f04-ade675899412"
+          "abee01bf-2a16-4179-9e7b-108d43bf902f": "f346c452-60ae-4860-9f04-ade675899412",
+          "8ef66961-2fa5-4fbe-97d5-2f82a134b577": "36368679-f1d4-4687-bec2-cab3d6b16fdb",
+          "fb738def-4e37-4b39-9bd0-ed6600ea460b": "62dab00b-331b-4eaa-9cdc-3eb71c41451a"
         }
       }
     ],
