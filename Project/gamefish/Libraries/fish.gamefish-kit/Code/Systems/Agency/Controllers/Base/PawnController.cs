@@ -96,6 +96,14 @@ public abstract partial class PawnController : PawnModule
 
 	protected ControllerPhysics _phys;
 
+	/// <summary>
+	/// If true: this controller will auto-apply its own gravity.
+	/// </summary>
+	[Property]
+	[Title( "Gravity" )]
+	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	public virtual bool GravityEnabled { get; set; } = true;
+
 	public virtual Vector3 Velocity
 	{
 		get => Physics?.Velocity ?? default;
