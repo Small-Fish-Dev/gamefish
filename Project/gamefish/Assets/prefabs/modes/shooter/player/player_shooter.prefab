@@ -44,13 +44,6 @@
           "component_type": "PawnEquipment"
         },
         "Health": 100,
-        "InspectorEyeTraceIgnore": "water",
-        "InspectorViewRenderer": {
-          "_type": "component",
-          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
-          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ShooterViewRenderer"
-        },
         "IsAlive": true,
         "IsClass": false,
         "IsDestructible": true,
@@ -75,6 +68,22 @@
           "component_id": "c7391ef4-d529-4db4-9b20-71271e0abec5",
           "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
           "component_type": "PawnView"
+        },
+        "VisionTraceSettings": {
+          "Shape": "Line",
+          "ShapeRotation": "0,0,0,0",
+          "Box": {
+            "Mins": "0,0,0",
+            "Maxs": "0,0,0"
+          },
+          "Radius": 0,
+          "Height": 0,
+          "Capsule": {
+            "CenterA": "0,0,0",
+            "CenterB": "0,0,0",
+            "Radius": 0
+          },
+          "Filter": "data/traces/pawn_view.trfilter"
         }
       },
       {
@@ -274,8 +283,6 @@
             "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
-            "CollisionHitTags": "solid",
-            "CollisionIgnoreTags": "pawn",
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
             "DefaultCollisionRadius": 8,
@@ -679,7 +686,7 @@
             "Children": []
           },
           {
-            "__guid": "bb5151f9-6557-4f2b-9a62-1876f8a565ef",
+            "__guid": "cd60226a-457f-422a-b47f-8468b7792c36",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -696,7 +703,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "c1b1267c-0150-4eb6-8d92-d60c68a347df",
+                "__guid": "22e7b627-d5d7-4fb5-bd87-119c3ba39dbb",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

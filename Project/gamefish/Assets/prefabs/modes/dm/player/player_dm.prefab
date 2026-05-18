@@ -43,7 +43,6 @@
           "go": "4392db66-be79-4a96-9f50-66fb797af589",
           "component_type": "PawnEquipment"
         },
-        "EyeTraceIgnore": "water",
         "Health": 100,
         "IsAlive": true,
         "IsClass": false,
@@ -70,11 +69,21 @@
           "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
           "component_type": "PawnView"
         },
-        "ViewRenderer": {
-          "_type": "component",
-          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
-          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ViewRenderer"
+        "VisionTraceSettings": {
+          "Shape": "Line",
+          "ShapeRotation": "0,0,0,1",
+          "Box": {
+            "Mins": "-8,-8,-8",
+            "Maxs": "8,8,8"
+          },
+          "Radius": 8,
+          "Height": 32,
+          "Capsule": {
+            "CenterA": "12,0,0",
+            "CenterB": "-12,0,0",
+            "Radius": 8
+          },
+          "Filter": "data/traces/pawn_view.trfilter"
         }
       },
       {
@@ -83,8 +92,14 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 10,
+        "AimPitchClamping": true,
+        "AimPitchRange": {
+          "Min": -89.9,
+          "Max": 89.9
+        },
+        "AimRollResetSpeed": 10,
+        "AirAcceleration": 3,
         "AllowAiming": true,
-        "AllowMovement": true,
         "ClassId": "player_fps",
         "ClassName": null,
         "EyeMoveSmoothing": 0.15,
@@ -96,7 +111,8 @@
         "InspectorGroundNormal": "0,0,1",
         "InspectorIsGrounded": false,
         "IsClass": false,
-        "IsNetworkingForced": false,
+        "IsNetworkingForced": true,
+        "MovementEnabled": true,
         "MoveSpeed": 250,
         "NetworkAutomatically": true,
         "NetworkId": "4e886827-8cd3-4b7b-91a3-bafd4e643c61",
@@ -110,18 +126,13 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "PitchClamping": true,
-        "PitchRange": {
-          "Min": -89.9,
-          "Max": 89.9
-        },
+        "Physics": null,
         "PlayerController": {
           "_type": "component",
           "component_id": "edc765a1-6ab4-4b78-a07d-58125b29947f",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
           "component_type": "PlayerController"
-        },
-        "SkinWidth": 0.2
+        }
       },
       {
         "__type": "Sandbox.PlayerController",
@@ -202,7 +213,7 @@
         "Flags": 0,
         "AngularDamping": 1,
         "EnableImpactDamage": true,
-        "EnhancedCcd": false,
+        "EnhancedCcd": true,
         "Gravity": true,
         "GravityScale": 1,
         "ImpactDamage": 0,
@@ -226,7 +237,9 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideMassCenter": true,
+        "PreciseContacts": true,
         "RigidbodyFlags": "DisableCollisionSounds",
+        "SleepThreshold": 2,
         "StartAsleep": false
       },
       {
@@ -302,8 +315,6 @@
             "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
-            "CollisionHitTags": "solid",
-            "CollisionIgnoreTags": "pawn",
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
             "DefaultCollisionRadius": 8,
@@ -313,6 +324,7 @@
               "go": "0d477140-245e-4027-8796-e93691384711",
               "component_type": "FirstPersonViewMode"
             },
+            "InspectorRecoil": "0,0,0,1",
             "IsClass": false,
             "IsNetworkingForced": true,
             "Mode": {
@@ -334,6 +346,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "RecoilResetSpeed": 15,
             "Relative": {
               "Position": "0,0,0",
               "Rotation": "0,0,0,0"
@@ -381,20 +394,20 @@
                 "NetworkOrphanedMode": "ClearOwner",
                 "NetworkOwner": null,
                 "NetworkTransferMode": "Fixed",
-                "Offset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
-                },
+                "OffsetSpeed": 15,
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "Speed": 15,
-                "TargetOffset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
+                "ViewSwayEnabled": true,
+                "ViewSwayVelocityEnabled": true,
+                "ViewSwayVelocityExponent": 0.7,
+                "ViewSwayVelocityLength": 150,
+                "ViewSwayVelocityRange": {
+                  "Min": 10,
+                  "Max": 1000
                 }
               },
               {
@@ -486,6 +499,7 @@
                     "AllowFirstPerson": true,
                     "ClassId": null,
                     "ClassName": null,
+                    "InspectorInFirstPerson": false,
                     "IsClass": false,
                     "IsNetworkingForced": true,
                     "NetworkAutomatically": true,
@@ -534,6 +548,7 @@
                       "Max": 300
                     },
                     "InitialDistance": 150,
+                    "InspectorInFirstPerson": true,
                     "IsClass": false,
                     "IsNetworkingForced": true,
                     "NetworkAutomatically": true,
@@ -749,7 +764,7 @@
             "Children": []
           },
           {
-            "__guid": "0c5d1c44-67e3-45f4-8844-1ea9e6442800",
+            "__guid": "e00a5b81-4a34-4f63-83e7-f2222069d5b4",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -766,7 +781,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "59d65255-dfac-4259-8752-3c46dba4037f",
+                "__guid": "8b3b192d-c1fe-4210-97a7-4aa569b369a8",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

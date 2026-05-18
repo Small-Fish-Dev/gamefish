@@ -1,0 +1,19 @@
+{
+  "UseHitboxes": true,
+  "UseTagWhitelist": false,
+  "TagsHit": {
+    "Enabled": true,
+    "Tags": "solid"
+  },
+  "TagsIgnore": {
+    "Enabled": true,
+    "Tags": "trigger,dead"
+  },
+  "TagsRequire": {
+    "Enabled": false,
+    "Tags": ""
+  },
+  "TriggerType": "Ignore",
+  "__references": [],
+  "__version": 0
+}

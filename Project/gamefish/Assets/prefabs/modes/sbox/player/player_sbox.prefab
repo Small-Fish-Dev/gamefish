@@ -43,7 +43,6 @@
           "go": "4392db66-be79-4a96-9f50-66fb797af589",
           "component_type": "PawnEquipment"
         },
-        "EyeTraceIgnore": "water",
         "Health": 100,
         "IsAlive": true,
         "IsClass": false,
@@ -70,11 +69,21 @@
           "go": "503c78b4-703c-4d05-8fba-8f937bb7ffc0",
           "component_type": "PawnView"
         },
-        "ViewRenderer": {
-          "_type": "component",
-          "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
-          "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
-          "component_type": "ViewRenderer"
+        "VisionTraceSettings": {
+          "Shape": "Line",
+          "ShapeRotation": "0,0,0,1",
+          "Box": {
+            "Mins": "-8,-8,-8",
+            "Maxs": "8,8,8"
+          },
+          "Radius": 8,
+          "Height": 32,
+          "Capsule": {
+            "CenterA": "12,0,0",
+            "CenterB": "-12,0,0",
+            "Radius": 8
+          },
+          "Filter": "data/traces/pawn_view.trfilter"
         }
       },
       {
@@ -83,6 +92,12 @@
         "__enabled": true,
         "Flags": 0,
         "Acceleration": 15,
+        "AimPitchClamping": true,
+        "AimPitchRange": {
+          "Min": -89.9,
+          "Max": 89.9
+        },
+        "AimRollResetSpeed": 10,
         "AirAcceleration": 10,
         "AllowAiming": true,
         "AllowSliding": true,
@@ -107,6 +122,7 @@
         "IsNetworkingForced": true,
         "IsSliding": false,
         "IsSprintDefault": false,
+        "JumpCooldown": 0.1,
         "JumpImpulse": 400,
         "JumpingEnabled": true,
         "JumpInput": {
@@ -135,11 +151,6 @@
           "component_id": "f09be569-b333-48c8-b967-16f51b174cca",
           "go": "26d08fde-1687-46ac-ae0e-02eed92368eb",
           "component_type": "BodyPhysics"
-        },
-        "PitchClamping": true,
-        "PitchRange": {
-          "Min": -89.9,
-          "Max": 89.9
         },
         "SlideAcceleration": 1500,
         "SlideMinSpeed": 400,
@@ -285,7 +296,9 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "OverrideMassCenter": false,
+        "PreciseContacts": false,
         "RigidbodyFlags": "DisableCollisionSounds",
+        "SleepThreshold": 2,
         "StartAsleep": false
       }
     ],
@@ -316,8 +329,6 @@
             "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
-            "CollisionHitTags": "solid",
-            "CollisionIgnoreTags": "pawn,seat",
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "View",
             "DefaultCollisionRadius": 5,
@@ -327,6 +338,7 @@
               "go": "7fb7d7db-219f-4d0b-b904-32044e72d4e1",
               "component_type": "ThirdPersonViewMode"
             },
+            "InspectorRecoil": "0,0,0,1",
             "IsClass": false,
             "IsNetworkingForced": true,
             "Mode": {
@@ -348,6 +360,7 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "RecoilResetSpeed": 15,
             "Relative": {
               "Position": "0,0,0",
               "Rotation": "0,0,0,0"
@@ -395,20 +408,20 @@
                 "NetworkOrphanedMode": "ClearOwner",
                 "NetworkOwner": null,
                 "NetworkTransferMode": "Fixed",
-                "Offset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
-                },
+                "OffsetSpeed": 15,
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "Speed": 15,
-                "TargetOffset": {
-                  "Position": "0,0,0",
-                  "Rotation": "0,0,0,0"
+                "ViewSwayEnabled": true,
+                "ViewSwayVelocityEnabled": true,
+                "ViewSwayVelocityExponent": 0.7,
+                "ViewSwayVelocityLength": 150,
+                "ViewSwayVelocityRange": {
+                  "Min": 10,
+                  "Max": 1000
                 }
               },
               {
@@ -488,6 +501,7 @@
                   "Max": 500
                 },
                 "InitialDistance": 0,
+                "InspectorInFirstPerson": false,
                 "IsClass": false,
                 "IsNetworkingForced": true,
                 "NetworkAutomatically": true,
@@ -701,7 +715,7 @@
             "Children": []
           },
           {
-            "__guid": "4165059c-7fb3-4f6f-b004-933226af0689",
+            "__guid": "98832e41-b004-4e86-94ea-ff14edd97f8e",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -718,7 +732,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "13802aa1-0856-4b79-a07c-6bc6f8df2a6f",
+                "__guid": "362d93ca-a641-4345-a6b6-3ef6350ec75e",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,
@@ -952,12 +966,14 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Fishbox.PlayerGrappleModule",
+            "__type": "GameFish.PlayerGrappleModule",
             "__guid": "125a674f-3cb8-4ad8-b996-f296cdfa4691",
             "__enabled": true,
             "Flags": 0,
             "ClassId": null,
             "ClassName": null,
+            "DistanceExtension": true,
+            "DistanceRetraction": true,
             "Elasticity": 20,
             "ExtendButton": "Duck",
             "ExtendSpeed": 700,
@@ -967,12 +983,6 @@
             "LengthRange": {
               "Min": 16,
               "Max": 4096
-            },
-            "Line": {
-              "_type": "component",
-              "component_id": "2741d832-044d-47ca-a87f-fb5e0bde148f",
-              "go": "29adc2e9-c9c7-4085-8763-e191501cab3a",
-              "component_type": "LineRenderer"
             },
             "NetworkAutomatically": true,
             "NetworkId": "125a674f-3cb8-4ad8-b996-f296cdfa4691",
@@ -986,6 +996,8 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
+            "PullSpeed": 500,
+            "PullSpeedLimit": 500,
             "RetractButton": "Jump",
             "RetractSpeed": 300,
             "SlackLimit": 50,

@@ -1,16 +1,16 @@
 {
   "RootObject": {
     "__guid": "3f0faaed-c487-4bb8-abd0-c3e271085bd9",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "spectator",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "spectator,team_player",
+    "Tags": "spectator,team_player,dead",
     "Enabled": true,
     "NetworkMode": 1,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 1,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
@@ -30,7 +30,6 @@
         "DebugLogging": false,
         "DescendAction": "Duck",
         "Equipment": null,
-        "EyeTraceIgnore": "water",
         "FlyingEnabled": true,
         "FlyingFriction": {
           "Value": 6,
@@ -68,6 +67,7 @@
         "Spectating": null,
         "StopSpectatingAction": "Reload",
         "Team": "data/teams/player.team",
+        "UseDistance": 120,
         "Velocity": "0,0,0",
         "View": {
           "_type": "component",
@@ -75,13 +75,28 @@
           "go": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
           "component_type": "SpectatorView"
         },
-        "ViewRenderer": null
+        "VisionTraceSettings": {
+          "Shape": "Line",
+          "ShapeRotation": "0,0,0,1",
+          "Box": {
+            "Mins": "-8,-8,-8",
+            "Maxs": "8,8,8"
+          },
+          "Radius": 8,
+          "Height": 32,
+          "Capsule": {
+            "CenterA": "12,0,0",
+            "CenterB": "-12,0,0",
+            "Radius": 8
+          },
+          "Filter": "data/traces/pawn_view.trfilter"
+        }
       }
     ],
     "Children": [
       {
         "__guid": "d89c2fa0-e3b0-4852-8cf5-5081ab716a9b",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "View",
         "Position": "0,0,0",
@@ -90,7 +105,7 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 1,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -106,12 +121,11 @@
             "ClassName": null,
             "CollideOwned": false,
             "Collision": true,
-            "CollisionHitTags": "solid",
-            "CollisionIgnoreTags": "pawn",
             "CycleModeBackwardAction": null,
             "CycleModeForwardAction": "Jump",
             "DefaultCollisionRadius": 8,
             "FirstPersonMode": null,
+            "InspectorRecoil": "0,0,0,1",
             "IsClass": false,
             "IsNetworkingForced": true,
             "Mode": null,
@@ -129,6 +143,7 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "OrbitingResetDelay": 3,
+            "RecoilResetSpeed": 15,
             "Relative": {
               "Position": "0,0,0",
               "Rotation": "0,0,0,0"
@@ -141,7 +156,7 @@
         "Children": [
           {
             "__guid": "bde78980-4c59-4322-985e-82f1a5e0b812",
-            "__version": 1,
+            "__version": 2,
             "Flags": 0,
             "Name": "View Model",
             "Position": "0,0,0",
@@ -150,7 +165,7 @@
             "Tags": "",
             "Enabled": false,
             "NetworkMode": 2,
-            "NetworkInterpolation": true,
+            "NetworkFlags": 0,
             "NetworkOrphaned": 0,
             "NetworkTransmit": true,
             "OwnerTransfer": 1,
@@ -215,13 +230,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []
