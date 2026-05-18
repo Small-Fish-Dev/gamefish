@@ -66,36 +66,44 @@ public partial class GravityField : ModuleEntity, Component.ITriggerListener
 	public virtual float GetPriority( GravityModule g )
 		=> Priority;
 
-	protected static bool TryFindGravityModule( GameObject obj, out GravityModule g )
+	protected static bool TryFindGravityModules( GameObject obj, out IEnumerable<GravityModule> gms )
 	{
-		g = null;
+		gms = null;
 
 		if ( !obj.IsValid() )
 			return false;
 
-		return obj.Components.TryGet( out g, FindMode.EnabledInSelf | FindMode.InChildren );
+		gms = obj.Components.GetAll<GravityModule>( FindMode.EnabledInSelf | FindMode.InChildren );
+
+		return gms?.Any() is true;
 	}
 
 	void ITriggerListener.OnTriggerEnter( GameObject other )
 	{
-		if ( !TryFindGravityModule( other, out var g ) )
+		if ( !TryFindGravityModules( other, out var gms ) )
 			return;
 
-		if ( DebugLogging )
-			this.Log( $"Enter: {g?.Parent ?? g}" );
+		foreach ( var g in gms )
+		{
+			if ( DebugLogging )
+				this.Log( $"Enter: {g?.Parent ?? g}" );
 
-		OnEnter( g );
+			OnEnter( g );
+		}
 	}
 
 	void ITriggerListener.OnTriggerExit( GameObject other )
 	{
-		if ( !TryFindGravityModule( other, out var g ) )
+		if ( !TryFindGravityModules( other, out var gms ) )
 			return;
 
-		if ( DebugLogging )
-			this.Log( $"Exit: {g?.Parent ?? g}" );
+		foreach ( var g in gms )
+		{
+			if ( DebugLogging )
+				this.Log( $"Exit: {g?.Parent ?? g}" );
 
-		OnExit( g );
+			OnExit( g );
+		}
 	}
 
 	protected virtual void OnEnter( GravityModule g )
