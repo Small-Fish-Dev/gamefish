@@ -11,14 +11,14 @@ public class ShooterGravityModule : GravityModule
 
 		Velocity += grav * deltaTime;
 
+		var gravUp = -grav.Normal;
+
+		if ( !Field.IsValid() )
+			gravUp = -(Scene?.PhysicsWorld?.Gravity.Normal ?? Vector3.Up);
+
 		var sc = (Parent as Pawn)?.Controller as ShooterController;
 
-		if ( sc.IsValid() )
-		{
-			var gravUp = -grav.Normal;
-
-			if ( sc.Up != gravUp )
-				sc.TryReorient( gravUp );
-		}
+		if ( sc.IsValid() && sc.Up != gravUp )
+			sc.TryReorient( gravUp );
 	}
 }
