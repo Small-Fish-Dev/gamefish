@@ -54,6 +54,6 @@ partial class Actor
 		}
 
 		SinceTargetDetected = 0f;
-		LastKnownTargetPosition = GetTargetOrigin( target );
+		LastKnownTargetPosition = GetTargetOrigin( target ) ?? at;
 	}
 }

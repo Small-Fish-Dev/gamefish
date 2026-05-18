@@ -180,7 +180,7 @@ partial class PawnController
 	/// Reduces velocity over time.
 	/// You typically apply this before <see cref="ApplyAcceleration"/>.
 	/// </summary>
-	protected virtual void ApplyFriction( in float deltaTime )
+	public virtual void ApplyFriction( in float deltaTime )
 	{
 		// Apply only horizontal friction while grounded.
 		if ( IsGrounded )
@@ -200,7 +200,7 @@ partial class PawnController
 	/// <summary>
 	/// Adds intended velocity.
 	/// </summary>
-	protected virtual void ApplyAcceleration( in float deltaTime )
+	public virtual void ApplyAcceleration( in float deltaTime )
 	{
 		var accel = IsGrounded ? Acceleration : AirAcceleration;
 		var addVel = WishVelocity * accel * deltaTime;
@@ -218,7 +218,7 @@ partial class PawnController
 		Velocity = hVel + upVel;
 	}
 
-	protected virtual void ApplyGravity( in float deltaTime )
+	public virtual void ApplyGravity( in float deltaTime )
 	{
 		Physics?.ApplyGravity( Gravity, in deltaTime );
 	}

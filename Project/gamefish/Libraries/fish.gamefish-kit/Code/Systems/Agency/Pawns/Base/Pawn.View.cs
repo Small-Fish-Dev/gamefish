@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 partial class Pawn
@@ -6,45 +8,29 @@ partial class Pawn
 	/// The central view manager for the pawn.
 	/// </summary>
 	[Property]
+	[Title( "Module" )]
 	[Feature( PAWN ), Group( VIEW )]
 	public virtual PawnView View
 	{
-		get => _view.IsValid() ? _view
-			: _view = Components?.Get<PawnView>( FindMode.EverythingInSelfAndDescendants );
-
-		set { _view = value; }
+		get => this?.GetCached( ref _view );
+		set => _view = value;
 	}
 
 	protected PawnView _view;
 
 	[Property]
-	[Title( "View Renderer" )]
+	[Title( "Renderer" )]
+	[JsonIgnore, ReadOnly]
 	[Feature( PAWN ), Group( VIEW )]
 	protected ViewRenderer InspectorViewRenderer => ViewRenderer;
 
 	public virtual ViewRenderer ViewRenderer => View?.ViewRenderer;
 
-	/// <summary> The base vision trace will ignore objects with these tags. </summary>
 	[Property]
-	[Title( "Eye Trace Ignore" )]
+	[InlineEditor]
+	[Title( "Vision Trace" )]
 	[Feature( PAWN ), Group( VIEW )]
-	protected TagSet InspectorEyeTraceIgnore => EyeTraceIgnore;
-
-	public virtual TagSet EyeTraceIgnore { get; set; } = ["water"];
-
-	/// <summary>
-	/// Could be an animated model or a sprite.
-	/// Used to fade model(s) in/out from distance.
-	/// </summary>
-	[Property]
-	[Feature( PAWN ), Group( BODY )]
-	public virtual PawnBody Body
-	{
-		get => this.GetCached( ref _body );
-		set => _body = value;
-	}
-
-	protected PawnBody _body;
+	public TraceSettings VisionTraceSettings { get; set; } = new( TraceShape.Line );
 
 	/// <summary>
 	/// The world-space eye position.
@@ -58,11 +44,8 @@ partial class Pawn
 
 			return WorldPosition;
 		}
-		set
-		{
-			if ( Controller.IsValid() )
-				Controller.SetLocalEyePosition( WorldTransform.PointToLocal( value ) );
-		}
+
+		set => Controller?.SetLocalEyePosition( WorldTransform.PointToLocal( value ) );
 	}
 
 	/// <summary>
@@ -77,11 +60,8 @@ partial class Pawn
 
 			return WorldRotation;
 		}
-		set
-		{
-			if ( Controller.IsValid() )
-				Controller.SetLocalEyeRotation( WorldTransform.RotationToLocal( value ) );
-		}
+
+		set => Controller?.SetLocalEyeRotation( WorldTransform.RotationToLocal( value ) );
 	}
 
 	public Transform EyeTransform => new( EyePosition, EyeRotation, WorldScale );
@@ -126,9 +106,12 @@ partial class Pawn
 
 	/// <returns> Prepares a default trace with vision filters. </returns>
 	public virtual SceneTrace GetEyeTrace()
-		=> Scene.Trace
-			.IgnoreGameObjectHierarchy( GameObject )
-			.WithoutTags( EyeTraceIgnore );
+	{
+		return VisionTraceSettings.Build(
+			GameObject, EyePosition, EyeForward * 16384,
+			ignoreObject: true, useRotation: false
+		);
+	}
 
 	/// <returns> Prepares a vision trace from the eye position to a point. </returns>
 	public SceneTrace GetEyeTrace( Vector3 to )

@@ -22,7 +22,7 @@ partial class FirstPersonController
 	[Range( 0f, 32f, clamped: false )]
 	[Feature( VIEW ), Group( COLLISION )]
 	[ToggleGroup( nameof( ViewCollisionEnabled ) )]
-	public float ViewCollisionRadius { get; set; } = 8f;
+	public virtual float ViewCollisionRadius { get; set; } = 8f;
 
 	public override Vector3 GetLocalEyeTargetPosition()
 		=> Vector3.Up * (IsDucking ? EyeHeightDuck : EyeHeightStand);

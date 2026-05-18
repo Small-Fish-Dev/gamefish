@@ -116,7 +116,7 @@ partial class Actor
 		if ( !target.IsValid() )
 			return false;
 
-		return VisibleTargets.Contains( target ) is true;
+		return VisibleTargets.Contains( target );
 	}
 
 	/// <summary>
@@ -171,8 +171,11 @@ partial class Actor
 		// Stop tracking targets that aren't valid any more.
 		var bad = VisibleTargets.Where( e => !IsTargetValid( e ) );
 
-		foreach ( var target in bad )
-			VisibleTargets.Remove( target );
+		if ( bad.Any() )
+		{
+			foreach ( var target in bad.ToArray() )
+				VisibleTargets.Remove( target );
+		}
 
 		// Lose sight of hidden targets.
 		foreach ( var visibleTarget in VisibleTargets )
@@ -232,7 +235,7 @@ partial class Actor
 	/// </summary>
 	protected virtual void OnTargetVisibilityGained( Pawn target )
 	{
-		if ( DebugLogging )
+		if ( DebugVisionLogging )
 			this.Log( $"Gained visibility of target:[{target}]." );
 	}
 
@@ -241,7 +244,7 @@ partial class Actor
 	/// </summary>
 	protected virtual void OnTargetVisibilityLost( Pawn target )
 	{
-		if ( DebugLogging )
+		if ( DebugVisionLogging )
 			this.Log( $"Lost visibility of target:[{target}]." );
 	}
 

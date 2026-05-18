@@ -30,6 +30,8 @@ public partial class ThirdPersonViewMode : ViewMode
 	public virtual float CurrentDistance { get; set; }
 	public virtual float DesiredDistance { get; set; }
 
+	public virtual TraceSettings TraceSettings => TargetPawn?.VisionTraceSettings ?? default;
+
 	protected override void OnStart()
 	{
 		base.OnStart();
@@ -82,10 +84,10 @@ public partial class ThirdPersonViewMode : ViewMode
 			var endPos = startPos - (aimDir * CurrentDistance);
 			var radius = View.GetCollisionRadius();
 
-			var trView = Scene.Trace.Sphere( radius, startPos, endPos )
-				.IgnoreGameObject( pawn.GameObject )
-				.WithAnyTags( View.CollisionHitTags )
-				.WithoutTags( View.CollisionIgnoreTags );
+			var trView = TraceSettings.Build(
+				GameObject, in startPos, in endPos,
+				ignoreObject: true, useRotation: false
+			);
 
 			if ( pawn.Seat.IsValid() )
 			{

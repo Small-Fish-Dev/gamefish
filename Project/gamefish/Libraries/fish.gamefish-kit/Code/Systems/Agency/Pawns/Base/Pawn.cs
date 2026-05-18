@@ -11,6 +11,20 @@ public abstract partial class Pawn : DynamicEntity
 
 	protected new const int DEBUG_ORDER = PAWN_ORDER - 50;
 
+	/// <summary>
+	/// Could be an animated model or a sprite.
+	/// Used to fade model(s) in/out from distance.
+	/// </summary>
+	[Property]
+	[Feature( PAWN ), Group( BODY )]
+	public virtual PawnBody Body
+	{
+		get => this?.GetCached( ref _body );
+		set => _body = value;
+	}
+
+	protected PawnBody _body;
+
 	public override string ToString()
 	{
 		var str = $"{GetType().ToSimpleString( includeNamespace: false )}";

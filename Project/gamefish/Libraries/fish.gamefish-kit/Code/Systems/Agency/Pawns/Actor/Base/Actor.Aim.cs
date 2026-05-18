@@ -47,12 +47,12 @@ partial class Actor
 			return;
 
 		if ( IsTargetVisible() )
-			AimPoint = GetTargetAimPoint( Target );
+			AimPoint = GetTargetAimPoint();
 
 		if ( AimPoint is Vector3 aimAt )
 			LookAt( aimAt, in deltaTime );
 		else if ( Velocity.Length > 20 )
-			LookTowards( Rotation.LookAt( Velocity ), in deltaTime );
+			LookAt( EyePosition + Velocity, in deltaTime );
 	}
 
 	/// <summary>
@@ -76,7 +76,7 @@ partial class Actor
 		var aimPos = EyePosition;
 		var aimDir = aimPos.Direction( targetPos );
 
-		LookTowards( Rotation.LookAt( aimDir ), in deltaTime );
+		LookTowards( Rotation.LookAt( aimDir, EyeRotation.Up ), in deltaTime );
 	}
 
 	/// <summary>

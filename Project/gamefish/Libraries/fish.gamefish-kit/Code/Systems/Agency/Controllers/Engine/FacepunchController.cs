@@ -17,6 +17,20 @@ public partial class FacepunchController : PawnController
 
 	protected override bool HasValidPhysicsModule => true;
 
+	public override Vector3 Velocity
+	{
+		get => PlayerController?.Velocity ?? default;
+		set
+		{
+			var body = PlayerController?.Body;
+
+			if ( body.IsValid() )
+				body.Velocity = value;
+		}
+	}
+
+	public override bool IsGrounded => PlayerController?.IsOnGround is true;
+
 	protected override void OnStart()
 	{
 		base.OnStart();
@@ -29,11 +43,16 @@ public partial class FacepunchController : PawnController
 
 		PlayerController.UseCameraControls = false;
 
-		// Hack for the hacks that fucked this up.
-		var rEye = WorldTransform.RotationToWorld( LocalEyeRotation );
+		if ( InGame )
+		{
+			// Hack for the hacks that fucked this up.
+			Transform.ClearInterpolation();
 
-		WorldRotation = Rotation.Identity;
-		LocalEyeRotation = rEye;
+			var rEye = EyeRotation;
+
+			WorldRotation = Rotation.Identity;
+			EyeRotation = rEye;
+		}
 	}
 
 	protected override void OnUpdate()

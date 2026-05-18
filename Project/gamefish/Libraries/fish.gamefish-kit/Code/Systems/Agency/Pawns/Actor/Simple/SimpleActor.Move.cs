@@ -34,16 +34,7 @@ partial class SimpleActor
 
 	/// <returns> The exact goal position(or null). </returns>
 	protected virtual Vector3? CalculateDestination()
-	{
-		if ( !IsTargeting() )
-			return null;
-
-		// Shrimply chase the target by default.
-		if ( IsTargetVisible() )
-			return GetTargetOrigin( Target );
-
-		return LastKnownTargetPosition;
-	}
+		=> GetLastKnownTargetOrigin();
 
 	/// <summary>
 	/// Attempts to direct this actor towards a position.

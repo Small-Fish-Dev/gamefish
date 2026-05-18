@@ -128,7 +128,7 @@ partial class Actor
 		if ( !pawn.IsValid() )
 			return null;
 
-		return pawn.WorldPosition;
+		return pawn.Center;
 	}
 
 	/// <returns> The world position of where we think the target is standing. </returns>

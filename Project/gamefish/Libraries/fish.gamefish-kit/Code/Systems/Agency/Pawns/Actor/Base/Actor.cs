@@ -86,7 +86,7 @@ public abstract partial class Actor : Pawn
 		if ( !Controller.IsValid() )
 			return;
 
-		Controller.WishVelocity = Controller.CalculateWishVelocity();
+		Controller.WishVelocity = CalculateWishVelocity();
 
 		Controller.Simulate( in deltaTime, in isFixedUpdate );
 		Controller.TryMove( in deltaTime, in isFixedUpdate );

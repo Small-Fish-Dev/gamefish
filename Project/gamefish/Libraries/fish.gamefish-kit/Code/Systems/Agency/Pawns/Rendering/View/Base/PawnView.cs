@@ -31,6 +31,7 @@ public partial class PawnView : PawnModule, ISimulate
 	[Range( 1f, 64f, clamped: false )]
 	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	protected virtual float DefaultCollisionRadius { get; set; } = 8f;
+
 	public virtual float GetCollisionRadius() => DefaultCollisionRadius * WorldScale.x.NonZero();
 
 	/// <summary>
@@ -40,22 +41,6 @@ public partial class PawnView : PawnModule, ISimulate
 	[Title( "Hit Owned" )]
 	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
 	public virtual bool CollideOwned { get; set; } = false;
-
-	/// <summary>
-	/// Tags of objects that will obstruct the camera view.
-	/// </summary>
-	[Property]
-	[Title( "Hit Tags" )]
-	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
-	public TagSet CollisionHitTags { get; set; } = ["solid"];
-
-	/// <summary>
-	/// Tags of objects that will obstruct the camera view.
-	/// </summary>
-	[Property]
-	[Title( "Ignore Tags" )]
-	[Feature( VIEW ), ToggleGroup( nameof( Collision ) )]
-	public TagSet CollisionIgnoreTags { get; set; } = [TAG_PAWN];
 
 	/// <summary>
 	/// The pawn this view actually belongs to.
