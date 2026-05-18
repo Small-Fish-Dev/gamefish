@@ -172,12 +172,12 @@ partial class ControllerPhysics
 		if ( !GroundingEnabled )
 			return false;
 
-		var gravDir = Gravity.Normal;
+		var gravUp = -Gravity.Normal;
 
-		if ( normal.Angle( -gravDir ) > GroundAngle )
+		if ( normal.Angle( gravUp ) > GroundAngle )
 			return false;
 
-		var upVel = Velocity.Forward( Up );
+		var upVel = Velocity.Forward( gravUp );
 		var upSpeed = upVel.Dot( normal );
 
 		return upSpeed < 300f;
