@@ -15802,7 +15802,16 @@
       "__PrefabInstancePatch": {
         "AddedObjects": [],
         "RemovedObjects": [],
-        "PropertyOverrides": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
+            },
+            "Property": "Flags",
+            "Value": 0
+          }
+        ],
         "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
@@ -16804,6 +16813,170 @@
           "Children": []
         }
       ]
+    },
+    {
+      "__guid": "264fa5e5-0176-4905-b92c-df794bc3ee1b",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Gravitation",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": [
+        {
+          "__guid": "cc574be2-537c-4266-a5db-4c26ab94057a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Blanet",
+          "Position": "2176,256,4224",
+          "Rotation": "0,0,0,1",
+          "Scale": "10,10,10",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "b8088412-f646-420f-8c95-30a7936979f0",
+              "__enabled": true,
+              "Flags": 0,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "LodOverride": null,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Materials": null,
+              "Model": "models/dev/sphere.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.67567,0.40554,0.84651,1"
+            },
+            {
+              "__type": "Sandbox.SphereCollider",
+              "__guid": "8ba3b5b7-befe-4d3b-88f0-6e3a93cd28ba",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0,0",
+              "ColliderFlags": 0,
+              "Elasticity": null,
+              "Friction": null,
+              "IsTrigger": false,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnObjectTriggerEnter": null,
+              "OnObjectTriggerExit": null,
+              "OnTriggerEnter": null,
+              "OnTriggerExit": null,
+              "Radius": 32.5,
+              "RollingResistance": null,
+              "Static": false,
+              "Surface": null,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "9bcf84e1-bded-40ae-9337-a0f708aad4c6",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "Gravity",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": true,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "Components": [
+                {
+                  "__type": "GameFish.GravityField",
+                  "__guid": "cc3f95bf-0f18-4895-b819-2ceff5161330",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "ClassId": null,
+                  "ClassName": null,
+                  "DebugLogging": true,
+                  "Force": 600,
+                  "IsClass": false,
+                  "IsNetworkingForced": null,
+                  "IsOverride": false,
+                  "Name": "Blanet",
+                  "NetworkAutomatically": false,
+                  "NetworkId": "cc3f95bf-0f18-4895-b819-2ceff5161330",
+                  "NetworkingMode": "Object",
+                  "NetworkOrphanedMode": "ClearOwner",
+                  "NetworkOwner": null,
+                  "NetworkTransferMode": "Fixed",
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "Priority": 0
+                },
+                {
+                  "__type": "Sandbox.SphereCollider",
+                  "__guid": "aaf6bcfd-8d10-434d-acda-463ebc347868",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "Center": "0,0,0",
+                  "ColliderFlags": 0,
+                  "Elasticity": null,
+                  "Friction": null,
+                  "IsTrigger": true,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "OnObjectTriggerEnter": null,
+                  "OnObjectTriggerExit": null,
+                  "OnTriggerEnter": null,
+                  "OnTriggerExit": null,
+                  "Radius": 110,
+                  "RollingResistance": null,
+                  "Static": false,
+                  "Surface": null,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ],
+              "Children": []
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -16838,13 +17011,13 @@
           "$blob": "14b2c703-672b-4c92-8ed7-a7cda10b32a3"
         }
       },
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },
