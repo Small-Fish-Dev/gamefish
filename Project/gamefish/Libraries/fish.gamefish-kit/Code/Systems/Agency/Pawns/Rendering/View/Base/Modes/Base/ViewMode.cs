@@ -92,10 +92,14 @@ public abstract class ViewMode : Module
 	/// <param name="deltaTime"></param>
 	public virtual void UpdateViewRenderer( in float deltaTime )
 	{
-		if ( !View.IsValid() )
+		var r = ViewRenderer;
+
+		if ( !r.IsValid() )
 			return;
 
-		// if ( InFirstPerson() )
+		r.IsVisible = InFirstPerson();
+		r.UpdateOffset( deltaTime );
+
 		OnViewRender( in deltaTime );
 	}
 
@@ -104,7 +108,6 @@ public abstract class ViewMode : Module
 	/// </summary>
 	protected virtual void OnViewRender( in float deltaTime )
 	{
-		ViewRenderer?.UpdateOffset( deltaTime );
 	}
 
 	/// <summary>

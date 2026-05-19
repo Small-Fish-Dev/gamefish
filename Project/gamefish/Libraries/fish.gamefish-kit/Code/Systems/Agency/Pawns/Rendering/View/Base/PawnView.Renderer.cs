@@ -12,7 +12,7 @@ partial class PawnView
 	[Feature( VIEW ), Order( VIEW_ORDER )]
 	public ViewRenderer ViewRenderer
 	{
-		get => this.GetCached( ref _vr );
+		get => this?.GetCached( ref _vr );
 		set => _vr = value;
 	}
 

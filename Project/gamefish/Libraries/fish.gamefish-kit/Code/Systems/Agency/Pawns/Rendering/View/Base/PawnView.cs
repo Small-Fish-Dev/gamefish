@@ -146,10 +146,10 @@ public partial class PawnView : PawnModule, ISimulate
 
 	public virtual void ToggleViewRenderer( bool isEnabled )
 	{
-		var vm = ViewRenderer;
+		var r = ViewRenderer;
 
-		if ( vm.IsValid() )
-			vm.GameObject.Enabled = isEnabled;
+		if ( r.IsValid() )
+			r.IsVisible = isEnabled;
 	}
 
 	protected virtual void UpdateViewMode( in float deltaTime )

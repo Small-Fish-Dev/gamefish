@@ -57,6 +57,8 @@ public partial class ThirdPersonViewMode : ViewMode
 
 	public override void OnModeUpdate( in float deltaTime )
 	{
+		base.OnModeUpdate( in deltaTime );
+
 		if ( !View.IsValid() )
 			return;
 

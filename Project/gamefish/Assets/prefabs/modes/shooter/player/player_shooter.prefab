@@ -322,7 +322,12 @@
             },
             "TransitionSmoothing": 0.35,
             "TransitionSpeed": 3,
-            "ViewRenderer": null
+            "ViewRenderer": {
+              "_type": "component",
+              "component_id": "4fa17e4b-574e-43c9-80d6-4d8967db2382",
+              "go": "5d571e02-bffb-49b6-b5f4-4e242e3f5bc6",
+              "component_type": "ShooterViewRenderer"
+            }
           }
         ],
         "Children": [
@@ -335,7 +340,7 @@
             "Rotation": "0,0,0,1",
             "Scale": "1,1,1",
             "Tags": "",
-            "Enabled": false,
+            "Enabled": true,
             "NetworkMode": 1,
             "NetworkFlags": 0,
             "NetworkOrphaned": 3,
@@ -733,7 +738,7 @@
             "Children": []
           },
           {
-            "__guid": "c3fa7773-8944-44a9-8052-57b1b4a7ed70",
+            "__guid": "988cefe2-2767-471e-9428-3979d0320ef2",
             "__version": 2,
             "Flags": 0,
             "Name": "Clothing - y_front_pants_white",
@@ -750,7 +755,7 @@
             "Components": [
               {
                 "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "42530c0e-4da6-4028-ab62-396b5a31b9bd",
+                "__guid": "4550da8e-ca5f-4133-8b47-69e172e2bfdf",
                 "__enabled": true,
                 "Flags": 0,
                 "AnimationGraph": null,

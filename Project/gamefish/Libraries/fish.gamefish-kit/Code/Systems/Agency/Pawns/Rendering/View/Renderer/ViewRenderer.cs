@@ -104,6 +104,30 @@ public partial class ViewRenderer : Module, ISkinned
 	protected Pawn Pawn => View?.ParentPawn;
 	protected Equipment ActiveEquip => Pawn?.ActiveEquip;
 
+	/// <summary>
+	/// If true: the view should be rendered.
+	/// </summary>
+	public bool IsVisible
+	{
+		get => _isVisible;
+		set
+		{
+			if ( _isVisible == value )
+				return;
+
+			_isVisible = value;
+			OnSetIsVisible( in value );
+		}
+	}
+
+	protected bool _isVisible;
+
+	protected virtual void OnSetIsVisible( in bool isVisible )
+	{
+		if ( ModelRenderer.IsValid() )
+			ModelRenderer.Enabled = isVisible;
+	}
+
 	public virtual void SetRendererOffset( in Offset offset )
 		=> this.SetOffset( in offset );
 
