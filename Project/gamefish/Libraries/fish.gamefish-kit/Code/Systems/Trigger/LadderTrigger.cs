@@ -8,7 +8,7 @@ namespace GameFish;
 /// </summary>
 [Icon( "stairs" )]
 [EditorHandle( Icon = "🧗‍" )]
-public partial class LadderTrigger : BaseTrigger
+public partial class LadderTrigger : Trigger
 {
 	[Property, Group( COLLISION )]
 	public override ColliderType Collider

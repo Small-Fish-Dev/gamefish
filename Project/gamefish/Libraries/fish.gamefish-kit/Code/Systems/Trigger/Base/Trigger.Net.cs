@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class BaseTrigger
+partial class Trigger
 {
 	protected override bool? IsNetworkedOverride => true;
 

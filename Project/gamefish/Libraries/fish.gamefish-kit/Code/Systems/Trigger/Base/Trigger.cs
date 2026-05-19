@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace GameFish;
 
+[Hide, Obsolete( $"Use {nameof( Trigger )} instead." )]
+public partial class BaseTrigger : Trigger;
+
 /// <summary>
 /// A trigger volume with callbacks and no filters. <br />
 /// Capable of creating, updating and rendering its collision.
@@ -11,7 +14,7 @@ namespace GameFish;
 [Group( Library.NAME )]
 [Icon( "highlight_alt" )]
 [EditorHandle( "materials/tools/mesh_icons/quad.png" )]
-public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Component.ExecuteInEditor
+public partial class Trigger : ModuleEntity, Component.ITriggerListener, Component.ExecuteInEditor
 {
 	protected const int TRIGGER_ORDER = DEFAULT_ORDER - 50;
 	protected const int CALLBACKS_ORDER = 42069;
@@ -173,32 +176,32 @@ public partial class BaseTrigger : ModuleEntity, Component.ITriggerListener, Com
 	/// <summary> An object that passed filters just touched this. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnEnter { get; set; }
+	public Action<Trigger, GameObject> OnEnter { get; set; }
 
 	/// <summary> An object that passed filters just exited this. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnExit { get; set; }
+	public Action<Trigger, GameObject> OnExit { get; set; }
 
 	/// <summary> A passing object just entered this as it was previously empty. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnFirstEnter { get; set; }
+	public Action<Trigger, GameObject> OnFirstEnter { get; set; }
 
 	/// <summary> The only object occupying this trigger just exited. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnEmptied { get; set; }
+	public Action<Trigger, GameObject> OnEmptied { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnInsideUpdate { get; set; }
+	public Action<Trigger, GameObject> OnInsideUpdate { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
 	[Property]
 	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
-	public Action<BaseTrigger, GameObject> OnInsideFixedUpdate { get; set; }
+	public Action<Trigger, GameObject> OnInsideFixedUpdate { get; set; }
 
 
 	/// <summary>

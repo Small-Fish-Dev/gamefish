@@ -87,6 +87,7 @@ public abstract partial class PawnController : PawnModule
 	/// Handles interactions with the surrounding physical world.
 	/// </summary>
 	[Property]
+	[Title( "Module" )]
 	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
 	public ControllerPhysics Physics
 	{

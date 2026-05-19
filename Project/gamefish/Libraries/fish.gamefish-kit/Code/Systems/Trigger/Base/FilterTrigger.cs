@@ -7,7 +7,7 @@ namespace GameFish;
 /// Capable of creating, updating and previewing its collision.
 /// </summary>
 [Title( "Filtered Trigger" )]
-public partial class FilterTrigger : BaseTrigger
+public partial class FilterTrigger : Trigger
 {
 	public const string GROUP_FILTER_TAGS = "🏳 Tag Filter";
 	public const string GROUP_FILTER_TYPE = "⌨ Type Filter";
@@ -82,11 +82,11 @@ public partial class FilterTrigger : BaseTrigger
 	[Feature( FILTERS )]
 	[Order( FILTER_FUNC_ORDER )]
 	[Property, Group( GROUP_FILTER_FUNC ), Title( "Passes Filter" )]
-	public Func<BaseTrigger, GameObject, bool> FilterFunction { get; set; }
+	public Func<Trigger, GameObject, bool> FilterFunction { get; set; }
 
 	[Order( CALLBACKS_ORDER )]
 	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
-	public Action<BaseTrigger, GameObject> OnFailedFilter { get; set; }
+	public Action<Trigger, GameObject> OnFailedFilter { get; set; }
 
 	public override Color DefaultGizmoColor { get; } = Color.Green.Desaturate( 0.6f ).Darken( 0.25f );
 

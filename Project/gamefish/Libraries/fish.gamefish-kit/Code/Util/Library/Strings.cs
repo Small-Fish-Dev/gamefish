@@ -145,6 +145,11 @@ public static partial class Strings
 	public const string DIRECTION = "🧭 Direction";
 	public const string DIRECTIONS = "🧭 Directions";
 
+	public const string AREA = "📐 Area";
+	public const string AREAS = "📐 Areas";
+	public const string SHAPE = "💠 Shape";
+	public const string SHAPES = "💠 Shapes";
+
 	public const string CORDON = "🚧 Cordon";
 	public const string CORDONS = "🚧 Cordons";
 	public const string BARRIER = "🚧 Barrier";
