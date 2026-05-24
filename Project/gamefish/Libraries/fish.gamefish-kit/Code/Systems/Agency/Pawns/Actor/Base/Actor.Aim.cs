@@ -46,13 +46,48 @@ partial class Actor
 		if ( !IsAimingAllowed )
 			return;
 
-		if ( IsTargetVisible() )
-			AimPoint = GetTargetAimPoint();
+		UpdateAimPoint();
 
-		if ( AimPoint is Vector3 aimAt )
+		if ( IsAiming() && AimPoint is Vector3 aimAt )
+		{
 			LookAt( aimAt, in deltaTime );
+		}
 		else if ( Velocity.Length > 20 )
-			LookAt( EyePosition + Velocity, in deltaTime );
+		{
+			var up = WorldRotation.Up;
+			var fwd = Velocity.Horizontal( up ).Normal;
+
+			if ( fwd != default )
+				LookAt( EyePosition + fwd, in deltaTime );
+		}
+	}
+
+	/// <returns> If this should be looking towards <see cref="AimPoint"/>. </returns>
+	public virtual bool IsAiming()
+		=> IsThinking;
+
+	/// <summary>
+	/// Sets where we should be aiming towards currently.
+	/// </summary>
+	protected virtual void UpdateAimPoint()
+	{
+		var tgt = Target;
+
+		if ( IsTargetVisible( tgt ) )
+			AimPoint = GetTargetAimPoint( tgt );
+	}
+
+	public virtual bool CanAttack()
+	{
+		if ( !IsTargeting() )
+			return false;
+
+		// Gotta know where to aim.
+		if ( AimPoint is null )
+			return false;
+
+		// Must be visible and know where to aim.
+		return IsTargetVisible();
 	}
 
 	/// <summary>
@@ -60,6 +95,9 @@ partial class Actor
 	/// </summary>
 	protected virtual void UpdateAttacking( in float deltaTime )
 	{
+		if ( !CanAttack() )
+			return;
+
 		if ( !ActiveEquip.IsValid() || !ActiveEquip.IsUsable( this, forCombat: true ) )
 			return;
 

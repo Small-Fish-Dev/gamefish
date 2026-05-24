@@ -94,7 +94,7 @@ public partial class FilterTrigger : Trigger
 	{
 		if ( !PassesFilters( obj ) )
 		{
-			if ( DebugTrigger )
+			if ( DebugTriggerLogging )
 				DebugLog( obj + " FAILED the filter " );
 
 			if ( OnFailedFilter is not null )
@@ -112,7 +112,7 @@ public partial class FilterTrigger : Trigger
 			return false;
 		}
 
-		if ( DebugTrigger )
+		if ( DebugTriggerLogging )
 			DebugLog( obj + " PASSED the filter" );
 
 		return true;

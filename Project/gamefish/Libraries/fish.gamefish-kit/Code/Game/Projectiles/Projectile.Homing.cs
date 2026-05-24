@@ -163,7 +163,7 @@ partial class Projectile
 
 		var enemies = trSphere
 			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
-			.Where( pawn => pawn.IsValid() && Team.IsEnemy( pawn.Team ) )
+			.Where( pawn => pawn.IsValid() && pawn.IsAlive && Team.IsEnemy( pawn.Team ) )
 			.Distinct();
 
 		return enemies;

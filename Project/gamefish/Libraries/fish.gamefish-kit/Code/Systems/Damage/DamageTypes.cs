@@ -27,6 +27,9 @@ public static partial class DamageTypes
 	public const string PUNCH = "punch";
 	public const string PUNCHING = PUNCH;
 
+	public const string KICK = "kick";
+	public const string KICKING = KICK;
+
 	public const string SLASH = "slash";
 	public const string SLASHING = SLASH;
 

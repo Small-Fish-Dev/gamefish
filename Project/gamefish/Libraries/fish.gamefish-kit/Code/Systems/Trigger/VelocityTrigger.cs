@@ -195,12 +195,10 @@ public partial class VelocityTrigger : FilterTrigger, Component.ExecuteInEditor
 
 	public override Color DefaultGizmoColor { get; } = Color.Cyan.LerpTo( Color.Green, 0.35f ).Desaturate( 0.5f );
 
-	protected override void OnUpdate()
-	{
-		base.OnUpdate();
 
-		if ( this.InGame() && !DebugGizmos )
-			return;
+	protected override void RenderTrigger()
+	{
+		base.RenderTrigger();
 
 		// Linear velocity helper arrow.
 		if ( LinearMethod is VelocityMethod.None || LinearRelation is VelocityRelation.Object )

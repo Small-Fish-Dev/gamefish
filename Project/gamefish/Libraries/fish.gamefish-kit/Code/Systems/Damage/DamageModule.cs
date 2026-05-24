@@ -15,20 +15,59 @@ public abstract class DamageModule : Module
 
 	public DynamicEntity ParentEntity => Parent as DynamicEntity;
 
+	public bool IsAlive => ParentEntity?.IsAlive is true;
+	public bool IsDestructible => ParentEntity?.IsDestructible is true;
+
+	public float Health => ParentEntity?.Health ?? 0f;
+	public float MaxHealth => ParentEntity?.MaxHealth ?? 0f;
+
+	public override Vector3 Center => Parent?.Center ?? WorldPosition;
+
 	/// <returns> If false: prevents damage. </returns>
 	public virtual bool CanDamage( in DamageData data )
 		=> true;
 
 	/// <summary>
-	/// Called before damage is dealt to modify it.
+	/// Modifies damage before it is dealt.
 	/// </summary>
 	public virtual void ModifyDamage( ref DamageData data ) { }
 
 	/// <summary>
-	/// Called after damage is dealt to respond to it.
+	/// Responds to damage after it is dealt.
 	/// </summary>
 	public virtual void OnDamaged( in DamageData data ) { }
 
-	public virtual void OnDeath() { }
+	/// <summary>
+	/// The parent entity has revived.
+	/// </summary>
 	public virtual void OnAlive() { }
+
+	/// <summary>
+	/// The parent entity has died.
+	/// </summary>
+	public virtual void OnDeath()
+	{
+		if ( DestroyUponDeath )
+			SelfDestruct();
+	}
+
+	/// <summary>
+	/// If true: destroy the parent's object upon death.
+	/// </summary>
+	[Property]
+	[Order( HEALTH_ORDER )]
+	[Title( "Self-Destruct" )]
+	[Feature( HEALTH ), Group( DEATH )]
+	public bool DestroyUponDeath { get; set; } = false;
+
+	protected virtual void SelfDestruct()
+	{
+		if ( IsProxy )
+			return;
+
+		var obj = Parent?.GameObject;
+
+		if ( obj.IsValid() )
+			obj.Destroy();
+	}
 }

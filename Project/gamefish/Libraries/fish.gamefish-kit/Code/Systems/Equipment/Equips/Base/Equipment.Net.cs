@@ -30,8 +30,8 @@ partial class Equipment : Component.INetworkSpawn
 
 	protected Pawn _pawn;
 
-	public override bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
-		=> base.TrySetNetworkOwner( cn, allowProxy: allowProxy || Networking.IsHost );
+	public override bool TryNetwork( Connection cn, bool allowProxy = false )
+		=> base.TryNetwork( cn, allowProxy: allowProxy || Networking.IsHost );
 
 	protected override void OnParentChanged( GameObject oldParent, GameObject newParent )
 	{

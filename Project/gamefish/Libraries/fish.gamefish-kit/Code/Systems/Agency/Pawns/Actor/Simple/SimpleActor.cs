@@ -12,9 +12,7 @@ public partial class SimpleActor : Actor
 	{
 		base.OnStart();
 
-		// Auto-wake.
-		if ( MindState is MentalState.Asleep )
-			MindState = MentalState.Idle;
+		OnMindStart();
 	}
 
 	protected override void Think( in float deltaTime, in bool isFixedUpdate )
@@ -27,5 +25,13 @@ public partial class SimpleActor : Actor
 
 		UpdateAiming( in deltaTime );
 		UpdateAttacking( in deltaTime );
+	}
+
+	public override bool CanAttack()
+	{
+		if ( !IsFighting )
+			return false;
+
+		return base.CanAttack();
 	}
 }

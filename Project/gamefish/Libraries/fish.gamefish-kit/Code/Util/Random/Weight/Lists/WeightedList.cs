@@ -57,11 +57,8 @@ public class WeightedList<TObject>
 		=> Entries;
 
 	/// <summary>
-	/// Forces the weight to be (re)calculated.
+	/// Forces the entries to be regenerated and weight to be (re)calculated.
 	/// </summary>
-	[Hide]
-	[Group( WEIGHT )]
-	[Button( "Refresh" ), WideMode]
 	public void Refresh()
 	{
 		Entries = GenerateEntries();

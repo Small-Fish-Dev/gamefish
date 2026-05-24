@@ -133,7 +133,7 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 		var cn = parent?.Network?.Owner;
 
 		if ( cn is not null )
-			TrySetNetworkOwner( cn, allowProxy: true );
+			TryNetwork( cn, allowProxy: true );
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 namespace GameFish;
 
@@ -14,17 +15,29 @@ public partial class ProjectileEquipFunction : EquipFunction
 	protected const int PROJECTILE_VELOCITY_ORDER = PROJECTILE_ORDER - 10;
 
 	/// <summary>
+	/// If true: ignore any projectile defaults and use the following.
+	/// </summary>
+	[Property]
+	[Feature( PROJECTILE )]
+	[Order( PROJECTILE_VELOCITY_ORDER )]
+	[ToggleGroup( nameof( VelocityEnabled ), Label = VELOCITY )]
+	public virtual bool VelocityEnabled { get; set; } = false;
+
+	/// <summary>
 	/// The projectile's velocity relative to the owner's aim. <br />
 	/// The <c>X</c> axis is forward speed.
 	/// </summary>
 	[Property]
 	[Title( "Velocity" )]
+	[Feature( PROJECTILE )]
 	[Order( PROJECTILE_VELOCITY_ORDER )]
-	[Feature( PROJECTILE ), Group( FORCES )]
+	[ToggleGroup( nameof( VelocityEnabled ) )]
 	public virtual Vector3 ProjectileVelocity { get; set; } = new Vector3( 1500f, 0f, 0f );
 
 	/// <summary>
 	/// Play this sound upon successfully firing a projectile.
+	/// <br /> <br />
+	/// <b> NOTE: </b> If the projectile defines a firing sound then you may not need this.
 	/// </summary>
 	[Property]
 	[Title( "Shoot" )]
@@ -34,6 +47,9 @@ public partial class ProjectileEquipFunction : EquipFunction
 
 	/// <summary>
 	/// The projectile prefab to spawn.
+	/// <br /> <br />
+	/// <b> NOTE: </b> Give it a <see cref="Projectile"/> component
+	/// for default launch speed, homing and more.
 	/// </summary>
 	[Property]
 	[Title( "Projectile" )]
@@ -128,7 +144,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 				? rAim * GetSpreadConeRotation( AimSpreadCone )
 				: rAim;
 
-			if ( TrySpawnProjectile( out var _, tAim.WithRotation( rSpread ) ) )
+			if ( TrySpawnProjectile( out _, out _, tAim.WithRotation( rSpread ) ) )
 				playEffect = true;
 		}
 
@@ -158,29 +174,34 @@ public partial class ProjectileEquipFunction : EquipFunction
 	}
 
 	/// <returns> The velocity to apply relative to an aiming rotation. </returns>
-	public virtual Vector3 GetProjectileVelocity( in Transform tAim )
-		=> ProjectileVelocity != Vector3.Zero
-			? tAim.Rotation * ProjectileVelocity
-			: Vector3.Zero;
+	public virtual Vector3? GetProjectileVelocity( in Transform tAim )
+	{
+		if ( !VelocityEnabled )
+			return null;
+
+		return tAim.Rotation * ProjectileVelocity;
+	}
 
 	/// <summary>
 	/// Tries to spawn a projectile in this direction.
 	/// </summary>
-	/// <param name="proj"> The resulting object(or null). </param>
+	/// <param name="obj"> The resulting object(or null). </param>
+	/// <param name="proj"> The <see cref="Projectile"/> component(or null). </param>
 	/// <param name="tAim"> The direction to launch it. </param>
 	/// <returns> If the projectile could be spawned. </returns>
-	public virtual bool TrySpawnProjectile( out GameObject proj, in Transform? tAim = null )
+	public virtual bool TrySpawnProjectile( out GameObject obj, out Projectile proj, in Transform? tAim = null )
 	{
 		var tOrigin = GetProjectileOrigin( tAim ?? AimTransform );
 
-		proj = SpawnProjectile(
+		obj = SpawnProjectile(
 			prefab: ProjectilePrefab,
+			proj: out proj,
 			tAim: tOrigin,
 			offset: ProjectileOffset,
 			scale: HasScaleOverride ? ProjectileScale : null
 		);
 
-		return proj.IsValid();
+		return obj.IsValid();
 	}
 
 	/// <summary>
@@ -188,61 +209,98 @@ public partial class ProjectileEquipFunction : EquipFunction
 	/// Optionally sets the object's team and network spawns it.
 	/// </summary>
 	/// <param name="prefab"> The projectile's prefab. </param>
+	/// <param name="proj"> The <see cref="Projectile"/> component(or null). </param>
 	/// <param name="tAim"> The position and direction. </param>
 	/// <param name="offset"> Adds position/rotation relative to <paramref name="tAim"/>(if defined). </param>
 	/// <param name="scale"> Overrides the final scaling of the prefab(if defined). </param>
 	/// <param name="setTeam"> Set the projectile's team? </param>
-	/// <param name="netSpawn"> Force it to be network spawned? </param>
 	/// <returns></returns>
-	protected virtual GameObject SpawnProjectile( PrefabFile prefab, in Transform tAim, in Offset? offset = null, in Vector3? scale = null, bool setTeam = true, bool netSpawn = true )
+	protected virtual GameObject SpawnProjectile( PrefabFile prefab, out Projectile proj, in Transform tAim, in Offset? offset = null, in Vector3? scale = null, bool setTeam = true )
 	{
-		if ( !prefab.TrySpawn( tAim.Position, tAim.Rotation, out var proj ) )
+		if ( !prefab.TrySpawn( tAim.Position, tAim.Rotation, out var obj ) )
 		{
 			this.Warn( $"Tried to spawn missing/invalid prefab:[{prefab}]" );
+
+			proj = null;
 			return null;
 		}
 
 		// Aim Offset
 		if ( offset.HasValue )
 		{
-			var tProj = proj.WorldTransform;
+			var tProj = obj.WorldTransform;
 			var tOffset = tProj.ToLocal( tAim.WithOffset( offset.Value ) );
 
-			proj.WorldTransform = tProj.WithOffset( tOffset );
+			obj.WorldTransform = tProj.WithOffset( tOffset );
 		}
 
 		// Scale Override
 		if ( scale.HasValue )
-			proj.WorldScale = scale.Value;
+			obj.WorldScale = scale.Value;
 
 		// Team Assignment
 		if ( setTeam && Pawn?.Team is Team team && team.IsValid() )
-			proj.SetTeam( team, FindMode.EverythingInSelfAndDescendants );
+			obj.SetTeam( team, FindMode.EverythingInSelfAndDescendants );
 
-		// Apply Velocity
-		OnSpawnProjectile( proj, tAim );
+		// Final Setup
+		OnSpawnProjectile( obj, tAim, out proj );
 
-		// Network Setup
-		if ( netSpawn && proj.IsValid() && !proj.Network.Active )
-			proj.NetworkSetup( Network.Owner, NetworkOrphaned.Destroy );
-
-		return proj;
+		return obj;
 	}
 
 	/// <summary>
 	/// Sets up the projectile before it has been network spawned.
 	/// </summary>
-	/// <param name="proj"> The spawned projectile's object. </param>
-	/// <param name="tOrigin"> The origin and launch direction. </param>
-	protected virtual void OnSpawnProjectile( GameObject proj, in Transform tOrigin )
+	/// <param name="obj"> The spawned projectile's object. </param>
+	/// <param name="tAim"> The origin and launch direction. </param>
+	/// <param name="proj"> The <see cref="Projectile"/> component(or null). </param>
+	protected virtual void OnSpawnProjectile( GameObject obj, in Transform tAim, out Projectile proj )
 	{
-		if ( !proj.IsValid() )
+		if ( !obj.IsValid() )
+		{
+			proj = null;
+			return;
+		}
+
+		Projectile.TryGet( obj, out proj );
+
+		ApplyProjectileVelocity( obj, in tAim, proj );
+
+		if ( proj.IsValid() )
+			proj.OnSpawned( Pawn, Equip, func: this );
+
+		SetupProjectileNetworking( obj, proj );
+	}
+
+	protected virtual void SetupProjectileNetworking( GameObject obj, Projectile proj = null )
+	{
+		if ( proj.IsValid() )
+			proj.SetupNetworking();
+		else if ( !obj.Network.Active )
+			obj.NetworkSetup( Network.Owner, NetworkOrphaned.Destroy );
+	}
+
+	protected virtual void ApplyProjectileVelocity( GameObject obj, in Transform tAim, Projectile proj = null )
+	{
+		if ( !obj.IsValid() )
 			return;
 
-		if ( proj.Components.TryGet<IVelocity>( out var iVel ) )
-			iVel.Velocity = GetProjectileVelocity( tOrigin );
-		else if ( proj.Components.TryGet<Rigidbody>( out var rb ) )
-			rb.Velocity = GetProjectileVelocity( tOrigin );
+		Vector3? projVel = GetProjectileVelocity( in tAim );
+
+		// Projectile entities have defaults we should respect.
+		if ( projVel is null && proj.IsValid() )
+		{
+			proj.Velocity = projVel ?? (tAim.Forward * proj.DefaultSpeed);
+			return;
+		}
+
+		if ( projVel is not Vector3 velOverride )
+			return;
+
+		if ( obj.Components.TryGet<IVelocity>( out var iVel ) )
+			iVel.Velocity = velOverride;
+		else if ( obj.Components.TryGet<Rigidbody>( out var rb ) )
+			rb.Velocity = velOverride;
 	}
 
 	public override Vector3? GetTargetAimPoint( Pawn pawn, in Vector3? aimAt = null, in bool clampLength = true )
@@ -257,7 +315,7 @@ public partial class ProjectileEquipFunction : EquipFunction
 	public Vector3 GetPredictedTargetPosition( in Vector3 targetOrigin, in Vector3 targetVel, in bool clampLength = true )
 	{
 		var tAim = GetProjectileOrigin();
-		var projVel = GetProjectileVelocity( tAim );
+		var projVel = GetProjectileVelocity( tAim ) ?? ProjectileVelocity;
 		var targetPos = GetPredictedTargetPosition( tAim.Position, projVel, targetOrigin, targetVel );
 
 		// They may not be allowed to shoot far enough given certain angles.

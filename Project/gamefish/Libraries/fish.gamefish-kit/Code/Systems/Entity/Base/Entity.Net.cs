@@ -63,7 +63,7 @@ partial class Entity
 
 	/// <summary>
 	/// When to network this object(if ever). <br />
-	/// Used by the <see cref="TrySetNetworkOwner"/> method.
+	/// Used by the <see cref="TryNetwork"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Network Mode" )]
@@ -75,7 +75,7 @@ partial class Entity
 
 	/// <summary>
 	/// Who the object can/does belong to. <br />
-	/// Used by the <see cref="TrySetNetworkOwner"/> method.
+	/// Used by the <see cref="TryNetwork"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Transfer Mode" )]
@@ -87,7 +87,7 @@ partial class Entity
 
 	/// <summary>
 	/// What to do upon losing a network owner. <br />
-	/// Used by the <see cref="TrySetNetworkOwner"/> method.
+	/// Used by the <see cref="TryNetwork"/> method.
 	/// </summary>
 	[Property, ReadOnly]
 	[Title( "Orphaned Mode" )]
@@ -116,6 +116,33 @@ partial class Entity
 	/// <returns> The connection to assign in the <see cref="SetupNetworking"/> method. </returns>
 	public virtual Connection DefaultNetworkOwner => Network?.Owner ?? Connection.Host;
 
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		AutoNetwork();
+	}
+
+	/// <summary>
+	/// Called on start to decide if/how this should network.
+	/// </summary>
+	protected virtual void AutoNetwork()
+	{
+		// Don't auto-network shit that's not ours.
+		if ( IsProxy )
+			return;
+
+		// Might not be configured to auto-network.
+		if ( !NetworkAutomatically )
+			return;
+
+		// Never clear existing owners set before spawn.
+		if ( Network.Owner is not null )
+			return;
+
+		SetupNetworking();
+	}
+
 	/// <returns> If <see cref="SetupNetworking"/> is allowed to execute. </returns>
 	protected virtual bool IsNetworkSetupAllowed()
 	{
@@ -129,18 +156,6 @@ partial class Entity
 		return !IsProxy && Network is not null;
 	}
 
-	protected override void OnStart()
-	{
-		base.OnStart();
-
-		if ( IsProxy || !NetworkAutomatically )
-			return;
-
-		// Never clear existing owners set before spawn.
-		if ( !Network.Active && Network.Owner is null )
-			SetupNetworking();
-	}
-
 	/// <summary>
 	/// By default this networks the object using <see cref="DefaultNetworkOwner"/>. <br />
 	/// Called <see cref="OnStart"/> if <see cref="NetworkAutomatically"/> is enabled.
@@ -151,7 +166,7 @@ partial class Entity
 			return;
 
 		if ( DefaultNetworkOwner is not null )
-			TrySetNetworkOwner( DefaultNetworkOwner );
+			TryNetwork( DefaultNetworkOwner );
 	}
 
 	/// <summary>
@@ -160,7 +175,7 @@ partial class Entity
 	/// </summary>
 	/// <param name="cn"> The connection to assign this object to(if any). </param>
 	/// <param name="allowProxy"> Should we care if it belongs to us or not? </param>
-	public virtual bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
+	public virtual bool TryNetwork( Connection cn, bool allowProxy = false )
 	{
 		if ( !GameObject.IsValid() )
 			return false;
@@ -178,14 +193,16 @@ partial class Entity
 			ignoreProxy: true
 		);
 
-		if ( netSuccess )
-			OnSetNetworkOwner( cn );
+		if ( !netSuccess )
+			return false;
 
-		return Network?.Owner == cn;
+		OnSetNetworkOwner( cn );
+
+		return true;
 	}
 
 	/// <summary>
-	/// Called when <see cref="TrySetNetworkOwner"/> succeeds.
+	/// Called when <see cref="TryNetwork"/> succeeds.
 	/// </summary>
 	/// <param name="cn"> The new owner(if any). </param>
 	protected virtual void OnSetNetworkOwner( Connection cn )

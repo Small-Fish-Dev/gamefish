@@ -53,6 +53,10 @@ partial class Actor
 			OnTargetLost( oldTarget );
 	}
 
+	/// <summary>
+	/// The target was set.
+	/// </summary>
+	/// <param name="target"> The guy we don't like. </param>
 	protected virtual void OnTarget( Pawn target )
 	{
 	}
@@ -89,10 +93,7 @@ partial class Actor
 		if ( !IsAlive )
 			return false;
 
-		if ( !Target.IsValid() )
-			return false;
-
-		return Target.IsAlive;
+		return IsTargetValid( Target );
 	}
 
 	/// <summary>
@@ -108,7 +109,7 @@ partial class Actor
 	}
 
 	/// <summary>
-	/// A quick check to see a pawn is ever allowed to be targeted.
+	/// A quick check to see if a pawn is ever allowed to be targeted.
 	/// </summary>
 	/// <returns> If the specified pawn is a valid target. </returns>
 	public virtual bool IsTargetValid( Pawn pawn )
@@ -147,6 +148,7 @@ partial class Actor
 
 		target ??= Target;
 
+		// If they're visible then just get their position.
 		if ( IsTargetVisible( target ) )
 			return GetTargetOrigin( target );
 

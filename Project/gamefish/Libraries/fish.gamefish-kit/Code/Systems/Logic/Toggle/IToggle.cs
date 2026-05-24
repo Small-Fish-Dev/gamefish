@@ -3,12 +3,12 @@ using System;
 namespace GameFish;
 
 /// <summary>
-/// Indicates a primary on/off state and lets you change that.
+/// Indicates a primary on/off state with easy switching.
 /// <br /> <br />
 /// <b> NOTE: </b> Supports <see cref="ToggleCommand"/>.
 /// </summary>
 [Icon( "touch_app" )]
-public interface IToggleState
+public interface IToggle
 {
 	public bool IsOn { get; }
 	public virtual bool IsOff => !IsOn;
@@ -18,13 +18,13 @@ public interface IToggleState
 	/// Usually also prevents it from being set.
 	/// </summary>
 	/// <returns> If that state could hypothetically be set. </returns>
-	public bool IsStateAllowed( in bool isOn );
+	public bool CanToggle( in bool isOn );
 
 	/// <summary>
 	/// Tries to set this to on/off.
 	/// </summary>
 	/// <param name="isOn"> The instructed state. </param>
-	public void SetState( in bool isOn );
+	void Toggle( in bool isOn );
 }
 
 partial class Library
@@ -35,7 +35,7 @@ partial class Library
 	/// Attempts to safely set the state.
 	/// </summary>
 	/// <returns> If the state was affected. </returns>
-	public static bool TrySetState( this IToggleState state, in ToggleCommand cmd )
+	public static bool TryToggle( this IToggle state, in ToggleCommand cmd = ToggleCommand.Toggle )
 	{
 		if ( state is null )
 			return false;
@@ -50,14 +50,14 @@ partial class Library
 			_ => !state.IsOn
 		};
 
-		return state.TrySetState( in bState );
+		return state.TryToggle( in bState );
 	}
 
 	/// <summary>
-	/// Attempts to safely set the state.
+	/// Attempts to flip the switch to a position.
 	/// </summary>
-	/// <returns> If the state was affected. </returns>
-	public static bool TrySetState( this IToggleState state, in bool bState )
+	/// <returns> If the switch was flipped. </returns>
+	public static bool TryToggle( this IToggle state, in bool bState )
 	{
 		if ( state is null )
 			return false;
@@ -70,16 +70,16 @@ partial class Library
 			if ( state.IsOn == bState )
 				return false;
 
-			if ( !state.IsStateAllowed( bState ) )
+			if ( !state.CanToggle( bState ) )
 				return false;
 
-			state.SetState( bState );
+			state.Toggle( bState );
 
 			return state.IsOn == bState;
 		}
 		catch ( Exception e )
 		{
-			Print.WarnFrom( state, $"{nameof( TrySetState )} exception: {e}" );
+			Print.WarnFrom( state, $"{nameof( TryToggle )} exception: {e}" );
 			return false;
 		}
 	}

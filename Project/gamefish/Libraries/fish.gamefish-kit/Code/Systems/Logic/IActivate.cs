@@ -21,22 +21,5 @@ public interface IActivate
 	/// Attempts activation with optional context.
 	/// </summary>
 	/// <returns> If activation was successful. </returns>
-	public virtual bool TryActivate( object source = null, object value = null )
-	{
-		try
-		{
-			if ( !CanActivate( source ) )
-				return false;
-
-			Activate( source, value );
-			return true;
-		}
-		catch ( Exception e )
-		{
-			Print.WarnFrom( this, $"{nameof( TryActivate )} exception: {e}" );
-			return false;
-		}
-	}
-
-	public void Activate( object source = null, object value = null );
+	public bool TryActivate( object source = null, object value = null );
 }

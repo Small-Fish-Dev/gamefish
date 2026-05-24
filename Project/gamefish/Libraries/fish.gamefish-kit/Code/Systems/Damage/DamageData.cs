@@ -6,7 +6,7 @@ namespace GameFish;
 /// <b> NOTE: </b> Has more useful data than <see cref="DamageInfo"/>.
 /// </summary>
 [Group( Library.NAME )]
-public partial struct DamageData
+public struct DamageData
 {
 	public float Damage { get; set; }
 	public Vector3? Impulse { get; set; }
@@ -26,6 +26,10 @@ public partial struct DamageData
 	/// Could be an entity class name.
 	/// </summary>
 	public string Source { get; set; }
+
+	/// <returns> If the damage has that type. </returns>
+	public readonly bool HasType( string type )
+		=> Types?.Has( type ) is true;
 
 	public DamageData() { }
 

@@ -8,18 +8,20 @@ namespace GameFish;
 /// A position and a rotation, but not scale.
 /// Makes it easier to animate programmatically such as tweening transforms.
 /// </summary>
-public partial struct Offset : IValid
+public partial struct Offset : IValid, IEquatable<Offset>
 {
 	[Hide, JsonIgnore]
 	public readonly bool IsValid => ITransform.IsValid( in _pos ) && ITransform.IsValid( in _r );
 
 	[InlineEditor]
 	public Vector3 Position { readonly get => _pos; set { _pos = value; } }
+
 	[Hide, JsonIgnore]
 	private Vector3 _pos = Vector3.Zero;
 
 	[InlineEditor]
 	public Rotation Rotation { readonly get => _r; set { _r = value; } }
+
 	[Hide, JsonIgnore]
 	private Rotation _r = Rotation.Identity;
 
@@ -34,7 +36,9 @@ public partial struct Offset : IValid
 		}
 	}
 
-	public static Vector3 Scale => Vector3.One;
+	public static readonly Offset Zero = Transform.Zero;
+
+	public static readonly Vector3 Scale = Vector3.One;
 
 	public static implicit operator Transform( in Offset offset ) => offset.Transform;
 	public static implicit operator Offset( in Transform t ) => new( t );
@@ -42,12 +46,18 @@ public partial struct Offset : IValid
 	public static bool operator ==( in Offset a, in Offset b ) => a.Equals( b );
 	public static bool operator !=( in Offset a, in Offset b ) => !a.Equals( b );
 
+	private readonly bool IsEqual( Offset other )
+		=> other.Position == _pos && other.Rotation == Rotation;
+
+	public readonly bool Equals( Offset other )
+		=> IsEqual( other );
+
 	public readonly override bool Equals( [NotNullWhen( true )] object obj )
 	{
-		if ( obj is not Offset o )
+		if ( obj is not Offset other )
 			return false;
 
-		return o.Position == Position && o.Rotation == Rotation;
+		return IsEqual( other );
 	}
 
 	public readonly override int GetHashCode()

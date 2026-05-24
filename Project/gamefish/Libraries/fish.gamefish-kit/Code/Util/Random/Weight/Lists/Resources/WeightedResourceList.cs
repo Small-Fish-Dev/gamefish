@@ -5,6 +5,7 @@ namespace GameFish;
 /// </summary>
 public abstract class WeightedResourceList<TResource> : WeightedList<TResource> where TResource : Resource
 {
+	[DefaultValue( 100 )]
 	[KeyProperty, WideMode]
 	[Range( WEIGHT_MIN, WEIGHT_MAX, clamped: true ), Step( WEIGHT_STEP )]
 	public abstract Dictionary<string, float> Resources { get; set; }

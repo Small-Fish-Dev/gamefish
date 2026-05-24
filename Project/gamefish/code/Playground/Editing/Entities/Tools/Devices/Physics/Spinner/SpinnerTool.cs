@@ -111,7 +111,7 @@ public partial class SpinnerTool : EditorTool
 		thruster.Settings = SpinnerSettings;
 		thruster.Offset = rb.WorldTransform.ToLocal( tWorld );
 
-		thruster.TrySetNetworkOwner( Connection.Local, allowProxy: true );
+		thruster.TryNetwork( Connection.Local, allowProxy: true );
 
 		if ( !thruster.TryAttachTo( rb, thruster.Offset ) )
 		{

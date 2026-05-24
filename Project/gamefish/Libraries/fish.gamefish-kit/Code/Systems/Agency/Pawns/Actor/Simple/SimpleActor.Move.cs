@@ -34,7 +34,12 @@ partial class SimpleActor
 
 	/// <returns> The exact goal position(or null). </returns>
 	protected virtual Vector3? CalculateDestination()
-		=> GetLastKnownTargetOrigin();
+	{
+		if ( GetLastKnownTargetOrigin() is Vector3 targetPos )
+			return GetNearestPoint( in targetPos ) ?? targetPos;
+
+		return null;
+	}
 
 	/// <summary>
 	/// Attempts to direct this actor towards a position.
@@ -98,9 +103,20 @@ partial class SimpleActor
 		if ( from == to )
 			return null;
 
+		var nav = Scene?.NavMesh;
+
+		if ( nav is null )
+			return null;
+
 		try
 		{
-			return Scene?.NavMesh?.CalculatePath( new CalculatePathRequest() { Start = from, Target = to } );
+			var nearestPoint = nav.GetClosestPoint( to ) ?? to;
+
+			return Scene?.NavMesh?.CalculatePath( new CalculatePathRequest()
+			{
+				Start = from,
+				Target = nearestPoint
+			} );
 		}
 		catch ( Exception e )
 		{

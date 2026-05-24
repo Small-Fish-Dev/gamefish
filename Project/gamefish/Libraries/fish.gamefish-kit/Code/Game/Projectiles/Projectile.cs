@@ -111,6 +111,7 @@ public partial class Projectile : DynamicEntity, ITeam
 
 		InitializePhysics();
 
+		PlayFiringSound();
 		PlayLoopingSound();
 	}
 
@@ -205,11 +206,9 @@ public partial class Projectile : DynamicEntity, ITeam
 	{
 		Attacker = atkr.AsValid();
 		Source = equip.AsValid<Entity>() ?? func.AsValid<Entity>();
-
-		PlayFireSound();
 	}
 
-	protected virtual void PlayFireSound()
+	protected virtual void PlayFiringSound()
 	{
 		if ( FireSound.IsValid() )
 			BroadcastSound( FireSound );

@@ -168,7 +168,7 @@ public partial class Client : Agent
 		id = new Identity( this, cn );
 		Identity = id;
 
-		TrySetNetworkOwner( Connection );
+		TryNetwork( Connection );
 
 		this.Log( $"assigned Connection:[{cn}]" );
 	}

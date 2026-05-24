@@ -11,6 +11,7 @@ partial class Actor
 	/// </summary>
 	[Property]
 	[Feature( ACTOR )]
+	[Order( VISION_ORDER )]
 	[ToggleGroup( nameof( IsVisionEnabled ), Label = VISION )]
 	public virtual bool IsVisionEnabled { get; set; } = true;
 
@@ -18,6 +19,7 @@ partial class Actor
 	/// If enabled: log vision events in console.
 	/// </summary>
 	[Property]
+	[Order( VISION_ORDER )]
 	[Title( "Debug (logging)" )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
@@ -27,6 +29,7 @@ partial class Actor
 	/// If enabled: display vision debug helpers.
 	/// </summary>
 	[Property]
+	[Order( VISION_ORDER )]
 	[Title( "Debug (rendering)" )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
@@ -34,15 +37,23 @@ partial class Actor
 
 	/// <summary>
 	/// The default angle of the vision cone.
+	/// <br /> <br />
+	/// <b> NOTE: </b> This is the overall angle, not the radius.
+	/// <br />
+	/// In other words: they see to the left/right by half of this.
 	/// </summary>
 	[Property]
+	[Order( VISION_ORDER )]
 	[Title( "Angle (default)" )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
-	protected virtual float BaseVisionAngle { get; set; } = 45f;
+	[Range( 0f, 180f, clamped: false ), Step( 1f )]
+	protected virtual float BaseVisionAngle { get; set; } = 90f;
 
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Order( VISION_ORDER )]
 	[Title( "Angle (current)" )]
-	[Property, JsonIgnore, ReadOnly]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
@@ -52,13 +63,16 @@ partial class Actor
 	/// The default distance of the vision cone.
 	/// </summary>
 	[Property]
+	[Order( VISION_ORDER )]
 	[Title( "Distance (default)" )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
-	protected virtual float BaseVisionDistance { get; set; } = 2048f;
+	protected virtual float BaseVisionDistance { get; set; } = 4096f;
 
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Order( VISION_ORDER )]
 	[Title( "Distance (current)" )]
-	[Property, JsonIgnore, ReadOnly]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
@@ -68,13 +82,16 @@ partial class Actor
 	/// The default delay in real time between looking for target(s).
 	/// </summary>
 	[Property]
+	[Order( VISION_ORDER )]
 	[Title( "Frequency (default)" )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]
 	protected virtual float BaseVisionFrequency { get; set; } = 0.1f;
 
+	[Property]
+	[JsonIgnore, ReadOnly]
+	[Order( VISION_ORDER )]
 	[Title( "Frequency (current)" )]
-	[Property, JsonIgnore, ReadOnly]
 	[ShowIf( nameof( InGame ), true )]
 	[Feature( ACTOR ), Group( VISION )]
 	[ToggleGroup( nameof( IsVisionEnabled ) )]

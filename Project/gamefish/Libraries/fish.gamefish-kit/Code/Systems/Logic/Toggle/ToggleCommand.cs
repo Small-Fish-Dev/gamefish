@@ -12,15 +12,18 @@ public enum ToggleCommand
 	/// <summary>
 	/// Stop/close.
 	/// </summary>
-	[Icon( "📫" )] Disable = 0,
+	[Icon( "📫" )]
+	Disable = 0,
 
 	/// <summary>
 	/// Activate/open.
 	/// </summary>
-	[Icon( "📭" )] Enable = 1,
+	[Icon( "📭" )]
+	Enable = 1,
 
 	/// <summary>
 	/// Switch between on/off, open/closed.
 	/// </summary>
-	[Icon( "♻" )] Toggle = 2
+	[Icon( "♻" )]
+	Toggle = 2
 }

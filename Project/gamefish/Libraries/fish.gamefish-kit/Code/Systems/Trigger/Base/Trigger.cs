@@ -136,15 +136,17 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// Print debug logs related to triggering?
 	/// </summary>
 	[Property]
+	[Title( "Logging (trigger)" )]
 	[Feature( TRIGGER ), Group( DEBUG )]
-	public bool DebugTrigger { get; set; } = false;
+	public bool DebugTriggerLogging { get; set; } = false;
 
 	/// <summary>
 	/// Render gizmos in play mode?
 	/// </summary>
 	[Property]
+	[Title( "Render (ingame)" )]
 	[Feature( TRIGGER ), Group( DEBUG )]
-	public bool DebugGizmos { get; set; } = false;
+	public bool DebugRenderInGame { get; set; } = false;
 
 	/// <summary>
 	/// Enables overriding the default color for the collider gizmo.
@@ -170,7 +172,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	[Title( "Solid Alpha" )]
 	[Range( 0f, 1f, clamped: true )]
 	[Feature( TRIGGER ), Group( DEBUG )]
-	public float DebugGizmoSolidAlpha { get; set; } = 0f;
+	public float DebugGizmoSolidAlpha { get; set; } = 0.05f;
 
 
 	/// <summary> An object that passed filters just touched this. </summary>
@@ -255,7 +257,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 	protected void DebugLog( params object[] log )
 	{
-		if ( DebugTrigger )
+		if ( DebugTriggerLogging )
 			this.Log( log );
 	}
 
@@ -263,12 +265,50 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	{
 		base.OnUpdate();
 
-		if ( DebugGizmos )
-			DrawTriggerGizmos();
-
-		if ( this.InEditor() )
+		if ( !InGame )
 			return;
 
+		UpdateInside();
+
+		if ( DebugRenderInGame )
+			RenderTrigger();
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		if ( !InGame )
+			return;
+
+		FixedUpdateInside();
+	}
+
+	protected override void DrawGizmos()
+	{
+		base.DrawGizmos();
+
+		RenderTrigger();
+	}
+
+	protected virtual void RenderTrigger()
+	{
+		var aSolid = this.InGame() || Gizmo.IsSelected ? 1f : 0.6f;
+
+		var lineColor = GizmoColor;
+		var solidColor = lineColor.WithAlpha( DebugGizmoSolidAlpha * aSolid );
+
+		_ = Collider switch
+		{
+			ColliderType.Box => this.DrawBox( BoxSize, lineColor, solidColor ),
+			ColliderType.Sphere => this.DrawSphere( SphereRadius, Sphere?.Center ?? Vector3.Zero, lineColor, solidColor ),
+			ColliderType.Cylinder => this.DrawCylinder( CylinderRadius, CylinderHeight, lineColor, solidColor, CylinderSides ),
+			_ => false
+		};
+	}
+
+	protected virtual void UpdateInside()
+	{
 		if ( OnInsideUpdate is null || Touching is null )
 			return;
 
@@ -283,13 +323,8 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		}
 	}
 
-	protected override void OnFixedUpdate()
+	protected virtual void FixedUpdateInside()
 	{
-		base.OnFixedUpdate();
-
-		if ( this.InEditor() )
-			return;
-
 		if ( OnInsideFixedUpdate is null || Touching is null )
 			return;
 
@@ -388,13 +423,13 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	{
 		if ( !PassesFilters( obj ) )
 		{
-			if ( DebugTrigger )
+			if ( DebugTriggerLogging )
 				DebugLog( obj + " FAILED the filter " );
 
 			return false;
 		}
 
-		if ( DebugTrigger )
+		if ( DebugTriggerLogging )
 			DebugLog( obj + " PASSED the filter" );
 
 		return true;
@@ -482,28 +517,5 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		{
 			this.Warn( $"{nameof( OnEmptied )} callback exception: {e}" );
 		}
-	}
-
-	protected override void DrawGizmos()
-	{
-		base.DrawGizmos();
-
-		DrawTriggerGizmos();
-	}
-
-	public virtual void DrawTriggerGizmos()
-	{
-		var aSolid = this.InGame() || Gizmo.IsSelected ? 1f : 0.6f;
-
-		var lineColor = GizmoColor;
-		var solidColor = lineColor.WithAlpha( DebugGizmoSolidAlpha * aSolid );
-
-		_ = Collider switch
-		{
-			ColliderType.Box => this.DrawBox( BoxSize, lineColor, solidColor ),
-			ColliderType.Sphere => this.DrawSphere( SphereRadius, Sphere?.Center ?? Vector3.Zero, lineColor, solidColor ),
-			ColliderType.Cylinder => this.DrawCylinder( CylinderRadius, CylinderHeight, lineColor, solidColor, CylinderSides ),
-			_ => false
-		};
 	}
 }

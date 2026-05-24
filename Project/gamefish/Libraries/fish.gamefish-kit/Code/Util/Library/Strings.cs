@@ -12,6 +12,20 @@ public static partial class Strings
 	public const string NOTE = "📝 Note";
 	public const string NOTES = "📝 Notes";
 
+	public const string MAIL = "✉ Mail";
+	public const string INBOX = "📫 Inbox";
+	public const string MESSAGE = "📬 Message";
+	public const string MESSAGES = "📬 Messages";
+	public const string COMMENT = "💬 Comment";
+	public const string COMMENTS = "💬 Comments";
+
+	public const string ISSUE = "⚠ Issue";
+	public const string ISSUES = "⚠ Issues";
+	public const string WARNING = "⚠ Warning";
+	public const string WARNINGS = "⚠ Warnings";
+	public const string PROBLEM = "⚠ Problem";
+	public const string PROBLEMS = "⚠ Problems";
+
 	public const string BOOT = "👢 Boot";
 	public const string BOOTING = "👢 Booting";
 
@@ -47,8 +61,16 @@ public static partial class Strings
 	public const string ID = "🆔 Identity";
 	public const string IDS = "🆔 Identities";
 
+	public const string DOO = "💩 Doo"; // 🖕
+	public const string SCRIPT = "📜 Script";
+	public const string SCRIPTS = "📜 Scripts";
+	public const string SCRIPTED = "📜 Scripted";
+	public const string SCRIPTING = "📜 Scripting";
+
 	public const string CALLBACK = "⚡ Callback";
 	public const string CALLBACKS = "⚡ Callbacks";
+	public const string FUNCTION = "⚡ Function";
+	public const string FUNCTIONS = "⚡ Functions";
 
 	public const string ATTRIBUTE = "🔧 Attribute";
 	public const string ATTRIBUTES = "🔧 Attributes";
@@ -83,6 +105,8 @@ public static partial class Strings
 	public const string USE = "🖱 Use";
 	public const string INPUT = "🕹 Input";
 	public const string INPUTS = "🕹 Inputs";
+	public const string BUTTON = "🔴 Button";
+	public const string BUTTONS = "🔴 Buttons";
 	public const string INTERACT = "👉 Interact";
 	public const string INTERACTION = "👉 Interaction";
 
@@ -229,18 +253,28 @@ public static partial class Strings
 	public const string FLYING = "🦅 Flying";
 	public const string FLIGHT = "🦅 Flight";
 	public const string EVASION = "🐱‍👤 Evasion";
+
+	public const string SPEED = "🏃‍♂️ Speed";
+	public const string SPEEDS = "🏃‍♂️ Speeds";
 	public const string MOVEMENT = "🏃 Movement";
 
 	public const string AIM = "👓 Aim";
 	public const string AIMING = "👓 Aiming";
+	public const string TARGET = "🎯 Target";
+	public const string TARGETS = "🎯 Targets";
 	public const string COMBAT = "⚔ Combat";
 
 	public const string NINJA = "🐱‍👤 Ninja";
 	public const string NINJAS = "🐱‍👤 Ninjas";
 	public const string KNIGHT = "🛡 Knight";
 	public const string KNIGHTS = "🛡 Knights";
+	public const string THIEF = "💰 Thief";
+	public const string THIEVES = "💰 Thieves";
 	public const string PIRATE = "🦜 Pirate";
 	public const string PIRATES = "🦜 Pirates";
+	public const string WIZARD = "🧙 Wizard";
+	public const string WIZARDS = "🧙 Wizards";
+	public const string SORCERER = "🧙‍♀️ Sorcerer";
 
 	public const string SEAT = "💺 Seat";
 	public const string SEATS = "💺 Seats";
@@ -277,12 +311,16 @@ public static partial class Strings
 	public const string CONSTRAINT = "🧲 Constraint";
 	public const string CONSTRAINTS = "🧲 Constraints";
 	public const string PHYSICS = "🍎 Physics";
-	public const string GRAVITY = "🍏 Gravity";
-	public const string MOMENTUM = "➡ Momentum";
-	public const string LINEAR = "➡ Linear";
+	public const string PHYSICAL = "🍎 Physical";
+
+	public const string DRAG = "🐌 Drag";
 	public const string FORCE = "💨 Force";
 	public const string FORCES = "💨 Forces";
-	public const string DRAG = "🐌 Drag";
+	public const string VELOCITY = "💨 Velocity";
+	public const string GRAVITY = "🍏 Gravity";
+
+	public const string LINEAR = "➡ Linear";
+	public const string MOMENTUM = "➡ Momentum";
 
 	public const string TRACE = "⚡ Trace";
 	public const string TRACES = "⚡ Traces";
@@ -323,7 +361,9 @@ public static partial class Strings
 	public const string BANKS = "🏦 Banks";
 	public const string SHOP = "🛍 Shop";
 	public const string SHOPS = "🛍 Shops";
+	public const string SHOPPING = "🛍 Shopping";
 	public const string BUY = "🤝 Buy";
+	public const string BUYING = "🤝 Buying";
 	public const string BUYABLE = "🤝 Buyable";
 
 	public const string CASH = "💵 Cash";
@@ -332,23 +372,60 @@ public static partial class Strings
 	public const string VALUE = "💲 Value";
 	public const string VALUES = "💲 Values";
 
+	public const string GOLD = "🥇 Gold";
+	public const string GEM = "💎 Gem";
+	public const string GEMS = "💎 Gems";
+	public const string JEWEL = "💎 Jewel";
+	public const string JEWELRY = "💍 Jewelry";
+
 	public const string GIFT = "🎁 Gift";
 	public const string GIFTS = "🎁 Gifts";
 	public const string GIFTING = "🎁 Gifting";
 
-	public const string UNLOCK = "🔐 Unlock";
-	public const string UNLOCKS = "🔐 Unlocks";
+	public const string CLOCK = "🕰 Clock";
+	public const string CLOCKS = "🕰 Clocks";
 	public const string TIME = "⏰ Time";
 	public const string TIMES = "⏰ Times";
+	public const string TIMER = "⏰ Timer";
+	public const string TIMED = "⏰ Timed";
 	public const string TIMING = "⏰ Timing";
+	public const string DURATION = "⌛ Duration";
+	public const string DURATIONS = "⌛ Durations";
 
 	public const string LIFE = "💖 Life";
 	public const string LIVES = "💖 Lives";
 	public const string HEALTH = "💖 Health";
 	public const string DEATH = "💀 Death";
 	public const string DEATHS = "💀 Deaths";
+	public const string BREAK = "💥 Break";
 	public const string BREAKING = "💥 Breaking";
 	public const string BREAKABLE = "💥 Breakable";
+
+	public const string FOOD = "🍕 Food";
+	public const string FOODS = "🍕 Foods";
+	public const string PIZZA = "🍕 Pizza";
+	public const string PIZZAS = "🍕 Pizzas";
+	public const string DRINK = "🍹 Drink";
+	public const string DRINKS = "🍹 Drinks";
+	public const string SOUP = "🍲 Soup";
+	public const string SOUPS = "🍲 Soups";
+	public const string MEAT = "🥩 Meat";
+	public const string MEATS = "🥩 Meats";
+	public const string VEGGIES = "🥕 Veggies";
+	public const string VEGETABLE = "🥕 Vegetable";
+	public const string SAMMICH = "🥪 Sammich";
+	public const string SAMMICHES = "🥪 Sammiches";
+
+	public const string MUSCLE = "💪 Muscle";
+	public const string MUSCLES = "💪 Muscles";
+	public const string STRENGTH = "💪 Strength";
+	public const string ENDURANCE = "🛡 Endurance";
+	public const string ENERGY = "⚡ Energy";
+	public const string STAMINA = "⚡ Stamina";
+	public const string MAGIC = "✨ Magic";
+	public const string MAGICS = "✨ Magics";
+	public const string MAGICA = "✨ Magica";
+	public const string MAGICAL = "✨ Magical";
 
 	public const string ART = "🖼 Art";
 	public const string SPRITE = "🎨 Sprite";
@@ -358,6 +435,7 @@ public static partial class Strings
 	public const string PAINTING = "🖌 Painting";
 	public const string COLOR = "🎨 Color";
 	public const string COLORS = "🎨 Colors";
+	public const string COLORING = "🎨 Coloring";
 	public const string THEME = "🎨 Theme";
 	public const string THEMES = "🎨 Themes";
 	public const string PALETTE = "🎨 Palette";
@@ -370,6 +448,10 @@ public static partial class Strings
 	public const string MODELS = "🗿 Models";
 	public const string BODY = "🕺 Body";
 	public const string BODIES = "🕺 Bodies";
+	public const string ANIM = "💃 Anim";
+	public const string ANIMS = "💃 Anims";
+	public const string ANIMATION = "💃 Animation";
+
 	public const string AVATAR = "😊 Avatar";
 	public const string AVATARS = "😊 Avatars";
 	public const string OUTFIT = "👗 Outfit";
@@ -394,6 +476,7 @@ public static partial class Strings
 
 	public const string CHARGE = "🔋 Charge";
 	public const string CHARGES = "🔋 Charges";
+	public const string CHARGED = "🔋 Charged";
 	public const string CHARGER = "🔋 Charger";
 	public const string CHARGING = "🔋 Charging";
 
@@ -401,35 +484,65 @@ public static partial class Strings
 	public const string MAGAZINE = "🧮 Magazine";
 	public const string RELOADING = "♻ Reloading";
 
-	public const string PROJECTILE = "⚾ Projectile";
-	public const string PROJECTILES = "⚾ Projectiles";
-	public const string IMPACT = "🎯 Impact";
-	public const string HOMING = "🏹 Homing";
+	public const string SPREAD = "🎉 Spread";
+	public const string SPREADING = "🎉 Spreading";
 
-	public const string EXPLOSION = "💥 Explosion";
-	public const string EXPLOSIVE = "💥 Explosive";
 	public const string BULLET = "🚅 Bullet";
 	public const string BULLETS = "🚅 Bullets";
-	public const string SPREAD = "🎉 Spread";
-	public const string MELEE = "🥊 Melee";
-	public const string MAGIC = "✨ Magic";
-	public const string MAGICAL = "✨ Magical";
+
+	public const string PROJECTILE = "⚾ Projectile";
+	public const string PROJECTILES = "⚾ Projectiles";
+	public const string HOMING = "🏹 Homing";
+	public const string IMPACT = "🎯 Impact";
+
+	public const string EXPLODE = "💥 Explode";
+	public const string EXPLODING = "💥 Exploding";
+	public const string EXPLOSION = "💥 Explosion";
+	public const string EXPLOSIVE = "💥 Explosive";
+
+	public const string POWER = "⚡ Power";
+	public const string POWERED = "⚡ Powered";
+	public const string POWERING = "⚡ Powering";
+	public const string ELECTRIC = "⚡ Electric";
+	public const string ELECTRICITY = "⚡ Electricity";
+
+	public const string MELEE = "🥋 Melee";
+	public const string PUNCH = "👊 Punch";
+	public const string PUNCHES = "👊 Punches";
+	public const string KICK = "🦵 Kick";
+	public const string KICKS = "👟 Kicks";
+
 	public const string GORE = "🍖 Gore";
 
 	public const string SPAWN = "✨ Spawn";
 	public const string SPAWNS = "✨ Spawns";
-	public const string SPAWNING = "✨ Spawning";
 	public const string SPAWNER = "✨ Spawner";
+	public const string SPAWNED = "✨ Spawned";
+	public const string SPAWNING = "✨ Spawning";
 	public const string SPAWNERS = "✨ Spawners";
 	public const string WAVE = "🌊 Wave";
 	public const string WAVES = "🌊 Waves";
 	public const string WAVING = "🌊 Waving";
+	public const string ARENA = "🏟 Arena";
+	public const string ARENAS = "🏟 Arenas";
+
+	public const string GOAL = "🥅 Goal";
+	public const string GOALS = "🥅 Goals";
+	public const string FINISH = "🎌 Finish";
+	public const string FINISHED = "🎌 Finished";
+	public const string FINISHING = "🎌 Finishing";
+	public const string COMPLETE = "🎌 Complete";
+	public const string COMPLETED = "🎌 Completed";
+	public const string COMPLETION = "🎌 Completion";
 
 	public const string LOCK = "🔒 Lock";
 	public const string LOCKS = "🔒 Locks";
 	public const string LOCKED = "🔒 Locked";
 	public const string LOCKING = "🔒 Locking";
-	public const string UNLOCKED = "🔑 Unlocked";
+
+	public const string UNLOCK = "🔐 Unlock";
+	public const string UNLOCKS = "🔐 Unlocks";
+	public const string UNLOCKED = "🔐 Unlocked";
 	public const string UNLOCKING = "🔑 Unlocking";
 
 	public const string KEY = "🗝 Key";

@@ -61,6 +61,6 @@ partial class Entity
 		}
 
 		if ( go.IsValid() && go.Components.TryGet<Entity>( out var ent ) )
-			ent.TrySetNetworkOwner( Connection.Host );
+			ent.TryNetwork( Connection.Host );
 	}
 }

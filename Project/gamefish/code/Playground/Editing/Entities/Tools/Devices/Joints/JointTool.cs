@@ -224,7 +224,7 @@ public abstract class JointTool : EditorTool
 
 		ApplySettings( joint );
 
-		joint.TrySetNetworkOwner( Connection.Local, allowProxy: true );
+		joint.TryNetwork( Connection.Local, allowProxy: true );
 
 		if ( !joint.TryAttachTo( point1, point2 ) )
 		{

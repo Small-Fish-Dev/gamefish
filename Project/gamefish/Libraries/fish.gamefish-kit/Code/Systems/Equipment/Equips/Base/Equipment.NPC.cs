@@ -2,6 +2,22 @@ namespace GameFish;
 
 partial class Equipment
 {
+	protected const int EQUIP_NPC_ORDER = EQUIP_ORDER + 10;
+
+	/// <summary>
+	/// NPCs will use this function when attacking.
+	/// </summary>
+	[Property]
+	[Order( EQUIP_NPC_ORDER )]
+	[Feature( EQUIP ), Group( MODULES )]
+	public virtual EquipFunction PrimaryFunction
+	{
+		get => this?.GetCached( ref _primary );
+		set => _primary = value;
+	}
+
+	protected EquipFunction _primary;
+
 	/// <summary> Should an NPC consider this for combat? </summary>
 	public virtual bool UseInCombat { get; set; } = true;
 
@@ -32,19 +48,6 @@ partial class Equipment
 	/// If it is not encompassed by <see cref="UsableRange"/> then bugs may happen.
 	/// </summary>
 	public virtual FloatRange? IdealRange => PrimaryFunction?.IdealRange;
-
-	/// <summary>
-	/// NPCs will use this function when attacking.
-	/// </summary>
-	[Property]
-	[Feature( NPC ), Group( MODULES )]
-	public virtual EquipFunction PrimaryFunction
-	{
-		get => this.GetCached( ref _primary );
-		set => _primary = value;
-	}
-
-	protected EquipFunction _primary;
 
 	/// <summary>
 	/// Called by NPCs owning this to attack or whatever.

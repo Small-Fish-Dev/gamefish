@@ -6,7 +6,7 @@ namespace GameFish;
 public abstract class AreaVolume : ModuleEntity
 {
 	protected const int AREA_ORDER = DEFAULT_ORDER - 1000;
-	protected const int AREA_DEBUG_ORDER = AREA_ORDER + 100;
+	protected const int AREA_DEBUG_ORDER = AREA_ORDER - 100;
 
 	/// <summary>
 	/// The primary area of this volume.
@@ -15,16 +15,16 @@ public abstract class AreaVolume : ModuleEntity
 	[InlineEditor, WideMode]
 	[Order( AREA_ORDER )]
 	[Feature( AREA ), Group( TRANSFORM )]
-	public virtual Area Area { get; protected set; } = new( global::Transform.Zero, BBox.FromPositionAndSize( Vector3.Zero, 100f ) );
+	public virtual Area Area { get; protected set; } = new( global::Transform.Zero, BBox.FromPositionAndSize( Vector3.Up * 64f, 128f ) );
 
 	/// <summary>
 	/// If true: the area will be rendered ingame.
 	/// </summary>
 	[Property]
-	[Title( "Render Area" )]
+	[Title( "Render (ingame)" )]
 	[Order( AREA_DEBUG_ORDER )]
 	[Feature( AREA ), Group( DEBUG )]
-	public bool DebugRenderArea { get; set; } = false;
+	public bool DebugRenderInGame { get; set; } = false;
 
 	/// <summary>
 	/// The color of area shape lines.
@@ -33,7 +33,7 @@ public abstract class AreaVolume : ModuleEntity
 	[Title( "Line Color" )]
 	[Order( AREA_DEBUG_ORDER )]
 	[Feature( AREA ), Group( DEBUG )]
-	protected virtual Color AreaLineColor => Color.Black;
+	protected virtual Color AreaLineColor { get; set; } = Color.Black;
 
 	/// <summary>
 	/// The color of area shape sides/faces.
@@ -42,16 +42,16 @@ public abstract class AreaVolume : ModuleEntity
 	[Title( "Solid Color" )]
 	[Order( AREA_DEBUG_ORDER )]
 	[Feature( AREA ), Group( DEBUG )]
-	protected virtual Color AreaSolidColor => Color.White.WithAlpha( 0.07f );
+	protected virtual Color AreaSolidColor { get; set; } = Color.White.WithAlpha( 0.07f );
 
-	protected virtual Color GetLineColor( in Area a ) => AreaLineColor;
-	protected virtual Color GetSolidColor( in Area a ) => AreaSolidColor;
+	public virtual Color GetLineColor( in Area a ) => AreaLineColor;
+	public virtual Color GetSolidColor( in Area a ) => AreaSolidColor;
 
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
 
-		if ( DebugRenderArea )
+		if ( DebugRenderInGame )
 			RenderArea( allowResize: false );
 	}
 

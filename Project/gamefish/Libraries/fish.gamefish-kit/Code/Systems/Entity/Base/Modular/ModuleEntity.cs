@@ -21,11 +21,11 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	protected virtual bool IsModule<TMod>( Module m ) where TMod : class
 		=> m.IsValid() && m is TMod;
 
-	public override bool TrySetNetworkOwner( Connection cn, bool allowProxy = false )
+	public override bool TryNetwork( Connection cn, bool allowProxy = false )
 	{
 		// this.Log( $"{nameof( TrySetNetworkOwner )} cn:[{cn}] allowProxy:[{allowProxy}]" );
 
-		if ( !base.TrySetNetworkOwner( cn, allowProxy ) )
+		if ( !base.TryNetwork( cn, allowProxy ) )
 			return false;
 
 		UpdateModuleOwnership( cn );
@@ -203,7 +203,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 			if ( !mod.IsValid() )
 				continue;
 
-			mod.TrySetNetworkOwner( cn, allowProxy: true );
+			mod.TryNetwork( cn, allowProxy: true );
 		}
 	}
 

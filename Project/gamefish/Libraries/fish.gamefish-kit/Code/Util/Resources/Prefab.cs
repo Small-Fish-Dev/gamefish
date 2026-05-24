@@ -5,7 +5,10 @@ public static class Prefab
 	/// <summary>
 	/// Safely reference a prefab without breaking the entire project if it's missing.
 	/// </summary>
-	public static GameObject Get( string path )
+	/// <param name="path"> The file path to the prefab. </param>
+	/// <param name="warn"> Print a warning log upon failure? </param>
+	/// <returns> The object of the prefab(or null). </returns>
+	public static GameObject Get( string path, in bool warn = true )
 	{
 		path ??= "";
 
@@ -13,7 +16,9 @@ public static class Prefab
 
 		if ( prefab is null )
 		{
-			Log.Warning( "[Prefab] Couldn't find prefab with path: " + path );
+			if ( warn )
+				Log.Warning( $"[{nameof( Prefab )}] Couldn't find prefab with path: " + path );
+
 			return null;
 		}
 
@@ -21,9 +26,12 @@ public static class Prefab
 	}
 
 	/// <summary>
-	/// Safely reference a <see cref="PrefabFile"/> without breaking the entire project if it's missing.
+	/// Safely reference a prefab without breaking the entire project if it's missing.
 	/// </summary>
-	public static PrefabFile GetFile( string path )
+	/// <param name="path"> The file path to the prefab. </param>
+	/// <param name="warn"> Print a warning log upon failure? </param>
+	/// <returns> The resource of the prefab(or null). </returns>
+	public static PrefabFile GetFile( string path, in bool warn = true )
 	{
 		path ??= "";
 
@@ -31,7 +39,9 @@ public static class Prefab
 
 		if ( prefab is null )
 		{
-			Log.Warning( "[Prefab] Couldn't find prefab file with path: " + path );
+			if ( warn )
+				Log.Warning( $"[{nameof( Prefab )}] Couldn't find prefab file with path: " + path );
+
 			return null;
 		}
 

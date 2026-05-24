@@ -21,8 +21,9 @@ partial class PawnView
 	/// <summary>
 	/// The local position and rotation relative to the pawn's origin.
 	/// </summary>
+	[Property]
+	[ReadOnly, InlineEditor]
 	[Title( "Relative Offset" )]
-	[Property, ReadOnly, InlineEditor]
 	[Feature( MODES ), Group( TRANSITIONING )]
 	public Offset Relative
 	{
@@ -30,7 +31,7 @@ partial class PawnView
 		set
 		{
 			_relative = value;
-			// UpdateTransform();
+			OnSetRelative( in value );
 		}
 	}
 
@@ -61,6 +62,10 @@ partial class PawnView
 	}
 
 	protected float _transVel;
+
+	protected virtual void OnSetRelative( in Offset offset )
+	{
+	}
 
 	/// <summary>
 	/// Begins a transition given the current position of this view.

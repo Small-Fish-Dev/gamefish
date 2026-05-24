@@ -7,6 +7,7 @@ partial class DynamicEntity : IHealth
 	[Sync]
 	[Property]
 	[Feature( HEALTH )]
+	[Order( HEALTH_ORDER )]
 	public bool IsAlive
 	{
 		get => _isAlive;
@@ -20,10 +21,13 @@ partial class DynamicEntity : IHealth
 			var prev = _isAlive;
 			_isAlive = value;
 
-			if ( _isAlive )
-				OnAlive();
-			else
-				OnDeath();
+			if ( InGame )
+			{
+				if ( _isAlive )
+					OnAlive();
+				else
+					OnDeath();
+			}
 
 			OnSetIsAlive( _isAlive, prev );
 		}
@@ -144,24 +148,18 @@ partial class DynamicEntity : IHealth
 
 	public virtual void OnDeath()
 	{
-		if ( !InGame )
-			return;
-
 		foreach ( var m in DamageModules )
 			m.OnDeath();
 	}
 
 	public virtual void OnAlive()
 	{
-		if ( !InGame )
-			return;
-
 		foreach ( var m in DamageModules )
 			m.OnAlive();
 	}
 
 	public virtual bool CanDamage( in DamageData data )
-		=> IsDestructible;
+		=> IsDestructible && IsAlive;
 
 	/// <summary>
 	/// Called by the owner to attempt inflicting the damage.
@@ -210,11 +208,14 @@ partial class DynamicEntity : IHealth
 	}
 
 	/// <summary>
-	/// 
+	/// Called when taking damage to allow altering the force applied.
 	/// </summary>
 	protected virtual void ApplyDamageImpulse( Vector3 impulse )
 		=> ApplyImpulse( impulse );
 
+	/// <summary>
+	/// A good place to play particles, sounds etc.
+	/// </summary>
 	public virtual void OnDamagedEffect( in DamageData data )
 	{
 	}

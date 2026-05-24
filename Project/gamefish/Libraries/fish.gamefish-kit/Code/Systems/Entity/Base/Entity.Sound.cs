@@ -37,10 +37,14 @@ partial class Entity
 		return soundHandle;
 	}
 
-	private void ApplySoundSettings( SoundHandle soundHandle, in SoundSettings s )
+	private static void ApplySoundSettings( SoundHandle soundHandle, in SoundSettings s )
 	{
 		if ( !soundHandle.IsValid() )
 			return;
+
+		// Might be overriding the target.
+		if ( s.Following.IsValid() )
+			soundHandle.Parent = s.Following;
 
 		// Could be a world or local transform.
 		var t = s.Transform;

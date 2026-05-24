@@ -61,15 +61,18 @@ public partial class EquipInventory : PawnModule
 	public bool DebugLogging { get; set; } = false;
 
 	/// <summary>
-	/// Automatically give the loadout when this module first starts? <br />
-	/// If not then you'll need to call <see cref="GiveLoadout"/> yourself.
+	/// If true: give the loadout automatically on start.
+	/// <br /> <br />
+	/// <b> NOTE: </b> Otherwise you'll need to give the loadout manually.
 	/// </summary>
 	[Property]
 	[Title( "Auto-Deploy" )]
 	[Feature( EQUIP ), Group( INVENTORY )]
 	public virtual bool AutoLoadoutDeploy { get; set; } = true;
 
-	/// <summary> The weapons to spawn. </summary>
+	/// <summary>
+	/// The weapons to spawn.
+	/// </summary>
 	[Property, WideMode]
 	[Title( "Default Loadout" )]
 	[Feature( EQUIP ), Group( INVENTORY )]
@@ -409,7 +412,7 @@ public partial class EquipInventory : PawnModule
 		e.Slot = slot.Value;
 
 		// Network spawn it before making it a child!
-		e.TrySetNetworkOwner( pawn.Network?.Owner );
+		e.TryNetwork( pawn.Network?.Owner );
 
 		// Setting this should parent it and shit.
 		e.SetOwner( pawn );

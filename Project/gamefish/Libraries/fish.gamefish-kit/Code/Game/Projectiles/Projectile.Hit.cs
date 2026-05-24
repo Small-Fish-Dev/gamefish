@@ -1,3 +1,5 @@
+using System;
+
 namespace GameFish;
 
 partial class Projectile : Component.ICollisionListener
@@ -96,7 +98,7 @@ partial class Projectile : Component.ICollisionListener
 	[ToggleGroup( nameof( HasImpact ) )]
 	public DamageSettings ImpactDamage { get; set; } = new( [DamageTypes.IMPACT] )
 	{
-		EnableRange = true,
+		EnableRange = false,
 		EnableHitboxes = false,
 	};
 
@@ -142,13 +144,11 @@ partial class Projectile : Component.ICollisionListener
 		EnableHitboxes = false,
 	};
 
-
 	/// <summary>
 	/// How many times has this collided?
 	/// </summary>
 	[Sync]
 	public int CollisionCount { get; set; }
-
 
 	void ICollisionListener.OnCollisionStart( Collision c )
 	{
@@ -157,7 +157,6 @@ partial class Projectile : Component.ICollisionListener
 
 		TryCollide( c );
 	}
-
 
 	public virtual bool IsCollision( in SceneTraceResult tr )
 	{
@@ -272,16 +271,25 @@ partial class Projectile : Component.ICollisionListener
 			if ( !enemy.IsValid() || !enemy.Active )
 				continue;
 
-			var ePos = enemy.Center;
-			var dir = origin.Direction( ePos );
+			var pos = enemy.Center;
+			var dir = origin.Direction( pos );
 
-			var dmg = ExplosionDamage.GetRangeDamage( in origin, ePos );
-			var impulse = ImpactDamage.GetImpulse( dir, in dmg );
+			var dmg = ExplosionDamage.GetRangeDamage( in origin, pos );
+			var impulse = ExplosionDamage.GetImpulse( dir, in dmg );
 
-			var data = new DamageData( dmg, impulse, Attacker, Source, ImpactDamage.Types );
+			var data = new DamageData( dmg, impulse, Attacker, Source, ExplosionDamage.Types )
+			{
+				Origin = origin,
+				HitPosition = pos
+			};
 
-			enemy.TrySendDamage( data );
+			if ( enemy.TrySendDamage( data ) )
+				OnExplosionDamage( in data );
 		}
+	}
+
+	protected virtual void OnExplosionDamage( in DamageData data )
+	{
 	}
 
 	[Rpc.Broadcast( NetFlags.Reliable | NetFlags.SendImmediate | NetFlags.OwnerOnly )]

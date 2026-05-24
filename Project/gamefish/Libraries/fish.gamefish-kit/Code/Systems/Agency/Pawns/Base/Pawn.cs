@@ -85,7 +85,7 @@ public abstract partial class Pawn : DynamicEntity
 			if ( Network?.Owner == Owner.Network?.Owner )
 				return true;
 
-		if ( !TrySetNetworkOwner( cn, allowProxy: true ) )
+		if ( !TryNetwork( cn, allowProxy: true ) )
 		{
 			this.Warn( $"Failed to assign owner:[{newAgent}] to Connection:[{cn}]" );
 			return false;

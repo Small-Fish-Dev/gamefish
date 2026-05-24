@@ -99,7 +99,7 @@ public partial class CenteringTool : JointTool
 
 		joint.ParentPoint = point;
 
-		joint.TrySetNetworkOwner( Connection.Local, allowProxy: true );
+		joint.TryNetwork( Connection.Local, allowProxy: true );
 
 		if ( !joint.TryAttachTo( point ) )
 		{

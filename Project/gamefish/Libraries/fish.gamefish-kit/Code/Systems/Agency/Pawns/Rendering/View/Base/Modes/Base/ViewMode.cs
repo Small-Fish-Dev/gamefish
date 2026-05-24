@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
@@ -10,6 +12,7 @@ public abstract class ViewMode : Module
 	protected const int VIEW_ORDER = DEFAULT_ORDER - 1000;
 
 	[Property]
+	[JsonIgnore, ReadOnly]
 	[Title( "In First Person" )]
 	[Feature( VIEW ), Group( DEBUG )]
 	protected bool InspectorInFirstPerson => InFirstPerson() is true;
@@ -39,7 +42,7 @@ public abstract class ViewMode : Module
 
 	protected Offset Relative
 	{
-		get => View?.Relative ?? default;
+		get => View?.Relative ?? Offset.Zero;
 		set
 		{
 			if ( View.IsValid() )
