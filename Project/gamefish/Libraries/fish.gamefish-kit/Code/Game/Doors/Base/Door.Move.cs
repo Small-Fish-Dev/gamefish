@@ -73,7 +73,7 @@ partial class Door
 	[Title( "Origin" )]
 	[Order( DOOR_TRANSFORM_ORDER )]
 	[Feature( DOOR ), Group( TRANSFORM )]
-	public virtual Offset InitialOffset { get; set; } = new( Vector3.Right * 100f );
+	public virtual Offset InitialOffset { get; set; } = global::Transform.Zero;
 
 	[Property]
 	[Title( "Offset" )]
@@ -87,7 +87,7 @@ partial class Door
 	[Order( DOOR_TRANSFORM_ORDER )]
 	[Feature( DOOR ), Group( TRANSFORM )]
 	[ShowIf( nameof( Type ), DoorType.Rotating )]
-	public virtual Vector3 RotationPivot { get; set; } = Vector3.Zero;
+	public virtual Vector3 RotationPivot { get; set; } = Vector3.Left * 25f;
 
 	[Property]
 	[Title( "Angles" )]

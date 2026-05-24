@@ -1,19 +1,19 @@
 namespace GameFish;
 
-[DefaultValue( Sliding )]
+[DefaultValue( Rotating )]
 public enum DoorType
 {
-	/// <summary>
-	/// Moves back and forth.
-	/// </summary>
-	[Icon( "⛸" )]
-	Sliding,
-
 	/// <summary>
 	/// Turns on a pivot.
 	/// </summary>
 	[Icon( "♻" )]
 	Rotating,
+
+	/// <summary>
+	/// Moves back and forth.
+	/// </summary>
+	[Icon( "⛸" )]
+	Sliding,
 
 	/// <summary>
 	/// Manual open/close offsets.

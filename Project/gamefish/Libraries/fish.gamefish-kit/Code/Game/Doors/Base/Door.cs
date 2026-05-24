@@ -36,7 +36,7 @@ public partial class Door : DynamicEntity
 	/// Plays when this starts closing.
 	/// </summary>
 	[Property]
-	[Title( "Close" )]
+	[Title( "Closing" )]
 	[Feature( DOOR ), Group( SOUNDS ), Order( DOOR_SOUND_ORDER )]
 	public SoundEvent ClosingSound { get; set; }
 
@@ -54,8 +54,11 @@ public partial class Door : DynamicEntity
 	[Property]
 	[Title( "Locked" )]
 	[Feature( DOOR ), Group( SOUNDS ), Order( DOOR_SOUND_ORDER )]
-	public SoundEvent DeniedSound { get; set; }
+	public SoundEvent LockedSound { get; set; }
 
+	/// <summary>
+	/// Typically prevents the door from being opened while closed.
+	/// </summary>
 	[Sync]
 	public bool IsLocked
 	{
@@ -73,6 +76,8 @@ public partial class Door : DynamicEntity
 	}
 
 	protected bool? _isLocked;
+
+	public override bool IsDestructible => false;
 
 	public IEnumerable<DoorModule> DoorModules => GetModules<DoorModule>() ?? [];
 

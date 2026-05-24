@@ -15,7 +15,6 @@ partial class Door
 	/// </summary>
 	[Property]
 	[Title( "Starts" )]
-	[WideMode, EnumButtonGroup]
 	[Feature( DOOR ), Order( DOOR_ORDER )]
 	public virtual DoorState InitialState { get; set; } = DoorState.Closed;
 
@@ -25,10 +24,16 @@ partial class Door
 	[Sync]
 	public DoorState State
 	{
-		get => _state ?? DoorState.Unset;
+		get => _state is DoorState.Unset
+			? InitialState
+			: _state;
+
 		protected set
 		{
-			if ( _state is DoorState ds && ds == value )
+			if ( _state == value )
+				return;
+
+			if ( value is DoorState.Unset )
 				return;
 
 			var wasOpen = _state;
@@ -38,7 +43,7 @@ partial class Door
 		}
 	}
 
-	protected DoorState? _state;
+	protected DoorState _state = DoorState.Unset;
 
 	/// <summary>
 	/// If the door is fully open.
@@ -76,7 +81,7 @@ partial class Door
 			IsLocked = true;
 	}
 
-	protected virtual void OnSetState( in DoorState state, in DoorState? oldState )
+	protected virtual void OnSetState( in DoorState state, in DoorState oldState )
 	{
 		if ( !InGame )
 			return;
@@ -201,6 +206,9 @@ partial class Door
 		{
 			if ( DebugStateLogging )
 				this.Log( $"Failed to open." );
+
+			if ( IsLocked )
+				PlayDoorSound( LockedSound );
 
 			return false;
 		}
