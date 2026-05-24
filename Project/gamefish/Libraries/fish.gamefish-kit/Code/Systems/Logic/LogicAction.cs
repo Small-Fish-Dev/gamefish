@@ -110,8 +110,6 @@ public struct LogicAction
 
 	public readonly void Execute( object source = null )
 	{
-		Print.Info(Type);
-
 		switch ( Type )
 		{
 			case ActionType.Activate:
