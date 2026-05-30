@@ -6,7 +6,7 @@ partial class Trigger
 
 	protected override NetworkMode NetworkingModeDefault => NetworkMode.Object;
 	protected override OwnerTransfer NetworkTransferModeDefault => OwnerTransfer.Fixed;
-	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.Host;
+	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
 
-	public override Connection DefaultNetworkOwner => Network?.Owner;
+	public override Connection DefaultNetworkOwner => null;
 }

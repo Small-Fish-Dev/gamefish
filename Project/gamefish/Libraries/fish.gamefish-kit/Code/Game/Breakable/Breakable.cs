@@ -13,14 +13,8 @@ namespace GameFish;
 [EditorHandle( Icon = "⚱" )]
 public partial class Breakable : DynamicEntity
 {
-	protected const int BREAKABLE_ORDER = HEALTH_ORDER - 200;
-
-	/// <summary>
-	/// Should the object be destroyed when this is broken?
-	/// </summary>
-	[Property]
-	[Feature( BREAKABLE ), Group( EFFECTS ), Order( BREAKABLE_ORDER )]
-	public bool DestroyObject { get; set; } = true;
+	protected const int BREAKABLE_ORDER = HEALTH_ORDER - 1000;
+	protected const int LOGIC_ORDER = BREAKABLE_ORDER + 100;
 
 	/// <summary>
 	/// Should effects be centered on the object?
@@ -72,6 +66,8 @@ public partial class Breakable : DynamicEntity
 	[Feature( BREAKABLE ), Group( SOUND ), Order( BREAKABLE_ORDER )]
 	public SoundEvent DamagedSound { get; set; }
 
+	public override bool DestroyUponDeath => true;
+
 	protected override void OnDamaged( in DamageData data )
 	{
 		base.OnDamaged( data );
@@ -88,19 +84,18 @@ public partial class Breakable : DynamicEntity
 			BroadcastSound( DamagedSound, Center );
 	}
 
-	public override void OnDeath()
+	protected override void OnDeath()
 	{
 		if ( GameObject.IsValid() )
 			OnBreak();
 
 		base.OnDeath();
-
-		if ( DestroyObject )
-			GameObject?.Destroy();
 	}
 
 	protected virtual void OnBreak()
 	{
+		RpcBroadcastOnBreak();
+
 		if ( IsProxy )
 			return;
 
@@ -122,15 +117,19 @@ public partial class Breakable : DynamicEntity
 		if ( BreakPrefab.TrySpawn( tWorld, out var objEffect ) )
 		{
 			objEffect.NetworkSetup(
-				cn: Connection.Host,
+				cn: Connection.Local,
 				orphanMode: NetworkOrphaned.Destroy,
 				ownerTransfer: OwnerTransfer.Fixed,
-				netMode: NetworkMode.Object,
-				ignoreProxy: false
+				netMode: NetworkMode.Object
 			);
 		}
 	}
 
+	[Rpc.Broadcast( NetFlags.OwnerOnly | NetFlags.SendImmediate | NetFlags.Reliable )]
+	protected virtual void RpcBroadcastOnBreak()
+	{
+		LogicAction.TryExecute( OnBreakLogic, this );
+	}
 
 	[Rpc.Broadcast( NetFlags.OwnerOnly | NetFlags.SendImmediate | NetFlags.Reliable )]
 	protected static void RpcBreakSound( SoundEvent snd, Vector3 pos )

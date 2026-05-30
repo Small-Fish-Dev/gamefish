@@ -17,6 +17,13 @@ public abstract partial class Actor : Pawn
 	/// </summary>
 	public virtual bool IsThinking => GameObject.IsValid() && IsAlive;
 
+	protected override void OnEnabled()
+	{
+		Tags?.Add( TAG_NPC );
+
+		base.OnEnabled();
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();

@@ -11,12 +11,19 @@ namespace GameFish;
 [Icon( "directions_run" )]
 public abstract partial class PawnController : PawnModule
 {
-	protected const int AIMING_ORDER = PAWN_ORDER + 100;
-	protected const int EYEPOS_ORDER = PAWN_ORDER + 200;
+	protected const int MOVE_ORDER = PAWN_ORDER - 1000;
+	protected const int MOVE_DEBUG_ORDER = MOVE_ORDER - 50;
 
-	protected const int SPRINT_ORDER = PAWN_ORDER + 300;
-	protected const int DUCKING_ORDER = PAWN_ORDER + 400;
-	protected const int JUMPING_ORDER = PAWN_ORDER + 500;
+	protected const int VIEW_ORDER = MOVE_ORDER + 200;
+	protected const int VIEW_AIMING_ORDER = VIEW_ORDER + 100;
+	protected const int VIEW_EYEPOS_ORDER = VIEW_ORDER + 200;
+
+	protected const int PHYSICS_ORDER = MOVE_ORDER + 50;
+	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 50;
+
+	protected const int SPRINT_ORDER = MOVEMENT_ORDER + 50;
+	protected const int DUCKING_ORDER = MOVEMENT_ORDER + 100;
+	protected const int JUMPING_ORDER = MOVEMENT_ORDER + 150;
 
 	public Rigidbody Rigidbody => Pawn?.Rigidbody;
 
@@ -31,7 +38,7 @@ public abstract partial class PawnController : PawnModule
 	public virtual Vector3 Gravity => SceneGravity;
 
 	/// <summary>
-	/// The gravity things fall(if they do) by default.
+	/// The speed things fall(if they do) by default.
 	/// </summary>
 	protected Vector3 SceneGravity => Scene?.PhysicsWorld?.Gravity ?? default;
 
@@ -73,7 +80,7 @@ public abstract partial class PawnController : PawnModule
 	[Title( "Type" )]
 	[TargetType( typeof( ControllerPhysics ) )]
 	[ShowIf( nameof( HasValidPhysicsModule ), false )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
+	[Feature( CONTROLLER ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
 	[InfoBox( "You must have a component for the controller's physics or it will not be able to move. Select one below.", Icon = "warning", Tint = EditorTint.Red )]
 	protected Type AddPhysicsModuleType
 	{
@@ -88,10 +95,10 @@ public abstract partial class PawnController : PawnModule
 	/// </summary>
 	[Property]
 	[Title( "Module" )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
-	public ControllerPhysics Physics
+	[Feature( CONTROLLER ), Group( PHYSICS ), Order( PHYSICS_ORDER - 1 )]
+	public virtual ControllerPhysics Physics
 	{
-		get => _phys.AsValid() ?? this?.GetCached( ref _phys );
+		get => _phys.AsValid() ?? this.GetCached( ref _phys );
 		set => _phys = value;
 	}
 
@@ -102,7 +109,7 @@ public abstract partial class PawnController : PawnModule
 	/// </summary>
 	[Property]
 	[Title( "Gravity" )]
-	[Feature( PAWN ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
+	[Feature( CONTROLLER ), Group( PHYSICS ), Order( PHYSICS_ORDER )]
 	public virtual bool GravityEnabled { get; set; } = true;
 
 	public virtual Vector3 Velocity

@@ -10,13 +10,27 @@ partial class Library
 		=> Vector3.Direction( from, to );
 
 	/// <summary>
-	/// Zeroes out the <c>Z</c> axis.
+	/// Zeroes out the <c>Z</c> axis then normalizes and scales the vector.
 	/// </summary>
 	/// <param name="v"></param>
-	/// <param name="isNormal"> Should this be normalized afterwards? </param>
-	/// <returns> A vector flattened as if 2D. </returns>
-	public static Vector3 Flatten( this Vector3 v, in bool isNormal = false )
-		=> isNormal ? v.WithZ( 0f ).Normal : v.WithZ( 0f );
+	/// <param name="len"> The amount to scale the normalized vector. </param>
+	/// <returns> The vector flattened and normalized to a 2D length. </returns>
+	public static Vector3 Flatten( this Vector3 v, in float len = 1f )
+		=> v.WithZ( 0f ).Normal * len;
+
+	/// <summary>
+	/// Zeroes out the <c>Z</c> axis then normalizes and scales the vector.
+	/// Fails if the result is a zero vector(where x/y/z are all zero).
+	/// </summary>
+	/// <param name="v"></param>
+	/// <param name="vf"> The flattened, normalized and scaled vector. </param>
+	/// <param name="len"> The amount to scale the normalized vector. </param>
+	/// <returns> If the vector could be flattened without becoming a zero vector. </returns>
+	public static bool TryFlatten( this Vector3 v, out Vector3 vf, in float len = 1f )
+	{
+		vf = v.Flatten( len );
+		return vf != default;
+	}
 
 	/// <summary>
 	/// Projects a vector onto a plane's normal.

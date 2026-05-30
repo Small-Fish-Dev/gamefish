@@ -2,28 +2,25 @@ namespace GameFish;
 
 partial class PawnController
 {
-	protected const int PHYSICS_ORDER = PAWN_ORDER + 100;
-	protected const int MOVEMENT_ORDER = PHYSICS_ORDER + 100;
-	protected const int PAWN_DEBUG_ORDER = PAWN_ORDER + 900;
-
 	public float SkinWidth => Physics?.SkinWidth ?? 0f;
 
 	/// <summary>
 	/// Should this be able to input its movement?
 	/// </summary>
 	[Property]
-	[Feature( PAWN )]
+	[Feature( CONTROLLER )]
+	[Order( MOVEMENT_ORDER )]
 	[ToggleGroup( nameof( MovementEnabled ), Label = MOVEMENT )]
 	public virtual bool MovementEnabled { get; set; } = true;
 
 	/// <summary>
-	/// The target movement speed to accelerate towards.
+	/// The default target movement speed to accelerate towards.
 	/// </summary>
 	[Property]
-	[Title( "Max Speed (default)" )]
+	[Title( "Speed (default)" )]
 	[Range( 0f, 1000f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
-	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
+	[Feature( CONTROLLER ), Order( MOVEMENT_ORDER )]
 	public virtual float MoveSpeed { get; set; } = 250f;
 
 	/// <summary>
@@ -32,7 +29,7 @@ partial class PawnController
 	[Property]
 	[Range( 0f, 50f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
-	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
+	[Feature( CONTROLLER ), Order( MOVEMENT_ORDER )]
 	public virtual float Acceleration { get; set; } = 10f;
 
 	/// <summary>
@@ -41,7 +38,7 @@ partial class PawnController
 	[Property]
 	[Range( 0f, 20f, clamped: false )]
 	[ToggleGroup( nameof( MovementEnabled ) )]
-	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
+	[Feature( CONTROLLER ), Order( MOVEMENT_ORDER )]
 	public virtual float AirAcceleration { get; set; } = 3f;
 
 	/// <summary>
@@ -49,20 +46,20 @@ partial class PawnController
 	/// </summary>
 	[Property]
 	[ToggleGroup( nameof( MovementEnabled ) )]
-	[Feature( PAWN ), Order( MOVEMENT_ORDER )]
+	[Feature( CONTROLLER ), Order( MOVEMENT_ORDER )]
 	public virtual Friction Friction { get; set; } = new();
 
 	[Property]
 	[Title( "Is Grounded" )]
 	[ShowIf( nameof( InGame ), true )]
-	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
+	[Feature( CONTROLLER ), Group( DEBUG ), Order( MOVE_DEBUG_ORDER )]
 	protected bool InspectorIsGrounded => IsGrounded;
 
 	[Normal]
 	[Property]
 	[Title( "Ground Normal" )]
 	[ShowIf( nameof( InGame ), true )]
-	[Feature( PAWN ), Group( DEBUG ), Order( PAWN_DEBUG_ORDER )]
+	[Feature( CONTROLLER ), Group( DEBUG ), Order( MOVE_DEBUG_ORDER )]
 	protected Vector3 InspectorGroundNormal => GroundNormal;
 
 	public virtual bool IsStuck => Physics?.IsStuck is true;

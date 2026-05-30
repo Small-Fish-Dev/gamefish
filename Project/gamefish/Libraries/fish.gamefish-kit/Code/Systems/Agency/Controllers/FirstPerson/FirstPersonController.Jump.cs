@@ -6,7 +6,7 @@ partial class FirstPersonController
 	/// Should this be able to jump?
 	/// </summary>
 	[Property]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ), Label = JUMPING )]
 	public bool JumpingEnabled { get; set; } = true;
 
@@ -17,7 +17,7 @@ partial class FirstPersonController
 	[Property]
 	[InlineEditor]
 	[Title( "Input" )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public InputSetting JumpInput { get; set; } = new( "Jump", InputMode.Pressed );
 
@@ -27,7 +27,7 @@ partial class FirstPersonController
 	[Property]
 	[Title( "Cooldown" )]
 	[Range( 0f, 0.5f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpCooldown { get; set; } = 0.1f;
 
@@ -37,7 +37,7 @@ partial class FirstPersonController
 	[Property]
 	[Title( "Impulse" )]
 	[Range( 0f, 1000f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpImpulse { get; set; } = 400f;
 
@@ -47,7 +47,7 @@ partial class FirstPersonController
 	[Property]
 	[Title( "Leap Speed" )]
 	[Range( 0f, 250f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpLeap { get; set; } = 0f;
 
@@ -57,7 +57,7 @@ partial class FirstPersonController
 	[Property]
 	[Title( "Slope Factor" )]
 	[Range( 0f, 2f, clamped: false )]
-	[Feature( PAWN ), Order( JUMPING_ORDER )]
+	[Feature( CONTROLLER ), Order( JUMPING_ORDER )]
 	[ToggleGroup( nameof( JumpingEnabled ) )]
 	public virtual float JumpSlopeFactor { get; set; } = 1f;
 

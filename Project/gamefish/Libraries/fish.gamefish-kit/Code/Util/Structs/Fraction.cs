@@ -3,13 +3,13 @@ using System.Text.Json.Serialization;
 namespace GameFish;
 
 /// <summary>
-/// A <see cref="float"/> that is always between 0 and 1.
+/// A <see cref="float"/> that is ALWAYS between 0 and 1.
 /// </summary>
 public struct Fraction
 {
 	[KeyProperty]
 	[Range( 0f, 1f ), Step( 0.001f )]
-	public float Value { readonly get => _value; set => _value = value.Clamp( 0f, 1f ); }
+	public float Value { readonly get => _value.Clamp( 0f, 1f ); set => _value = value.Clamp( 0f, 1f ); }
 
 	[Hide, JsonIgnore]
 	private float _value;

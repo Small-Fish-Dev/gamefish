@@ -26,11 +26,7 @@ partial class Library
 		}
 	}
 
-	/// <summary>
-	/// Safely gets a copy of this object using Json serialization. <br />
-	/// May have performance impacts if used constantly.
-	/// </summary>
-	/// <returns> A deep copy of the object as using Json(or <paramref name="default"/>). </returns>
+	/// <inheritdocs cref="CreateJsonCopy" />
 	public static object JsonCopy( this object obj, object @default )
 		=> CreateJsonCopy( obj, @default );
 
@@ -46,7 +42,7 @@ partial class Library
 
 		try
 		{
-			return JsonSerializer.Deserialize<T>( JsonSerializer.Serialize<T>( obj ) );
+			return JsonSerializer.Deserialize<T>( JsonSerializer.Serialize( obj ) );
 		}
 		catch ( Exception e )
 		{
@@ -55,11 +51,7 @@ partial class Library
 		}
 	}
 
-	/// <summary>
-	/// Safely gets a copy of the object as <typeparamref name="T"/> using Json serialization. <br />
-	/// May have performance impacts if used constantly.
-	/// </summary>
-	/// <returns> A deep copy of the object as <typeparamref name="T"/> using Json(or <paramref name="default"/>). </returns>
+	/// <inheritdocs cref="CreateJsonCopy{T}" />
 	public static T JsonCopy<T>( this T obj, T @default = default )
 		=> CreateJsonCopy<T>( obj, @default );
 }

@@ -14,13 +14,13 @@ partial class Projectile
 		/// Influences the direction of velocity without affecting its speed.
 		/// </summary>
 		[Icon( "♻" )]
-		Redirect = 1 << 0,
+		Redirect = 1 << 1,
 
 		/// <summary>
 		/// Adds velocity towards the direction of the target.
 		/// </summary>
 		[Icon( "🌎" )]
-		Gravitate = 2 << 0,
+		Gravitate = 1 << 2,
 	}
 
 	[Property]
@@ -162,7 +162,7 @@ partial class Projectile
 			.Sphere( radius, origin, origin ).RunAll();
 
 		var enemies = trSphere
-			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
+			.Select( tr => Entity.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
 			.Where( pawn => pawn.IsValid() && pawn.IsAlive && Team.IsEnemy( pawn.Team ) )
 			.Distinct();
 

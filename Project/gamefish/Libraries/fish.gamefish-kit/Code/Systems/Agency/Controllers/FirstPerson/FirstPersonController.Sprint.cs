@@ -6,7 +6,7 @@ partial class FirstPersonController
 	/// Should this be able to toggle increasing its speed?
 	/// </summary>
 	[Property]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
+	[Feature( CONTROLLER ), Order( SPRINT_ORDER )]
 	[ToggleGroup( nameof( SprintingEnabled ), Label = SPRINTING )]
 	public virtual bool SprintingEnabled { get; set; } = true;
 
@@ -16,7 +16,7 @@ partial class FirstPersonController
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
+	[Feature( CONTROLLER ), Order( SPRINT_ORDER )]
 	[ToggleGroup( nameof( SprintingEnabled ) )]
 	public string SprintInput { get; set; } = "Run";
 
@@ -24,7 +24,7 @@ partial class FirstPersonController
 	/// The move speed multiplier applied while sprinting.
 	/// </summary>
 	[Property]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
+	[Feature( CONTROLLER ), Order( SPRINT_ORDER )]
 	[ToggleGroup( nameof( SprintingEnabled ) )]
 	[Range( 0f, 3f, clamped: false ), Step( 0.01f )]
 	public virtual float SprintMultiplier { get; set; } = 1.5f;
@@ -34,7 +34,7 @@ partial class FirstPersonController
 	/// </summary>
 	[Property]
 	[Title( "Starts Enabled" )]
-	[Feature( PAWN ), Order( SPRINT_ORDER )]
+	[Feature( CONTROLLER ), Order( SPRINT_ORDER )]
 	[ToggleGroup( nameof( SprintingEnabled ) )]
 	public virtual bool IsSprintDefault { get; set; } = false;
 

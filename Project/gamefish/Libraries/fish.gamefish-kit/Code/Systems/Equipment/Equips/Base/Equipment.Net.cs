@@ -41,7 +41,7 @@ partial class Equipment : Component.INetworkSpawn
 			return;
 
 		// Auto-attach to new parent pawns.
-		if ( Pawn.TryGet( newParent, out var newOwner ) )
+		if ( TryGet<Pawn>( newParent, out var newOwner ) )
 			if ( Pawn != newOwner )
 				SetOwner( newOwner );
 	}
@@ -79,7 +79,7 @@ partial class Equipment : Component.INetworkSpawn
 			Network.DropOwnership();
 
 			// Make sure we ain't under some guy still.
-			if ( Pawn.TryGet( GameObject, out _ ) )
+			if ( TryGet<Pawn>( GameObject, out _ ) )
 				GameObject.SetParent( null );
 		}
 		else

@@ -74,7 +74,7 @@ public partial class EquipMeleeFunction : EquipFunction
 		}
 
 		var impulse = tr.Direction * AttackDamage;
-		var data = new DamageData( AttackDamage, impulse, Pawn, this, [DamageTypes.MELEE] );
+		var data = new DamageData( AttackDamage, impulse, Pawn, this, [Damage.MELEE] );
 
 		// Attempt to deal damage and play appropriate sound.
 		if ( !obj.TryDamage( data ) )

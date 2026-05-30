@@ -12,7 +12,7 @@ public partial struct BoundarySettings
 	/// Non-player character response.
 	/// </summary>
 	[Group( ACTORS ), Order( 2 )]
-	public BoundaryResponse Actors { get; set; } = BoundaryResponse.Destroy;
+	public BoundaryResponse Actors { get; set; } = BoundaryResponse.Damage;
 
 	/// <summary>
 	/// Do this to physics objects.

@@ -106,7 +106,7 @@ public partial class PrefabTool : EditorTool
 		else
 			rLook = Rotation.Identity;
 
-		var dir = rLook.Forward.Flatten( isNormal: true );
+		var dir = rLook.Forward.Flatten();
 
 		return Rotation.LookAt( dir, Vector3.Up );
 	}

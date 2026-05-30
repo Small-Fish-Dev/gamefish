@@ -19,7 +19,7 @@ public abstract class PlayerTrigger : Trigger
 	{
 		base.OnTouchStart( obj );
 
-		if ( !Pawn.TryGet<Player>( obj, out var player ) )
+		if ( !Entity.TryGet<Player>( obj, out var player ) )
 			return;
 
 		if ( !IsValidPlayer( player ) )
@@ -37,7 +37,7 @@ public abstract class PlayerTrigger : Trigger
 	{
 		base.OnTouchStop( obj );
 
-		if ( !Pawn.TryGet<Player>( obj, out var player ) )
+		if ( !Entity.TryGet<Player>( obj, out var player ) )
 			return;
 
 		PlayersInside?.RemoveAll( pl => !IsValidPlayer( pl ) || pl == player );

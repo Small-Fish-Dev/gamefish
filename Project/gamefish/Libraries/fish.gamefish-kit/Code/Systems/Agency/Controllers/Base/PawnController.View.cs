@@ -10,7 +10,7 @@ partial class PawnController
 	[Property]
 	[Title( "Speed" )]
 	[Range( 0.1f, 5f, clamped: false ), Step( 0.01f )]
-	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( VIEW_EYEPOS_ORDER )]
 	public virtual float EyeMoveSpeed { get; set; } = 1f;
 
 	/// <summary>
@@ -20,7 +20,7 @@ partial class PawnController
 	[Property]
 	[Title( "Smoothing" )]
 	[Range( 0f, 1f, clamped: false ), Step( 0.01f )]
-	[Feature( VIEW ), Group( EYEPOS ), Order( EYEPOS_ORDER )]
+	[Feature( VIEW ), Group( EYEPOS ), Order( VIEW_EYEPOS_ORDER )]
 	public virtual float EyeMoveSmoothing { get; set; } = 0.15f;
 
 	protected Vector3 _eyeVel = Vector3.Zero;
@@ -29,7 +29,7 @@ partial class PawnController
 	/// If enabled: owner input rotates local eye angles.
 	/// </summary>
 	[Property]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
+	[Feature( VIEW ), Order( VIEW_AIMING_ORDER )]
 	[ToggleGroup( value: nameof( AllowAiming ), Label = AIMING )]
 	public virtual bool AllowAiming { get; set; } = true;
 
@@ -39,7 +39,7 @@ partial class PawnController
 	[Property]
 	[Title( "Pitch Clamping" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
+	[Feature( VIEW ), Order( VIEW_AIMING_ORDER )]
 	public virtual bool AimPitchClamping { get; set; } = true;
 
 	/// <summary>
@@ -49,7 +49,7 @@ partial class PawnController
 	[Range( 0, 180 )]
 	[Title( "Pitch Range" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
+	[Feature( VIEW ), Order( VIEW_AIMING_ORDER )]
 	[ShowIf( nameof( AimPitchClamping ), true )]
 	public virtual FloatRange AimPitchRange { get; set; } = new( -89.9f, 89.9f );
 
@@ -60,7 +60,7 @@ partial class PawnController
 	[Title( "Anti-Roll Speed" )]
 	[Range( 1f, 10f, clamped: false )]
 	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
+	[Feature( VIEW ), Order( VIEW_AIMING_ORDER )]
 	public virtual float AimRollResetSpeed { get; set; } = 10f;
 
 	/// <summary>
@@ -69,7 +69,7 @@ partial class PawnController
 	[Property, JsonIgnore]
 	[Title( "Eye Angles" )]
 	[ToggleGroup( nameof( AllowAiming ) )]
-	[Feature( VIEW ), Order( AIMING_ORDER )]
+	[Feature( VIEW ), Order( VIEW_AIMING_ORDER )]
 	protected Angles InspectorLocalEyeAngles
 	{
 		get => LocalEyeRotation;

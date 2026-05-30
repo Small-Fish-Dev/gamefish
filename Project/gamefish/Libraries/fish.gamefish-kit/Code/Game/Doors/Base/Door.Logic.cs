@@ -38,11 +38,11 @@ partial class Door : IToggle, IActivate
 	[Feature( LOGIC ), Order( LOGIC_ORDER )]
 	protected List<LogicAction> OnClosingLogic { get; set; }
 
-	protected virtual void OnLogicOpened() => LogicAction.Execute( OnOpenedLogic, source: this );
-	protected virtual void OnLogicOpening() => LogicAction.Execute( OnOpeningLogic, source: this );
+	protected virtual void OnLogicOpened() => LogicAction.TryExecute( OnOpenedLogic, source: this );
+	protected virtual void OnLogicOpening() => LogicAction.TryExecute( OnOpeningLogic, source: this );
 
-	protected virtual void OnLogicClosed() => LogicAction.Execute( OnClosedLogic, source: this );
-	protected virtual void OnLogicClosing() => LogicAction.Execute( OnClosingLogic, source: this );
+	protected virtual void OnLogicClosed() => LogicAction.TryExecute( OnClosedLogic, source: this );
+	protected virtual void OnLogicClosing() => LogicAction.TryExecute( OnClosingLogic, source: this );
 
 	/// <inheritdoc cref="IsOpened" />
 	bool IToggle.IsOn => IsOpened;

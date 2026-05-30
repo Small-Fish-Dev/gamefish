@@ -96,7 +96,7 @@ partial class Projectile : Component.ICollisionListener
 	[Property, WideMode]
 	[Feature( PROJECTILE )]
 	[ToggleGroup( nameof( HasImpact ) )]
-	public DamageSettings ImpactDamage { get; set; } = new( [DamageTypes.IMPACT] )
+	public DamageSettings ImpactDamage { get; set; } = new( [Damage.IMPACT] )
 	{
 		EnableRange = false,
 		EnableHitboxes = false,
@@ -138,7 +138,7 @@ partial class Projectile : Component.ICollisionListener
 	[Property, WideMode]
 	[Feature( PROJECTILE )]
 	[ToggleGroup( nameof( IsExplosive ) )]
-	public DamageSettings ExplosionDamage { get; set; } = new( [DamageTypes.EXPLOSIVE] )
+	public DamageSettings ExplosionDamage { get; set; } = new( [Damage.EXPLOSIVE] )
 	{
 		EnableRange = true,
 		EnableHitboxes = false,

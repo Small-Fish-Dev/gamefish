@@ -73,6 +73,15 @@ partial class DynamicEntity : IHealth
 	protected void DebugTakeDamage()
 		=> TrySendDamage( new() { Damage = DebugDamage } );
 
+	/// <summary>
+	/// If true: destroy the parent's object upon death.
+	/// </summary>
+	[Property]
+	[Order( HEALTH_ORDER )]
+	[Title( "Self-Destruct" )]
+	[Feature( HEALTH ), Group( DEATH )]
+	public virtual bool DestroyUponDeath { get; set; } = false;
+
 	public IEnumerable<DamageModule> DamageModules
 		=> GetModules<DamageModule>().Where( m => m.IsValid() && m.Active );
 
@@ -146,13 +155,22 @@ partial class DynamicEntity : IHealth
 		return true;
 	}
 
-	public virtual void OnDeath()
+	/// <summary>
+	/// The entity has been killed/broken.
+	/// <br /> <br />
+	/// <b> WARNING: </b> The object may be destroyed from this!
+	/// Make sure to check if the game object is valid afterwards.
+	/// </summary>
+	protected virtual void OnDeath()
 	{
 		foreach ( var m in DamageModules )
 			m.OnDeath();
+
+		if ( DestroyUponDeath )
+			SelfDestruct();
 	}
 
-	public virtual void OnAlive()
+	protected virtual void OnAlive()
 	{
 		foreach ( var m in DamageModules )
 			m.OnAlive();
@@ -218,5 +236,14 @@ partial class DynamicEntity : IHealth
 	/// </summary>
 	public virtual void OnDamagedEffect( in DamageData data )
 	{
+	}
+
+	protected virtual void SelfDestruct()
+	{
+		if ( IsProxy )
+			return;
+
+		if ( GameObject.IsValid() )
+			GameObject.Destroy();
 	}
 }

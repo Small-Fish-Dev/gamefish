@@ -49,13 +49,13 @@ public partial struct Area : IValid
 	/// The bounds of the box defining this location.
 	/// </summary>
 	[ShowIf( nameof( HasBounds ), true )]
-	public BBox Bounds { get; set; } = BBox.FromPositionAndSize( Vector3.Zero, 256f );
+	public BBox Bounds { get; set; } = BBox.FromPositionAndSize( Vector3.Zero, 512f );
 
 	[ShowIf( nameof( HasRadius ), true )]
 	public float Radius { get; set; } = 256f;
 
 	[ShowIf( nameof( HasHeight ), true )]
-	public float Height { get; set; } = 256f;
+	public float Height { get; set; } = 512f;
 
 	private readonly Capsule GetCapsule( in Transform t )
 	{

@@ -9,6 +9,8 @@ public static partial class Random
 {
 	/// <returns> True or false. </returns>
 	public static bool CoinFlip => Game.Random.Int( 0, 1 ) == 1;
+	/// <returns> <c>1</c> or <c>-1</c>. </returns>
+	public static int Side => CoinFlip ? 1 : -1;
 
 	/// <returns> Integer between 0 and <paramref name="max"/>(or 1). </returns>
 	public static int Int( int max = 1 ) => Game.Random.Int( max );

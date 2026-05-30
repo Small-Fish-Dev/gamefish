@@ -109,7 +109,7 @@ public class TeleportTrigger : FilterTrigger
 				continue;
 
 			// Center pawns on the destination.
-			if ( CenterPawns && Pawn.TryGet<Pawn>( obj, out var pawn ) )
+			if ( CenterPawns && Entity.TryGet<Pawn>( obj, out var pawn ) )
 				tDest.Position -= pawn.Center - pawn.WorldPosition;
 
 			if ( iTele.TryTeleport( tDest ) )

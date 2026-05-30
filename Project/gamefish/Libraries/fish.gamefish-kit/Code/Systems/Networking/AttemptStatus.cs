@@ -3,6 +3,7 @@ namespace GameFish;
 /// <summary>
 /// The status of a process that expects a result.
 /// </summary>
+[Group( Library.NAME )]
 public enum AttemptStatus
 {
 	/// <summary>

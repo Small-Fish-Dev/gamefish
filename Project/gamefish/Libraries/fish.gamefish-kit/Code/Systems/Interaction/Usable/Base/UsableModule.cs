@@ -29,6 +29,7 @@ public abstract partial class UsableModule : Module, IUsable
 	/// </summary>
 	[Property]
 	[InputAction]
+	[Title( "Action" )]
 	[Feature( USE ), Order( USE_ORDER )]
 	public virtual string UseAction { get; set; } = "Use";
 

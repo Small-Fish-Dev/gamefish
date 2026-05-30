@@ -14,8 +14,25 @@ public interface IActivate
 	/// </summary>
 	/// <param name="source"> Could be a player, a logic entity, or <c>null</c>. </param>
 	/// <returns> If this could be activated. </returns>
-	public virtual bool CanActivate( object source = null )
-		=> true;
+	public virtual bool CanActivate( object source )
+	{
+		// Auto-check validity.
+		if ( this is IValid v )
+		{
+			if ( !v.IsValid() )
+				return false;
+
+			// Prevent activating on destroyed objects.
+			if ( v is Component c )
+			{
+				var obj = c?.GameObject;
+				return !obj.IsDestroyed();
+			}
+		}
+
+		// Might be some kind of struct.
+		return this is not null;
+	}
 
 	/// <summary>
 	/// Attempts activation with optional context.

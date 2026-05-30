@@ -80,7 +80,12 @@ partial class PawnView
 	{
 		UpdateViewTransform( updateView, updateObject );
 
-		return ViewTransform;
+		var tView = ViewTransform;
+
+		if ( ShakingEnabled )
+			tView.Position += ShakeOffset;
+
+		return tView;
 	}
 
 	/// <summary>

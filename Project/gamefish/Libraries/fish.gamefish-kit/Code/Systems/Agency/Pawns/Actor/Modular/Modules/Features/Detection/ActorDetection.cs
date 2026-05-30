@@ -91,7 +91,7 @@ public partial class ActorDetection : ActorFeature
 
 		var enemyWithDist = Actor.GetEyeTrace()
 			.Sphere( VisionDistance, eyePos, eyePos ).RunAll()
-			.Select( tr => Pawn.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
+			.Select( tr => Entity.TryGet<Pawn>( tr.GameObject, out var pawn ) ? pawn : null )
 			.Where( pawn => pawn.IsValid() && IsEnemy( pawn ) )
 			.Select( pawn => IsPawnVisible( pawn, out var visiblePos ) ? (pawn, visiblePos) : (null, null) )
 			.Where( seen => seen.pawn.IsValid() && seen.visiblePos.HasValue )

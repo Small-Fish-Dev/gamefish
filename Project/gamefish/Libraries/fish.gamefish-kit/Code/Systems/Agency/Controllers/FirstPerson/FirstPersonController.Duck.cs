@@ -6,21 +6,21 @@ partial class FirstPersonController
 	/// Should this be able to crouch?
 	/// </summary>
 	[Property]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
+	[Feature( CONTROLLER ), Order( DUCKING_ORDER )]
 	[ToggleGroup( nameof( DuckingEnabled ), Label = DUCKING )]
 	public bool DuckingEnabled { get; set; } = true;
 
 	[Property]
 	[InputAction]
 	[Title( "Input" )]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
+	[Feature( CONTROLLER ), Order( DUCKING_ORDER )]
 	[ToggleGroup( nameof( DuckingEnabled ) )]
 	public string DuckInput { get; set; } = "Duck";
 
 	[Property]
 	[Title( "Move Speed" )]
 	[Range( 0f, 1000f, clamped: false )]
-	[Feature( PAWN ), Order( DUCKING_ORDER )]
+	[Feature( CONTROLLER ), Order( DUCKING_ORDER )]
 	[ToggleGroup( nameof( DuckingEnabled ) )]
 	public virtual float MoveSpeedDucked { get; set; } = 120f;
 

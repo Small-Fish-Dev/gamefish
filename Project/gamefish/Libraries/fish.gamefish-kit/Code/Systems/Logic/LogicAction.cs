@@ -32,12 +32,12 @@ public struct LogicAction
 		/// Runs custom actions.
 		/// </summary>
 		[Icon( "👨‍💻" )] Script,
-
-		/// <summary>
-		/// Plays with Doo.
-		/// </summary>
-		[Icon( "💩" )] Doo,
 	}
+
+	/// <inheritdoc cref="NetworkRealm" />
+	[EnumButtonGroup]
+	[WideMode( HasLabel = false )]
+	public NetworkRealm Realm { get; set; } = NetworkRealm.Owner;
 
 	[EnumButtonGroup]
 	[WideMode( HasLabel = false )]
@@ -67,11 +67,12 @@ public struct LogicAction
 
 	[WideMode( HasLabel = true )]
 	[ShowIf( nameof( IsScripting ), true )]
-	public Action<GameObject> Action { get; set; }
+	public Action<GameObject> Actions { get; set; }
 
 	[InlineEditor]
 	[WideMode( HasLabel = true )]
-	[ShowIf( nameof( IsDoo ), true )]
+	[Doo.ArgumentHint<object>( "obj" )]
+	[ShowIf( nameof( IsScripting ), true )]
 	public Doo Doo { get; set; }
 
 	[Hide, JsonIgnore]
@@ -86,9 +87,6 @@ public struct LogicAction
 	[Hide, JsonIgnore]
 	private readonly bool IsScripting => Type is ActionType.Script;
 
-	[Hide, JsonIgnore]
-	private readonly bool IsDoo => Type is ActionType.Doo;
-
 	public LogicAction() { }
 
 	public LogicAction( in ActionType type )
@@ -96,24 +94,36 @@ public struct LogicAction
 		Type = type;
 	}
 
+	/// <returns> If this logic is meant to execute for this system. </returns>
+	public readonly bool InRealm( object source )
+		=> Realm.InRealm( source );
+
 	/// <summary>
 	/// Safely executes every action in a set. Logs from <paramref name="source"/> upon any exception.
 	/// </summary>
-	public static void Execute( IEnumerable<LogicAction> list, object source = null )
+	public static bool TryExecute( IEnumerable<LogicAction> list, object source, object value = null )
 	{
 		if ( list is null )
-			return;
+			return false;
+
+		var isEffective = false;
 
 		foreach ( var logic in list )
-			logic.Execute( source: source ?? typeof( LogicAction ) );
+			if ( logic.TryExecute( source: source ?? typeof( LogicAction ), value ) )
+				isEffective = true;
+
+		return isEffective;
 	}
 
-	public readonly void Execute( object source = null )
+	public readonly bool TryExecute( object source, object value = null )
 	{
+		if ( !InRealm( source ) )
+			return false;
+
 		switch ( Type )
 		{
 			case ActionType.Activate:
-				TriggerActivation( source );
+				TriggerActivation( source, value );
 				break;
 
 			case ActionType.Toggle:
@@ -126,15 +136,17 @@ public struct LogicAction
 
 			case ActionType.Script:
 				TriggerScripting( source );
-				break;
-
-			case ActionType.Doo:
 				TriggerDoo( source );
 				break;
+
+			default:
+				return false;
 		}
+
+		return true;
 	}
 
-	private readonly void TriggerActivation( object source = null )
+	private readonly void TriggerActivation( object source = null, object value = null )
 	{
 		if ( ActivationTargets is null )
 			return;
@@ -145,7 +157,7 @@ public struct LogicAction
 			{
 				if ( tgt is Component c && c.IsValid() )
 					if ( tgt.CanActivate( source: source ) )
-						tgt.TryActivate( source: source );
+						tgt.TryActivate( source: source, value: value );
 			}
 			catch ( Exception e )
 			{
@@ -196,7 +208,7 @@ public struct LogicAction
 
 	private readonly void TriggerScripting( object source = null )
 	{
-		if ( Action is null )
+		if ( Actions is null )
 			return;
 
 		if ( TargetObjects is null )
@@ -207,7 +219,7 @@ public struct LogicAction
 			try
 			{
 				if ( obj.IsValid() )
-					Action.Invoke( obj );
+					Actions.Invoke( obj );
 			}
 			catch ( Exception e )
 			{
@@ -226,11 +238,11 @@ public struct LogicAction
 
 		try
 		{
-			c.RunDoo( Doo );
+			c.RunDoo( Doo, a => a.SetArgument( "obj", source ) );
 		}
 		catch ( Exception e )
 		{
-			Print.WarnFrom( source ?? this, $"{nameof( ActionType.Doo )} exception: {e}" );
+			Print.WarnFrom( source ?? this, $"{nameof( ActionType.Script )} exception: {e}" );
 		}
 	}
 }

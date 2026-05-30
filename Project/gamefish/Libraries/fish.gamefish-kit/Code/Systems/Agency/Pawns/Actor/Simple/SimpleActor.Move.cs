@@ -74,22 +74,30 @@ partial class SimpleActor
 	}
 
 	public override Vector3 CalculateWishVelocity()
+		=> TryGetWishVelocityTowardsDestination( out var wishVel ) ? wishVel : default;
+
+	// i didn't know what else to call it
+	protected virtual bool TryGetWishVelocityTowardsDestination( out Vector3 wishVel )
 	{
+		wishVel = default;
+
 		if ( !IsAlive )
-			return default;
+			return false;
 
 		if ( Destination is not Vector3 dest )
-			return default;
+			return false;
 
 		var c = Controller;
 
 		if ( !c.IsValid() )
-			return default;
+			return false;
 
 		var moveDir = WorldPosition.Direction( dest );
 		var moveSpeed = c.GetMovementSpeed();
 
-		return moveDir * moveSpeed;
+		wishVel = moveDir * moveSpeed;
+
+		return true;
 	}
 
 	public virtual void StopMoving()

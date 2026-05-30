@@ -44,6 +44,10 @@ public static partial class Strings
 	public const string EDITOR = "🖊 Editor";
 	public const string EDITING = "🖊 Editing";
 
+	public const string PIN = "📍 Pin";
+	public const string PINNED = "📍 Pinned";
+	public const string PINNING = "📍 Pinning";
+
 	public const string WORD = "📝 Word";
 	public const string WORDS = "📝 Words";
 	public const string PHRASE = "🗣 Phrase";
@@ -119,12 +123,20 @@ public static partial class Strings
 	public const string COUNT = "🧮 Count";
 	public const string COUNTS = "🧮 Counts";
 	public const string COUNTING = "🧮 Counting";
+	public const string RANGE = "🗜 Range";
+	public const string RANGES = "🗜 Ranges";
 	public const string RESULT = "⚖ Result";
 	public const string RESULTS = "⚖ Results";
 
 	public const string VIEW = "🎥 View";
 	public const string VIEWS = "🎥 Views";
 	public const string VIEWING = "🎥 Viewing";
+
+	public const string SHAKE = "😲 Shake";
+	public const string SHAKING = "😲 Shaking";
+	public const string RECOIL = "👢 Recoil";
+	public const string RECOILING = "👢 Recoiling";
+
 	public const string CYCLE = "♻ Cycle";
 	public const string CYCLES = "♻ Cycles";
 	public const string CYCLING = "♻ Cycling";
@@ -153,6 +165,7 @@ public static partial class Strings
 	public const string SCENES = "🌐 Scenes";
 	public const string LEVEL = "🌎 Level";
 	public const string LEVELS = "🌎 Levels";
+
 	public const string MAP = "🗺 Map";
 	public const string MAPS = "🗺 Maps";
 	public const string NAV_MESH = "🗺 Nav Mesh";
@@ -254,9 +267,13 @@ public static partial class Strings
 	public const string FLIGHT = "🦅 Flight";
 	public const string EVASION = "🐱‍👤 Evasion";
 
+	public const string MOVE = "🏃 Move";
+	public const string MOVING = "🏃 Moving";
+	public const string MOVEMENT = "🏃 Movement";
+	public const string CONTROLLER = "🏃 Controller";
+
 	public const string SPEED = "🏃‍♂️ Speed";
 	public const string SPEEDS = "🏃‍♂️ Speeds";
-	public const string MOVEMENT = "🏃 Movement";
 
 	public const string AIM = "👓 Aim";
 	public const string AIMING = "👓 Aiming";
@@ -427,6 +444,11 @@ public static partial class Strings
 	public const string MAGICA = "✨ Magica";
 	public const string MAGICAL = "✨ Magical";
 
+	public const string RENDER = "👨‍🎨 Render";
+	public const string RENDERED = "👨‍🎨 Rendered";
+	public const string RENDERING = "👨‍🎨 Rendering";
+	public const string GRAPHICS = "👨‍🎨 Graphics";
+
 	public const string ART = "🖼 Art";
 	public const string SPRITE = "🎨 Sprite";
 	public const string SPRITES = "🎨 Sprites";
@@ -457,11 +479,12 @@ public static partial class Strings
 	public const string OUTFIT = "👗 Outfit";
 	public const string OUTFITS = "👗 Outfits";
 
-	public const string PICKUP = "🌭 Pickup";
-	public const string PICKUPS = "🌭 Pickups";
+	public const string PICKUP = "🍄 Pickup";
+	public const string PICKUPS = "🍄 Pickups";
 
 	public const string AMMO = "🍟 Ammo";
 	public const string HOOK = "🦇 Hook";
+	public const string HOOKING = "🦇 Hooking";
 	public const string EQUIP = "🛠 Equip";
 	public const string EQUIPMENT = "🛠 Equipment";
 	public const string WEAPON = "🔫 Weapon";
@@ -520,6 +543,11 @@ public static partial class Strings
 	public const string SPAWNED = "✨ Spawned";
 	public const string SPAWNING = "✨ Spawning";
 	public const string SPAWNERS = "✨ Spawners";
+
+	public const string RESPAWN = "✨ Respawn";
+	public const string RESPAWNED = "✨ Respawned";
+	public const string RESPAWNING = "✨ Respawning";
+
 	public const string WAVE = "🌊 Wave";
 	public const string WAVES = "🌊 Waves";
 	public const string WAVING = "🌊 Waving";
@@ -560,6 +588,15 @@ public static partial class Strings
 	public const string ANCHOR = "⚓ Anchor";
 	public const string ANCHORS = "⚓ Anchors";
 
+	public const string BOOK_RED = "📕 Book";
+	public const string BOOK_BLUE = "📘 Book";
+	public const string BOOK_GREEN = "📗 Book";
+	public const string BOOK_ORANGE = "📙 Book";
+	public const string BOOKS = "📚 Books";
+
+	public const string TOME = "📖 Tome";
+	public const string TOMES = "📚 Tomes";
+
 	public const string TAG_TRIGGER = "trigger";
 	public const string TAG_LADDER = "ladder";
 	public const string TAG_DOOR = "door";
@@ -574,6 +611,7 @@ public static partial class Strings
 	public const string TAG_SPECTATOR = "spectator";
 	public const string TAG_PLAYER = "player";
 	public const string TAG_SOLID = "solid";
+	public const string TAG_CLIP = "clip";
 	public const string TAG_PAWN = "pawn";
 	public const string TAG_DEAD = "dead";
 	public const string TAG_HULL = "hull";

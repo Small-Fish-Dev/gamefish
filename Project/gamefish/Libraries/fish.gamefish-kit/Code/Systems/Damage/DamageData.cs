@@ -58,7 +58,7 @@ public struct DamageData
 		Hitbox = info.Hitbox;
 
 		if ( info.Attacker.IsValid() )
-			if ( Pawn.TryGet( info.Attacker, out var pawn ) )
+			if ( Entity.TryGet<Pawn>( info.Attacker, out var pawn ) )
 				Attacker = pawn;
 
 		if ( info.Weapon.IsValid() )
@@ -96,7 +96,7 @@ public struct DamageData
 		}
 
 		if ( data.Source.IsBlank() )
-			data.Source = DamageTypes.BULLET;
+			data.Source = GameFish.Damage.BULLET;
 
 		data.Types = s.Types;
 
@@ -130,7 +130,7 @@ public struct DamageData
 			data.Source = phys.ClassId;
 
 		if ( data.Source.IsBlank() )
-			data.Source = DamageTypes.IMPACT;
+			data.Source = GameFish.Damage.IMPACT;
 
 		// Always use impact damage type.
 		data.Types = (s.Types ?? []).With( IMPACT );
@@ -162,7 +162,7 @@ public struct DamageData
 		}
 
 		if ( data.Source.IsBlank() )
-			data.Source = DamageTypes.EXPLOSIVE;
+			data.Source = GameFish.Damage.EXPLOSIVE;
 
 		// Always use impact damage type.
 		data.Types = (s.Types ?? []).With( IMPACT );

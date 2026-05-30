@@ -80,11 +80,12 @@ public partial class PawnView : PawnModule, ISimulate
 
 		HandleInput();
 
+		UpdateShake( in deltaTime );
 		UpdateRecoil( in deltaTime );
 
-		UpdateTransition( in deltaTime );
-
 		UpdateViewMode( in deltaTime );
+
+		UpdateTransition( in deltaTime );
 	}
 
 	/// <returns> If we are looking through this view. </returns>

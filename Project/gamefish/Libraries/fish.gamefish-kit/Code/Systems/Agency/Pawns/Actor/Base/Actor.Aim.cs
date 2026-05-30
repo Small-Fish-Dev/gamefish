@@ -79,6 +79,9 @@ partial class Actor
 
 	public virtual bool CanAttack()
 	{
+		if ( !IsAlive )
+			return false;
+
 		if ( !IsTargeting() )
 			return false;
 

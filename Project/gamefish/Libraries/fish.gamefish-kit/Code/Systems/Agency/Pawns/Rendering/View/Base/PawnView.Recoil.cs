@@ -3,9 +3,9 @@ namespace GameFish;
 partial class PawnView
 {
 	[Property]
-	[Title( "Recoil Reset Speed" )]
-	[Feature( VIEW ), Group( DEBUG )]
+	[Title( "Reset Speed" )]
 	[Range( 1f, 50f, clamped: false )]
+	[Feature( VIEW ), Group( RECOIL )]
 	public virtual float RecoilResetSpeed { get; set; } = 15f;
 
 	/// <summary>
@@ -14,7 +14,8 @@ partial class PawnView
 	/// </summary>
 	[Property]
 	[Title( "Recoil (current)" )]
-	[Feature( VIEW ), Group( DEBUG )]
+	[Feature( VIEW ), Group( RECOIL )]
+	[ShowIf( nameof( InGame ), true )]
 	protected Rotation InspectorRecoil
 	{
 		get => Recoil;

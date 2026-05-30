@@ -15,7 +15,6 @@ public partial class LogicToggleUsable : UsableModule
 	/// The component implementing <see cref="IToggle"/> to use.
 	/// </summary>
 	[Property]
-	[InputAction]
 	[Order( LOGIC_ORDER )]
 	[Feature( USE ), Group( LOGIC )]
 	public virtual IToggle Target

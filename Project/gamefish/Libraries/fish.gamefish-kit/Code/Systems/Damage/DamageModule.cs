@@ -47,27 +47,5 @@ public abstract class DamageModule : Module
 	/// </summary>
 	public virtual void OnDeath()
 	{
-		if ( DestroyUponDeath )
-			SelfDestruct();
-	}
-
-	/// <summary>
-	/// If true: destroy the parent's object upon death.
-	/// </summary>
-	[Property]
-	[Order( HEALTH_ORDER )]
-	[Title( "Self-Destruct" )]
-	[Feature( HEALTH ), Group( DEATH )]
-	public bool DestroyUponDeath { get; set; } = false;
-
-	protected virtual void SelfDestruct()
-	{
-		if ( IsProxy )
-			return;
-
-		var obj = Parent?.GameObject;
-
-		if ( obj.IsValid() )
-			obj.Destroy();
 	}
 }

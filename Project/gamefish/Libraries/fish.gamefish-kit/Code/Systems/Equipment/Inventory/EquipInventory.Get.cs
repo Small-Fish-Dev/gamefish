@@ -102,7 +102,7 @@ partial class EquipInventory
 		if ( Equipped is null )
 			return null;
 
-		return Equipped.FirstOrDefault( e => e.IsValid() && e is T ) as T;
+		return Equipped.FirstOrDefault( e => e.IsValid<T>() ) as T;
 	}
 
 	/// <summary>
@@ -112,11 +112,11 @@ partial class EquipInventory
 	public IEnumerable<T> GetAll<T>() where T : Equipment
 	{
 		if ( Equipped is null )
-			return [];
+			yield break;
 
-		return Equipped
-			.Where( e => e.IsValid() && e is T )
-			.Select( e => e as T );
+		foreach ( var equip in Equipped )
+			if ( equip.IsValid<T>( out var e ) )
+				yield return e;
 	}
 
 	/// <summary>

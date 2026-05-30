@@ -45,29 +45,6 @@ partial class Pawn
 	/// A consistent way of getting a pawn from a <see cref="GameObject"/>.
 	/// </summary>
 	/// <returns> If the pawn was found. </returns>
-	public static bool TryGet( GameObject obj, out Pawn pawn )
-	{
-		if ( !obj.IsValid() )
-		{
-			pawn = null;
-			return false;
-		}
-
-		return obj.Components.TryGet( out pawn, FindMode.EverythingInSelfAndAncestors );
-	}
-
-	/// <summary>
-	/// A consistent way of getting a pawn-derived class from a <see cref="GameObject"/>.
-	/// </summary>
-	/// <returns> If the pawn was found. </returns>
-	public static bool TryGet<T>( GameObject obj, out T pawn ) where T : Pawn
-	{
-		if ( !obj.IsValid() )
-		{
-			pawn = null;
-			return false;
-		}
-
-		return obj.Components.TryGet( out pawn, FindMode.EverythingInSelfAndAncestors );
-	}
+	public static bool TryGet( GameObject obj, out Pawn pawn, FindMode findMode = FindMode.Enabled | FindMode.InAncestors )
+		=> TryGet<Pawn>( obj, out pawn, findMode );
 }

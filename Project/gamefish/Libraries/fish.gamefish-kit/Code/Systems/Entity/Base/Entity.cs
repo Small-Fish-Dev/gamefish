@@ -23,18 +23,18 @@ public abstract partial class Entity : Class
 	public bool InGame => this.InGame();
 
 	/// <summary>
-	/// Allows for custom teleportation behavior.
+	/// A consistent way of getting an entity-derived class from an object.
 	/// </summary>
-	/// <remarks> Example: telling a pawn to set their eye rotation instead. </remarks>
-	/// <returns> If the teleportation was successful. </returns>
-	public virtual bool TryTeleport( in Transform tWorld )
-		=> false;
+	/// <returns> If the entity was found. </returns>
+	public static bool TryGet<TEntity>( GameObject obj, out TEntity ent, FindMode findMode = FindMode.EnabledInSelf | FindMode.InAncestors )
+		where TEntity : Entity
+	{
+		if ( !obj.IsValid() )
+		{
+			ent = null;
+			return false;
+		}
 
-	/// <summary>
-	/// Allows the host to teleport this.
-	/// </summary>
-	/// <remarks> Supports custom behavior such as setting a pawn's eye rotation. </remarks>
-	[Rpc.Owner( NetFlags.Reliable | NetFlags.HostOnly )]
-	public void RpcHostTeleport( Transform tWorld )
-		=> TryTeleport( in tWorld );
+		return obj.Components.TryGet( out ent, findMode );
+	}
 }

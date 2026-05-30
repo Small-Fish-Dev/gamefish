@@ -4,21 +4,41 @@ namespace GameFish;
 
 partial class Library
 {
-	/// <summary>
-	/// <see cref="Math.Abs(int)"/>
-	/// </summary>
+
+	/// <inheritdoc cref="Math.Min(int,int)" />
+	public static int Min( this int a, in int b )
+		=> Math.Min( a, b );
+
+	/// <inheritdoc cref="Math.Max(int,int)" />
+	public static int Max( this int a, in int b )
+		=> Math.Max( a, b );
+
+	/// <inheritdoc cref="Math.Abs(int)" />
 	public static int Abs( this in int n )
 		=> Math.Abs( n );
 
-	/// <summary>
-	/// <see cref="Math.Sign(int)"/>
-	/// </summary>
+	/// <inheritdoc cref="Math.Sign(int)" />
 	public static int Sign( this in int n )
 		=> Math.Sign( n );
 
-	/// <returns> A sign that's never zero(will be 1 instead). </returns>
-	public static int Direction( this in int n )
-		=> n.Sign() == -1 ? -1 : 1;
+	/// <inheritdoc cref="Math.Clamp(int, int ,int)" />
+	public static int Clamp( in int n, in int min, in int max )
+		=> Math.Clamp( n, min, max );
+
+	/// <inheritdoc cref="MathX.Clamp" />
+	public static int Clamp( this in int n, in IntRange range )
+		=> n.Clamp( range.Min, range.Max );
+
+	/// <summary>
+	/// Keeps the number within the range provided, no less and no more.
+	/// </summary>
+	/// <param name="n"> The number. </param>
+	/// <param name="range"> The min/max to keep it within. </param>
+	/// <param name="rMin"> The rounding method used on the range's maximum. </param>
+	/// <param name="rMax"> The rounding method used on the range's maximum. </param>
+	/// <returns> A number that's always within the range. </returns>
+	public static int Clamp( this in int n, in FloatRange range, in NumberRounding rMin = NumberRounding.Floor, in NumberRounding rMax = NumberRounding.Ceil )
+		=> Clamp( n, range.Min.RoundInt( in rMin ), range.Max.RoundInt( in rMax ) );
 
 	/// <returns> If the number was within the range. </returns>
 	public static bool Within( this in int n, in int min, in int max )
@@ -36,23 +56,9 @@ partial class Library
 	public static bool Within( this in int n, in FloatRange range )
 		=> range.Within( n );
 
-	/// <summary>
-	/// <see cref="MathX.Clamp"/>
-	/// </summary>
-	public static int Clamp( this in int n, in IntRange range )
-		=> n.Clamp( range.Min, range.Max );
-
-	/// <summary>
-	/// <see cref="Math.Min(int,int)"/>
-	/// </summary>
-	public static int Min( this int a, in int b )
-		=> Math.Min( a, b );
-
-	/// <summary>
-	/// <see cref="Math.Max(int,int)"/>
-	/// </summary>
-	public static int Max( this int a, in int b )
-		=> Math.Max( a, b );
+	/// <returns> A sign that's never zero(will be 1 instead). </returns>
+	public static int Direction( this in int n )
+		=> n.Sign() == -1 ? -1 : 1;
 
 	/// <returns> A number that's at least zero. </returns>
 	public static int Positive( this in int n )

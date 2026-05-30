@@ -7,7 +7,7 @@ public partial class HealthPickup : Pickup
 	/// How much health is restored?
 	/// </summary>
 	[Property]
-	[Order( EFFECT_ORDER )]
+	[Order( PICKUP_EFFECT_ORDER )]
 	[Sync( SyncFlags.FromHost )]
 	[Feature( PICKUP ), Group( HEALTH )]
 	public float Heal { get; set; } = 50f;

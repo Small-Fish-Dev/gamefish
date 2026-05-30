@@ -15,6 +15,8 @@ public partial class FacepunchController : PawnController
 
 	protected PlayerController _pc;
 
+	// TODO: Phyics controller as a wrapper for FP's?
+	public override ControllerPhysics Physics => null;
 	protected override bool HasValidPhysicsModule => true;
 
 	public override Vector3 Velocity

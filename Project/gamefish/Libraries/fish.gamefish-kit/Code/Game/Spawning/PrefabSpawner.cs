@@ -21,6 +21,9 @@ public class PrefabSpawner : ModuleEntity, IActivate
 
 	/// <summary>
 	/// If enabled: spawn on start.
+	/// <br /> <br />
+	/// <b> TIP: </b> You can activate this with logic stuff,
+	/// so you can leave this disabled and spawn it when you need to.
 	/// </summary>
 	[Property]
 	[Feature( SPAWNER )]
