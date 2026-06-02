@@ -14,6 +14,7 @@ public partial class LogicMathEntity : LogicEntity
 	protected const int MATH_ORDER = LOGIC_ORDER - 1000;
 
 	protected const int MATH_DEBUG_ORDER = MATH_ORDER - 50;
+	protected const int MATH_LOGIC_ORDER = MATH_ORDER + 10;
 
 	/// <summary>
 	/// If enabled: print math operations to console.
@@ -35,15 +36,6 @@ public partial class LogicMathEntity : LogicEntity
 	public virtual ILogicValue Target { get; set; }
 
 	/// <summary>
-	/// Decides what to do with the target's value.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Feature( MATH )]
-	[Order( MATH_ORDER )]
-	public virtual NumberOperation Operation { get; set; } = NumberOperation.Add;
-
-	/// <summary>
 	/// Operates on the target value using this value if none other
 	/// is specified(such as through activating this with a number).
 	/// </summary>
@@ -53,6 +45,16 @@ public partial class LogicMathEntity : LogicEntity
 	[Title( "Value" )]
 	[Order( MATH_ORDER )]
 	public virtual float DefaultValue { get; set; } = 1f;
+
+	/// <summary>
+	/// Decides what to do with the target's value.
+	/// </summary>
+	[Property]
+	[InlineEditor]
+	[Feature( MATH )]
+	[Order( MATH_ORDER )]
+	[WideMode( HasLabel = true ), EnumButtonGroup]
+	public virtual NumberOperation Operation { get; set; } = NumberOperation.Add;
 
 	public virtual bool TryOperate( in float value )
 	{
@@ -82,13 +84,25 @@ public partial class LogicMathEntity : LogicEntity
 		if ( DebugLogMath )
 			this.Log( $"performing {op} with value:[{value}] on target:[{lv}]" );
 
+		// Allows writing the previous value somewhere.
+		LogicAction.TryExecute( PreOperationLogic, this, value );
+
+		// Do the actual math.
 		fValue = fValue.Operate( value, op );
 
-		if ( !lv.TrySetValue( fValue, out var result ) )
+		// Allows writing the result of the math.
+		LogicAction.TryExecute( PostOperationLogic, this, fValue );
+
+		// Success/failure callbacks for logic and/or effects.
+		if ( lv.TrySetValue( fValue, out var result ) )
+		{
+			LogicAction.TryExecute( OnSuccessLogic, this, result );
+			return true;
+		}
+		else
+		{
+			LogicAction.TryExecute( OnFailureLogic, this, result );
 			return false;
-
-		LogicAction.TryExecute( OnOperateLogic, this, result );
-
-		return true;
+		}
 	}
 }

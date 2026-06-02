@@ -66,7 +66,7 @@ public partial class LogicCounterEntity : LogicEntity
 	protected float _defaultValue = 0f;
 
 	/// <summary>
-	/// If defined: the number to add upon activation if none is specified.
+	/// If defined: the number to add upon activation if it didn't specify one.
 	/// </summary>
 	[Property]
 	[InlineEditor]

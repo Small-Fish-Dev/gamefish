@@ -203,6 +203,9 @@ public static partial class Strings
 	public const string TELEPORTING = "🌌 Teleporting";
 	public const string TELEPORTATION = "🌌 Teleportation";
 
+	public const string SOUND = "🔊 Sound";
+	public const string SOUNDS = "🔊 Sounds";
+
 	public const string MUTE = "🔇 Mute";
 	public const string MUTED = "🔇 Muted";
 	public const string MUTING = "🔇 Muting";
@@ -211,8 +214,14 @@ public static partial class Strings
 
 	public const string MIXER = "🎛 Mixer";
 	public const string MIXERS = "🎛 Mixers";
+
 	public const string VOLUME = "🎚 Volume";
 	public const string VOLUMES = "🎚 Volumes";
+	public const string FALLOFF = "🗻 Falloff";
+
+	public const string PITCH = "👂 Pitch";
+	public const string PITCHES = "👂 Pitches";
+	public const string PITCHING = "👂 Pitching";
 
 	public const string RADIO = "📻 Radio";
 	public const string RADIOS = "📻 Radios";
@@ -350,8 +359,6 @@ public static partial class Strings
 
 	public const string EFFECT = "🎇 Effect";
 	public const string EFFECTS = "🎇 Effects";
-	public const string SOUND = "🔊 Sound";
-	public const string SOUNDS = "🔊 Sounds";
 
 	public const string LUCK = "🍀 Luck";
 	public const string LUCKINESS = "🍀 Luckiness";

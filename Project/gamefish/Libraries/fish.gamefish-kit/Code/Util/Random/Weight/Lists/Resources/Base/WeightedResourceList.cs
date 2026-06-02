@@ -3,7 +3,8 @@ namespace GameFish;
 /// <summary>
 /// A list of <typeparamref name="TResource"/> and their chance of spawning(higher is more likely).
 /// </summary>
-public abstract class WeightedResourceList<TResource> : WeightedList<TResource> where TResource : Resource
+public abstract class WeightedResourceList<TResource> : WeightedList<TResource>
+	where TResource : Resource
 {
 	[DefaultValue( 100 )]
 	[KeyProperty, WideMode]

@@ -7,16 +7,19 @@ partial class SoundEntity : IActivate
 	/// </summary>
 	[Property]
 	[Title( "Broadcasted" )]
-	[Order( SOUND_LOGIC_ORDER )]
-	[Feature( LOGIC ), Group( NETWORKING )]
+	[Order( SOUND_NETWORKING_ORDER )]
+	[Feature( SOUND ), Group( NETWORKING )]
 	public virtual bool BroadcastingEnabled { get; set; } = true;
 
 	public virtual bool CanActivate( object source )
 	{
-		if ( !GameObject.IsValid() || GameObject.IsDestroyed )
+		if ( GameObject.IsDestroyed() )
 			return false;
 
-		return Sound.IsValid();
+		if ( !Table.IsValid() )
+			return false;
+
+		return true;
 	}
 
 	public virtual bool TryActivate( object source = null, object value = null )

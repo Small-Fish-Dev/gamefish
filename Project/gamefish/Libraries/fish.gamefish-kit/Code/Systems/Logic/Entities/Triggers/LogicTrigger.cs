@@ -17,8 +17,8 @@ public partial class LogicTrigger : FilterTrigger
 
 	protected const int LOGIC_DEBUG_ORDER = LOGIC_ORDER - 100;
 
-	protected const int LOGIC_TARGETS_ORDER = LOGIC_ORDER + 10;
-	protected const int LOGIC_TRIGGER_ORDER = LOGIC_ORDER + 20;
+	protected const int LOGIC_TRIGGER_ORDER = LOGIC_ORDER + 10;
+	protected const int LOGIC_FUNCTIONS_ORDER = LOGIC_ORDER + 50;
 
 	/// <summary>
 	/// If true: destroys itself upon successfully doing its job.
@@ -28,48 +28,6 @@ public partial class LogicTrigger : FilterTrigger
 	[Feature( LOGIC )]
 	[Order( LOGIC_ORDER )]
 	public bool SelfDestruct { get; set; } = false;
-
-	/// <summary>
-	/// Logic that is ran when something enters the trigger.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Title( "On Enter" )]
-	[Order( LOGIC_ORDER )]
-	[WideMode( HasLabel = true )]
-	[Feature( LOGIC ), Group( TARGETS )]
-	[ShowIf( nameof( HasEnterCondition ), true )]
-	protected virtual List<LogicAction> OnEnterLogic { get; set; }
-
-	/// <summary>
-	/// Logic that is ran when something leaves the trigger.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Title( "On Exit" )]
-	[Order( LOGIC_ORDER )]
-	[WideMode( HasLabel = true )]
-	[Feature( LOGIC ), Group( TARGETS )]
-	[ShowIf( nameof( HasExitCondition ), true )]
-	protected virtual List<LogicAction> OnExitLogic { get; set; }
-
-	/// <summary>
-	/// Logic that is ran continuously while something is inside.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Title( "On Inside" )]
-	[Order( LOGIC_ORDER )]
-	[WideMode( HasLabel = true )]
-	[Feature( LOGIC ), Group( TARGETS )]
-	[ShowIf( nameof( HasInsideCondition ), true )]
-	protected virtual List<LogicAction> OnInsideLogic { get; set; }
-
-	[Property]
-	[Title( "Render (ingame)" )]
-	[Order( LOGIC_DEBUG_ORDER )]
-	[Feature( LOGIC ), Group( DEBUG )]
-	protected bool DebugRenderTargetsInGame { get; set; }
 
 	/// <summary>
 	/// What should trigger this?
@@ -92,6 +50,48 @@ public partial class LogicTrigger : FilterTrigger
 	[Feature( LOGIC ), Group( TRIGGER )]
 	[ShowIf( nameof( HasInsideCondition ), true )]
 	public float InsideDelay { get; set; } = 0.5f;
+
+	/// <summary>
+	/// Logic that is ran when something enters the trigger.
+	/// </summary>
+	[Property]
+	[InlineEditor]
+	[Title( "On Enter" )]
+	[WideMode( HasLabel = true )]
+	[Order( LOGIC_FUNCTIONS_ORDER )]
+	[Feature( LOGIC ), Group( FUNCTIONS )]
+	[ShowIf( nameof( HasEnterCondition ), true )]
+	protected virtual List<LogicAction> OnEnterLogic { get; set; }
+
+	/// <summary>
+	/// Logic that is ran when something leaves the trigger.
+	/// </summary>
+	[Property]
+	[InlineEditor]
+	[Title( "On Exit" )]
+	[WideMode( HasLabel = true )]
+	[Order( LOGIC_FUNCTIONS_ORDER )]
+	[Feature( LOGIC ), Group( FUNCTIONS )]
+	[ShowIf( nameof( HasExitCondition ), true )]
+	protected virtual List<LogicAction> OnExitLogic { get; set; }
+
+	/// <summary>
+	/// Logic that is ran continuously while something is inside.
+	/// </summary>
+	[Property]
+	[InlineEditor]
+	[Title( "On Inside" )]
+	[WideMode( HasLabel = true )]
+	[Order( LOGIC_FUNCTIONS_ORDER )]
+	[Feature( LOGIC ), Group( FUNCTIONS )]
+	[ShowIf( nameof( HasInsideCondition ), true )]
+	protected virtual List<LogicAction> OnInsideLogic { get; set; }
+
+	[Property]
+	[Title( "Render (ingame)" )]
+	[Order( LOGIC_DEBUG_ORDER )]
+	[Feature( LOGIC ), Group( DEBUG )]
+	protected bool DebugRenderTargetsInGame { get; set; }
 
 	protected virtual Color ValidTargetColor => Color.White.WithAlpha( 0.3f );
 	protected virtual Color InvalidTargetColor => Color.Red.Desaturate( 0.4f ).Darken( 0.2f ).WithAlpha( 0.3f );

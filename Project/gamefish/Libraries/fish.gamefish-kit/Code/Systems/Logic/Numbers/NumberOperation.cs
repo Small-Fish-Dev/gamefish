@@ -17,28 +17,28 @@ public enum NumberOperation
 	/// Assigns the value directly.
 	/// </summary>
 	[Title( "=" )]
-	[Icon( "edit" )]
+	// [Icon( "edit" )]
 	Set,
 
 	/// <summary>
 	/// Increases one number by the other.
 	/// </summary>
 	[Title( "+=" )]
-	[Icon( "add" )]
+	// [Icon( "add" )]
 	Add,
 
 	/// <summary>
 	/// Decreases one number by the other.
 	/// </summary>
 	[Title( "-=" )]
-	[Icon( "remove" )]
+	// [Icon( "remove" )]
 	Subtract,
 
 	/// <summary>
 	/// Scales a number by the other.
 	/// </summary>
 	[Title( "*=" )]
-	[Icon( "clear" )]
+	// [Icon( "clear" )]
 	Multiply,
 
 	/// <summary>
@@ -47,7 +47,7 @@ public enum NumberOperation
 	/// <b> EXAMPLE: </b> <c> 10 / 5 = 2 </c>
 	/// </summary>
 	[Title( "/=" )]
-	[Icon( "border_all" )]
+	// [Icon( "border_all" )]
 	Divide,
 
 	/// <summary>
@@ -56,7 +56,7 @@ public enum NumberOperation
 	/// <b> EXAMPLE: </b> <c> 5 ^ 3 = 125 </c>
 	/// </summary>
 	[Title( "^=" )]
-	[Icon( "superscript" )]
+	// [Icon( "superscript" )]
 	Exponent,
 
 	/// <summary>
@@ -65,7 +65,7 @@ public enum NumberOperation
 	/// <b> EXAMPLE: </b> <c> 20.5 % 8 = 4.5 </c>
 	/// </summary>
 	[Title( "%=" )]
-	[Icon( "percent" )]
+	// [Icon( "percent" )]
 	Modulo,
 
 	/// <summary>
@@ -74,7 +74,7 @@ public enum NumberOperation
 	/// <b> EXAMPLE: </b> <c>6</c> is less than <c>9</c>, so the result is <c>6</c>.
 	/// </summary>
 	[Title( "Min" )]
-	[Icon( "chevron_left" )]
+	// [Icon( "chevron_left" )]
 	Min,
 
 	/// <summary>
@@ -83,7 +83,7 @@ public enum NumberOperation
 	/// <b> EXAMPLE: </b> <c>400</c> is greater than <c>20</c>, so the result is <c>400</c>.
 	/// </summary>
 	[Title( "Max" )]
-	[Icon( "chevron_right" )]
+	// [Icon( "chevron_right" )]
 	Max,
 }
 

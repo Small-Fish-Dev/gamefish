@@ -4,9 +4,7 @@ namespace GameFish;
 
 partial class Library
 {
-	/// <summary>
-	/// <see cref="MathF.Abs"/>
-	/// </summary>
+	/// <inheritdoc cref="MathF.Abs"/>
 	public static float Abs( this in float n )
 		=> MathF.Abs( n );
 
@@ -20,6 +18,14 @@ partial class Library
 	public static float Direction( this in float n )
 		=> n.Sign() == -1 ? -1 : 1;
 
+	/// <inheritdoc cref="MathF.Round(float)"/>
+	public static float Round( this in float n )
+		=> MathF.Round( n );
+
+	/// <inheritdoc cref="MathF.Round(float, int)"/>
+	public static float Round( this in float n, in int digits )
+		=> MathF.Round( n, digits );
+
 	/// <returns> If the number was within the range. </returns>
 	public static bool Within( this in float n, in float min, in float max )
 		=> n >= min && n <= max;
@@ -32,33 +38,15 @@ partial class Library
 	public static bool Within( this in float n, in FloatRange range )
 		=> range.Within( in n );
 
-	/// <summary>
-	/// <see cref="MathF.Round(float)"/>
-	/// </summary>
-	public static float Round( this in float n )
-		=> MathF.Round( n );
-
-	/// <summary>
-	/// <see cref="MathF.Round(float, int)"/>
-	/// </summary>
-	public static float Round( this in float n, in int digits )
-		=> MathF.Round( n, digits );
-
-	/// <summary>
-	/// <see cref="MathX.Clamp"/>
-	/// </summary>
+	/// <inheritdoc cref="MathX.Clamp"/>
 	public static float Clamp( this in float n, in FloatRange range )
 		=> n.Clamp( range.Min, range.Max );
 
-	/// <summary>
-	/// <see cref="MathF.Min"/>
-	/// </summary>
+	/// <inheritdoc cref="MathF.Min"/>
 	public static float Min( this float a, in float b )
 		=> MathF.Min( a, b );
 
-	/// <summary>
-	/// <see cref="MathF.Max"/>
-	/// </summary>
+	/// <inheritdoc cref="MathF.Max"/>
 	public static float Max( this float a, in float b )
 		=> MathF.Max( a, b );
 
@@ -74,11 +62,11 @@ partial class Library
 	public static float NonZero( this in float n, in float epsilon = float.Epsilon )
 		=> n.Abs() < epsilon ? epsilon * n.Direction() : n;
 
-	/// <returns> This number to the specified power. </returns>
+	/// <inheritdoc cref="MathF.Pow"/>
 	public static float Pow( this in float n, in float power )
 		=> MathF.Pow( n, power );
 
-	/// <returns> The square root of this number. </returns>
+	/// <inheritdoc cref="MathF.Sqrt"/>
 	public static float Sqrt( this in float n )
 		=> MathF.Sqrt( n );
 }
