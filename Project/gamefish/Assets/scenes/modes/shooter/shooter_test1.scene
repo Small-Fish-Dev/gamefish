@@ -13830,9 +13830,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -14102,9 +14102,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -14374,9 +14374,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -14646,9 +14646,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -14918,9 +14918,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -15190,9 +15190,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -15462,9 +15462,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -15734,9 +15734,9 @@
                       "CylinderHeight": 128,
                       "CylinderRadius": 128,
                       "CylinderSides": 16,
+                      "DebugGizmos": false,
                       "DebugGizmoSolidAlpha": 0,
-                      "DebugRenderInGame": false,
-                      "DebugTriggerLogging": false,
+                      "DebugTrigger": false,
                       "IsClass": false,
                       "IsNetworkingForced": true,
                       "NetworkAutomatically": true,
@@ -15801,273 +15801,9 @@
       "__Prefab": "prefabs/levels/test/controller_test_level.prefab",
       "__PrefabInstancePatch": {
         "AddedObjects": [],
-        "RemovedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "9f64f732-3fa8-4936-a913-7b041df150ed"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "2491af19-8eac-4abc-a8e5-2473ff9b4f9e"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "980d9c92-9fc9-4f65-ae74-815489ec598d"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "1fba15c3-d5da-48ce-8b73-7d811dbbb3b0"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "462eb7fa-e7fa-4949-b145-3926ea1355ad"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "ac3bdaf6-3089-4a1f-907c-1b8f7fbd1ab4"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "f290a13d-533b-41d6-957d-9d6c73cda139"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "6d7fa13c-23ae-48ae-818f-ca9cb8536edb"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "0a58b0ce-fa03-4c60-90a4-876b3b2a5c8e"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "52d8735a-2fd1-4f5c-9400-f9b37329bd27"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "73bbcb28-05aa-4516-8261-c21811f8735b"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "283ea2a4-295a-4851-885d-bcb2dcda95e5"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "b12db19c-fdcc-4e7d-8712-2ae2c871fbb5"
-            }
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "7952fa89-06af-43d1-9130-b2abe31447a1"
-            }
-          }
-        ],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "b41db84f-8ebe-4598-a9e8-cc768d816cba"
-            },
-            "Property": "Flags",
-            "Value": 0
-          }
-        ],
-        "MovedObjects": [
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "0ef82664-c2bd-48b4-a6e5-6c3bd01b83cc"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "8b70b54c-8e8d-489f-86d3-089b39a6bd58"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "d02fa09a-1607-42a4-963f-0992ace4def7"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "7031f4c5-856a-4794-ae11-d73eb1962787"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "0120fff7-d89a-4337-a0e7-03511d89d6b6"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "6e27a837-07f6-46d5-9513-2cddde5d6e84"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "55e12418-6fd1-445a-920e-db098a3fda54"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "8e2cb665-9267-4d86-b7d5-8f04ec2ae4a2"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "a6b533e9-379e-4900-9ae5-5a16e968ef48"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "8bf27811-591c-4431-b707-8c21b9ad5e04"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "f873246b-91fe-4609-b9c2-3ca4b1f17dc1"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "46cb635a-025e-430d-8582-34ffaf775422"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "3849877f-e3e6-4f8b-9d13-df6e093b7a1d"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "c3325dcc-6ac1-475a-bdd2-751eb8f6bcff"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "193fafe7-ca1d-492c-b78a-02d3c2897728"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "1090c852-d556-414e-8567-52465f03291d"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "dc268b77-292a-430f-ba40-db536c952143"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "9c3e31f3-23cd-440e-abb5-9fb12a772ff9"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "611652ef-37be-45ca-91e1-cde91e22bea6"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "75b776e3-3400-41f0-95f9-66a66ad255a1"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "5d4f6f0d-b627-4ca6-808b-3278bd46922b"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "7b750222-efdf-47eb-8834-2e838a5cac70"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "294d49f2-7611-4580-8597-a996e4bd829f"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "893947f6-0e94-4073-b9d0-a9e567f200f3"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          },
-          {
-            "Id": {
-              "Type": "Component",
-              "IdValue": "8b77f8ab-9369-4ccf-bebc-8980834cf52b"
-            },
-            "NewParent": {
-              "Type": "GameObject",
-              "IdValue": "3ab1ca00-4552-4142-8152-4842ba36f1b9"
-            },
-            "NewContainerProperty": "Components",
-            "IsNewContainerArray": true,
-            "NewPreviousElement": null
-          }
-        ]
+        "RemovedObjects": [],
+        "PropertyOverrides": [],
+        "MovedObjects": []
       },
       "__PrefabIdToInstanceId": {
         "58ab6566-2fa8-4a5b-a740-072c34baaea5": "89555bea-637f-4ece-a3bd-35b5be6b8d94",
@@ -16331,6 +16067,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -16500,6 +16237,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -16669,6 +16407,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -16838,6 +16577,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -17007,6 +16747,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -17176,6 +16917,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "OverrideMassCenter": false,
+              "PreciseContacts": false,
               "RigidbodyFlags": 0,
               "SleepThreshold": 2,
               "StartAsleep": false
@@ -17366,234 +17108,6 @@
           }
         }
       ]
-    },
-    {
-      "__guid": "0df02497-1968-4c5f-990f-5b567dcc878d",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "Door",
-      "Position": "1088,-192,64.0000458",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "GameFish.Door",
-          "__guid": "42fd6ae5-4c04-4187-ad5d-61eb0ad53986",
-          "__enabled": true,
-          "Flags": 0,
-          "AnimationSmoothing": 1,
-          "AnimationSpeed": 2,
-          "ClassId": null,
-          "ClassName": null,
-          "ClosedSound": null,
-          "ClosingSound": "sound/hl2_door_soft_close.sound",
-          "DebugDamage": 25,
-          "DebugLogicLogging": false,
-          "DebugStateLogging": false,
-          "DeniedSound": "sounds/sfx_smooch.sound",
-          "Health": 100,
-          "InitialOffset": {
-            "Position": "0,0,0",
-            "Rotation": "0,0,0,1"
-          },
-          "InitialState": "Closed",
-          "IsAlive": true,
-          "IsClass": false,
-          "IsDestructible": false,
-          "IsNetworkingForced": null,
-          "ManualOffset": {
-            "Position": "-0,50,-0",
-            "Rotation": "0,0,0,1"
-          },
-          "MaxHealth": 100,
-          "ModelObject": {
-            "_type": "gameobject",
-            "go": "072dbca0-21c3-48ae-8dcd-1052fa9cf20c"
-          },
-          "NetworkAutomatically": true,
-          "NetworkId": "42fd6ae5-4c04-4187-ad5d-61eb0ad53986",
-          "NetworkingMode": "Object",
-          "NetworkOrphanedMode": "ClearOwner",
-          "NetworkOwner": null,
-          "NetworkTransferMode": "Fixed",
-          "OnClosedLogic": [
-            {
-              "Type": "Script",
-              "ActivationTargets": [
-                null
-              ],
-              "ToggleCommand": "Disable",
-              "ToggleTargets": [
-                null
-              ],
-              "TargetObjects": [],
-              "Action": null,
-              "Doo": null
-            }
-          ],
-          "OnClosingLogic": [],
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnOpenedLogic": [
-            {
-              "Type": "Activate",
-              "ActivationTargets": [
-                {
-                  "Type": "Component",
-                  "Value": {
-                    "_type": "component",
-                    "component_id": "1ca42693-0c15-4d66-bbe4-71047bed498e",
-                    "go": "2cc31419-aa9d-4a88-8d4d-5c39dcb6e5d1",
-                    "component_type": "Breakable"
-                  }
-                },
-                {
-                  "Type": "Component",
-                  "Value": {
-                    "_type": "component",
-                    "component_id": "6a706290-9fa9-43b0-a75a-20930a5f4b2f",
-                    "go": "e157e43e-d64a-4a7b-911f-38c31f3e21f6",
-                    "component_type": "Breakable"
-                  }
-                }
-              ],
-              "ToggleCommand": "Disable",
-              "ToggleTargets": [
-                null
-              ],
-              "TargetObjects": [
-                null
-              ],
-              "Action": null,
-              "Doo": null
-            }
-          ],
-          "OnOpeningLogic": [
-            {
-              "Type": "Doo",
-              "ActivationTargets": [
-                null
-              ],
-              "ToggleCommand": "Disable",
-              "ToggleTargets": [
-                null
-              ],
-              "TargetObjects": [
-                null
-              ],
-              "Action": null,
-              "Doo": {
-                "body": [
-                  {
-                    "$type": "ivk",
-                    "InvokeType": "Static",
-                    "Member": "Sandbox.Doo+Methods.LogInfo",
-                    "Arguments": [
-                      {
-                        "$type": "lit",
-                        "LiteralValue": "hi"
-                      }
-                    ],
-                    "ReturnVariable": null
-                  }
-                ]
-              }
-            }
-          ],
-          "OpenedSound": null,
-          "OpeningSound": "sound/hl2_door_open.sound",
-          "RotationAngles": "0,0,0.707106769,0.707106769",
-          "RotationPivot": "0,0,0",
-          "SlidingDelta": "-0,-50,-0",
-          "StartsLocked": false,
-          "Type": "Sliding"
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "072dbca0-21c3-48ae-8dcd-1052fa9cf20c",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "Wood",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "0.185346127,1.33818352,2.5",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "2863b49a-7036-47e9-9b33-8157355ae1a8",
-              "__enabled": true,
-              "Flags": 0,
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "LodOverride": null,
-              "MaterialGroup": null,
-              "MaterialOverride": null,
-              "Materials": null,
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "0.30233,0.12958,0.03656,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "177a7a34-f325-4cc5-a3ed-cda9894392f3",
-              "__enabled": true,
-              "Flags": 0,
-              "Center": "0,0,0",
-              "ColliderFlags": 0,
-              "Elasticity": null,
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "RollingResistance": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            }
-          ],
-          "Children": []
-        }
-      ]
     }
   ],
   "SceneProperties": {
@@ -17623,14 +17137,17 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "c1e0c3eb-89bd-4b03-b147-8ae063fdfddd"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }
@@ -17638,10 +17155,6 @@
   "ResourceVersion": 3,
   "Title": "Example Scene",
   "Description": "It's for showing off and testing stuff.",
-  "__references": [
-    "duccsoft.sfx_smooch#14537",
-    "viasoundcorner.hl2_door_open#19085",
-    "viasoundcorner.hl2_door_soft_close#19084"
-  ],
+  "__references": [],
   "__version": 3
 }
