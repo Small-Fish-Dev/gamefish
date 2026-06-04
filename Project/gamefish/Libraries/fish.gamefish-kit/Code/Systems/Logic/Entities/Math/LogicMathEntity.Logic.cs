@@ -3,17 +3,6 @@ namespace GameFish;
 partial class LogicMathEntity : IActivate
 {
 	/// <summary>
-	/// If enabled: ignores any value passed in when
-	/// activating this and only ever uses the default.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Title( "Ignore Input" )]
-	[Order( MATH_LOGIC_ORDER )]
-	[Feature( MATH ), Group( LOGIC )]
-	public virtual bool IgnoreActivationValue { get; set; } = false;
-
-	/// <summary>
 	/// Execute this logic before attempting any kind of math.
 	/// <br /> <br />
 	/// <b> NOTE: </b> Activations pass the CURRENT value of the target BEFORE operation.
@@ -69,17 +58,12 @@ partial class LogicMathEntity : IActivate
 		if ( !CanActivate( source ) )
 			return false;
 
-		if ( IgnoreActivationValue )
-			return TryOperate( DefaultValue );
-
-		value ??= DefaultValue;
-
 		return value switch
 		{
 			int iValue => TryOperate( iValue ),
 			float fValue => TryOperate( fValue ),
 			double dValue => TryOperate( (float)dValue ),
-			_ => false
+			_ => TryOperate( value: null )
 		};
 	}
 }

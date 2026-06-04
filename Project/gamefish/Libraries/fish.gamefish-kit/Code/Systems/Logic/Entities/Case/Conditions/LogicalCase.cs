@@ -6,6 +6,9 @@ public struct LogicalCase
 	[Title( "Type" )]
 	public LogicValueType ValueType { get; set; }
 
+	/// <summary>
+	/// The number to make the comparison with.
+	/// </summary>
 	[Title( "Value" )]
 	[ShowIf( nameof( ValueType ), LogicValueType.Number )]
 	public float NumberValue { get; set; } = 1f;
@@ -15,7 +18,7 @@ public struct LogicalCase
 	/// </summary>
 	[EnumButtonGroup]
 	[Title( "Comparison" )]
-	// [WideMode( HasLabel = true )]
+	[WideMode( HasLabel = true )]
 	public NumberComparison Comparison { get; set; }
 
 	[Title( "Value" )]

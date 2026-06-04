@@ -22,6 +22,9 @@ public class SoundEntry : IValid
 	public const float PITCH_MIN = 0.05f;
 	public const float PITCH_MAX = 10f;
 
+	/// <summary>
+	/// Indicates if the sound file for the chosen type is properly defined.
+	/// </summary>
 	[Hide, JsonIgnore]
 	public bool IsValid => IsSoundEvent
 		? SoundEvent.IsValid()

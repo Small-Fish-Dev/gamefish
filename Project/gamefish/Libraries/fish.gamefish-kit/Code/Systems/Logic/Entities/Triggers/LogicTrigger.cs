@@ -25,8 +25,8 @@ public partial class LogicTrigger : FilterTrigger
 	/// </summary>
 	[Property]
 	[Title( "Once" )]
-	[Feature( LOGIC )]
-	[Order( LOGIC_ORDER )]
+	[Order( LOGIC_TRIGGER_ORDER )]
+	[Feature( LOGIC ), Group( TRIGGER )]
 	public bool SelfDestruct { get; set; } = false;
 
 	/// <summary>
@@ -87,14 +87,17 @@ public partial class LogicTrigger : FilterTrigger
 	[ShowIf( nameof( HasInsideCondition ), true )]
 	protected virtual List<LogicAction> OnInsideLogic { get; set; }
 
+	/// <summary>
+	/// If enabled: draw arrows towards targets while in play mode.
+	/// </summary>
 	[Property]
-	[Title( "Render (ingame)" )]
 	[Order( LOGIC_DEBUG_ORDER )]
+	[Title( "Targets (ingame)" )]
 	[Feature( LOGIC ), Group( DEBUG )]
 	protected bool DebugRenderTargetsInGame { get; set; }
 
 	protected virtual Color ValidTargetColor => Color.White.WithAlpha( 0.3f );
-	protected virtual Color InvalidTargetColor => Color.Red.Desaturate( 0.4f ).Darken( 0.2f ).WithAlpha( 0.3f );
+	protected virtual Color InvalidTargetColor => Color.Red.Desaturate( 0.4f ).Darken( 0.1f ).WithAlpha( 0.3f );
 
 	[Sync]
 	public TimeUntil NextActivation { get; set; }
@@ -198,7 +201,7 @@ public partial class LogicTrigger : FilterTrigger
 		foreach ( var logic in list )
 		{
 			// Logic activation.
-			if ( logic.Type is not LogicAction.ActionType.Activate )
+			if ( logic.Type is LogicAction.ActionType.Activate )
 			{
 				if ( logic.ActivationTargets is null )
 					continue;
@@ -221,12 +224,12 @@ public partial class LogicTrigger : FilterTrigger
 						? ValidTargetColor
 						: InvalidTargetColor;
 
-					this.DrawArrow( Center, targetPos, color, len: 24f, w: 9f, tWorld: global::Transform.Zero );
+					this.DrawArrow( Center, targetPos, color, len: 12f, w: 4f, tWorld: global::Transform.Zero );
 				}
 			}
 
 			// Logic activation.
-			if ( logic.Type is not LogicAction.ActionType.Toggle )
+			if ( logic.Type is LogicAction.ActionType.Toggle )
 			{
 				if ( logic.ToggleTargets is null )
 					continue;
@@ -250,7 +253,7 @@ public partial class LogicTrigger : FilterTrigger
 						? ValidTargetColor
 						: InvalidTargetColor;
 
-					this.DrawArrow( Center, targetPos, color, len: 24f, w: 9f, tWorld: global::Transform.Zero );
+					this.DrawArrow( Center, targetPos, color, len: 12f, w: 4f, tWorld: global::Transform.Zero );
 				}
 			}
 		}

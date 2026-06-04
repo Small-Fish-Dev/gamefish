@@ -12,22 +12,27 @@ namespace GameFish;
 [EditorHandle( Icon = "checklist" )]
 public partial class LogicCaseEntity : LogicEntity
 {
+	protected const int CASE_ORDER = LOGIC_ORDER - 1000;
+
+	protected const int CASE_DEBUG_ORDER = CASE_ORDER - 50;
+	protected const int CASE_CONDITIONS_ORDER = CASE_ORDER + 10;
+
 	/// <summary>
 	/// If enabled: print case matching results.
 	/// </summary>
 	[Property]
 	[Title( "Logging (case)" )]
-	[Order( LOGIC_DEBUG_ORDER )]
-	[Feature( LOGIC ), Group( DEBUG )]
+	[Order( CASE_DEBUG_ORDER )]
+	[Feature( CASE ), Group( DEBUG )]
 	public bool DebugLogCase { get; set; } = false;
 
 	/// <summary>
 	/// If the input matches any of these cases it will trigger its logic.
 	/// </summary>
 	[Property]
-	[Feature( LOGIC )]
-	[Order( LOGIC_ORDER )]
-	[InlineEditor, WideMode( HasLabel = true )]
+	[Order( CASE_CONDITIONS_ORDER )]
+	[Feature( CASE ), Group( CONDITIONS )]
+	[InlineEditor( Label = false ), WideMode( HasLabel = false )]
 	public virtual List<LogicalCondition> Conditions { get; set; } = [new()];
 
 	protected virtual bool TryExecute( object value )

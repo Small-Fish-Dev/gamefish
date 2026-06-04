@@ -34,17 +34,22 @@ public abstract partial class DataFile<TDataComp, TDataClass> : Singleton<TDataC
 			AutoSave();
 	}
 
-	public static bool TrySet<T>( string name, T value )
-		=> Instance?.Set( name, value ) is true;
+	public static bool TrySet<T>( string name, T value, in bool dirty = true, in bool autoLoad = true )
+		=> Instance?.Set( name, value, dirty, autoLoad ) is true;
 
-	public static bool TryGet<T>( string name, out T value, T defaultValue = default )
-		=> Instance?.Get( name, out value, defaultValue ) ?? (value = default) is true;
+	public static bool TryGet<T>( string name, out T value, T defaultValue = default, in bool autoLoad = true )
+		=> Instance?.Get( name, out value, defaultValue, autoLoad ) ?? (value = default) is true;
 
-	public virtual bool Set<T>( string name, in T value )
+	protected bool HasKey( string key )
+	{
+		return DataObject is not null && DataObject.ContainsKey( key );
+	}
+
+	public virtual bool Set<T>( string name, in T value, in bool dirty = true, in bool autoLoad = true )
 	{
 		// If we don't even have empty data then it wasn't loaded.
 		if ( DataObject is null )
-			if ( !TryLoad() )
+			if ( !autoLoad || !TryLoad() )
 				return false;
 
 		// Double-check that it was loaded properly.
@@ -55,7 +60,7 @@ public abstract partial class DataFile<TDataComp, TDataClass> : Singleton<TDataC
 		{
 			DataObject[name] = Json.ToNode( value );
 
-			if ( !IsDirty )
+			if ( dirty && !IsDirty )
 			{
 				IsDirty = true;
 
@@ -76,11 +81,11 @@ public abstract partial class DataFile<TDataComp, TDataClass> : Singleton<TDataC
 		return false;
 	}
 
-	public virtual bool Get<T>( string name, out T value, in T defaultValue = default )
+	public virtual bool Get<T>( string name, out T value, in T defaultValue = default, in bool autoLoad = true )
 	{
 		// If we don't even have empty data then it wasn't loaded.
 		if ( DataObject is null )
-			if ( !TryLoad() )
+			if ( !autoLoad || !TryLoad() )
 				goto Default;
 
 		// Double-check that it was loaded properly.

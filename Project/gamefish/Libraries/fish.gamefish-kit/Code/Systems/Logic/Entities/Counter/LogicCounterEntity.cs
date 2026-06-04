@@ -21,8 +21,8 @@ public partial class LogicCounterEntity : LogicEntity
 	protected const int COUNT_DEBUG_ORDER = COUNT_ORDER - 50;
 
 	protected const int COUNT_RANGE_ORDER = COUNT_ORDER + 10;
-	protected const int COUNT_DISPLAY_ORDER = COUNT_ORDER + 30;
-	protected const int COUNT_LOGIC_ORDER = COUNT_ORDER + 40;
+	protected const int COUNT_DEFAULT_ORDER = COUNT_ORDER + 20;
+	protected const int COUNT_DISPLAY_ORDER = COUNT_ORDER + 50;
 	protected const int COUNT_FUNCTIONS_ORDER = COUNT_ORDER + 100;
 
 	/// <summary>
@@ -50,8 +50,8 @@ public partial class LogicCounterEntity : LogicEntity
 	[Property]
 	[InlineEditor]
 	[Feature( COUNT )]
-	[Title( "Default" )]
 	[Order( COUNT_ORDER )]
+	[Title( "Initial Value" )]
 	public float DefaultValue
 	{
 		get => _defaultValue; set
@@ -66,14 +66,25 @@ public partial class LogicCounterEntity : LogicEntity
 	protected float _defaultValue = 0f;
 
 	/// <summary>
-	/// If defined: the number to add upon activation if it didn't specify one.
+	/// The number to operate with upon activation if one wasn't specified.
 	/// </summary>
 	[Property]
 	[InlineEditor]
 	[Title( "Modify" )]
-	[Order( COUNT_LOGIC_ORDER )]
-	[Feature( COUNT ), Group( LOGIC )]
-	public float? DefaultModify { get; set; } = 1f;
+	[Order( COUNT_DEFAULT_ORDER )]
+	[Feature( COUNT ), Group( DEFAULT )]
+	public float DefaultModify { get; set; } = 1f;
+
+	/// <summary>
+	/// What kind of math to use with the number we get activated with.
+	/// </summary>
+	[Property]
+	[InlineEditor]
+	[EnumButtonGroup]
+	[Title( "Operation" )]
+	[Order( COUNT_DEFAULT_ORDER )]
+	[Feature( COUNT ), Group( DEFAULT )]
+	public NumberOperation ModifyOperation { get; set; } = NumberOperation.Add;
 
 	/// <summary>
 	/// The number rounding operation to use when the value is changed.
@@ -82,6 +93,7 @@ public partial class LogicCounterEntity : LogicEntity
 	[InlineEditor]
 	[EnumButtonGroup]
 	[Feature( COUNT )]
+	[Title( "Rounding" )]
 	[Order( COUNT_ORDER )]
 	public NumberRounding Rounding { get; set; } = NumberRounding.Floor;
 
@@ -160,7 +172,7 @@ public partial class LogicCounterEntity : LogicEntity
 		if ( IsProxy )
 			return false;
 
-		var newCount = (Count + value).Round( Rounding ).Clamp( ValueRange );
+		var newCount = Count.Operate( value, ModifyOperation );
 
 		return TrySetCount( in newCount );
 	}

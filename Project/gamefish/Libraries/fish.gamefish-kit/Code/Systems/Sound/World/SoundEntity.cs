@@ -1,10 +1,16 @@
-using System.ComponentModel;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices.JavaScript;
 using Sandbox.Audio;
 
 namespace GameFish;
 
+/// <summary>
+/// Plays sounds at its origin. <br />
+/// <b> Features: </b> <br />
+/// - Works with all engine-supported sound files(not just sound events). <br />
+/// - Supports having multiple sounds with weighted random selection. <br />
+/// - Override specific properties of each sound(like falloff). <br />
+/// - Triggerable by the logic system that easily allows for so much creativity.  <br />
+/// <code> ambient_generic </code>
+/// </summary>
 [Icon( "volume_up" )]
 [EditorHandle( Icon = "🔊" )]
 public partial class SoundEntity : Entity
@@ -81,12 +87,14 @@ public partial class SoundEntity : Entity
 		return entry.IsValid();
 	}
 
-	protected virtual bool TryPlayEntry( SoundEntry entry )
+	public virtual bool TryPlayEntry( SoundEntry entry )
 	{
+		if ( !entry.IsValid() )
+			return false;
+
 		if ( entry.IsSoundEvent )
 			return TryPlaySoundEvent( entry );
-
-		if ( entry.IsSoundFile )
+		else if ( entry.IsSoundFile )
 			return TryPlaySoundFile( entry );
 
 		return false;
@@ -127,7 +135,7 @@ public partial class SoundEntity : Entity
 	}
 
 	/// <summary>
-	/// Configures sound handles according to its entry's configuration.
+	/// Configures a sound handle according to both the entry and this entity's settings.
 	/// </summary>
 	protected virtual void OnSoundHandleCreated( SoundHandle handle, SoundEntry entry )
 	{

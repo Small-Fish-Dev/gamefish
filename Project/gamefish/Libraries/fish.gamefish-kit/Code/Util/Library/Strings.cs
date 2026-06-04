@@ -16,8 +16,12 @@ public static partial class Strings
 	public const string INBOX = "📫 Inbox";
 	public const string MESSAGE = "📬 Message";
 	public const string MESSAGES = "📬 Messages";
+	public const string MESSAGING = "📬 Messaging";
+	public const string MESSENGER = "🦜 Messenger";
+	public const string MESSENGERS = "🦜 Messenger";
 	public const string COMMENT = "💬 Comment";
 	public const string COMMENTS = "💬 Comments";
+	public const string COMMENTARY = "💬 Commentary";
 
 	public const string ISSUE = "⚠ Issue";
 	public const string ISSUES = "⚠ Issues";
@@ -45,6 +49,7 @@ public static partial class Strings
 	public const string EDITING = "🖊 Editing";
 
 	public const string PIN = "📍 Pin";
+	public const string PINS = "📍 Pins";
 	public const string PINNED = "📍 Pinned";
 	public const string PINNING = "📍 Pinning";
 
@@ -70,6 +75,11 @@ public static partial class Strings
 	public const string SCRIPTS = "📜 Scripts";
 	public const string SCRIPTED = "📜 Scripted";
 	public const string SCRIPTING = "📜 Scripting";
+
+	public const string CASE = "💼 Case";
+	public const string CASES = "💼 Cases";
+	public const string CONDITION = "✅ Condition";
+	public const string CONDITIONS = "✅ Conditions";
 
 	public const string CALLBACK = "⚡ Callback";
 	public const string CALLBACKS = "⚡ Callbacks";
@@ -158,7 +168,9 @@ public static partial class Strings
 	public const string COMPRESSION = "🗜 Compression";
 
 	public const string CONFIG = "⚙ Config";
+	public const string SETTING = "⚙ Setting";
 	public const string SETTINGS = "⚙ Settings";
+	public const string DEFAULT = "⚙ Default";
 	public const string DEFAULTS = "⚙ Defaults";
 
 	public const string SCENE = "🌐 Scene";

@@ -6,18 +6,24 @@ namespace GameFish;
 [Icon( "checklist" )]
 public struct LogicalCondition
 {
+	private const int CASES_ORDER = 1;
+	private const int FUNCTIONS_ORDER = 2;
+
+	[Group( CASES )]
+	[Order( CASES_ORDER )]
 	[WideMode( HasLabel = false )]
 	[InlineEditor( Label = false )]
 	public List<LogicalCase> Cases { get; set; } = [new()];
 
 	/// <summary>
-	/// Logic to run if all of this condition's cases are met.
+	/// Logic to run if all of every case evaluates as true.
 	/// </summary>
-	[Group( LOGIC )]
-	[Title( "On Success" )]
+	[Title( "On True" )]
+	[Group( FUNCTIONS )]
+	[Order( FUNCTIONS_ORDER )]
 	[WideMode( HasLabel = true )]
 	[InlineEditor( Label = true )]
-	public List<LogicAction> OnSuccessLogic { get; set; }
+	public List<LogicAction> OnTrueLogic { get; set; }
 
 	public LogicalCondition() { }
 
@@ -30,8 +36,9 @@ public struct LogicalCondition
 			if ( !c.Matches( value ) )
 				return false;
 
-		LogicAction.TryExecute( OnSuccessLogic, source: source, value: value );
+		LogicAction.TryExecute( OnTrueLogic, source: source, value: value );
 
+		// What's important here is that the conditions were satisfied.
 		return true;
 	}
 }

@@ -155,6 +155,15 @@ public struct LogicAction
 		{
 			try
 			{
+				if ( tgt is null )
+					continue;
+
+				if ( tgt == source )
+				{
+					Print.WarnFrom( source ?? this, $"{nameof( ActionType.Activate )} tried to self-target! Potential infinite loop prevented." );
+					continue;
+				}
+
 				if ( tgt is Component c && c.IsValid() )
 					if ( tgt.CanActivate( source: source ) )
 						tgt.TryActivate( source: source, value: value );
@@ -175,6 +184,15 @@ public struct LogicAction
 		{
 			try
 			{
+				if ( tgt is null )
+					continue;
+
+				if ( tgt == source )
+				{
+					Print.WarnFrom( source ?? this, $"{nameof( ActionType.Toggle )} tried to self-target! Potential infinite loop prevented." );
+					continue;
+				}
+
 				if ( tgt is Component c && c.IsValid() )
 					tgt.TryToggle( ToggleCommand );
 			}

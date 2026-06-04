@@ -5,7 +5,7 @@ namespace GameFish;
 /// <br /> <br />
 /// <b> NOTE: </b> Pairs very well with <see cref="LogicCounterEntity"/>).
 /// <br /> <br />
-/// <b> NOTE: </b> Also works with any component implementing <see cref="ILogicValue"/>).
+/// <b> NOTE: </b> Also works with any component implementing <see cref="ILogicValue"/>.
 /// </summary>
 [Icon( "calculate" )]
 [EditorHandle( Icon = "calculate" )]
@@ -20,81 +20,88 @@ public partial class LogicMathEntity : LogicEntity
 	/// If enabled: print math operations to console.
 	/// </summary>
 	[Property]
-	[InlineEditor]
 	[Title( "Logging (math)" )]
 	[Order( MATH_DEBUG_ORDER )]
 	[Feature( MATH ), Group( DEBUG )]
 	public bool DebugLogMath { get; set; } = false;
 
 	/// <summary>
-	/// The component with the value to affect with our math.
+	/// The component(s) with a logical value to affect with our math.
+	/// <br /> <br />
+	/// <b> LOGIC: </b> Looks for <see cref="ILogicValue"/>.
+	/// That's what you should implement on your component
+	/// for math operations on it to be supported.
 	/// </summary>
 	[Property]
-	[InlineEditor]
-	[Feature( MATH )]
-	[Order( MATH_ORDER )]
-	public virtual ILogicValue Target { get; set; }
+	[WideMode( HasLabel = true )]
+	[Order( MATH_LOGIC_ORDER + 1 )]
+	[Feature( MATH ), Group( LOGIC )]
+	public virtual List<ILogicValue> Targets { get; set; } = [null];
 
 	/// <summary>
-	/// Operates on the target value using this value if none other
-	/// is specified(such as through activating this with a number).
+	/// The operations to be performed on the target component(s).
 	/// </summary>
 	[Property]
-	[InlineEditor]
-	[Feature( MATH )]
-	[Title( "Value" )]
-	[Order( MATH_ORDER )]
-	public virtual float DefaultValue { get; set; } = 1f;
+	[WideMode( HasLabel = true )]
+	[InlineEditor( Label = true )]
+	[Order( MATH_LOGIC_ORDER + 1 )]
+	[Feature( MATH ), Group( LOGIC )]
+	public List<MathOperation> Operations { get; set; } = [new()];
 
-	/// <summary>
-	/// Decides what to do with the target's value.
-	/// </summary>
-	[Property]
-	[InlineEditor]
-	[Feature( MATH )]
-	[Order( MATH_ORDER )]
-	[WideMode( HasLabel = true ), EnumButtonGroup]
-	public virtual NumberOperation Operation { get; set; } = NumberOperation.Add;
-
-	public virtual bool TryOperate( in float value )
+	public virtual bool TryOperate( float? value = null )
 	{
-		if ( Target is not Component c )
+		if ( Targets is null || Targets.Count <= 0 )
 			return false;
 
-		if ( c is null || c.GameObject.IsDestroyed() )
+		if ( Operations is null || Operations.Count <= 0 )
 			return false;
 
-		if ( c is not ILogicValue lv )
-			return false;
+		int opCount = 0;
 
-		return TryOperate( lv, value );
-	}
+		foreach ( var tgt in Targets )
+		{
+			if ( tgt is not Component c )
+				continue;
 
-	public virtual bool TryOperate( ILogicValue lv, in float value )
-		=> TryOperate( lv, Operation, in value );
+			if ( c is null || c.GameObject.IsDestroyed() )
+				continue;
 
-	protected virtual bool TryOperate( ILogicValue lv, in NumberOperation op, in float value )
-	{
-		if ( op is NumberOperation.None )
-			return false;
+			if ( c is not ILogicValue lv )
+				continue;
 
-		if ( lv?.Value is not float fValue )
+			if ( TryOperate( lv, value ) )
+				opCount++;
+		}
+
+		if ( opCount <= 0 )
 			return false;
 
 		if ( DebugLogMath )
-			this.Log( $"performing {op} with value:[{value}] on target:[{lv}]" );
+			this.Log( $"Executed {opCount} operations successfully." );
+
+		return true;
+	}
+
+	protected virtual bool TryOperate( ILogicValue lv, in float? value = null )
+	{
+		if ( lv?.Value is not float targetValue )
+			return false;
 
 		// Allows writing the previous value somewhere.
-		LogicAction.TryExecute( PreOperationLogic, this, value );
+		// Multiple operations allow easily fine tuning the result.
+		foreach ( var op in Operations )
+		{
+			targetValue = op.Operate( targetValue, out var opVal, in value );
 
-		// Do the actual math.
-		fValue = fValue.Operate( value, op );
+			if ( DebugLogMath )
+				this.Log( $"Operation: {targetValue} {op.Operation.String()} {opVal} -> {targetValue}" );
+		}
 
 		// Allows writing the result of the math.
-		LogicAction.TryExecute( PostOperationLogic, this, fValue );
+		LogicAction.TryExecute( PostOperationLogic, this, targetValue );
 
 		// Success/failure callbacks for logic and/or effects.
-		if ( lv.TrySetValue( fValue, out var result ) )
+		if ( lv.TrySetValue( targetValue, out var result ) )
 		{
 			LogicAction.TryExecute( OnSuccessLogic, this, result );
 			return true;

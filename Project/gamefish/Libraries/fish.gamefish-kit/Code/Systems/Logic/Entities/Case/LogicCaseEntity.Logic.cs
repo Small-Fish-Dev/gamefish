@@ -8,7 +8,7 @@ partial class LogicCaseEntity : IActivate
 	[Property]
 	[Title( "On Success" )]
 	[Order( LOGIC_FUNCTIONS_ORDER )]
-	[Feature( LOGIC ), Group( FUNCTIONS )]
+	[Feature( CASE ), Group( FUNCTIONS )]
 	[InlineEditor, WideMode( HasLabel = true )]
 	public virtual List<LogicAction> OnSuccessLogic { get; set; } = [];
 
@@ -18,7 +18,7 @@ partial class LogicCaseEntity : IActivate
 	[Property]
 	[Title( "On Failure" )]
 	[Order( LOGIC_FUNCTIONS_ORDER )]
-	[Feature( LOGIC ), Group( FUNCTIONS )]
+	[Feature( CASE ), Group( FUNCTIONS )]
 	[InlineEditor, WideMode( HasLabel = true )]
 	public virtual List<LogicAction> OnFailureLogic { get; set; } = [];
 

@@ -12,7 +12,7 @@ partial class LogicCounterEntity : IActivate, ILogicValue
 	[Order( COUNT_FUNCTIONS_ORDER )]
 	[Feature( COUNT ), Group( FUNCTIONS )]
 	[InlineEditor, WideMode( HasLabel = true )]
-	public virtual List<LogicAction> OnCountLogic { get; set; } = [];
+	protected virtual List<LogicAction> OnCountLogic { get; set; } = [];
 
 	/// <summary>
 	/// Execute this logic when the minimum is reached.
@@ -24,7 +24,7 @@ partial class LogicCounterEntity : IActivate, ILogicValue
 	[Order( COUNT_FUNCTIONS_ORDER )]
 	[Feature( COUNT ), Group( FUNCTIONS )]
 	[InlineEditor, WideMode( HasLabel = true )]
-	public virtual List<LogicAction> OnMinLogic { get; set; } = [];
+	protected virtual List<LogicAction> OnMinLogic { get; set; } = [];
 
 	/// <summary>
 	/// Execute this logic when the count changes.
@@ -36,7 +36,7 @@ partial class LogicCounterEntity : IActivate, ILogicValue
 	[Order( COUNT_FUNCTIONS_ORDER )]
 	[Feature( COUNT ), Group( FUNCTIONS )]
 	[InlineEditor, WideMode( HasLabel = true )]
-	public virtual List<LogicAction> OnMaxLogic { get; set; } = [];
+	protected virtual List<LogicAction> OnMaxLogic { get; set; } = [];
 
 	public float Value => Count;
 

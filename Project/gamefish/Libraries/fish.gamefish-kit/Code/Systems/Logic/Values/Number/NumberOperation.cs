@@ -11,6 +11,7 @@ public enum NumberOperation
 	/// <summary>
 	/// No operation.
 	/// </summary>
+	[Title( "⨯" )]
 	None,
 
 	/// <summary>
@@ -89,6 +90,24 @@ public enum NumberOperation
 
 partial class Library
 {
+	/// <returns> A string representing the operation as you'd see in an expression. </returns>
+	public static string String( this NumberOperation op )
+	{
+		return op switch
+		{
+			NumberOperation.Set => "=",
+			NumberOperation.Add => "+",
+			NumberOperation.Subtract => "-",
+			NumberOperation.Multiply => "*",
+			NumberOperation.Divide => "/",
+			NumberOperation.Exponent => "^",
+			NumberOperation.Modulo => "%",
+			NumberOperation.Min => "min",
+			NumberOperation.Max => "max",
+			_ => op.ToString(),
+		};
+	}
+
 	/// <inheritdoc cref="OperateFloat" />
 	public static float Operate( this float a, in float b, in NumberOperation op )
 		=> OperateFloat( in a, in b, in op );
