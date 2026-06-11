@@ -86,7 +86,7 @@ public partial class Spectator : Player
 		base.OnEnabled();
 	}
 
-	protected override void OnTaken( Agent newAgent, Agent oldAgent = null )
+	protected override void OnTaken( Client newAgent, Client oldAgent = null )
 	{
 		base.OnTaken( newAgent, oldAgent );
 

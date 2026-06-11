@@ -12,6 +12,9 @@ public static partial class Random
 	/// <returns> <c>1</c> or <c>-1</c>. </returns>
 	public static int Side => CoinFlip ? 1 : -1;
 
+	/// <returns> A number from <c>0</c> to <c>1</c>. </returns>
+	public static float Fraction => Float( 0f, 1f );
+
 	/// <returns> Integer between 0 and <paramref name="max"/>(or 1). </returns>
 	public static int Int( int max = 1 ) => Game.Random.Int( max );
 	/// <returns> Integer between <paramref name="a"/> and <paramref name="b"/>. </returns>

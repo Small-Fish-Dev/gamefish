@@ -7,13 +7,14 @@ namespace GameFish;
 /// <br /> <br />
 /// <b> LOGIC: </b> Passes along its value whenever activating targets.
 /// <br /> <br />
-/// <b> LOGIC: </b> Activating this without a number modifies the count
-/// by "<b>Modify</b>"(if defined). <br />
-/// Activating this with a number specified modifies the count by that value.
+/// <b> LOGIC: </b> Activating this with a number specified modifies the count by that value.
+/// <br /> <br />
+/// <b> LOGIC: </b> Activating this without a number
+/// modifies the count by "<b>Modify</b>"(if defined).
 /// <code> math_counter </code>
 /// </summary>
 [Icon( "looks_one" )]
-[EditorHandle( Icon = "🧮" )]
+[EditorHandle( Icon = "looks_one" )]
 public partial class LogicCounterEntity : LogicEntity
 {
 	protected const int COUNT_ORDER = LOGIC_ORDER - 1000;

@@ -13,7 +13,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	[Title( "Modules" )]
 	[Property, ReadOnly, JsonIgnore]
 	[Feature( ENTITY ), Group( MODULES )]
-	public List<Module> InspectorModules => Modules;
+	protected List<Module> InspectorModules => Modules;
 
 	public List<Module> Modules { get; protected set; }
 

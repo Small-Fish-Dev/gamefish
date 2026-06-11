@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using GameFish.Nodes;
 
 namespace GameFish;
 
@@ -24,6 +25,11 @@ public struct LogicAction
 		[Icon( "♻" )] Toggle,
 
 		/// <summary>
+		/// Runs <see cref="NodeEntity"/> command(s).
+		/// </summary>
+		[Icon( "🍇" )] Node,
+
+		/// <summary>
 		/// Erases object(s).
 		/// </summary>
 		[Icon( "💥" )] Destroy,
@@ -34,6 +40,8 @@ public struct LogicAction
 		[Icon( "👨‍💻" )] Script,
 	}
 
+	// public string Name { get; set; } = "";
+
 	/// <inheritdoc cref="NetworkRealm" />
 	[EnumButtonGroup]
 	[WideMode( HasLabel = false )]
@@ -42,6 +50,9 @@ public struct LogicAction
 	[EnumButtonGroup]
 	[WideMode( HasLabel = false )]
 	public ActionType Type { get; set; } = ActionType.Activate;
+
+	// [Group( TARGETS )]
+	// public string Value { get; set; }
 
 	[Group( TARGETS )]
 	[Title( "Targets" )]
@@ -52,6 +63,15 @@ public struct LogicAction
 	[WideMode( HasLabel = false )]
 	[ShowIf( nameof( IsToggling ), true )]
 	public ToggleCommand ToggleCommand { get; set; } = ToggleCommand.Disable;
+
+	/// <summary>
+	/// Commands to be sent to nodes.
+	/// </summary>
+	[Group( COMMANDS )]
+	[Title( "Methods" )]
+	[ShowIf( nameof( IsNodes ), true )]
+	[WideMode( HasLabel = false ), InlineEditor( Label = false )]
+	public List<NodeCommand> NodeCommands { get; set; } = [];
 
 	[Group( TARGETS )]
 	[Title( "Targets" )]
@@ -80,6 +100,9 @@ public struct LogicAction
 
 	[Hide, JsonIgnore]
 	private readonly bool IsToggling => Type is ActionType.Toggle;
+
+	[Hide, JsonIgnore]
+	private readonly bool IsNodes => Type is ActionType.Node;
 
 	[Hide, JsonIgnore] // buh
 	private readonly bool IsObjecting => Type is ActionType.Destroy or ActionType.Script;
@@ -123,20 +146,24 @@ public struct LogicAction
 		switch ( Type )
 		{
 			case ActionType.Activate:
-				TriggerActivation( source, value );
+				RunActivation( source, value );
 				break;
 
 			case ActionType.Toggle:
-				TriggerToggling( source );
+				RunToggling( source );
+				break;
+
+			case ActionType.Node:
+				RunNodeCommands( source );
 				break;
 
 			case ActionType.Destroy:
-				TriggerDestruction( source );
+				RunDestruction( source );
 				break;
 
 			case ActionType.Script:
-				TriggerScripting( source );
-				TriggerDoo( source );
+				RunActionGraph( source );
+				RunDoo( source );
 				break;
 
 			default:
@@ -146,7 +173,7 @@ public struct LogicAction
 		return true;
 	}
 
-	private readonly void TriggerActivation( object source = null, object value = null )
+	private readonly void RunActivation( object source = null, object value = null )
 	{
 		if ( ActivationTargets is null )
 			return;
@@ -175,7 +202,7 @@ public struct LogicAction
 		}
 	}
 
-	private readonly void TriggerToggling( object source = null )
+	private readonly void RunToggling( object source = null )
 	{
 		if ( ToggleTargets is null )
 			return;
@@ -203,7 +230,25 @@ public struct LogicAction
 		}
 	}
 
-	private readonly void TriggerDestruction( object source = null )
+	private readonly void RunNodeCommands( object source = null )
+	{
+		if ( NodeCommands is null )
+			return;
+
+		foreach ( var cmd in NodeCommands )
+		{
+			try
+			{
+				cmd.TryExecute( source );
+			}
+			catch ( Exception e )
+			{
+				Print.WarnFrom( source ?? this, $"{nameof( ActionType.Node )} exception: {e}" );
+			}
+		}
+	}
+
+	private readonly void RunDestruction( object source = null )
 	{
 		if ( TargetObjects is null )
 			return;
@@ -224,7 +269,7 @@ public struct LogicAction
 		}
 	}
 
-	private readonly void TriggerScripting( object source = null )
+	private readonly void RunActionGraph( object source = null )
 	{
 		if ( Actions is null )
 			return;
@@ -246,7 +291,7 @@ public struct LogicAction
 		}
 	}
 
-	private readonly void TriggerDoo( object source = null )
+	private readonly void RunDoo( object source = null )
 	{
 		if ( Doo is null || Doo.IsEmpty() )
 			return;

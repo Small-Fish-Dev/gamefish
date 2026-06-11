@@ -1,14 +1,19 @@
+using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
-/// An <see cref="Agent"/> with <see cref="GameFish.Identity"/> that supports a connection.
+/// Something capable of control over other objects. <br />
+/// It may be a real or fake(bot) player.
 /// </summary>
 [Icon( "account_box" )]
 [EditorHandle( Icon = "account_box" )]
-public partial class Client : Agent
+public partial class Client : ModuleEntity, ISimulate
 {
-	protected const int CLIENT_ORDER = AGENT_ORDER - 1000;
+	protected const int CLIENT_ORDER = DEFAULT_ORDER - 1000;
 	protected const int CLIENT_DEBUG_ORDER = CLIENT_ORDER + 500;
+
+	protected const int TEAM_ORDER = CLIENT_ORDER - 100;
 
 	public static IEnumerable<Client> All => Server.ValidClients;
 	public static IEnumerable<Client> Players => Server.PlayerClients;
@@ -38,50 +43,19 @@ public partial class Client : Agent
 	private static Client _local;
 
 	/// <summary>
-	/// Is this the client we're using?
+	/// Is this the local user's client?
 	/// </summary>
 	public bool IsLocal => Local == this;
 
-	[Sync( SyncFlags.FromHost )]
-	public bool IsBot { get; set; }
-
-	/// <summary>
-	/// Is this meant to be a player?
-	/// </summary>
-	public override bool IsPlayer => !IsBot;
-
-	[Sync( SyncFlags.FromHost )]
-	public override Identity Identity
+	public override string ToString()
 	{
-		get => _id;
+		var str = $"{GetType().ToSimpleString( includeNamespace: false )}";
 
-		protected set
-		{
-			if ( _id == value )
-				return;
+		if ( !DisplayName.IsBlank() )
+			str = $"{str}:\"{DisplayName}\"";
 
-			var old = _id;
-			_id = value;
-
-			if ( value.IsValid() )
-				OnSetIdentity( in old, ref _id );
-		}
+		return str;
 	}
-
-	protected Identity _id;
-
-	public override Connection Connection => _id.Connection;
-
-	/// <summary> Is the client's connection defined and active? </summary>
-	public override bool Connected => Connection is Connection cn && (!Networking.IsActive || cn.IsActive);
-
-	/// <summary>
-	/// The connection's display name.
-	/// </summary>
-	public override string DisplayName => Connection?.DisplayName ?? base.DisplayName;
-
-	public override bool CompareConnection( Connection cn )
-		=> _id.CompareConnection( cn );
 
 	protected override void OnEnabled()
 	{
@@ -105,7 +79,14 @@ public partial class Client : Agent
 	{
 		base.OnUpdate();
 
-		UpdateVoice();
+		OnClientUpdate( Time.Delta );
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		base.OnFixedUpdate();
+
+		OnClientFixedUpdate( Time.Delta );
 	}
 
 	protected override void OnDestroy()
@@ -113,8 +94,11 @@ public partial class Client : Agent
 		base.OnDestroy();
 
 		// Don't bother in the editor or a destroyed scene.
-		if ( !this.InGame() )
+		if ( !InGame )
 			return;
+
+		if ( Networking.IsHost )
+			TryDropPawn( Pawn );
 
 		// Cleanup the pawn upon leaving.
 		// TODO: Let pawns prevent this.
@@ -139,6 +123,57 @@ public partial class Client : Agent
 		UpdateCamera();
 	}
 
+	protected virtual void OnClientUpdate( in float deltaTime )
+	{
+		if ( CanSimulate() )
+			FrameSimulate( in deltaTime );
+
+		UpdateVoice();
+	}
+
+	protected virtual void OnClientFixedUpdate( in float deltaTime )
+	{
+		if ( !CanSimulate() )
+			return;
+
+		FixedSimulate( in deltaTime );
+	}
+
+	public virtual bool CanSimulate()
+		=> InGame && this.IsOwner();
+
+	public virtual void FrameSimulate( in float deltaTime )
+	{
+		UpdateInput( in deltaTime );
+
+		SimulatePawn( Pawn, in deltaTime, isFixedUpdate: false );
+	}
+
+	public virtual void FixedSimulate( in float deltaTime )
+	{
+		SimulatePawn( Pawn, in deltaTime, isFixedUpdate: true );
+	}
+
+	/// <returns> A random default spawn point's transform(if any). </returns>
+	public virtual Transform? FindSpawnPoint()
+	{
+		if ( GameManager.TryGetInstance( out var gm ) )
+			return gm.FindSpawnPoint( this );
+
+		var allSpawnPoints = Scene?.GetAll<SpawnPoint>();
+
+		if ( allSpawnPoints is null || !allSpawnPoints.Any() )
+			return null;
+
+		return allSpawnPoints.PickRandom()?.WorldTransform;
+	}
+
+	/// <summary>
+	/// If our <see cref="Identity"/> has the specified connection.
+	/// </summary>
+	public virtual bool CompareConnection( Connection cn )
+		=> _id.CompareConnection( cn );
+
 	/// <summary>
 	/// Sets the camera's transform according to its pawn.
 	/// </summary>
@@ -147,7 +182,7 @@ public partial class Client : Agent
 		if ( !Scene.IsValid() || !Scene.Camera.IsValid() )
 			return;
 
-		if ( Pawn is not Pawn pawn || !pawn.IsValid() )
+		if ( !Pawn.IsValid( out var pawn ) )
 			return;
 
 		if ( !pawn.CanSimulate() )

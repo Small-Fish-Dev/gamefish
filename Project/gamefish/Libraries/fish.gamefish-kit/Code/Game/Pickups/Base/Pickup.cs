@@ -1,5 +1,5 @@
 using System;
-using System.Text.Json.Serialization;
+
 namespace GameFish;
 
 /// <summary>
@@ -14,9 +14,25 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 	protected const int PICKUP_EFFECT_ORDER = PICKUP_ORDER + 10;
 	protected const int PICKUP_TRANSFORM_ORDER = PICKUP_ORDER + 20;
 	protected const int PICKUP_SOUNDS_ORDER = PICKUP_ORDER + 30;
-
+	protected const int PICKUP_RESPAWN_ORDER = PICKUP_ORDER + 40;
 	protected const int PICKUP_USE_ORDER = PICKUP_ORDER + 50;
-
+	
+	/// <summary>
+	/// Any colliders on this pickup. <br/>
+	/// Used to mark components to be disabled while respawning.
+	/// </summary>
+	[Property]
+	[Feature( PICKUP ), Order( PICKUP_ORDER )]
+	public List<Collider> Colliders { get; set; }
+	
+	/// <summary>
+	/// Any effects on this pickup. <br/>
+	/// Used to mark components to be disabled while respawning.
+	/// </summary>
+	[Property]
+	[Feature( PICKUP ), Order( PICKUP_ORDER )]
+	public List<Component> Effects { get; set; }
+	
 	/// <summary>
 	/// If enabled: touching this will pick it up.
 	/// </summary>
@@ -81,6 +97,25 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 	protected virtual PickupUsable UsableModule { get; set; }
 
 	public virtual bool HasUsableModule => UsableModule.IsValid();
+	
+	/// <summary>
+	/// If enabled: the pickup will respawn after a delay. <br/>
+	/// Does nothing if <see cref="IsConsumable"/> is <see langword="false"/>.
+	/// </summary>
+	[Property]
+	[Feature( PICKUP )]
+	[Order( PICKUP_RESPAWN_ORDER )]
+	[ToggleGroup( nameof(RespawnEnabled), Label = "Respawn" )]
+	public bool RespawnEnabled { get; set; } = false;
+	
+	/// <summary>
+	/// How long (in seconds) before the pickup respawns.
+	/// </summary>
+	[Property]
+	[Feature( PICKUP )]
+	[Order( PICKUP_RESPAWN_ORDER )]
+	[ToggleGroup( nameof(RespawnEnabled) )]
+	public float RespawnDelay { get; set; } = 10f;
 
 	/// <summary>
 	/// Assigns a new or existing module that lets you press a button to pick this up.
@@ -91,6 +126,11 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 	[HideIf( nameof( HasUsableModule ), true )]
 	protected void AddUsableButton()
 		=> EnsureUsableModule();
+	
+	[Sync]
+	private TimeUntil RespawnTimer { get; set; }
+	
+	private bool _isRespawning;
 
 	protected virtual void EnsureUsableModule()
 	{
@@ -115,7 +155,21 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 
 		OnTransformStart();
 	}
-
+	
+	protected override void OnUpdate()
+	{
+		if ( !Networking.IsHost )
+			return;
+		
+		if ( !_isRespawning )
+			return;
+		
+		if ( RespawnTimer )
+			Spawn();
+		
+		base.OnUpdate();
+	}
+	
 	protected virtual void OnTransformStart()
 	{
 		if ( !TransformEnabled )
@@ -165,7 +219,12 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 			PlayPickupEffect( pl );
 
 			if ( IsConsumable )
-				GameObject.Destroy();
+			{
+				if ( RespawnEnabled )
+					StartRespawn();
+				else
+					GameObject.Destroy();
+			}
 		}
 		catch ( Exception e )
 		{
@@ -176,6 +235,33 @@ public abstract partial class Pickup : DynamicEntity, Component.ITriggerListener
 		}
 
 		return true;
+	}
+	
+	private void StartRespawn()
+	{
+		_isRespawning = true;
+		RespawnTimer = RespawnDelay;
+		SetCollidersEnabled( false );
+		SetEffectsEnabled( false );
+	}
+	
+	private void Spawn()
+	{
+		_isRespawning = false;
+		SetCollidersEnabled( true );
+		SetEffectsEnabled( true );
+	}
+	
+	private void SetCollidersEnabled( bool state )
+	{
+		foreach ( var collider in Colliders )
+			collider.Enabled = state;
+	}
+	
+	private void SetEffectsEnabled( bool state )
+	{
+		foreach ( var effectComponent in Effects )
+			effectComponent.Enabled = state;
 	}
 
 	public virtual bool CanPickup( Player pl )

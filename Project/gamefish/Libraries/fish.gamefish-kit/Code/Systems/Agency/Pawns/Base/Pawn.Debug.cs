@@ -26,7 +26,7 @@ partial class Pawn
 	[Title( "Owner" )]
 	[Property, JsonIgnore]
 	[Feature( PAWN ), Group( DEBUG ), Order( DEBUG_ORDER )]
-	protected Agent InspectorOwner
+	protected Client InspectorOwner
 	{
 		get => Owner;
 		set => Owner = value;

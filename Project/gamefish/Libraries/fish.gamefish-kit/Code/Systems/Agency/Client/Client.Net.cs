@@ -1,6 +1,6 @@
 namespace GameFish;
 
-partial class Agent
+partial class Client
 {
 	protected override bool? IsNetworkedOverride => true;
 	protected override bool IsNetworkedAutomatically => true;

@@ -7,6 +7,7 @@ public partial class ActivationTrigger : LogicTrigger;
 
 /// <summary>
 /// Executes logic upon being entered, exited or while inside.
+/// <code> trigger_once </code>
 /// <code> trigger_multiple </code>
 /// </summary>
 [Icon( "electric_bolt" )]
@@ -27,7 +28,7 @@ public partial class LogicTrigger : FilterTrigger
 	[Title( "Once" )]
 	[Order( LOGIC_TRIGGER_ORDER )]
 	[Feature( LOGIC ), Group( TRIGGER )]
-	public bool SelfDestruct { get; set; } = false;
+	public virtual bool SelfDestruct { get; protected set; } = false;
 
 	/// <summary>
 	/// What should trigger this?
@@ -35,7 +36,7 @@ public partial class LogicTrigger : FilterTrigger
 	[Property]
 	[Order( LOGIC_TRIGGER_ORDER )]
 	[Feature( LOGIC ), Group( TRIGGER )]
-	public TriggerPhase Conditions { get; set; } = TriggerPhase.Enter | TriggerPhase.Exit;
+	public virtual TriggerPhase Conditions { get; protected set; } = TriggerPhase.Enter | TriggerPhase.Exit;
 
 	protected virtual bool HasInsideCondition => Conditions.HasInside();
 	protected virtual bool HasEnterCondition => Conditions.HasEnter();
@@ -49,7 +50,7 @@ public partial class LogicTrigger : FilterTrigger
 	[Range( 0.1f, 2f, clamped: false )]
 	[Feature( LOGIC ), Group( TRIGGER )]
 	[ShowIf( nameof( HasInsideCondition ), true )]
-	public float InsideDelay { get; set; } = 0.5f;
+	public virtual float InsideDelay { get; protected set; } = 0.5f;
 
 	/// <summary>
 	/// Logic that is ran when something enters the trigger.

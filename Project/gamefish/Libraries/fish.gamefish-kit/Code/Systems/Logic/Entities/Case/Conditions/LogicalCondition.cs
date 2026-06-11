@@ -1,44 +1,57 @@
 namespace GameFish;
 
 /// <summary>
-/// Contains a series of checks that must pass for the condition to succeed and fire its logic.
+/// Something you check first to see if you should execute some logic.
 /// </summary>
 [Icon( "checklist" )]
 public struct LogicalCondition
 {
-	private const int CASES_ORDER = 1;
-	private const int FUNCTIONS_ORDER = 2;
-
-	[Group( CASES )]
-	[Order( CASES_ORDER )]
-	[WideMode( HasLabel = false )]
-	[InlineEditor( Label = false )]
-	public List<LogicalCase> Cases { get; set; } = [new()];
+	[Title( "Type" )]
+	public LogicValueType ValueType { get; set; }
 
 	/// <summary>
-	/// Logic to run if all of every case evaluates as true.
+	/// The number to make the comparison with.
 	/// </summary>
-	[Title( "On True" )]
-	[Group( FUNCTIONS )]
-	[Order( FUNCTIONS_ORDER )]
+	[Title( "Value" )]
+	[ShowIf( nameof( ValueType ), LogicValueType.Number )]
+	public float NumberValue { get; set; } = 1f;
+
+	[EnumButtonGroup]
+	[Title( "State" )]
 	[WideMode( HasLabel = true )]
-	[InlineEditor( Label = true )]
-	public List<LogicAction> OnTrueLogic { get; set; }
+	[ShowIf( nameof( ValueType ), LogicValueType.Toggle )]
+	public ToggleCommand ToggleValue { get; set; } = ToggleCommand.Disable;
+
+	[Title( "True" )]
+	[ShowIf( nameof( ValueType ), LogicValueType.Boolean )]
+	public bool BooleanValue { get; set; } = true;
+
+	[Title( "String" )]
+	[ShowIf( nameof( ValueType ), LogicValueType.String )]
+	public string StringValue { get; set; } = "hi";
+
+	/// <summary>
+	/// The different ways you can compare numbers.
+	/// </summary>
+	[EnumButtonGroup]
+	[Title( "Comparison" )]
+	[WideMode( HasLabel = true )]
+	public NumberComparison Comparison { get; set; }
 
 	public LogicalCondition() { }
 
-	public readonly bool TryEvaluate( object source, object value )
+	public readonly bool Matches( object value )
+		=> ValueType.Compare( GetValue(), value, Comparison );
+
+	public readonly object GetValue()
 	{
-		if ( Cases is null || Cases.Count <= 0 )
-			return false;
-
-		foreach ( var c in Cases )
-			if ( !c.Matches( value ) )
-				return false;
-
-		LogicAction.TryExecute( OnTrueLogic, source: source, value: value );
-
-		// What's important here is that the conditions were satisfied.
-		return true;
+		return ValueType switch
+		{
+			LogicValueType.Number => NumberValue,
+			LogicValueType.Boolean => BooleanValue,
+			LogicValueType.String => StringValue,
+			LogicValueType.Toggle => ToggleValue,
+			_ => null
+		};
 	}
 }

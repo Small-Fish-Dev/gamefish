@@ -27,11 +27,9 @@ partial class Client
 	protected float _inputHorizontal;
 	protected float _inputVertical;
 
-	public override void FrameSimulate( in float deltaTime )
+	protected virtual void UpdateInput( in float deltaTime )
 	{
 		UpdateVehicleInput();
-
-		base.FrameSimulate( deltaTime );
 	}
 
 	protected virtual void UpdateVehicleInput()
@@ -83,11 +81,7 @@ partial class Client
 		return true;
 	}
 
-	/// <summary>
-	/// Tells you if the client is aiming and if so by what angle.
-	/// </summary>
-	/// <param name="aim"> The current aim delta. </param>
-	/// <returns> If we should be able to aim. </returns>
+	/// <inheritdoc cref="TryGetAim" />
 	public static bool TryGetLocalAim( out Angles aim )
 	{
 		if ( Local.IsValid() )
@@ -115,11 +109,7 @@ partial class Client
 		return true;
 	}
 
-	/// <summary>
-	/// Tells you if the client is moving and if so in what direction.
-	/// </summary>
-	/// <param name="moveDir"> The current movement direction. </param>
-	/// <returns> If we should be able to move. </returns>
+	/// <inheritdoc cref="TryGetMove" />
 	public static bool TryGetLocalMove( out Vector3 moveDir )
 	{
 		if ( Local.IsValid() )

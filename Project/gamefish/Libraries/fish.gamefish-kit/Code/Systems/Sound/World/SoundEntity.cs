@@ -8,7 +8,7 @@ namespace GameFish;
 /// - Works with all engine-supported sound files(not just sound events). <br />
 /// - Supports having multiple sounds with weighted random selection. <br />
 /// - Override specific properties of each sound(like falloff). <br />
-/// - Triggerable by the logic system that easily allows for so much creativity.  <br />
+/// - Triggerable by the logic system that easily allows for so much creativity.
 /// <code> ambient_generic </code>
 /// </summary>
 [Icon( "volume_up" )]

@@ -81,6 +81,8 @@ public static partial class Strings
 	public const string CONDITION = "✅ Condition";
 	public const string CONDITIONS = "✅ Conditions";
 
+	public const string METHOD = "⚡ Method";
+	public const string METHODS = "⚡ Methods";
 	public const string CALLBACK = "⚡ Callback";
 	public const string CALLBACKS = "⚡ Callbacks";
 	public const string FUNCTION = "⚡ Function";
@@ -100,6 +102,8 @@ public static partial class Strings
 
 	public const string NETWORK = "📶 Network";
 	public const string NETWORKING = "📶 Networking";
+	public const string CONNECTION = "📶 Connection";
+	public const string CONNECTING = "🤝 Connecting";
 
 	public const string TRIGGER = "📡 Trigger";
 	public const string TRIGGERS = "📡 Triggers";
@@ -116,6 +120,13 @@ public static partial class Strings
 	public const string FILTERS = "📋 Filters";
 	public const string FILTERING = "📋 Filtering";
 
+	public const string STRING = "🧵 String";
+	public const string STRINGS = "🧵 Strings";
+	public const string WRITE = "📝 Write";
+	public const string WRITTEN = "📝 Written";
+	public const string WRITING = "📝 Writing";
+	public const string WRITINGS = "📝 Writings";
+
 	public const string USE = "🖱 Use";
 	public const string INPUT = "🕹 Input";
 	public const string INPUTS = "🕹 Inputs";
@@ -124,10 +135,26 @@ public static partial class Strings
 	public const string INTERACT = "👉 Interact";
 	public const string INTERACTION = "👉 Interaction";
 
-	public const string LOGIC = "🧠 Logic";
-	public const string LOGICAL = "🧠 Logical";
 	public const string MATH = "🤓 Math";
 	public const string MATHS = "🤓 Maths";
+	public const string LOGIC = "🧠 Logic";
+	public const string LOGICAL = "🧠 Logical";
+
+	public const string NODE = "🍇 Node";
+	public const string NODES = "🍇 Nodes";
+	public const string LINK = "🔗 Link";
+	public const string LINKS = "🔗 Links";
+	public const string SIGNAL = "📡 Signal";
+	public const string SIGNALS = "📡 Signals";
+	public const string SIGNALING = "📡 Signaling";
+	public const string COMMAND = "📝 Command";
+	public const string COMMANDS = "📝 Commands";
+	public const string COMMANDING = "📝 Commanding";
+
+	public const string CONNECT = "🔌 Connect";
+	public const string CONNECTED = "🔌 Connected";
+	public const string CONNECTIONS = "🔌 Connections";
+
 	public const string STAT = "🧮 Stat";
 	public const string STATS = "🧮 Stats";
 	public const string COUNT = "🧮 Count";

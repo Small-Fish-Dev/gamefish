@@ -23,9 +23,9 @@ public partial class Player : Pawn
 	}
 
 	/// <summary>
-	/// Only player <see cref="Agent"/>s can own a player pawn.
+	/// Only player <see cref="Client"/>s can own a player pawn.
 	/// </summary>
-	public override bool AllowOwnership( Agent agent )
+	public override bool AllowOwnership( Client agent )
 	{
 		if ( !agent.IsValid() || !agent.IsPlayer )
 			return false;

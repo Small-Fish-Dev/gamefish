@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace GameFish;
 
-partial class Agent
+partial class Client
 {
 	/// <summary>
 	/// What specific pawn(if any) is under this agent's control?
@@ -25,12 +25,27 @@ partial class Agent
 
 	[Title( "Pawn" )]
 	[Property, JsonIgnore]
+	[Order( CLIENT_DEBUG_ORDER )]
 	[ShowIf( nameof( InGame ), true )]
-	[Feature( AGENT ), Group( DEBUG ), Order( DEBUG_ORDER )]
+	[Feature( CLIENT ), Group( DEBUG )]
 	protected Pawn InspectorPawn
 	{
 		get => Pawn;
 		set => TryTakePawn( value );
+	}
+
+	protected virtual void SimulatePawn( Pawn pawn, in float deltaTime, in bool isFixedUpdate )
+	{
+		if ( !pawn.IsValid() )
+			return;
+
+		if ( !pawn.CanSimulate() )
+			return;
+
+		if ( isFixedUpdate )
+			pawn.FixedSimulate( in deltaTime );
+		else
+			pawn.FrameSimulate( in deltaTime );
 	}
 
 	protected virtual void OnSetPawn( Pawn newPawn, Pawn oldPawn = null )

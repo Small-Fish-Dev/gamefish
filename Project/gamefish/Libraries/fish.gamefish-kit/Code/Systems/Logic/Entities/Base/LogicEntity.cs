@@ -4,7 +4,7 @@ namespace GameFish;
 /// An entity meant for logical processing.
 /// </summary>
 [Icon( "code" )]
-public abstract partial class LogicEntity : Entity
+public abstract partial class LogicEntity : ModuleEntity
 {
 	protected const int LOGIC_ORDER = DEFAULT_ORDER - 1000;
 
@@ -17,4 +17,26 @@ public abstract partial class LogicEntity : Entity
 	protected override NetworkMode NetworkingModeDefault => NetworkMode.Object;
 	protected override OwnerTransfer NetworkTransferModeDefault => OwnerTransfer.Fixed;
 	protected override NetworkOrphaned NetworkOrphanedModeDefault => NetworkOrphaned.ClearOwner;
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+
+		OnLogicStart();
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		OnLogicUpdate();
+	}
+
+	protected virtual void OnLogicStart()
+	{
+	}
+
+	protected virtual void OnLogicUpdate()
+	{
+	}
 }

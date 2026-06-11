@@ -11,19 +11,19 @@ namespace GameFish;
 public enum ToggleCommand
 {
 	/// <summary>
-	/// Stop/close.
+	/// Stop/close/off.
 	/// </summary>
 	[Icon( "📫" )]
 	Disable = 0,
 
 	/// <summary>
-	/// Activate/open.
+	/// Start/open/on.
 	/// </summary>
 	[Icon( "📭" )]
 	Enable = 1,
 
 	/// <summary>
-	/// Switch between on/off, open/closed.
+	/// Switch between on/off, open/closed, started/stopped.
 	/// </summary>
 	[Icon( "♻" )]
 	Toggle = 2
@@ -42,9 +42,22 @@ partial class Library
 			ToggleCommand.Disable => false,
 			ToggleCommand.Enable => true,
 			ToggleCommand.Toggle => !isOn,
-
-			// idk
 			_ => false,
+		};
+	}
+
+	/// <summary>
+	/// Tells you what would be the result of this command given the state you provided.
+	/// </summary>
+	/// <returns> The resulting boolean. </returns>
+	public static ToggleState Apply( this ToggleCommand cmd, in ToggleState state )
+	{
+		return cmd switch
+		{
+			ToggleCommand.Disable => ToggleState.Disabled,
+			ToggleCommand.Enable => ToggleState.Enabled,
+			ToggleCommand.Toggle => state.Flip(),
+			_ => ToggleState.Enabled,
 		};
 	}
 
@@ -59,9 +72,7 @@ partial class Library
 			ToggleCommand.Disable => false,
 			ToggleCommand.Enable => true,
 			ToggleCommand.Toggle => toggle?.IsOn is not true,
-
-			// idk
-			_ => false,
+			_ => true,
 		};
 	}
 }

@@ -27,7 +27,7 @@ partial class Pawn
 	/// <param name="owner"></param>
 	/// <param name="isActive"> If true: gets every pawn even if disabled. </param>
 	/// <returns> Every pawn owned by the <paramref name="owner"/>(or empty if null). </returns>
-	public static IEnumerable<TPawn> GetAllOwnedBy<TPawn>( Agent owner, bool isActive = true ) where TPawn : Pawn
+	public static IEnumerable<TPawn> GetAllOwnedBy<TPawn>( Client owner, bool isActive = true ) where TPawn : Pawn
 	{
 		if ( !owner.IsValid() )
 			return [];
@@ -38,7 +38,7 @@ partial class Pawn
 	}
 
 	/// <returns> Every pawn owned by the <paramref name="owner"/>(or empty if null). </returns>
-	public static IEnumerable<Pawn> GetAllOwnedBy( Agent owner, bool isActive = false )
+	public static IEnumerable<Pawn> GetAllOwnedBy( Client owner, bool isActive = false )
 		=> GetAllOwnedBy<Pawn>( owner, isActive );
 
 	/// <summary>

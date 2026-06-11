@@ -26,6 +26,7 @@ public partial class DamageTrigger : FilterTrigger
 
 	/// <summary>
 	/// The types of damage inflicted.
+	/// <br /> <br />
 	/// <b> TIP: </b> Try "burn", "bullet", "fall".
 	/// </summary>
 	[Property]

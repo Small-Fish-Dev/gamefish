@@ -1,5 +1,3 @@
-using System;
-
 namespace GameFish;
 
 partial class Library
@@ -19,4 +17,12 @@ partial class Library
 	/// <returns> <c>1</c> if <c>true</c>, <c>-1</c> if <c>false</c>. </returns>
 	public static int Direction( this in bool b )
 		=> b ? 1 : -1;
+
+	/// <returns> The matching <see cref="ToggleState"/> for this bool. </returns>
+	public static ToggleState ToState( this in bool b )
+		=> b ? ToggleState.Enabled : ToggleState.Disabled;
+
+	/// <returns> The <see cref="ToggleCommand"/> to use for assigning this bool. </returns>
+	public static ToggleCommand ToCommand( this in bool b )
+		=> b ? ToggleCommand.Enable : ToggleCommand.Disable;
 }

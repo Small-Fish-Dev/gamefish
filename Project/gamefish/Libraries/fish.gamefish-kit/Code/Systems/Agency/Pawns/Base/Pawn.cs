@@ -1,7 +1,7 @@
 namespace GameFish;
 
 /// <summary>
-/// Something an <see cref="Agent"/> can control.
+/// Something an <see cref="Client"/> can control.
 /// </summary>
 [Icon( "person" )]
 [EditorHandle( Icon = "🐴" )]
@@ -49,7 +49,7 @@ public abstract partial class Pawn : DynamicEntity
 	public virtual bool IsPlayer => Owner.IsValid() && Owner.IsPlayer;
 
 	[Sync( SyncFlags.FromHost )]
-	public Agent Owner
+	public Client Owner
 	{
 		get => _owner;
 
@@ -62,9 +62,9 @@ public abstract partial class Pawn : DynamicEntity
 		}
 	}
 
-	protected Agent _owner;
+	protected Client _owner;
 
-	public bool TryAssignOwner( Agent newAgent )
+	public bool TryAssignOwner( Client newAgent )
 	{
 		if ( !Networking.IsHost || !GameObject.IsValid() )
 			return false;
@@ -96,7 +96,7 @@ public abstract partial class Pawn : DynamicEntity
 		return true;
 	}
 
-	public bool TryDropOwner( Agent oldOwner )
+	public bool TryDropOwner( Client oldOwner )
 	{
 		if ( !Networking.IsHost )
 			return false;
@@ -114,7 +114,7 @@ public abstract partial class Pawn : DynamicEntity
 	/// <summary>
 	/// Called when the <see cref="Owner"/> property has been set to a new value.
 	/// </summary>
-	protected virtual void OnSetOwner( Agent oldAgent, Agent newAgent )
+	protected virtual void OnSetOwner( Client oldAgent, Client newAgent )
 	{
 		// Ignore duplicate assignment.
 		if ( oldAgent == newAgent )
@@ -145,14 +145,14 @@ public abstract partial class Pawn : DynamicEntity
 	/// <summary>
 	/// Called when our new <see cref="Owner"/> has been fully confirmed.
 	/// </summary>
-	protected virtual void OnTaken( Agent newAgent, Agent oldAgent = null )
+	protected virtual void OnTaken( Client newAgent, Client oldAgent = null )
 	{
 	}
 
 	/// <summary>
 	/// Called whenever an <see cref="Owner"/> stops owning this.
 	/// </summary>
-	protected virtual void OnDropped( Agent oldAgent )
+	protected virtual void OnDropped( Client oldAgent )
 	{
 		if ( Networking.IsHost )
 			GameObject?.Destroy();
@@ -162,7 +162,7 @@ public abstract partial class Pawn : DynamicEntity
 	/// Can a valid agent take ownership of this pawn?
 	/// </summary>
 	/// <returns> If ownership would be allowed. </returns>
-	public virtual bool AllowOwnership( Agent agent )
+	public virtual bool AllowOwnership( Client agent )
 	{
 		if ( !agent.IsValid() )
 			return false;

@@ -2,7 +2,7 @@ namespace GameFish;
 
 /// <summary>
 /// Indicates something can be manually simulated if a check passes. <br />
-/// For example: an <see cref="Agent"/> telling their pawns to do stuff.
+/// For example: an <see cref="Client"/> telling their pawns to do stuff.
 /// </summary>
 public interface ISimulate
 {

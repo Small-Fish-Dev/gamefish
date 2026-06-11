@@ -1,53 +1,44 @@
 namespace GameFish;
 
+/// <summary>
+/// Contains a series of checks that must pass for the case to succeed and fire its logic.
+/// </summary>
 [Icon( "checklist" )]
 public struct LogicalCase
 {
-	[Title( "Type" )]
-	public LogicValueType ValueType { get; set; }
+	private const int CONDITIONS_ORDER = 1;
+	private const int FUNCTIONS_ORDER = 2;
+
+	[Group( CONDITIONS )]
+	[Order( CONDITIONS_ORDER )]
+	[WideMode( HasLabel = false )]
+	[InlineEditor( Label = false )]
+	public List<LogicalCondition> Conditions { get; set; } = [new()];
 
 	/// <summary>
-	/// The number to make the comparison with.
+	/// Logic to run if all of every case in this condition is passed.
 	/// </summary>
-	[Title( "Value" )]
-	[ShowIf( nameof( ValueType ), LogicValueType.Number )]
-	public float NumberValue { get; set; } = 1f;
-
-	/// <summary>
-	/// The different ways you can compare numbers.
-	/// </summary>
-	[EnumButtonGroup]
-	[Title( "Comparison" )]
+	[Title( "On True" )]
+	[Group( FUNCTIONS )]
+	[Order( FUNCTIONS_ORDER )]
 	[WideMode( HasLabel = true )]
-	public NumberComparison Comparison { get; set; }
-
-	[Title( "Value" )]
-	[ShowIf( nameof( ValueType ), LogicValueType.Boolean )]
-	public bool BooleanValue { get; set; } = true;
-
-	[Title( "Value" )]
-	[ShowIf( nameof( ValueType ), LogicValueType.String )]
-	public string StringValue { get; set; } = "hi";
-
-	[Title( "Value" )]
-	[WideMode( HasLabel = false ), EnumButtonGroup]
-	[ShowIf( nameof( ValueType ), LogicValueType.Toggle )]
-	public ToggleCommand ToggleValue { get; set; } = ToggleCommand.Disable;
+	[InlineEditor( Label = true )]
+	public List<LogicAction> OnTrueLogic { get; set; }
 
 	public LogicalCase() { }
 
-	public readonly bool Matches( object value )
-		=> ValueType.Compare( GetValue(), value, Comparison );
-
-	public readonly object GetValue()
+	public readonly bool TryEvaluate( object source, object value )
 	{
-		return ValueType switch
-		{
-			LogicValueType.Number => NumberValue,
-			LogicValueType.Boolean => BooleanValue,
-			LogicValueType.String => StringValue,
-			LogicValueType.Toggle => ToggleValue,
-			_ => null
-		};
+		if ( Conditions is null || Conditions.Count <= 0 )
+			return false;
+
+		foreach ( var c in Conditions )
+			if ( !c.Matches( value ) )
+				return false;
+
+		LogicAction.TryExecute( OnTrueLogic, source: source, value: value );
+
+		// What's important here is that the conditions were satisfied.
+		return true;
 	}
 }

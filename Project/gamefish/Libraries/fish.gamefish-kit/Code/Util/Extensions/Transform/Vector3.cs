@@ -2,10 +2,21 @@ namespace GameFish;
 
 partial class Library
 {
+	/// <inheritdoc cref="Vector3.Clamp(Vector3, Vector3)" />
+	public static Vector3 Clamp( this Vector3 v, in BBox bounds )
+		=> v.Clamp( bounds.Mins, bounds.Maxs );
+
 	/// <summary>
-	/// <see cref="Vector3.Direction(in Vector3, in Vector3)"/>
+	/// Gives you a vector representing both the direction
+	/// and distance from the first point to the second point.
+	/// <br /> <br />
+	/// <b> NOTE: </b> This is done very cheaply so it can be used more often.
 	/// </summary>
-	/// <returns> The direction from one position to another. </returns>
+	/// <returns> A vector representing the difference between two vectors. </returns>
+	public static Vector3 Delta( this Vector3 from, in Vector3 to )
+		=> to - from;
+
+	/// <inheritdoc cref="Vector3.Direction(in Vector3, in Vector3)" />
 	public static Vector3 Direction( this Vector3 from, in Vector3 to )
 		=> Vector3.Direction( from, to );
 
@@ -99,12 +110,6 @@ partial class Library
 	/// <returns> The horizontal component of the vector from the specified direction. </returns>
 	public static Vector3 Horizontal( this Vector3 v, in Vector3 vertical )
 		=> v.SubtractDirection( vertical );
-
-	/// <summary>
-	/// <see cref="Vector3.Clamp(Vector3, Vector3)"/>
-	/// </summary>
-	public static Vector3 Clamp( this Vector3 v, in BBox bounds )
-		=> v.Clamp( bounds.Mins, bounds.Maxs );
 
 	/// <summary>
 	/// Apply an amount of friction to the current velocity.

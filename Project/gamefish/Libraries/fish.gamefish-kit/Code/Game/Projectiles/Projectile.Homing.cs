@@ -14,13 +14,13 @@ partial class Projectile
 		/// Influences the direction of velocity without affecting its speed.
 		/// </summary>
 		[Icon( "♻" )]
-		Redirect = 1 << 1,
+		Redirect = 1 << 0,
 
 		/// <summary>
 		/// Adds velocity towards the direction of the target.
 		/// </summary>
 		[Icon( "🌎" )]
-		Gravitate = 1 << 2,
+		Gravitate = 1 << 1,
 	}
 
 	[Property]

@@ -145,14 +145,10 @@ public class PrefabSpawner : ModuleEntity, IActivate
 		// Rotation
 		if ( RotationEnabled && ITransform.IsValid( PrefabRotation ) )
 			tWorld.Rotation = PrefabRotation;
-		else
-			tWorld.Rotation = WorldRotation;
 
 		// Scale
 		if ( ScalingEnabled && ITransform.IsValid( PrefabScaling ) )
 			tWorld.Scale = PrefabScaling;
-		else
-			tWorld.Scale = tSpawner.Scale;
 
 		var parent = PrefabParent.AsValid();
 

@@ -16,7 +16,7 @@ public partial interface IControls
 	public bool HasScrollFocus { get; }
 
 	/// <summary>
-	/// If true: prevents analogue(such as WASD) movement.
+	/// If true: prevents directional(such as analogue/WASD) movement.
 	/// </summary>
 	public bool HasMovingFocus { get; }
 

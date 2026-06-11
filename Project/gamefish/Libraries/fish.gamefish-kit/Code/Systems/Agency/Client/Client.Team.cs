@@ -1,12 +1,10 @@
 namespace GameFish;
 
-partial class Agent : ITeam
+partial class Client : ITeam
 {
-	
-
 	[Property]
 	[Sync( SyncFlags.FromHost )]
-	[Feature( AGENT ), Group( TEAM ), Order( AGENT_ORDER )]
+	[Feature( CLIENT ), Group( TEAM ), Order( CLIENT_ORDER )]
 	public Team Team
 	{
 		get => _team;

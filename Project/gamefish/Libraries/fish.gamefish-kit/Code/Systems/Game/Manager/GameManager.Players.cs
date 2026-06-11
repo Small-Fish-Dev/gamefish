@@ -4,12 +4,11 @@ partial class GameManager
 {
 	public virtual Transform FallbackSpawnPoint { get; set; } = global::Transform.Zero;
 
-	/// <param name="agent"> Probably a <see cref="Client"/>. </param>
 	/// <returns> Where they should spawn. </returns>
-	public virtual Transform FindSpawnPoint( Agent agent )
+	public virtual Transform FindSpawnPoint( Client cl )
 	{
 		// Allow the state to specify where we spawn.
-		if ( State.IsValid() && State.FindSpawnPoint( agent ) is Transform tState )
+		if ( State.IsValid() && State.FindSpawnPoint( cl ) is Transform tState )
 			return tState;
 
 		// Fall back to the built-in spawn points.

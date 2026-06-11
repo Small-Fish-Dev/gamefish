@@ -96,7 +96,7 @@ public partial class SceneSettings : Singleton<SceneSettings>
 	[ShowIf( nameof( EnableDepth ), true )]
 	[Feature( BOUNDS ), Group( DEPTH ), Order( DEPTH_ORDER )]
 	[Property, WideMode( HasLabel = false ), InlineEditor]
-	public virtual BoundarySettings DepthSettings { get; set; }
+	public virtual BoundarySettings DepthSettings { get; set; } = new();
 
 	protected override void DrawGizmos()
 	{

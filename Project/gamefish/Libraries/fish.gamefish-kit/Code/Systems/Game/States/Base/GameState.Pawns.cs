@@ -106,7 +106,7 @@ partial class GameState
 	/// <param name="tPawn"> The optional transform to spawn the new pawn with. </param>
 	/// <param name="oldCleanup"> If they had a previous pawn should we always destroy it? </param>
 	/// <returns> If the new pawn could be assigned. </returns>
-	public virtual bool TrySetPawn( Agent agent, PrefabFile prefab, out Pawn pawn, in Transform? tPawn = null, bool oldCleanup = true )
+	public virtual bool TrySetPawn( Client agent, PrefabFile prefab, out Pawn pawn, in Transform? tPawn = null, bool oldCleanup = true )
 		=> TrySetPawn<Pawn>( agent, prefab, out pawn, tPawn: tPawn, oldCleanup: oldCleanup );
 
 	/// <summary>
@@ -118,7 +118,7 @@ partial class GameState
 	/// <param name="tPawn"> The optional transform to spawn the new pawn with. </param>
 	/// <param name="oldCleanup"> If they had a previous pawn should we always destroy it? </param>
 	/// <returns> If the new <typeparamref name="TPawn"/> could be assigned. </returns>
-	public virtual bool TrySetPawn<TPawn>( Agent agent, PrefabFile prefab, out TPawn pawn, in Transform? tPawn = null, bool oldCleanup = true )
+	public virtual bool TrySetPawn<TPawn>( Client agent, PrefabFile prefab, out TPawn pawn, in Transform? tPawn = null, bool oldCleanup = true )
 		where TPawn : Pawn
 	{
 		pawn = null;
@@ -150,6 +150,6 @@ partial class GameState
 	/// </summary>
 	/// <param name="agent"> Probably a <see cref="Client"/>. </param>
 	/// <returns> Where they should spawn(or null). </returns>
-	public virtual Transform? FindSpawnPoint( Agent agent )
+	public virtual Transform? FindSpawnPoint( Client agent )
 		=> null;
 }
