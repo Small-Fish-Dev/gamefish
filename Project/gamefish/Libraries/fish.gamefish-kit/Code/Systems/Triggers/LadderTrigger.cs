@@ -10,24 +10,8 @@ namespace GameFish;
 [EditorHandle( Icon = "🧗‍" )]
 public partial class LadderTrigger : Trigger
 {
-	[Property, Group( COLLISION )]
-	public override ColliderType Collider
-	{
-		get => _colType;
-		set { _colType = value; UpdateColliders(); }
-	}
-
-	private new ColliderType _colType = ColliderType.Box;
-
-	[Property, Group( COLLISION )]
-	[ShowIf( nameof( UsingBox ), true )]
-	public override BBox BoxSize
-	{
-		get => _boxSize;
-		set { _boxSize = value; UpdateColliders(); }
-	}
-
-	private new BBox _boxSize = new( new Vector3( 0, -16, 0f ), new Vector3( 12f, 16f, 256f ) );
+	protected override ColliderType DefaultColliderType => ColliderType.Box;
+	protected override BBox DefaultBoxSize => new( new Vector3( 0, -16, 0f ), new Vector3( 12f, 16f, 256f ) );
 
 	public override TagSet DefaultTags { get; } = [TAG_TRIGGER, TAG_LADDER];
 	public override Color DefaultGizmoColor { get; } = Color.Orange.Desaturate( 0.3f ).Darken( 0.1f );

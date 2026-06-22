@@ -108,7 +108,7 @@ partial class Equipment
 	/// Allows this equipment to alter magazine size.
 	/// </summary>
 	/// <returns> The magazine size for that ammo module. </returns>
-	public virtual float GetMagazineSize( in float baseCapacity, AmmoEquipModule ammo )
+	public virtual float GetMagazineCapacity( in float baseCapacity, AmmoEquipModule ammo )
 		=> baseCapacity;
 
 	/*

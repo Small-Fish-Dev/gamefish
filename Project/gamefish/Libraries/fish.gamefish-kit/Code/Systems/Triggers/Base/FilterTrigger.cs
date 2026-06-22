@@ -84,7 +84,7 @@ public partial class FilterTrigger : Trigger
 	[Property, Group( GROUP_FILTER_FUNC ), Title( "Passes Filter" )]
 	public Func<Trigger, GameObject, bool> FilterFunction { get; set; }
 
-	[Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
 	[Property, Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnFailedFilter { get; set; }
 

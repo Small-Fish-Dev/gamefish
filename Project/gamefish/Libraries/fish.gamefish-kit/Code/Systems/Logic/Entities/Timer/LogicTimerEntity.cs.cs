@@ -4,6 +4,7 @@ namespace GameFish;
 
 /// <summary>
 /// Runs logic in fixed/random intervals.
+/// Kinda like an alarm clock with the option to repeat itself.
 /// <br /> <br />
 /// <b> LOGIC: </b> Activating this will enable and start the timer if it's not active yet.
 /// <code> logic_timer </code>

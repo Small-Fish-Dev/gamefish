@@ -104,11 +104,13 @@ public partial class DamageTrigger : FilterTrigger
 	}
 
 	/// <summary>
-	/// Ran ever update to damage what's inside of it(if enabled).
+	/// Ran every update to damage what's inside of it(if enabled).
 	/// </summary>
-	/// <param name="deltaTime"></param>
 	protected virtual void DamagingUpdate( in float deltaTime )
 	{
+		if ( !IsOn )
+			return;
+
 		if ( !IsContinuous )
 			return;
 
@@ -157,6 +159,9 @@ public partial class DamageTrigger : FilterTrigger
 
 	public virtual bool TryDamage( GameObject obj )
 	{
+		if ( !IsOn )
+			return false;
+
 		if ( !obj.IsValid() )
 			return false;
 

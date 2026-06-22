@@ -62,7 +62,7 @@ public struct LogicAction
 
 	[WideMode( HasLabel = false )]
 	[ShowIf( nameof( IsToggling ), true )]
-	public ToggleCommand ToggleCommand { get; set; } = ToggleCommand.Disable;
+	public ToggleCommand ToggleCommand { get; set; } = ToggleCommand.Enable;
 
 	/// <summary>
 	/// Commands to be sent to nodes.

@@ -3,13 +3,19 @@ using System;
 namespace GameFish.Nodes;
 
 /// <summary>
-/// A node entity that can run its own logic when enabled and signal to or toggle other nodes within a network of any size.
+/// A node that can link to other nodes to make a network of them.
 /// <br /> <br />
-/// <b> LOGIC: </b> The "<b>Toggle</b>" command can enable/disable an interactivity with this node.
+/// <b> FEATURES </b> (optional) <br />
+/// - Running its own logic at a configurable tick rate while enabled. <br />
+/// - Acting as the root of a state machine to enable one state node at a time. <br />
 /// <br /> <br />
-/// <b> LOGIC: </b> Use the "<b>Activate</b>" command with no value to signal nearby nodes.
+/// <b> LOGIC: </b> The "<b>Toggle</b>" command can enable/disable node ticking.
 /// <br /> <br />
-/// <b> LOGIC: </b> Pass in a string with the "<b>Activate</b>" command to run one of this node's functions.
+/// <b> TIP: </b> To make this node state machine tick the "<b>States</b>" feature on it and
+/// set the protocol of the links on this node with with your state nodes to be "<b>State</b>".
+/// <br /> <br />
+/// <b> TIP: </b> If you don't specify a default state then none of them will be selected initially.
+/// You can run "<b>Node</b>" type logic on the root state machine node to have it select a state.
 /// </summary>
 [Icon( "polyline" )]
 [Title( "Logic Node" )]

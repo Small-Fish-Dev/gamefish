@@ -94,6 +94,9 @@ public class TeleportTrigger : FilterTrigger
 	/// <returns> If the object belonged to us and could be teleported. </returns>
 	protected virtual bool TryTeleport( GameObject obj )
 	{
+		if ( !IsOn )
+			return false;
+
 		if ( !obj.IsValid() || obj.IsProxy )
 			return false;
 

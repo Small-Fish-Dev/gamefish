@@ -22,13 +22,13 @@ public partial class LogicTrigger : FilterTrigger
 	protected const int LOGIC_FUNCTIONS_ORDER = LOGIC_ORDER + 50;
 
 	/// <summary>
-	/// If true: destroys itself upon successfully doing its job.
+	/// If true: disables itself upon successfully doing its job.
 	/// </summary>
 	[Property]
 	[Title( "Once" )]
 	[Order( LOGIC_TRIGGER_ORDER )]
 	[Feature( LOGIC ), Group( TRIGGER )]
-	public virtual bool SelfDestruct { get; protected set; } = false;
+	public virtual bool AutoDisable { get; protected set; } = false;
 
 	/// <summary>
 	/// What should trigger this?
@@ -97,8 +97,8 @@ public partial class LogicTrigger : FilterTrigger
 	[Feature( LOGIC ), Group( DEBUG )]
 	protected bool DebugRenderTargetsInGame { get; set; }
 
-	protected virtual Color ValidTargetColor => Color.White.WithAlpha( 0.3f );
-	protected virtual Color InvalidTargetColor => Color.Red.Desaturate( 0.4f ).Darken( 0.1f ).WithAlpha( 0.3f );
+	protected virtual Color ValidTargetColor => Color.White.WithAlpha( 0.35f );
+	protected virtual Color InvalidTargetColor => Color.White.Darken( 0.3f ).WithAlpha( 0.25f );
 
 	[Sync]
 	public TimeUntil NextActivation { get; set; }
@@ -157,8 +157,8 @@ public partial class LogicTrigger : FilterTrigger
 	/// </summary>
 	protected virtual void OnLogicActivated()
 	{
-		if ( SelfDestruct )
-			GameObject.Destroy();
+		if ( AutoDisable )
+			IsOn = false;
 	}
 
 	protected virtual void OnLogicEnter()
@@ -184,7 +184,7 @@ public partial class LogicTrigger : FilterTrigger
 			OnLogicActivated();
 	}
 
-	// TODO: Debug rendering in the LogicAction struct.
+	// TODO: Debug rendering in the `LogicAction` struct.
 	protected virtual void RenderTargets()
 	{
 		if ( Conditions.HasEnter() )

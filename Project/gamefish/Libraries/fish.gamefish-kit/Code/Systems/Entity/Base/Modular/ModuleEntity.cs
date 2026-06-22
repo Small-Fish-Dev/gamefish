@@ -10,16 +10,42 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	/// <summary>
 	/// The cached list of modules belonging to this entity.
 	/// </summary>
+	[Property]
 	[Title( "Modules" )]
-	[Property, ReadOnly, JsonIgnore]
+	[ReadOnly, JsonIgnore]
 	[Feature( ENTITY ), Group( MODULES )]
 	protected List<Module> InspectorModules => Modules;
 
 	public List<Module> Modules { get; protected set; }
 
-	/// <returns> If this is the module we're looking for. </returns>
-	protected virtual bool IsModule<TMod>( Module m ) where TMod : class
-		=> m.IsValid() && m is TMod;
+	/// <summary>
+	/// Auto-updates child module ownership.
+	/// </summary>
+	void INetworkSpawn.OnNetworkSpawn( Connection cn )
+		=> UpdateModuleOwnership( cn );
+
+	/// <summary>
+	/// Update the network ownership of currently registered modules. <br />
+	/// Does not try to register modules if they aren't cached yet.
+	/// </summary>
+	protected void UpdateModuleOwnership( Connection cn = null )
+	{
+		if ( GameObject.IsDestroyed() )
+			return;
+
+		if ( !Network.Active || IsProxy )
+			return;
+
+		cn ??= Network?.Owner;
+
+		foreach ( var mod in GetActiveModules() )
+		{
+			if ( !mod.IsValid() )
+				continue;
+
+			mod.TryNetwork( cn, allowProxy: true );
+		}
+	}
 
 	public override bool TryNetwork( Connection cn, bool allowProxy = false )
 	{
@@ -34,50 +60,90 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	}
 
 	/// <summary>
-	/// Quickly checks the cache to see if we have any module of this type.
+	/// Ensures this entity can safely parent a module.
 	/// </summary>
-	/// <typeparam name="TMod"> The specific module. </typeparam>
-	/// <returns> If the module exists. </returns>
-	public bool HasModule<TMod>() where TMod : class
+	/// <param name="m"> The module that may want this entity as a parent. </param>
+	/// <returns> If this entity accepts the responsibility of parenting that module. </returns>
+	public virtual bool IsValidModule( Module m )
 	{
-		var mType = typeof( TMod );
-		return GetModules().Any( IsModule<TMod> );
+		if ( m == this )
+			return false;
+
+		if ( !m.IsValid() || m.GameObject.IsDestroyed() )
+			return false;
+
+		return m.IsParent( this );
 	}
+
+	/// <returns> If this is the type of module we're looking for. </returns>
+	protected static bool IsModule<TMod>( Module m ) where TMod : class
+		=> m.IsValid() && m is TMod;
 
 	/// <summary>
-	/// Always gives you a cached list of modules. Registers them if that hasn't been done yet.
+	/// Quickly checks the cache to see if we have any module of this type.
+	/// </summary>
+	/// <typeparam name="TMod"> The type of module. </typeparam>
+	/// <returns> If the module exists. </returns>
+	public bool HasModule<TMod>() where TMod : class
+		=> GetActiveModules().Any( IsModule<TMod> );
+
+	/// <summary>
+	/// Always gives you a cached list of active and valid modules.
+	/// Registers them if that hasn't been done yet.
 	/// </summary>
 	/// <returns> The cached list of modules. </returns>
-	public IEnumerable<Module> GetModules()
+	public IEnumerable<Module> GetActiveModules()
 	{
-		if ( Modules is null )
-			RegisterModules();
+		var list = Modules ?? RegisterModules();
 
-		return Modules ??= [];
+		foreach ( var m in list )
+		{
+			if ( !m.IsValid() || !m.Active )
+				continue;
+
+			yield return m;
+		}
 	}
 
-	/// <typeparam name="TMod"> The specific module. </typeparam>
+	/// <typeparam name="TMod"> The type of module. </typeparam>
 	/// <returns> The first(if any) <typeparamref name="TMod"/>. </returns>
 	public TMod GetModule<TMod>() where TMod : class
 	{
-		var mType = typeof( TMod );
-		return GetModules().FirstOrDefault( IsModule<TMod> ) as TMod;
+		foreach ( var m in GetActiveModules() )
+			if ( m is TMod tm )
+				return tm;
+
+		return null;
 	}
 
-	/// <typeparam name="TMod"> The specific module. </typeparam>
-	/// <returns> Every module of this type(if any, never null). </returns>
-	public IEnumerable<TMod> GetModules<TMod>() where TMod : class
-	{
-		return GetModules()
-			.Where( IsModule<TMod> )
-			.Select( m => m as TMod );
-	}
-
-	/// <typeparam name="TMod"> The specific module. </typeparam>
+	/// <typeparam name="TMod"> The type of module. </typeparam>
 	public bool TryGetModule<TMod>( out TMod m ) where TMod : class
 	{
 		m = GetModule<TMod>();
 		return m != default;
+	}
+
+	/// <typeparam name="TMod"> The type of modules to find. </typeparam>
+	/// <returns> Every module of this type(if any, never null). </returns>
+	public IEnumerable<TMod> GetModules<TMod>() where TMod : class
+	{
+		foreach ( var m in GetActiveModules() )
+		{
+			if ( !m.IsValid() || m.GameObject.IsDestroyed() )
+				continue;
+
+			if ( m is TMod tm )
+				yield return tm;
+		}
+
+		yield break;
+	}
+
+	/// <typeparam name="TMod"> The type of the modules to find. </typeparam>
+	public bool TryGetModules<TMod>( out IEnumerable<TMod> modules ) where TMod : class
+	{
+		modules = GetModules<TMod>();
+		return modules?.Any() is true;
 	}
 
 	/// <summary>
@@ -90,28 +156,30 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	/// <summary>
 	/// Searches self and descendants for modules.
 	/// </summary>
-	protected void RegisterModules()
+	protected List<Module> RegisterModules()
 	{
 		Modules ??= [];
 
-		foreach ( var m in Components.GetAll<Module>( FindMode.EverythingInSelfAndDescendants ) )
+		foreach ( var m in Components.GetAll<Module>( FindMode.EnabledInSelfAndDescendants ) )
 			TryRegisterModule( m, allowRefresh: false );
 
 		OnModulesRefreshed();
+
+		return Modules;
 	}
 
 	/// <summary>
 	/// Attempts to register a module.
 	/// </summary>
 	/// <param name="m"> The module. </param>
-	/// <param name="allowRefresh"> Should <see cref="OnModulesRefreshed"/> be called? </param>
+	/// <param name="allowRefresh"> Should <see cref="OnModulesRefreshed"/> be called after? </param>
 	/// <returns> If the module could be registered. </returns>
 	public bool TryRegisterModule( Module m, bool allowRefresh = true )
 	{
-		if ( !GameObject.IsValid() || GameObject.IsDestroyed )
+		if ( GameObject.IsDestroyed() )
 			return false;
 
-		if ( !m.IsValid() || m == this || !m.IsParent( this ) )
+		if ( !IsValidModule( m ) )
 			return false;
 
 		// Prevent recursive module parenting.
@@ -153,7 +221,7 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 		if ( m.IsValid() && m.Parent == this )
 			m.OnRemoved( this );
 
-		if ( GameObject.IsValid() && !GameObject.IsDestroyed )
+		if ( !GameObject.IsDestroyed() )
 		{
 			OnModuleRemoved( m );
 
@@ -176,35 +244,6 @@ public partial class ModuleEntity : Entity, Component.INetworkSpawn
 	/// </summary>
 	protected virtual void OnModuleRemoved( Module m )
 	{
-	}
-
-	/// <summary>
-	/// Auto-updates child module ownership.
-	/// </summary>
-	void INetworkSpawn.OnNetworkSpawn( Connection cn )
-		=> UpdateModuleOwnership( cn );
-
-	/// <summary>
-	/// Update the network ownership of currently registered modules. <br />
-	/// Does not try to register modules if they aren't cached yet.
-	/// </summary>
-	protected void UpdateModuleOwnership( Connection cn = null )
-	{
-		if ( !GameObject.IsValid() )
-			return;
-
-		if ( !Network.Active || IsProxy )
-			return;
-
-		cn ??= Network?.Owner;
-
-		foreach ( var mod in GetModules() )
-		{
-			if ( !mod.IsValid() )
-				continue;
-
-			mod.TryNetwork( cn, allowProxy: true );
-		}
 	}
 
 	/// <summary>

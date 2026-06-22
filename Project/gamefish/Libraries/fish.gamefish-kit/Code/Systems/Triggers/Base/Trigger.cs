@@ -16,8 +16,11 @@ public partial class BaseTrigger : Trigger;
 [EditorHandle( "materials/tools/mesh_icons/quad.png" )]
 public partial class Trigger : ModuleEntity, Component.ITriggerListener, Component.ExecuteInEditor
 {
-	protected const int TRIGGER_ORDER = DEFAULT_ORDER - 50;
-	protected const int CALLBACKS_ORDER = 42069;
+	protected const int TRIGGER_ORDER = DEFAULT_ORDER - 500;
+
+	protected const int TRIGGER_DEBUG_ORDER = TRIGGER_ORDER - 10;
+	protected const int TRIGGER_COLLISION_ORDER = TRIGGER_ORDER + 50;
+	protected const int TRIGGER_CALLBACKS_ORDER = TRIGGER_ORDER + 100;
 
 	public enum ColliderType
 	{
@@ -46,31 +49,50 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// Allows automatically creating, updating and previewing a collider.
 	/// </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( COLLISION ), Order( TRIGGER_ORDER )]
+	[Order( TRIGGER_COLLISION_ORDER )]
+	[Feature( TRIGGER ), Group( COLLISION )]
 	public virtual ColliderType Collider
 	{
-		get => _colType;
-		set { _colType = value; UpdateColliders(); }
+		get => _colType ?? DefaultColliderType;
+		set
+		{
+			_colType = value;
+
+			if ( InEditor )
+				UpdateColliders();
+		}
 	}
 
-	protected ColliderType _colType = ColliderType.Manual;
+	protected ColliderType? _colType;
+
+	protected virtual ColliderType DefaultColliderType => ColliderType.Manual;
 
 	public virtual bool UsingBox => Collider is ColliderType.Box;
 	public virtual bool UsingSphere => Collider is ColliderType.Sphere;
 	public virtual bool UsingCylinder => Collider is ColliderType.Cylinder;
 
 	[Property]
+	[Order( TRIGGER_COLLISION_ORDER )]
 	[ShowIf( nameof( UsingBox ), true )]
 	[Feature( TRIGGER ), Group( COLLISION )]
 	public virtual BBox BoxSize
 	{
-		get => _boxSize;
-		set { _boxSize = value; UpdateColliders(); }
+		get => _boxSize ?? DefaultBoxSize;
+		set
+		{
+			_boxSize = value;
+
+			if ( InEditor )
+				UpdateColliders();
+		}
 	}
 
-	protected BBox _boxSize = new( new Vector3( -128f, -128f, -128f ), new Vector3( 128f, 128f, 128f ) );
+	protected BBox? _boxSize;
+
+	protected virtual BBox DefaultBoxSize => new( new Vector3( -128f, -128f, -128f ), new Vector3( 128f, 128f, 128f ) );
 
 	[Property]
+	[Order( TRIGGER_COLLISION_ORDER )]
 	[ShowIf( nameof( UsingSphere ), true )]
 	[Feature( TRIGGER ), Group( COLLISION )]
 	public float SphereRadius
@@ -79,13 +101,16 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		set
 		{
 			_sphereRadius = value;
-			UpdateColliders();
+
+			if ( InEditor )
+				UpdateColliders();
 		}
 	}
 
 	protected float _sphereRadius = 128f;
 
 	[Property]
+	[Order( TRIGGER_COLLISION_ORDER )]
 	[ShowIf( nameof( UsingCylinder ), true )]
 	[Feature( TRIGGER ), Group( COLLISION )]
 	public float CylinderRadius
@@ -94,13 +119,16 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		set
 		{
 			_cylinderRadius = value;
-			UpdateColliders();
+
+			if ( InEditor )
+				UpdateColliders();
 		}
 	}
 
 	protected float _cylinderRadius = 128f;
 
 	[Property]
+	[Order( TRIGGER_COLLISION_ORDER )]
 	[ShowIf( nameof( UsingCylinder ), true )]
 	[Feature( TRIGGER ), Group( COLLISION )]
 	public float CylinderHeight
@@ -109,7 +137,9 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		set
 		{
 			_cylinderHeight = value;
-			UpdateColliders();
+
+			if ( InEditor )
+				UpdateColliders();
 		}
 	}
 
@@ -117,6 +147,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 	[Property]
 	[Range( 3, 32, clamped: true )]
+	[Order( TRIGGER_COLLISION_ORDER )]
 	[ShowIf( nameof( UsingCylinder ), true )]
 	[Feature( TRIGGER ), Group( COLLISION )]
 	public int CylinderSides
@@ -125,7 +156,9 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		set
 		{
 			_cylinderSides = value;
-			UpdateColliders();
+
+			if ( InEditor )
+				UpdateColliders();
 		}
 	}
 
@@ -137,6 +170,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// </summary>
 	[Property]
 	[Title( "Logging (trigger)" )]
+	[Order( TRIGGER_DEBUG_ORDER )]
 	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool DebugTriggerLogging { get; set; } = false;
 
@@ -145,6 +179,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// </summary>
 	[Property]
 	[Title( "Render (ingame)" )]
+	[Order( TRIGGER_DEBUG_ORDER )]
 	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool DebugRenderInGame { get; set; } = false;
 
@@ -153,6 +188,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// </summary>
 	[Property]
 	[Title( "Use Custom Color" )]
+	[Order( TRIGGER_DEBUG_ORDER )]
 	[Feature( TRIGGER ), Group( DEBUG )]
 	public bool UseCustomColor { get; set; } = false;
 
@@ -161,6 +197,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// </summary>
 	[Property]
 	[Title( "Collider Color" )]
+	[Order( TRIGGER_DEBUG_ORDER )]
 	[Feature( TRIGGER ), Group( DEBUG )]
 	[ShowIf( nameof( UseCustomColor ), true )]
 	public virtual Color CustomColor { get; set; } = Color.White;
@@ -170,6 +207,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 	/// </summary>
 	[Property]
 	[Title( "Solid Alpha" )]
+	[Order( TRIGGER_DEBUG_ORDER )]
 	[Range( 0f, 1f, clamped: true )]
 	[Feature( TRIGGER ), Group( DEBUG )]
 	public float DebugGizmoSolidAlpha { get; set; } = 0.05f;
@@ -177,32 +215,38 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 	/// <summary> An object that passed filters just touched this. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnEnter { get; set; }
 
 	/// <summary> An object that passed filters just exited this. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnExit { get; set; }
 
 	/// <summary> A passing object just entered this as it was previously empty. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnFirstEnter { get; set; }
 
 	/// <summary> The only object occupying this trigger just exited. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnEmptied { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnInsideUpdate { get; set; }
 
 	/// <summary> Called every update for each object within this trigger. </summary>
 	[Property]
-	[Feature( TRIGGER ), Group( CALLBACKS ), Order( CALLBACKS_ORDER )]
+	[Order( TRIGGER_CALLBACKS_ORDER )]
+	[Feature( TRIGGER ), Group( CALLBACKS )]
 	public Action<Trigger, GameObject> OnInsideFixedUpdate { get; set; }
 
 
@@ -270,8 +314,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 		UpdateInside();
 
-		if ( DebugRenderInGame )
-			RenderTrigger();
+		RenderTrigger( isGizmo: false );
 	}
 
 	protected override void OnFixedUpdate()
@@ -281,22 +324,31 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		if ( !InGame )
 			return;
 
-		FixedUpdateInside();
+		UpdateInsideFixed();
 	}
 
 	protected override void DrawGizmos()
 	{
 		base.DrawGizmos();
 
-		RenderTrigger();
+		RenderTrigger( isGizmo: true );
 	}
 
-	protected virtual void RenderTrigger()
+	protected virtual void RenderTrigger( in bool isGizmo )
 	{
-		var aSolid = this.InGame() || Gizmo.IsSelected ? 1f : 0.6f;
+		if ( !isGizmo && !DebugRenderInGame )
+			return;
+
+		var aSolid = InGame || Gizmo.IsSelected ? 1f : 0.6f;
 
 		var lineColor = GizmoColor;
 		var solidColor = lineColor.WithAlpha( DebugGizmoSolidAlpha * aSolid );
+
+		if ( !IsOn )
+		{
+			lineColor.a *= 0.35f;
+			solidColor.a *= 0.2f;
+		}
 
 		_ = Collider switch
 		{
@@ -309,6 +361,9 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 	protected virtual void UpdateInside()
 	{
+		if ( !IsOn )
+			return;
+
 		if ( OnInsideUpdate is null || Touching is null )
 			return;
 
@@ -323,8 +378,11 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		}
 	}
 
-	protected virtual void FixedUpdateInside()
+	protected virtual void UpdateInsideFixed()
 	{
+		if ( !IsOn )
+			return;
+
 		if ( OnInsideFixedUpdate is null || Touching is null )
 			return;
 
@@ -341,7 +399,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 
 	protected virtual void UpdateColliders()
 	{
-		if ( !this.IsValid() || !Scene.IsValid() )
+		if ( !Scene.IsValid() || GameObject.IsDestroyed() )
 			return;
 
 		if ( Collider is ColliderType.Manual )
@@ -351,58 +409,91 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		if ( Collider is ColliderType.Box )
 		{
 			if ( !Box.IsValid() )
-				Box = Components.GetOrCreate<BoxCollider>( FindMode.EverythingInSelf );
+			{
+				if ( InEditor )
+				{
+					Box = Components.GetOrCreate<BoxCollider>( FindMode.EverythingInSelf );
 
-			Box.Scale = BoxSize.Size;
-			Box.Center = BoxSize.Mins + BoxSize.Extents;
+					Box.Scale = BoxSize.Size;
+					Box.Center = BoxSize.Mins + BoxSize.Extents;
 
-			Box.Enabled = !this.InEditor();
-			Box.IsTrigger = true;
+					Box.IsTrigger = true;
+				}
+				else
+				{
+					Box = Components.Get<BoxCollider>( FindMode.EverythingInSelf );
+				}
+			}
+
+			if ( Box.IsValid() )
+				Box.Enabled = IsOn && InGame;
 		}
 		else if ( Box.IsValid() )
 		{
-			Box.Enabled = false;
+			Box.Destroy();
 		}
 
 		// Sphere
 		if ( Collider is ColliderType.Sphere )
 		{
 			if ( !Sphere.IsValid() )
-				Sphere = Components.GetOrCreate<SphereCollider>( FindMode.EverythingInSelf );
+			{
+				if ( InEditor )
+				{
+					Sphere = Components.GetOrCreate<SphereCollider>( FindMode.EverythingInSelf );
 
-			Sphere.Radius = SphereRadius;
+					Sphere.Radius = SphereRadius;
 
-			Sphere.Enabled = !this.InEditor();
-			Sphere.IsTrigger = true;
+					Sphere.IsTrigger = true;
+				}
+				else
+				{
+					Sphere = Components.Get<SphereCollider>( FindMode.EverythingInSelf );
+				}
+			}
+
+			if ( Sphere.IsValid() )
+				Sphere.Enabled = IsOn && InGame;
 		}
 		else if ( Sphere.IsValid() )
 		{
-			Sphere.Enabled = false;
+			Sphere.Destroy();
 		}
 
 		// Cylinder
 		if ( Collider is ColliderType.Cylinder )
 		{
 			if ( !Cylinder.IsValid() )
-				Cylinder = Components.GetOrCreate<HullCollider>( FindMode.EverythingInSelf );
+			{
+				if ( InEditor )
+				{
+					Cylinder = Components.GetOrCreate<HullCollider>( FindMode.EverythingInSelf );
 
-			Cylinder.Radius = CylinderRadius;
-			Cylinder.Radius2 = CylinderRadius;
-			Cylinder.Height = CylinderHeight;
-			Cylinder.Slices = CylinderSides;
+					Cylinder.Radius = CylinderRadius;
+					Cylinder.Radius2 = CylinderRadius;
+					Cylinder.Height = CylinderHeight;
+					Cylinder.Slices = CylinderSides;
 
-			Cylinder.Type = HullCollider.PrimitiveType.Cylinder;
+					Cylinder.Type = HullCollider.PrimitiveType.Cylinder;
 
-			Cylinder.IsTrigger = true;
-			Cylinder.Enabled = !this.InEditor();
+					Cylinder.IsTrigger = true;
+				}
+				else
+				{
+					Cylinder = Components.Get<HullCollider>( FindMode.EverythingInSelf );
+				}
+			}
+
+			if ( Cylinder.IsValid() )
+				Cylinder.Enabled = IsOn && InGame;
 		}
 		else if ( Cylinder.IsValid() )
 		{
-			Cylinder.Enabled = false;
+			Cylinder.Destroy();
 		}
 	}
 
-	public void OnTriggerEnter( GameObject obj )
+	void ITriggerListener.OnTriggerEnter( GameObject obj )
 	{
 		if ( !TestFilters( obj ) )
 			return;
@@ -410,7 +501,7 @@ public partial class Trigger : ModuleEntity, Component.ITriggerListener, Compone
 		OnTouchStart( obj );
 	}
 
-	public void OnTriggerExit( GameObject obj )
+	void ITriggerListener.OnTriggerExit( GameObject obj )
 	{
 		if ( obj is not null && (Touching?.Contains( obj ) ?? false) )
 			OnTouchStop( obj );

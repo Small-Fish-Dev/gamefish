@@ -57,12 +57,12 @@ public partial class AmmoEquipModule : EquipFunction
 	public virtual float StartingAmmo { get; set; } = 20;
 
 	/// <summary>
-	/// The magazine's default size.
+	/// The magazine's default capacity.
 	/// </summary>
 	[Property]
 	[Title( "Size" )]
 	[Feature( AMMO ), Group( MAGAZINE ), Order( MAGAZINE_ORDER )]
-	public virtual float DefaultMagazineSize { get; set; } = 20;
+	public virtual float DefaultCapacity { get; set; } = 20;
 
 
 	/// <summary>
@@ -323,7 +323,7 @@ public partial class AmmoEquipModule : EquipFunction
 		if ( IsReloading )
 			return false;
 
-		return AmmoCount < GetMagazineSize();
+		return AmmoCount < GetMagazineCapacity();
 	}
 
 	public virtual bool TryStartReload()
@@ -397,7 +397,7 @@ public partial class AmmoEquipModule : EquipFunction
 	/// <returns> If any ammo could be refilled. </returns>
 	public virtual bool TryRefillMagazine( bool fromReserve = true )
 	{
-		var capacity = GetMagazineSize();
+		var capacity = GetMagazineCapacity();
 
 		if ( !fromReserve || !IsReserveEnabled )
 		{
@@ -421,12 +421,12 @@ public partial class AmmoEquipModule : EquipFunction
 		return true;
 	}
 
-	public virtual float GetMagazineSize()
+	public virtual float GetMagazineCapacity()
 	{
-		var capacity = DefaultMagazineSize;
+		var capacity = DefaultCapacity;
 
 		if ( Equip.IsValid() )
-			return Equip.GetMagazineSize( capacity, this );
+			return Equip.GetMagazineCapacity( capacity, this );
 
 		return capacity;
 	}

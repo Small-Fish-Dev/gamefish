@@ -28,9 +28,9 @@ public abstract partial class Module : ModuleEntity, Component.ExecuteInEditor
 	/// <returns> The first targeted parent entity in our hierarchy(or null, not cached). </returns>
 	protected virtual ModuleEntity FindParent()
 		=> Components?.GetAll<ModuleEntity>( FindMode.EverythingInSelfAndAncestors )
-			.FirstOrDefault( p => p.IsValid() && p != this && IsParent( p ) );
+			.FirstOrDefault( p => p.IsValidModule( this ) );
 
-	/// <returns> If this module is meant to target that component. </returns>
+	/// <returns> If this module is meant to attach to that component. </returns>
 	public abstract bool IsParent( ModuleEntity comp );
 
 	protected override void OnParentChanged( GameObject oldParent, GameObject newParent )

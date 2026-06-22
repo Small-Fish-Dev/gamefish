@@ -31,12 +31,10 @@ partial class LogicRelayEntity : LogicEntity, IToggle, IActivate
 	}
 
 	/// <summary>
-	/// Execute this logic after being activated.
-	/// <br /> <br />
-	/// <b> LOGIC: </b> Activations output the value this was input with.
+	/// If enabled: print relay info to console.
 	/// </summary>
 	[Property]
-	[Title( "Debug (relay)" )]
+	[Title( "Logging (relay)" )]
 	[Order( LOGIC_DEBUG_ORDER )]
 	[Feature( LOGIC ), Group( DEBUG )]
 	protected bool DebugRelayLog { get; set; } = false;
